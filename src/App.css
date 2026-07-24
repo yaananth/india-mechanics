@@ -5199,6 +5199,38 @@ a.icon-button {
   }
 }
 
+@media (min-width: 721px) and (max-width: 900px) {
+  .budget-filter-bar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+  }
+
+  .budget-filter-bar label,
+  .budget-search-field {
+    align-items: stretch;
+    min-width: 0;
+    max-width: none;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .budget-filter-bar select,
+  .budget-filter-bar input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .budget-filter-bar > label:first-child > svg {
+    display: none;
+  }
+
+  .budget-filter-bar .filter-bar__result {
+    justify-self: end;
+    margin-left: 0;
+  }
+}
+
 @media (max-width: 720px) {
   .app-header {
     height: 56px;
