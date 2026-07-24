@@ -8,7 +8,8 @@ the present.
 
 The project combines:
 
-- a searchable timeline with political and administrative accountability;
+- a searchable timeline with PM/CM and party attribution, filters, and
+  political and administrative accountability;
 - transparent Prime Minister and Chief Minister term ratings;
 - policy, bill, and budget evaluations;
 - raw indicator charts and a disclosed Country/State Progress Index;

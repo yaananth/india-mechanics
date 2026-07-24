@@ -1137,7 +1137,13 @@ function getAllBillRecords(db: DatabaseSync, jurisdictionId: string) {
 function getEvents(
   db: DatabaseSync,
   jurisdictionId: string,
-  filters: { category?: string; from?: string; to?: string } = {},
+  filters: {
+    category?: string
+    from?: string
+    to?: string
+    leaderTermId?: string
+    partyId?: string
+  } = {},
 ) {
   const clauses = ['e.jurisdiction_id = ?']
   const params: Array<string> = [jurisdictionId]
@@ -1152,6 +1158,35 @@ function getEvents(
   if (filters.to) {
     clauses.push('e.event_date <= ?')
     params.push(filters.to)
+  }
+  if (filters.leaderTermId === 'unmapped') {
+    clauses.push(
+      `NOT EXISTS (
+        SELECT 1 FROM event_terms term_filter
+        WHERE term_filter.event_id = e.id
+      )`,
+    )
+  } else if (filters.leaderTermId) {
+    clauses.push(
+      `EXISTS (
+        SELECT 1 FROM event_terms term_filter
+        WHERE term_filter.event_id = e.id AND term_filter.term_id = ?
+      )`,
+    )
+    params.push(filters.leaderTermId)
+  }
+  if (filters.partyId) {
+    clauses.push(
+      `EXISTS (
+        SELECT 1
+        FROM event_terms event_term_filter
+        JOIN leader_terms leader_term_filter
+          ON leader_term_filter.id = event_term_filter.term_id
+        WHERE event_term_filter.event_id = e.id
+          AND leader_term_filter.party_id = ?
+      )`,
+    )
+    params.push(filters.partyId)
   }
 
   const rows = db
@@ -1176,7 +1211,19 @@ function getEvents(
     `SELECT source_id FROM event_sources WHERE event_id = ?`,
   )
   const termStatement = db.prepare(
-    `SELECT term_id FROM event_terms WHERE event_id = ?`,
+    `SELECT term.id AS term_id, term.start_date, term.end_date,
+            person.id AS person_id, person.name AS person_name,
+            office.id AS office_id, office.name AS office_name,
+            office.short_name AS office_short_name,
+            party.id AS party_id, party.name AS party_name,
+            party.short_name AS party_short_name, party.color AS party_color
+     FROM event_terms event_term
+     JOIN leader_terms term ON term.id = event_term.term_id
+     JOIN people person ON person.id = term.person_id
+     JOIN offices office ON office.id = term.office_id
+     LEFT JOIN parties party ON party.id = term.party_id
+     WHERE event_term.event_id = ?
+     ORDER BY term.start_date, term.id`,
   )
   const assessmentStatement = db.prepare(
     `SELECT choice_assessment, choice_score, choice_reason, union_role,
@@ -1229,6 +1276,43 @@ function getEvents(
           assessment_as_of: string
         }
       | undefined
+    const governments = (
+      termStatement.all(row.id) as unknown as Array<{
+        term_id: string
+        start_date: string
+        end_date: string | null
+        person_id: string
+        person_name: string
+        office_id: string
+        office_name: string
+        office_short_name: string
+        party_id: string | null
+        party_name: string | null
+        party_short_name: string | null
+        party_color: string | null
+      }>
+    ).map((term) => ({
+      termId: term.term_id,
+      startDate: term.start_date,
+      endDate: term.end_date,
+      leader: {
+        id: term.person_id,
+        name: term.person_name,
+      },
+      office: {
+        id: term.office_id,
+        name: term.office_name,
+        shortName: term.office_short_name,
+      },
+      party: term.party_id
+        ? {
+            id: term.party_id,
+            name: term.party_name,
+            shortName: term.party_short_name,
+            color: term.party_color,
+          }
+        : null,
+    }))
     return {
       id: row.id,
       date: row.event_date,
@@ -1240,9 +1324,8 @@ function getEvents(
       confidence: row.confidence,
       sourceIds,
       sources: getSourcesByIds(db, sourceIds),
-      leaderTermIds: (
-        termStatement.all(row.id) as unknown as Array<{ term_id: string }>
-      ).map((term) => term.term_id),
+      leaderTermIds: governments.map((term) => term.termId),
+      governments,
       relatedPolicies: (
         relatedPolicyStatement.all(row.id) as unknown as Array<{
           id: string
@@ -1778,7 +1861,8 @@ export function createApp(db: DatabaseSync) {
         indicatorAsOfDate: metadata.indicator_as_of_date,
         latestWorldBankPeriod: Number(metadata.latest_world_bank_period),
         latestVdemPeriod: Number(metadata.latest_vdem_period),
-        timelineStarts: jurisdiction.valid_from,
+        timelineStarts:
+          metadata.timeline_starts ?? jurisdiction.valid_from,
       },
       progress: calculateProgress(db, jurisdictionId, targetYear),
       progressHistory: calculateProgressHistory(
@@ -1910,6 +1994,12 @@ export function createApp(db: DatabaseSync) {
           : undefined,
         from: request.query.from ? String(request.query.from) : undefined,
         to: request.query.to ? String(request.query.to) : undefined,
+        leaderTermId: request.query.leaderTerm
+          ? String(request.query.leaderTerm)
+          : undefined,
+        partyId: request.query.party
+          ? String(request.query.party)
+          : undefined,
       }),
     )
   })

@@ -25,6 +25,7 @@ import {
   EditorialLabel,
   SourceLinks,
 } from '../components/common.tsx'
+import { GovernmentIdentity } from '../components/GovernmentIdentity.tsx'
 
 const pointMeta: Record<
   BudgetPoint['pointType'],
@@ -65,11 +66,13 @@ export function BudgetsView({
   const budgetLabel =
     jurisdiction.level === 'country' ? 'Union Budget' : 'State Budget'
   const [leader, setLeader] = useState('all')
+  const [party, setParty] = useState('all')
   const [kind, setKind] = useState('all')
   const [decade, setDecade] = useState('all')
   const [query, setQuery] = useState('')
   useEffect(() => {
     setLeader('all')
+    setParty('all')
     setKind('all')
     setDecade('all')
     setQuery('')
@@ -79,6 +82,18 @@ export function BudgetsView({
     () => Array.from(new Set(budgets.map((budget) => budget.leader.name))).sort(),
     [budgets],
   )
+  const partyOptions = useMemo(() => {
+    const options = new Map<
+      string,
+      NonNullable<Budget['party']>
+    >()
+    for (const budget of budgets) {
+      if (budget.party) options.set(budget.party.id, budget.party)
+    }
+    return [...options.values()].sort((left, right) =>
+      left.name.localeCompare(right.name),
+    )
+  }, [budgets])
   const decadeOptions = useMemo(
     () =>
       Array.from(
@@ -96,9 +111,10 @@ export function BudgetsView({
       const year = Number(budget.fiscalYear.slice(0, 4))
       const budgetDecade = `${Math.floor(year / 10) * 10}s`
       const haystack =
-        `${budget.title} ${budget.shortTitle} ${budget.financeMinister} ${budget.leader.name} ${budget.summary} ${budget.plainLanguage}`.toLowerCase()
+        `${budget.title} ${budget.shortTitle} ${budget.financeMinister} ${budget.leader.name} ${budget.party?.name ?? ''} ${budget.summary} ${budget.plainLanguage}`.toLowerCase()
       return (
         (leader === 'all' || budget.leader.name === leader) &&
+        (party === 'all' || budget.party?.id === party) &&
         (kind === 'all' || budget.budgetKind === kind) &&
         (decade === 'all' || budgetDecade === decade) &&
         haystack.includes(query.trim().toLowerCase())
@@ -210,6 +226,20 @@ export function BudgetsView({
           </select>
         </label>
         <label>
+          <span>Party</span>
+          <select
+            value={party}
+            onChange={(event) => setParty(event.target.value)}
+          >
+            <option value="all">All parties</option>
+            {partyOptions.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name} ({item.shortName})
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
           <span>Budget type</span>
           <select value={kind} onChange={(event) => setKind(event.target.value)}>
             <option value="all">Full and interim</option>
@@ -252,6 +282,7 @@ export function BudgetsView({
             {filtered.map((budget) => (
               <option key={budget.id} value={budget.id}>
                 {budget.fiscalYear} · {budget.shortTitle}
+                {budget.party ? ` · ${budget.party.shortName}` : ''}
               </option>
             ))}
           </select>
@@ -263,7 +294,7 @@ export function BudgetsView({
           <div className="budget-list__header" aria-hidden="true">
             <span>Fiscal year</span>
             <span>Budget</span>
-            <span>{officeLabel}</span>
+            <span>{officeLabel} / party</span>
             <span>Estimate</span>
             <span />
           </div>
@@ -282,7 +313,11 @@ export function BudgetsView({
                   {sentenceCase(budget.budgetKind)} · {budget.financeMinister}
                 </small>
               </span>
-              <span>{budget.leader.name}</span>
+              <GovernmentIdentity
+                leaderName={budget.leader.name}
+                party={budget.party}
+                compact
+              />
               <span className="budget-row__score">
                 <strong>{budget.ratingScore}</strong>
                 <small>/10</small>
@@ -303,8 +338,10 @@ export function BudgetsView({
                 </span>
                 <h2>{selected.title}</h2>
                 <p>
-                  {selected.fiscalYear} · {officeLabel} {selected.leader.name} ·
-                  Finance Minister {selected.financeMinister}
+                  {selected.fiscalYear} · {officeLabel}{' '}
+                  {selected.leader.name}
+                  {selected.party ? ` · ${selected.party.shortName}` : ''}
+                  {' · '}Finance Minister {selected.financeMinister}
                 </p>
               </div>
               <div className="budget-detail__rating">

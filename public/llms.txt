@@ -56,6 +56,9 @@ Interpretation rules:
     Read `linkedPolicyScope` before applying a rating to the whole Bill.
 18. `sourceStatus` preserves the upstream register value when a later
     evidence-backed status correction is published.
+19. Timeline events expose `governments` with the linked PM/CM term, office,
+    party, and dates. An empty array means the event is intentionally outside a
+    mapped head-of-government term.
 
 Repository maintenance and latest-data workflow are documented in:
 - AGENTS.md

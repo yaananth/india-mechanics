@@ -3,6 +3,7 @@ import request from 'supertest'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { createApp } from '../server/app.ts'
 import { ensureDatabase } from '../server/seed.ts'
+import type { TimelineEvent } from '../src/types.ts'
 
 let db: DatabaseSync
 let app: ReturnType<typeof createApp>
@@ -22,6 +23,7 @@ describe('read API', () => {
     expect(response.status).toBe(200)
     expect(response.body.knowledge.cutoff).toBe('2026-07-23')
     expect(response.body.knowledge.billRegisterAsOfDate).toBe('2026-07-24')
+    expect(response.body.knowledge.timelineStarts).toBe('1945-01-01')
     expect(response.body.currentTerm.person.name).toBe('Narendra Modi')
     expect(response.body.progress.overall.score).toBeGreaterThan(0)
     expect(response.body.progress.overall.score).toBeLessThan(100)
@@ -373,6 +375,63 @@ describe('read API', () => {
     expect(manipur.accountability.choiceAssessment).toBe('wrong')
     expect(manipur.accountability.unionRole).toContain('Modi government')
     expect(manipur.accountability.stateLocalRole).toContain('Manipur government')
+    expect(manipur.governments).toContainEqual(
+      expect.objectContaining({
+        termId: 'modi-2014',
+        leader: expect.objectContaining({ name: 'Narendra Modi' }),
+        office: expect.objectContaining({ shortName: 'Prime Minister' }),
+        party: expect.objectContaining({ id: 'bjp', shortName: 'BJP' }),
+      }),
+    )
+  })
+
+  it('filters timeline events by PM or CM term and party', async () => {
+    const [modi, bjp, prePm, andhra] = await Promise.all([
+      request(app).get('/api/events').query({ leaderTerm: 'modi-2014' }),
+      request(app).get('/api/events').query({ party: 'bjp' }),
+      request(app).get('/api/events').query({ leaderTerm: 'unmapped' }),
+      request(app).get('/api/events').query({
+        jurisdiction: 'andhra-pradesh',
+        leaderTerm: 'ap-naidu-2024',
+        party: 'tdp',
+      }),
+    ])
+
+    expect(modi.status).toBe(200)
+    expect(modi.body.length).toBeGreaterThan(10)
+    expect(
+      modi.body.every((event: TimelineEvent) =>
+        event.governments.some(
+          (government) => government.termId === 'modi-2014',
+        ),
+      ),
+    ).toBe(true)
+
+    expect(bjp.status).toBe(200)
+    expect(
+      bjp.body.every((event: TimelineEvent) =>
+        event.governments.some(
+          (government) => government.party?.id === 'bjp',
+        ),
+      ),
+    ).toBe(true)
+
+    expect(prePm.status).toBe(200)
+    expect(prePm.body).toHaveLength(3)
+    expect(
+      prePm.body.every(
+        (event: TimelineEvent) => event.governments.length === 0,
+      ),
+    ).toBe(true)
+
+    expect(andhra.status).toBe(200)
+    expect(andhra.body.length).toBeGreaterThanOrEqual(4)
+    expect(andhra.body[0].governments[0]).toMatchObject({
+      termId: 'ap-naidu-2024',
+      leader: { name: 'N. Chandrababu Naidu' },
+      office: { shortName: 'Chief Minister' },
+      party: { id: 'tdp', shortName: 'TDP' },
+    })
   })
 
   it('publishes complete agent-facing methodology and export endpoints', async () => {

@@ -20,6 +20,7 @@ import {
   SourceLinks,
 } from '../components/common.tsx'
 import { BillRegisterPanel } from '../components/BillRegisterPanel.tsx'
+import { GovernmentIdentity } from '../components/GovernmentIdentity.tsx'
 
 const stanceMeta = {
   achievement: { label: 'Benefits and strengths', icon: CheckCircle2 },
@@ -104,11 +105,13 @@ export function PoliciesView({
     jurisdiction.level === 'country' ? 'Prime Minister' : 'Chief Minister'
   const effectiveMode = allowBillRegister ? mode : 'reviews'
   const [leader, setLeader] = useState('all')
+  const [party, setParty] = useState('all')
   const [policyType, setPolicyType] = useState('all')
   const [status, setStatus] = useState('all')
   const [query, setQuery] = useState('')
   useEffect(() => {
     setLeader('all')
+    setParty('all')
     setPolicyType('all')
     setStatus('all')
     setQuery('')
@@ -117,6 +120,18 @@ export function PoliciesView({
     () => Array.from(new Set(policies.map((policy) => policy.leader.name))).sort(),
     [policies],
   )
+  const partyOptions = useMemo(() => {
+    const options = new Map<
+      string,
+      NonNullable<Policy['party']>
+    >()
+    for (const policy of policies) {
+      if (policy.party) options.set(policy.party.id, policy.party)
+    }
+    return [...options.values()].sort((left, right) =>
+      left.name.localeCompare(right.name),
+    )
+  }, [policies])
   const typeOptions = useMemo(
     () => Array.from(new Set(policies.map((policy) => policy.policyType))).sort(),
     [policies],
@@ -126,6 +141,7 @@ export function PoliciesView({
       `${policy.title} ${policy.shortTitle} ${policy.summary} ${policy.intendedGoal}`.toLowerCase()
     return (
       (leader === 'all' || policy.leader.name === leader) &&
+      (party === 'all' || policy.party?.id === party) &&
       (policyType === 'all' || policy.policyType === policyType) &&
       (status === 'all' || policy.status === status) &&
       haystack.includes(query.trim().toLowerCase())
@@ -339,6 +355,7 @@ export function PoliciesView({
                   {taxScope[policy.id as (typeof taxPolicyIds)[number]]}
                   {' · '}
                   {policy.leader.name}
+                  {policy.party ? ` · ${policy.party.shortName}` : ''}
                 </small>
               </span>
               <span className="tax-policy-score">
@@ -369,6 +386,20 @@ export function PoliciesView({
             {leaderOptions.map((name) => (
               <option key={name} value={name}>
                 {name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          <span>Party</span>
+          <select
+            value={party}
+            onChange={(event) => setParty(event.target.value)}
+          >
+            <option value="all">All parties</option>
+            {partyOptions.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name} ({item.shortName})
               </option>
             ))}
           </select>
@@ -416,7 +447,7 @@ export function PoliciesView({
         <div className="policy-list" role="list" aria-label="Reviewed policies">
           <div className="policy-list__header" aria-hidden="true">
             <span>Policy</span>
-            <span>PM</span>
+            <span>{officeLabel} / party</span>
             <span>Status</span>
             <span>Estimate</span>
             <span />
@@ -436,7 +467,11 @@ export function PoliciesView({
                   {sentenceCase(policy.policyType)}
                 </small>
               </span>
-              <span>{policy.leader.name}</span>
+              <GovernmentIdentity
+                leaderName={policy.leader.name}
+                party={policy.party}
+                compact
+              />
               <span className={`policy-status policy-status--${policy.status}`}>
                 {sentenceCase(policy.status)}
               </span>
@@ -459,6 +494,7 @@ export function PoliciesView({
                 <h2>{selected.title}</h2>
                 <p>
                   {selected.leader.name}
+                  {selected.party ? ` · ${selected.party.shortName}` : ''}
                   {selected.introducedDate
                     ? ` · introduced ${formatDate(selected.introducedDate)}`
                     : ''}

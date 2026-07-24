@@ -158,6 +158,12 @@ protests, elections, and other events that are not government choices use
 `not-a-policy-choice`. The assessment is political and administrative
 accountability, not a criminal or judicial verdict.
 
+The event API also returns the linked head-of-government term as structured
+`governments` data: leader, office, term dates, and party. Timeline views show
+that identity on every event and support jurisdiction-aware Prime Minister or
+Chief Minister and party filters. Pre-independence and transition events remain
+explicitly unmapped rather than being assigned to a leader by date inference.
+
 ### Claim
 
 A sourced interpretation with one of four stances:
@@ -919,8 +925,8 @@ Eight responsive views use the same jurisdiction-scoped API:
 1. **Overview**: current direction, progress score, uncertainty, reviewed
    questions, leader strip, and recent events.
 2. **Timeline**: category and date filters with expandable provenance,
-   decision quality, PM/Union and state/local roles, responsible actors,
-   positives, and lessons.
+   PM/CM and party filters, governing-term identity, decision quality, PM/Union
+   and state/local roles, responsible actors, positives, and lessons.
 3. **Prime Ministers / Chief Ministers**: all terms, same-rubric comparison graph, detailed
    component reasons and claims.
 4. **Policies**: office-term-linked policy inventory, status filters,

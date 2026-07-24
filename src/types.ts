@@ -366,6 +366,21 @@ export type TimelineEvent = {
   sourceIds: string[]
   sources: Source[]
   leaderTermIds: string[]
+  governments: Array<{
+    termId: string
+    startDate: string
+    endDate: string | null
+    leader: {
+      id: string
+      name: string
+    }
+    office: {
+      id: string
+      name: string
+      shortName: string
+    }
+    party: LeaderTerm['party']
+  }>
   relatedPolicies: Array<{
     id: string
     title: string

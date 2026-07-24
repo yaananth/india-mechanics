@@ -392,13 +392,30 @@ async function apiResponse(
     const category = url.searchParams.get('category')
     const from = url.searchParams.get('from')
     const to = url.searchParams.get('to')
+    const leaderTerm = url.searchParams.get('leaderTerm')
+    const party = url.searchParams.get('party')
     return json(
-      jurisdiction.events.filter(
-        (event) =>
+      jurisdiction.events.filter((event) => {
+        const governments = Array.isArray(event.governments)
+          ? (event.governments as JsonRecord[])
+          : []
+        return (
           (!category || event.category === category) &&
           (!from || text(event.date) >= from) &&
-          (!to || text(event.date) <= to),
-      ),
+          (!to || text(event.date) <= to) &&
+          (!leaderTerm ||
+            (leaderTerm === 'unmapped'
+              ? governments.length === 0
+              : governments.some(
+                  (government) => text(government.termId) === leaderTerm,
+                ))) &&
+          (!party ||
+            governments.some(
+              (government) =>
+                text((government.party as JsonRecord | null)?.id) === party,
+            ))
+        )
+      }),
     )
   }
   if (path === '/api/indicators') return json(jurisdiction.indicators)

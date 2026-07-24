@@ -21,6 +21,7 @@ import {
   EditorialLabel,
   SourceLinks,
 } from '../components/common.tsx'
+import { GovernmentIdentity } from '../components/GovernmentIdentity.tsx'
 
 const responsibilityLevelLabel = (level: number) =>
   level >= 5
@@ -50,6 +51,12 @@ export function TimelineView({
   knowledge: Overview['knowledge']
   jurisdiction: Jurisdiction
 }) {
+  const officeLabel =
+    jurisdiction.level === 'country' ? 'Prime Minister' : 'Chief Minister'
+  const unmappedLabel =
+    jurisdiction.level === 'country'
+      ? 'Before first Prime Minister term'
+      : 'Transition / no Chief Minister term'
   const cutoffYear = Number(knowledge.cutoff.slice(0, 4))
   const startYear = Number(knowledge.timelineStarts.slice(0, 4))
   const categories = useMemo(
@@ -57,12 +64,16 @@ export function TimelineView({
     [events],
   )
   const [category, setCategory] = useState('all')
+  const [leaderTermId, setLeaderTermId] = useState('all')
+  const [partyId, setPartyId] = useState('all')
   const [fromYear, setFromYear] = useState(startYear)
   const [toYear, setToYear] = useState(cutoffYear)
   const [expanded, setExpanded] = useState<string | null>(selectedEventId)
 
   useEffect(() => {
     setCategory('all')
+    setLeaderTermId('all')
+    setPartyId('all')
     setFromYear(startYear)
     setToYear(cutoffYear)
     setExpanded(null)
@@ -78,10 +89,54 @@ export function TimelineView({
     }, 50)
   }, [selectedEventId])
 
+  const leaderOptions = useMemo(() => {
+    const options = new Map<
+      string,
+      TimelineEvent['governments'][number]
+    >()
+    for (const event of events) {
+      for (const government of event.governments) {
+        options.set(government.termId, government)
+      }
+    }
+    return [...options.values()].sort((left, right) =>
+      right.startDate.localeCompare(left.startDate),
+    )
+  }, [events])
+  const partyOptions = useMemo(() => {
+    const options = new Map<
+      string,
+      NonNullable<TimelineEvent['governments'][number]['party']>
+    >()
+    for (const event of events) {
+      for (const government of event.governments) {
+        if (government.party) {
+          options.set(government.party.id, government.party)
+        }
+      }
+    }
+    return [...options.values()].sort((left, right) =>
+      left.name.localeCompare(right.name),
+    )
+  }, [events])
+  const hasUnmappedEvents = events.some(
+    (event) => event.governments.length === 0,
+  )
+
   const filtered = events.filter((event) => {
     const year = Number(event.date.slice(0, 4))
     return (
       (category === 'all' || event.category === category) &&
+      (leaderTermId === 'all' ||
+        (leaderTermId === 'unmapped'
+          ? event.governments.length === 0
+          : event.governments.some(
+              (government) => government.termId === leaderTermId,
+            ))) &&
+      (partyId === 'all' ||
+        event.governments.some(
+          (government) => government.party?.id === partyId,
+        )) &&
       year >= fromYear &&
       year <= toYear
     )
@@ -89,6 +144,8 @@ export function TimelineView({
 
   const reset = () => {
     setCategory('all')
+    setLeaderTermId('all')
+    setPartyId('all')
     setFromYear(startYear)
     setToYear(cutoffYear)
   }
@@ -128,15 +185,62 @@ export function TimelineView({
           </select>
         </label>
         <label>
+          <Landmark size={15} aria-hidden="true" />
+          <span>{officeLabel}</span>
+          <select
+            value={leaderTermId}
+            onChange={(event) => {
+              const next = event.target.value
+              setLeaderTermId(next)
+              if (next === 'unmapped') setPartyId('all')
+            }}
+          >
+            <option value="all">All {officeLabel}s</option>
+            {leaderOptions.map((government) => (
+              <option key={government.termId} value={government.termId}>
+                {government.leader.name}
+                {government.party
+                  ? ` · ${government.party.shortName}`
+                  : ''}
+                {' · '}
+                {government.startDate.slice(0, 4)}–
+                {government.endDate?.slice(0, 4) ?? 'present'}
+              </option>
+            ))}
+            {hasUnmappedEvents && (
+              <option value="unmapped">{unmappedLabel}</option>
+            )}
+          </select>
+        </label>
+        <label>
+          <span>Party</span>
+          <select
+            value={partyId}
+            onChange={(event) => setPartyId(event.target.value)}
+          >
+            <option value="all">All parties</option>
+            {partyOptions.map((party) => (
+              <option key={party.id} value={party.id}>
+                {party.name} ({party.shortName})
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
           <CalendarRange size={15} aria-hidden="true" />
           <span>From</span>
           <input
             type="number"
-            min={1945}
+            min={startYear}
             max={toYear}
             value={fromYear}
             onChange={(event) =>
-              setFromYear(Math.max(1945, Math.min(Number(event.target.value), toYear)))
+              setFromYear(
+                Math.max(
+                  startYear,
+                  Math.min(Number(event.target.value), toYear),
+                ),
+              )
             }
           />
         </label>
@@ -187,6 +291,27 @@ export function TimelineView({
                     <span>{sentenceCase(event.category)}</span>
                     <ConfidenceMark confidence={event.confidence} />
                   </span>
+                  <span className="timeline-event__government">
+                    {event.governments.length > 0 ? (
+                      event.governments.map((government) => (
+                        <GovernmentIdentity
+                          key={government.termId}
+                          leaderName={government.leader.name}
+                          party={government.party}
+                          officeLabel={government.office.shortName}
+                          startDate={government.startDate}
+                          endDate={government.endDate}
+                          compact
+                        />
+                      ))
+                    ) : (
+                      <GovernmentIdentity
+                        leaderName={unmappedLabel}
+                        party={null}
+                        compact
+                      />
+                    )}
+                  </span>
                   <strong>{event.title}</strong>
                   <span>{event.summary}</span>
                 </span>
@@ -205,6 +330,30 @@ export function TimelineView({
                     <div>
                       <dt>Why it matters</dt>
                       <dd>{event.significance}</dd>
+                    </div>
+                    <div className="timeline-event__government-fact">
+                      <dt>{officeLabel} / party</dt>
+                      <dd>
+                        <span className="timeline-event__government-detail">
+                          {event.governments.length > 0 ? (
+                            event.governments.map((government) => (
+                              <GovernmentIdentity
+                                key={government.termId}
+                                leaderName={government.leader.name}
+                                party={government.party}
+                                officeLabel={government.office.shortName}
+                                startDate={government.startDate}
+                                endDate={government.endDate}
+                              />
+                            ))
+                          ) : (
+                            <GovernmentIdentity
+                              leaderName={unmappedLabel}
+                              party={null}
+                            />
+                          )}
+                        </span>
+                      </dd>
                     </div>
                   </dl>
 

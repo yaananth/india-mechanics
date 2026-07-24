@@ -163,6 +163,9 @@ changes with the same care as code changes.
 
 - Every published event needs an `event_assessments` row and at least one
   `event_responsibilities` actor.
+- Return linked office-term, leader, and party metadata for timeline events.
+  Pre-office and transition events must stay explicitly unmapped rather than
+  being assigned to the nearest leader.
 - Distinguish direct action, policy decision, failure to prevent, failure to
   respond, implementation, shared context, and positive leadership.
 - State explicitly what belongs to the PM/Union and what belongs to state or
