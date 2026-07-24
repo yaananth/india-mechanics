@@ -19,13 +19,13 @@
 .app-header__inner {
   display: grid;
   grid-template-columns:
-    auto auto minmax(390px, 1fr) minmax(230px, 360px) auto;
+    auto auto minmax(0, 1fr) minmax(200px, 320px) auto;
   align-items: center;
   width: min(100%, 1480px);
   height: 100%;
   margin: 0 auto;
   padding: 0 24px;
-  gap: 22px;
+  gap: 16px;
 }
 
 .brand {
@@ -96,16 +96,19 @@
   align-items: stretch;
   align-self: stretch;
   min-width: 0;
+  overflow: hidden;
   gap: 2px;
 }
 
 .desktop-nav button {
   position: relative;
+  min-width: 0;
   padding: 0 11px;
   color: var(--muted);
   background: transparent;
   font-size: 13px;
   font-weight: 650;
+  white-space: nowrap;
   cursor: pointer;
 }
 
