@@ -4305,6 +4305,7 @@ a.icon-button {
 }
 
 .indicator-audit > div {
+  min-width: 0;
   padding: 20px 22px 20px 0;
 }
 
@@ -4341,8 +4342,9 @@ a.icon-button {
 
 .indicator-source > a {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
+  min-width: 0;
   padding: 11px;
   color: inherit;
   border: 1px solid var(--line);
@@ -4355,6 +4357,15 @@ a.icon-button {
 .indicator-source > a strong,
 .indicator-source > a span:last-child {
   grid-column: 2;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.indicator-source > p,
+.indicator-source .source-links,
+.indicator-source .source-links a {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .indicator-source > a strong {
