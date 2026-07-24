@@ -93,12 +93,33 @@ describe('read API', () => {
     expect(overview.body.knowledge.timelineStarts).toBe('2014-06-02')
     expect(overview.body.progress.overall.score).toBeGreaterThan(0)
     expect(leaders.body).toHaveLength(3)
-    expect(leaders.body.every((leader: { specialistAssessments: unknown[] }) =>
-      leader.specialistAssessments.length === 0,
-    )).toBe(true)
+    expect(
+      leaders.body.find((leader: { id: string }) => leader.id === 'ap-naidu-2014')
+        .specialistAssessments,
+    ).toContainEqual(
+      expect.objectContaining({
+        topicId: 'public-safety',
+        operationalScore: 5.9,
+        adjustedScore: 6.1,
+      }),
+    )
+    expect(
+      leaders.body.find((leader: { id: string }) => leader.id === 'ap-jagan-2019')
+        .specialistAssessments,
+    ).toContainEqual(
+      expect.objectContaining({
+        topicId: 'public-safety',
+        operationalScore: 5.7,
+        adjustedScore: 5.8,
+      }),
+    )
+    expect(
+      leaders.body.find((leader: { id: string }) => leader.id === 'ap-naidu-2024')
+        .specialistAssessments,
+    ).toEqual([])
     expect(policies.body).toHaveLength(7)
     expect(budgets.body).toHaveLength(3)
-    expect(events.body).toHaveLength(9)
+    expect(events.body).toHaveLength(10)
     expect(
       events.body.every(
         (event: {
@@ -110,7 +131,7 @@ describe('read API', () => {
           event.accountability.responsibilities.length > 0,
       ),
     ).toBe(true)
-    expect(indicators.body).toHaveLength(18)
+    expect(indicators.body).toHaveLength(29)
     expect(
       indicators.body.every((indicator: { id: string }) =>
         indicator.id.startsWith('ap-'),
@@ -154,6 +175,49 @@ describe('read API', () => {
       ),
     ).toBe(true)
     expect(response.body.attributionCaveat).toContain('Chief Minister')
+  })
+
+  it('publishes crime and public-safety trends without treating FIR counts as direct harm', async () => {
+    const [indiaAnswer, indiaMurder, apViolence, apAnswer] = await Promise.all([
+      request(app).get('/api/search').query({
+        jurisdiction: 'india',
+        q: 'is crime getting better in india',
+      }),
+      request(app)
+        .get('/api/indicators/crime-murder-rate/series')
+        .query({ jurisdiction: 'india' }),
+      request(app)
+        .get('/api/indicators/ap-crime-violent-rate/series')
+        .query({ jurisdiction: 'andhra-pradesh' }),
+      request(app).get('/api/search').query({
+        jurisdiction: 'andhra-pradesh',
+        q: 'crime in andhra pradesh',
+      }),
+    ])
+
+    expect(indiaAnswer.body.answer).toMatchObject({
+      id: 'india-crime-safety',
+      confidence: 'medium',
+    })
+    expect(indiaAnswer.body.answer.verdict).toContain('bounded')
+    expect(indiaMurder.body.observations).toEqual([
+      expect.objectContaining({ period: 2015, value: 2.6 }),
+      expect.objectContaining({ period: 2019, value: 2.2 }),
+      expect.objectContaining({ period: 2023, value: 2 }),
+    ])
+    expect(indiaMurder.body.termChanges).toContainEqual(
+      expect.objectContaining({
+        termId: 'modi-2014',
+        directionAssessment: 'improved',
+      }),
+    )
+    expect(apViolence.body.observations).toEqual([
+      expect.objectContaining({ period: 2015, value: 13.5 }),
+      expect.objectContaining({ period: 2019, value: 14.7 }),
+      expect.objectContaining({ period: 2023, value: 12.1 }),
+    ])
+    expect(apAnswer.body.answer.id).toBe('ap-crime-safety')
+    expect(apAnswer.body.answer.verdict).toContain('not yet scoreable')
   })
 
   it('answers the constitutional regime-change question with both cases', async () => {
@@ -247,13 +311,23 @@ describe('read API', () => {
       revisedRating: 6.7,
       status: 'stable',
     })
-    expect(response.body.specialistAssessments).toHaveLength(1)
-    expect(response.body.specialistAssessments[0]).toMatchObject({
-      topicId: 'national-security',
-      operationalScore: 7,
-      adjustedScore: 6.5,
-      status: 'reviewed',
-    })
+    expect(response.body.specialistAssessments).toHaveLength(2)
+    expect(response.body.specialistAssessments).toContainEqual(
+      expect.objectContaining({
+        topicId: 'national-security',
+        operationalScore: 7,
+        adjustedScore: 6.5,
+        status: 'reviewed',
+      }),
+    )
+    expect(response.body.specialistAssessments).toContainEqual(
+      expect.objectContaining({
+        topicId: 'public-safety',
+        operationalScore: 5.9,
+        adjustedScore: 5.9,
+        status: 'reviewed',
+      }),
+    )
     expect(response.body.sources.length).toBeGreaterThanOrEqual(12)
   })
 
@@ -273,8 +347,8 @@ describe('read API', () => {
   it('returns a sourced accountability brief for every timeline event', async () => {
     const response = await request(app).get('/api/events')
     expect(response.status).toBe(200)
-    expect(response.body).toHaveLength(75)
-    expect(response.body[0].id).toBe('sikkim-tunnel-disaster-2026')
+    expect(response.body).toHaveLength(77)
+    expect(response.body[0].id).toBe('national-cybercrime-complaints-2025')
     expect(
       response.body.every(
         (event: {
@@ -314,12 +388,24 @@ describe('read API', () => {
     )
     expect(methodology.body.budgetEvaluation.dimensions).toHaveLength(5)
     expect(methodology.body.leaderEvaluation.profiles).toHaveLength(4)
-    expect(methodology.body.specialistEvaluations).toHaveLength(1)
-    expect(methodology.body.specialistEvaluations[0]).toMatchObject({
-      id: 'national-security',
-      operationalLabel: 'Operational security',
-      adjustedLabel: 'Rights-adjusted security',
-    })
+    expect(methodology.body.specialistEvaluations).toHaveLength(2)
+    expect(methodology.body.specialistEvaluations).toContainEqual(
+      expect.objectContaining({
+        id: 'national-security',
+        operationalLabel: 'Operational security',
+        adjustedLabel: 'Rights-adjusted security',
+      }),
+    )
+    expect(methodology.body.specialistEvaluations).toContainEqual(
+      expect.objectContaining({
+        id: 'public-safety',
+        operationalLabel: 'Recorded safety outcomes',
+        adjustedLabel: 'Reporting-and-justice adjusted',
+        dimensions: expect.arrayContaining([
+          expect.objectContaining({ id: 'safety-justice-delivery' }),
+        ]),
+      }),
+    )
     expect(methodology.body.leaderEvaluation.profiles[0]).toMatchObject({
       id: 'balanced',
       isCanonical: true,

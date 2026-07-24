@@ -118,6 +118,37 @@ changes with the same care as code changes.
 - Link PM rows to the PM assessment so policy/event evidence can inform causal
   interpretation.
 
+## Crime and public safety
+
+- Check both the current NCRB year page and the latest downloadable report.
+  A year link or placeholder is not evidence that tables are published.
+- Use population rates for comparison when the source provides a defensible
+  denominator. Never compare raw state and national counts as equivalent risk.
+- Keep serious harm, reporting-sensitive registration, police disposal, court
+  outcomes, and current news as separate evidence classes.
+- Murder and violent-crime rates are stronger harm signals than total FIR
+  counts, but still require classification and reporting caveats.
+- Crime against women, children, total registered crime, and cybercrime may rise
+  because of victimization, e-FIR access, help desks, awareness, legal change,
+  police recording, or several factors together. Do not assign an automatic
+  direction or blame.
+- Charge-sheeting is not conviction. Conviction is calculated from completed
+  trials and must be displayed with pendency and case-mix limitations.
+- Police and public order are primarily state responsibilities. Bound PM rating
+  effects to Union law, national platforms, central agencies, interstate
+  coordination, and demonstrable national capacity.
+- CM ratings may give crime evidence more weight, but courts, prosecutors,
+  Union systems, local administration, financial institutions, social
+  conditions, and reporting behavior remain shared causes.
+- Treat the July 1, 2024 BNS/BNSS/BSA transition as a legal and classification
+  break. Do not append post-transition figures to IPC trends without a source
+  bridge.
+- News and web search provide recent signals, not aggregate rates. Require an
+  official or direct record plus independent corroboration for rating-relevant
+  current claims.
+- Keep unvalidated police annual reviews provisional. Do not score a current
+  leader from a press conference when comparable NCRB data predate the term.
+
 ## Event accountability
 
 - Every published event needs an `event_assessments` row and at least one

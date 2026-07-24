@@ -494,7 +494,7 @@ export const andhraLeaderTerms: LeaderTermSeed[] = [
     ratingScore: 6.9,
     ratingConfidence: 'medium',
     ratingSummary:
-      'Strong new-state institution building, growth, rural-road delivery, broader infrastructure ambition, and Hudhud response; reduced by Amaravati concentration and land-risk questions, fiscal pressure, incomplete capital delivery, and uneven inclusion.',
+      'Strong new-state institution building, growth, rural-road delivery, improving murder and IPC-conviction signals, broader infrastructure ambition, and Hudhud response; reduced by Amaravati concentration, fiscal pressure, incomplete capital delivery, mixed violent-crime direction, and uneven inclusion.',
     assessmentAsOf: reviewedAt,
     sourceIds: [
       'ap-reorganisation-act-2014',
@@ -505,6 +505,8 @@ export const andhraLeaderTerms: LeaderTermSeed[] = [
       'niti-ap-macro-fiscal-2025',
       'ap-crda',
       'ndma-hudhud-lessons',
+      'ncrb-crime-2015-index',
+      'ncrb-crime-2019-index',
     ],
   },
   {
@@ -518,7 +520,7 @@ export const andhraLeaderTerms: LeaderTermSeed[] = [
     ratingScore: 6.3,
     ratingConfidence: 'medium',
     ratingSummary:
-      'Large welfare and local-service-delivery expansion with household-service, poverty, and cumulative rural-connectivity gains; reduced by fiscal and off-budget risk, weak capital expenditure, missed 2023-24 PMGSY delivery targets, capital-city uncertainty, and institutional concentration.',
+      'Large welfare and local-service-delivery expansion with household-service, poverty, rural-connectivity, lower recorded violent crime, and high IPC charge-sheeting; reduced by fiscal and off-budget risk, weak capital expenditure, very low sensitive-crime and cyber convictions, capital-city uncertainty, and institutional concentration.',
     assessmentAsOf: reviewedAt,
     sourceIds: [
       'eci-ap-2019',
@@ -534,6 +536,9 @@ export const andhraLeaderTerms: LeaderTermSeed[] = [
       'nfhs5-ap',
       'ap-village-secretariat-go',
       'ap-amaravati-judgment-2022',
+      'ncrb-crime-2019-index',
+      'ncrb-crime-2023-part-i',
+      'ncrb-crime-2023-part-ii',
     ],
   },
   {
@@ -546,7 +551,7 @@ export const andhraLeaderTerms: LeaderTermSeed[] = [
     ratingScore: 6.6,
     ratingConfidence: 'low',
     ratingSummary:
-      'A provisional early-term assessment: renewed capital investment, documented road-rehabilitation and PMGSY delivery, a large 2026-27 capital plan, and strong growth intent; debt, road safety, execution capacity, and incomplete outcomes limit confidence. Panchayat awards corroborate local performance but add no separate score.',
+      'A provisional early-term assessment: renewed capital investment, documented road-rehabilitation and PMGSY delivery, a large 2026-27 capital plan, and encouraging but unvalidated 2025 police signals; debt, road safety, execution capacity, and the absence of post-term NCRB crime data limit confidence.',
     assessmentAsOf: reviewedAt,
     sourceIds: [
       'eci-ap-2024',
@@ -557,13 +562,17 @@ export const andhraLeaderTerms: LeaderTermSeed[] = [
       'pib-ap-panchayat-awards-2025',
       'niti-ap-macro-fiscal-2025',
       'ap-crda',
+      'ncrb-crime-2023-part-i',
+      'ncrb-crime-2024-empty-index',
+      'new-indian-express-ap-crime-review-2025',
+      'pti-ap-crime-review-2025',
     ],
   },
 ]
 
 const andhraLeaderComponentScores: Record<string, number[]> = {
-  'ap-naidu-2014': [7.3, 7.7, 6.3, 7.5, 6, 6],
-  'ap-jagan-2019': [6.5, 6.8, 7.5, 6.2, 4.8, 4.8],
+  'ap-naidu-2014': [7.3, 7.7, 6.3, 7.4, 6, 6.1],
+  'ap-jagan-2019': [6.5, 6.8, 7.5, 6.4, 4.8, 4.6],
   'ap-naidu-2024': [6.9, 7, 6.5, 6.5, 6.2, 6],
 }
 
@@ -572,23 +581,23 @@ const andhraLeaderRationales: Record<string, string[]> = {
     'Real GSDP and real per-capita NSDP expanded strongly from a difficult bifurcation baseline. The 2017-18 survey also reported 126 of 157 Rural Roads Plan works complete, though inherited programmes and national trends limit attribution.',
     'New-state administration, Amaravati planning, land pooling, irrigation, the Rural Roads Plan, and digital-governance ambition were durable initiatives, with incomplete delivery and later reversal risk.',
     'Household electricity was already high and sanitation, services, income, and rural-road access improved, while regional and livelihood burdens around the capital plan remained material.',
-    'The government managed the immediate post-split transition and Hudhud response credibly, with reconstruction and resilience investment following.',
+    'The government managed the immediate post-split transition and Hudhud response credibly. The murder rate fell while registered violent crime rose modestly, producing a mixed-positive public-safety result.',
     'Competitive institutions continued, but capital planning was highly centralised and consultation, land, and regional-balance concerns lower the score.',
-    'Administrative drive was strong; optimistic financing, unfinished projects, and rising fiscal obligations reduce execution and integrity confidence.',
+    'Administrative drive was strong and the overall IPC conviction rate improved by 2019; optimistic financing, unfinished projects, a lower police charge-sheeting rate, and rising fiscal obligations reduce execution confidence.',
   ],
   'ap-jagan-2019': [
     'Per-capita output recovered after the pandemic, household deprivation indicators improved, and 3,534 km of PMGSY roads were completed from 2019-20 through 2023-24. The first fiscal year crosses governments, the programme is Union-state, and weak capital formation tempers attribution.',
     'Village and ward secretariats, direct benefit delivery, school and health programmes, and welfare architecture changed service access at scale.',
     'MPI poverty, sanitation, schooling, rural connectivity, and several service indicators improved; child anaemia, job quality, and regional opportunity remained weak.',
-    'COVID response and service continuity were material tests; the record is mixed across public health, industrial accidents, and disaster readiness.',
+    'COVID response and service continuity were material tests. Registered violent crime fell and the murder rate stayed comparatively low by 2023, while sensitive-crime and cyber justice outcomes were weak.',
     'The three-capitals strategy, prolonged Amaravati uncertainty, court conflict, and concentration of political-administrative power materially reduce the institutions score.',
-    'Large welfare execution was a strength, but debt, contingent liabilities, off-budget borrowing, low capital expenditure, the 2023-24 PMGSY target shortfall, surrender of the full Rs 100 crore Road Safety Fund capital provision in 2022-23, persistent fatalities, and transparency concerns reduce the score.',
+    'Large welfare execution and high IPC charge-sheeting were strengths, but debt, contingent liabilities, off-budget borrowing, low capital expenditure, very low women, child, and cyber conviction rates, the 2023-24 PMGSY target shortfall, road-safety execution, and transparency concerns reduce the score.',
   ],
   'ap-naidu-2024': [
     'The 2024-25 estimate shows strong real growth, while PMGSY records show 484 km completed in 2025-26 and 141 km through July 16, 2026. These are real early outputs with shared Union-state credit, but the term remains too young for durable outcome attribution.',
     'Amaravati and Polavaram restart, investment promotion, and road rehabilitation are coherent priorities. By December 2024 the state survey reported 92 road sections and 10 bridges complete and 70% of a 5,000 km pothole-work package complete, but longer-run outcomes remain unproven.',
     'The programme combines welfare continuity with infrastructure. Five nationally recognized Panchayats corroborate specific local results, but awards add no separate score because primary credit belongs to local bodies and appraisal years span governments.',
-    'Early disaster and administrative response is mixed-positive, with too little elapsed time for a stable crisis score.',
+    'Early disaster and administrative response is mixed-positive. A 2025 police review is encouraging, but the latest NCRB crime data predate the term and cannot support a stable public-safety score.',
     'Coalition government and renewed capital clarity support the score; institutional performance and treatment of opposition require longer observation.',
     'The current budget is more investment-oriented, while revenue deficit, debt, and the risk of over-promising keep execution confidence modest.',
   ],

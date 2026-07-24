@@ -1,63 +1,222 @@
 # India Mechanics
 
-India Mechanics is a source-backed, SQLite-powered research website for
-understanding India from 1945 to the present. It combines a searchable historical
-timeline, Prime Minister evaluations, raw indicator graphs, a transparent Country
-Progress Index, policy and bill evaluations, Union Budget comparisons, and a
-source reliability ledger.
+India Mechanics is a public, source-backed research website for understanding
+India's political, economic, institutional, and social direction from 1945 to
+the present.
 
-The project does not claim to be bias-free. It makes evidence, judgment,
-uncertainty, and knowledge cutoffs visible so readers and agents can challenge or
-recompute the conclusions.
+**Canonical website:** https://india-mechanics.artfiesco.chatgpt.site
+
+The project combines:
+
+- a searchable timeline with political and administrative accountability;
+- transparent Prime Minister and Chief Minister term ratings;
+- policy, bill, and budget evaluations;
+- raw indicator charts and a disclosed Country/State Progress Index;
+- a Crime & Safety view that separates harm, reporting, investigation, justice,
+  and current news signals;
+- source-level reliability, limitations, review dates, and knowledge cutoffs;
+- a jurisdiction-native model that currently publishes India and
+  post-bifurcation Andhra Pradesh.
+
+This is both software and a public research record. Editorial judgments are
+visible, versioned, and reproducible; they are not presented as measured facts.
+
+## Research principles
+
+1. **Primary records first.** Prefer legislation, judgments, official
+   statistics, audits, election results, and responsible agencies.
+2. **Independent corroboration.** Government claims about effectiveness,
+   contested events, and current news require independent evidence.
+3. **Observation is not causation.** A metric moving during a leader's term is
+   not proof that the leader caused it.
+4. **Uncertainty stays visible.** Sparse surveys, disputed counts, provisional
+   budgets, and developing stories remain qualified.
+5. **Same rubric, same office.** Rated PM and CM terms use the same six general
+   dimensions. Specialist assessments use a published topic rubric.
+6. **Registered crime is not victimization.** Murder and violent-crime rates,
+   reporting-sensitive FIR rates, investigation, conviction, and news signals
+   are shown separately.
+7. **State boundaries matter.** Andhra Pradesh observations begin after
+   June 2, 2014; undivided-state data are not silently assigned to the successor
+   state.
+
+Read [architecture.md](./architecture.md) for the complete model and
+[AGENTS.md](./AGENTS.md) for the research and verification contract.
+
+## Technology
+
+- React, TypeScript, Vite, and Recharts
+- Express read API
+- SQLite via Node's built-in `node:sqlite`
+- Vitest and Supertest
+- Cloudflare-compatible Sites production bundle
+
+SQLite is generated locally from checked-in seed records. No hosted database or
+private editor state is required to reproduce the published corpus.
 
 ## Run locally
 
+### Prerequisites
+
+- Node.js 22 or newer
+- npm
+
+### Setup
+
 ```bash
+git clone https://github.com/yaananth/india-mechanics.git
+cd india-mechanics
 npm install
-npm run data:refresh
+npm run db:seed
 npm run dev
 ```
 
-Open `http://127.0.0.1:4173`. The API runs on
-`http://127.0.0.1:8788` and is proxied by Vite.
+Open:
 
-## Useful commands
+- Website: http://127.0.0.1:4173
+- API: http://127.0.0.1:8788
 
-```bash
-npm run dev             # React app and SQLite API
-npm run db:seed         # rebuild the local SQLite database from checked-in seeds
-npm run data:refresh    # refresh machine-readable indicator feeds and reseed
-npm run bills:refresh   # refresh the official government-bill register and reseed
-npm run refresh:latest  # refresh indicators, test, and production-build
-npm run sources:check   # live link check for the source ledger
-npm run research:validate # validate a deterministic web-research batch
-npm run rating:audit      # compare five blinded leader-rating replications
-npm test                # scoring, provenance, PM-term coverage, API, and state-extensibility tests
-npm run build           # production bundle
+Vite proxies `/api/*` requests to the local API.
+
+The checked-in machine-data snapshots make the project runnable without
+refreshing external feeds. Run refresh commands only when intentionally updating
+the evidence cutoff.
+
+## Common commands
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the website and SQLite API |
+| `npm run db:seed` | Rebuild SQLite deterministically from checked-in data |
+| `npm run data:refresh` | Refresh World Bank and V-Dem series, audit, and reseed |
+| `npm run bills:refresh` | Refresh the Sansad government-bill register |
+| `npm run research:validate -- <batch.json>` | Validate a deterministic research batch |
+| `npm run policy:audit` | Check the reviewed-policy funnel |
+| `npm run claims:audit` | Check heard-claim coverage |
+| `npm run rating:audit` | Compare standardized leader-rating runs |
+| `npm run sources:check` | Check every source URL |
+| `npm test` | Run formula, provenance, API, and jurisdiction tests |
+| `npm run lint` | Run the TypeScript/React linter |
+| `npm run build` | Build the local production client |
+| `npm run build:sites` | Build the client, API snapshot, and Sites worker |
+
+## Repository layout
+
+```text
+server/schema.ts                      relational schema
+server/seed.ts                        deterministic database build
+server/app.ts                         read-only API
+server/progress.ts                    progress-index calculations
+server/rating-profiles.ts             balanced and alternative leader lenses
+server/specialist-ratings.ts          specialist-score arithmetic
+server/seed-data/catalog.ts           national core corpus
+server/seed-data/security.ts          national-security lane
+server/seed-data/crime-safety.ts      crime, justice, and current-signal lane
+server/seed-data/andhra-pradesh.ts    post-split AP corpus
+server/seed-data/budgets.ts           budget records and ratings
+research/                             validated source-discovery batches
+scripts/                              refresh, validation, and audit commands
+src/views/                            jurisdiction-aware website views
+hosting/worker.ts                     hosted API/static worker
+tests/                                database, scoring, API, and URL contracts
 ```
 
-## Evidence model
+The generated `data/india-mechanics.sqlite` file is disposable and gitignored.
+The source of truth is the schema, seed data, reviewed research batches, and
+checked-in feed snapshots.
 
-- **Observations** are raw numeric records from a named source and period.
-- **Indicator explainers** provide a plain-language meaning, concrete example,
-  and observed change during each comparable PM term.
-- **Contextual indicators**, such as INR per US dollar, are shown with comparisons
-  but are excluded from the progress score when no universal good/bad direction exists.
-- **Events** are dated historical records with significance and provenance.
-- **Event accountability** separates PM/Union, state/local, non-state, foreign,
-  corporate, institutional, and structural responsibility, plus decision
-  quality, positives, and lessons.
-- **Claims** are sourced interpretations labeled achievement, concern, context, or mixed.
-- **Leader scores** are disclosed editorial estimates built from six weighted components.
-- **Policy scores** separate design, effectiveness, implementation, rights, and side effects.
-- **Bill-register records** preserve official parliamentary discovery and status
-  without assigning a rating before an evidence review is complete.
-- **Budget scores** separate strategy, fiscal credibility, productive capacity,
-  inclusion, and delivery or long-run risk.
-- **Budget allocations** preserve the fiscal-year amount and historical accounting
-  label; nominal rupees are not treated as inflation-adjusted comparisons.
-- **Source ratings** describe fitness for the stated use, not political agreement.
-- **Knowledge cutoffs** are stored in SQLite and returned by `/api/meta`.
+## Reproducible research workflow
 
-Read [architecture.md](./architecture.md) before adding data or changing the
-scoring model. Coding and research agents must also follow [AGENTS.md](./AGENTS.md).
+For a new or refreshed evidence lane:
+
+1. Read the current cutoffs from `/api/meta`.
+2. Use `research/source-roster.json` and
+   `research/query-templates.json` for repeatable discovery.
+3. Prefer the controlling primary source.
+4. Add independent corroboration where impact or responsibility is contested.
+5. Save a bounded batch under `research/`.
+6. Run `npm run research:validate -- research/<batch>.json`.
+7. Add sources, observations, events, claims, policies, and rating rationale.
+8. Update the corresponding ingestion batch and review cutoff.
+9. Run all verification gates.
+10. Inspect the desktop and mobile website before publication.
+
+The process is designed for either a human researcher or an agent. It does not
+depend on a private prompt history, local notes, or undocumented knowledge held
+by the current maintainer.
+
+## Crime and current-news updates
+
+Comparable crime trends use NCRB tables. Current web/news research is a separate
+lane:
+
+- official police, court, ministry, and parliamentary records establish facts;
+- Reuters, PTI, The Hindu, Indian Express, and other reviewed outlets can
+  corroborate current chronology and statements;
+- headline counts are not converted into population rates without a defensible
+  denominator;
+- current police reviews remain provisional until incorporated into a comparable
+  official series;
+- the July 2024 BNS/BNSS/BSA transition is treated as a classification break
+  from IPC-era data.
+
+## Adding another state
+
+State additions require:
+
+- a jurisdiction row and boundary-valid start date;
+- a Chief Minister office and term chronology;
+- state-coded indicators and observations;
+- state budgets, policies, events, claims, and accountability;
+- state-specific cutoffs and a validated research batch;
+- explicit Union/state/local attribution;
+- API, URL, desktop, and mobile tests.
+
+Use the Andhra Pradesh implementation as the reference pattern. Do not project a
+present-day state boundary backward without a documented mapping.
+
+## Canonical deployment and governance
+
+The canonical website is deployed through OpenAI Sites:
+
+https://india-mechanics.artfiesco.chatgpt.site
+
+As of **July 24, 2026**, only the GitHub/Sites owner **`yaananth`** can publish
+updates to that canonical production website. This is an access-control fact,
+not an architectural dependency:
+
+- anyone can clone, inspect, test, refresh, and run the project locally;
+- another maintainer can deploy a fork to their own compatible hosting;
+- source data, formulas, review batches, and build steps are checked in;
+- production credentials and account authorization are intentionally external
+  to the repository;
+- changing canonical maintainers requires an explicit GitHub/Sites access
+  transfer, not a code rewrite.
+
+## Verification before publication
+
+```bash
+npm run db:seed
+npm test
+npm run lint
+npm run build:sites
+npm audit
+npm run sources:check
+```
+
+Production changes also require Browser E2E at desktop and mobile widths,
+including jurisdiction switching, shareable URLs, search, timelines, leader
+ratings, Crime & Safety, indicators, budgets, policies, sources, methodology,
+API links, and console errors.
+
+## Important limitations
+
+- Ratings are editorial term estimates, not objective facts.
+- India has no complete annual dataset for every important outcome since 1947.
+- Current news is selective and cannot establish an aggregate crime rate.
+- NCRB reporting varies with access, registration, law, and police practice.
+- District, caste, gender, income, and community differences remain
+  underrepresented.
+- The project does not yet include a public correction workflow or review CMS.
+- A polished interface does not make an incomplete evidence record exhaustive.
+

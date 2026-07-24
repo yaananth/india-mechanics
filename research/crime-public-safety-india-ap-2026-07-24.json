@@ -1,0 +1,289 @@
+{
+  "batchId": "crime-public-safety-india-ap-2026-07-24",
+  "rosterVersion": "source-roster-v0.11",
+  "lane": "crime-public-safety",
+  "throughDate": "2026-07-24",
+  "reviewer": "India Mechanics crime and public-safety review",
+  "candidates": [
+    {
+      "id": "ncrb-crime-2015-index",
+      "url": "https://www.ncrb.gov.in/crime-in-india-table-content.html?category=&year=2015",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ncrb-2015",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ncrb-crime-2019-index",
+      "url": "https://www.ncrb.gov.in/crime-in-india-table-content.html?category=&year=2019",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ncrb-2019",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ncrb-crime-2023-part-i",
+      "url": "https://www.ncrb.gov.in/uploads/files/1CrimeinIndia2023PartI.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ncrb-2023",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ncrb-crime-2023-part-ii",
+      "url": "https://www.ncrb.gov.in/uploads/files/2CrimeinIndia2023PartII.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ncrb-2023",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ncrb-crime-2024-empty-index",
+      "url": "https://www.ncrb.gov.in/crime-in-india-year-wise.html?keyword=&year=2024",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ncrb-availability",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "mha-cctns",
+      "url": "https://www.mha.gov.in/en/divisionofmha/women-safety-division/cctns",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "mha-cctns",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "i4c-official",
+      "url": "https://www.mha.gov.in/en/divisionofmha/cyber-and-information-security-cis-division",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "mha-i4c",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "mha-cybercrime-reply-2025",
+      "url": "https://www.mha.gov.in/MHA1/Par2017/pdfs/par2025-pdfs/LS02122025/452.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "mha-parliament",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "mha-new-criminal-laws-2024",
+      "url": "https://www.mha.gov.in/en/commoncontent/new-criminal-laws",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "mha-criminal-laws",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "prs-criminal-law-reforms-2023",
+      "url": "https://prsindia.org/billtrack/overview-of-criminal-law-reforms",
+      "sourceRegistryId": null,
+      "sourceClass": "independent-analysis",
+      "independenceGroup": "prs",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-cybercrime-complaints-2026",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2287039",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "mha-parliament-current",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "indian-express-cybercrime-complaints-2026",
+      "url": "https://indianexpress.com/article/india/indians-lost-rs-53000-crore-fraud-cheating-cases-six-years-maharashtra-2025-10452185/",
+      "sourceRegistryId": null,
+      "sourceClass": "independent-national",
+      "independenceGroup": "indian-express",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "new-indian-express-ap-crime-review-2025",
+      "url": "https://www.newindianexpress.com/states/andhra-pradesh/2025/Dec/30/andhra-crime-rate-drops-617-but-economic-offences-rise-says-dgp-harish",
+      "sourceRegistryId": null,
+      "sourceClass": "independent-national",
+      "independenceGroup": "new-indian-express",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pti-ap-crime-review-2025",
+      "url": "https://www.theweek.in/wire-updates/national/2025/12/29/mes30-ap-crime-report-dgp.html",
+      "sourceRegistryId": null,
+      "sourceClass": "independent-national",
+      "independenceGroup": "pti",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

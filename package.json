@@ -2,6 +2,15 @@
   "name": "india-mechanics",
   "private": true,
   "version": "0.1.0",
+  "description": "Evidence-backed research website for India and state-level political, policy, budget, progress, and public-safety analysis.",
+  "homepage": "https://india-mechanics.artfiesco.chatgpt.site",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yaananth/india-mechanics.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yaananth/india-mechanics/issues"
+  },
   "type": "module",
   "scripts": {
     "dev": "concurrently -k -n api,web -c green,blue \"npm:dev:api\" \"npm:dev:web\"",

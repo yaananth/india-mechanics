@@ -86,11 +86,13 @@ server/app.ts                           read API
 server/seed-data/catalog.ts             reviewed sources, terms, events, claims
 server/seed-data/budgets.ts             reviewed budgets, allocations, and ratings
 server/seed-data/security.ts            all-PM national-security assessment lane
+server/seed-data/crime-safety.ts        crime, justice, cyber, and current-news lane
 server/seed-data/andhra-pradesh.ts      post-split AP state and CM corpus
 server/seed-data/research-metadata.ts   knowledge and review cutoffs
 server/seed-data/generated-indicators.json checked-in feed snapshot
 server/seed-data/generated-bills.json    checked-in Sansad government-bill snapshot
 src/                                   React interface
+src/views/SafetyView.tsx               crime, justice, and current-signal UI
 tests/                                 scoring, provenance, API, state fixture
 .openai/hosting.json                   persistent Sites project identity
 hosting/worker.ts                       hosted static/API snapshot worker
@@ -199,6 +201,24 @@ The same national-security rubric is applied to every rated Prime Minister term.
 It is not applied to Chief Ministers because interstate war, border defence, and
 national strategic autonomy are outside a state government’s constitutional
 authority. Chief Ministers still use the same six-part general leader rubric.
+
+Public safety uses five different dimensions: lethal and violent harm, women and
+child safety, reporting and investigation, justice delivery, and cybercrime
+resilience. It publishes:
+
+- a recorded-safety outcome; and
+- a reporting-and-justice-adjusted result.
+
+The public-safety topic is scored only for terms with a complete comparable
+evidence window. The current AP term is deliberately unscored because the latest
+downloadable NCRB data are for 2023, before that term began.
+
+Public safety informs the general crisis and integrity rationales but is not
+added again as a second headline rating. PM attribution is bounded because police
+and public order are primarily state subjects. CM attribution is larger but
+remains shared with courts, prosecution, Union law and platforms, local
+administration, financial institutions, reporting behavior, and social
+conditions.
 
 ### Budget
 
@@ -326,16 +346,18 @@ The published AP corpus contains:
 
 - three CM terms: Naidu 2014-19, Jagan 2019-24, and Naidu 2024-present;
 - the same six-component leader formula used for PM terms;
-- nine post-split accountability events;
+- ten post-split accountability events;
 - seven reviewed state policies, including a cross-term rural-road record;
 - three landmark state budgets, including the current 2026-27 proposal;
-- eighteen AP-coded indicators and sixty-two observations;
-- two reviewed state questions;
+- twenty-nine AP-coded indicators and eighty-eight observations;
+- three reviewed state questions;
 - a state-only source ledger.
 
 The national security specialist rubric is absent from CM pages by design. State
 public order and crisis performance remain inside the general crisis component;
 national border and strategic-autonomy scores are not projected onto a CM.
+The public-safety specialist rubric is available for the two completed AP terms.
+The current term remains visibly `Not yet rateable`.
 
 Boundary rules:
 
@@ -382,10 +404,12 @@ Mandatory state research lanes:
    Union-state-local attribution, not just announced spending or total stock;
 6. policies, legislation, court decisions, CAG findings, crises, protests, and
    institutional accountability;
-7. awards and external benchmarks as a discovery and corroboration lane only;
+7. crime and public safety split into serious harm, reporting-sensitive rates,
+   investigation, court outcomes, cybercrime, and corroborated current signals;
+8. awards and external benchmarks as a discovery and corroboration lane only;
    the underlying measured result must exist before an award affects a leader
    score;
-8. independent corroboration and an explicit evidence-gap list before
+9. independent corroboration and an explicit evidence-gap list before
    publication.
 
 Every new state gets its own research batch, jurisdiction-coded indicator IDs,
@@ -859,7 +883,7 @@ and methodology endpoints.
 
 ## 15. UI architecture
 
-Seven responsive views use the same jurisdiction-scoped API:
+Eight responsive views use the same jurisdiction-scoped API:
 
 1. **Overview**: current direction, progress score, uncertainty, reviewed
    questions, leader strip, and recent events.
@@ -872,9 +896,11 @@ Seven responsive views use the same jurisdiction-scoped API:
    five-part ratings, benefits, risks, and evidence gaps.
 5. **Budgets**: jurisdiction budgets, allocations, fiscal frame, strengths, and
    delivery risks.
-6. **Indicators**: raw graph, latest value, office-term change, goalposts, and
+6. **Crime & Safety**: harm, reporting-sensitive rates, investigation, justice,
+   cybercrime, public-safety term scorecards, and current news signals.
+7. **Indicators**: raw graph, latest value, office-term change, goalposts, and
    source fitness.
-7. **Sources**: reliability distribution, filters, limitations, and agent data
+8. **Sources**: reliability distribution, filters, limitations, and agent data
    access.
 
 Desktop uses a compact top navigation with a jurisdiction selector. Mobile uses
@@ -916,6 +942,20 @@ and stacked evidence layouts.
 4. Add the feed importer or explicit manual observations.
 5. Test normalization and freshness.
 
+### Add crime or public-safety evidence
+
+1. Check the latest downloadable NCRB report, not only the year-navigation link.
+2. Store rates and their denominators; keep raw counts as context.
+3. Classify the metric as serious harm, reporting-sensitive registration,
+   investigation, justice delivery, or cybercrime.
+4. Preserve NCRB’s warning that higher registration can reflect better access
+   and recording.
+5. Separate post-cutoff police/news signals from comparable annual statistics.
+6. Require official/direct evidence and independent corroboration for a current
+   signal that may affect a rating.
+7. Bound PM and CM attribution according to constitutional responsibility.
+8. Treat the July 2024 criminal-law transition as a classification break.
+
 ## 17. Verification gates
 
 Required local checks:
@@ -935,6 +975,7 @@ The current automated suite checks:
 - weighted PM score consistency;
 - weighted CM score consistency;
 - the same national-security formula for every rated PM term;
+- the same public-safety formula for every term with a complete evidence window;
 - at least one claim and one event, policy, or budget record for every rated PM term;
 - explicit knowledge cutoffs;
 - 1945 timeline and protest/communal-violence coverage;
@@ -953,6 +994,8 @@ Browser E2E must cover:
 - jurisdiction switching and URL persistence;
 - CM selection and comparison;
 - indicator switching and chart rendering;
+- Crime & Safety group switching, charts, leader scorecards, current signals,
+  and the current-term data-gap state;
 - source filters and external links;
 - methodology modal;
 - agent export and API contract links;
@@ -980,6 +1023,10 @@ This is a strong foundation, not an exhaustive history.
   and travel-time series;
 - AP labour, health, and household indicators rely on survey years and should
   not be read as annual measurements;
+- comparable crime trends currently stop at 2023; the official 2024 NCRB page
+  exposes no downloadable records as of July 24, 2026;
+- current crime reporting is selective and is displayed as a provisional
+  signal, not converted into an aggregate crime rate;
 - no multilingual research or UI yet;
 - no user-submitted corrections workflow yet;
 - no formal versioned data migrations or signed releases yet.

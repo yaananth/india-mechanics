@@ -394,16 +394,18 @@ export function LeadersView({
                     <small>{assessment.operationalLabel}</small>
                     <strong>{assessment.operationalScore.toFixed(1)}/10</strong>
                     <span>
-                      Capability, prevention, borders, internal conflict, and
-                      strategic autonomy.
+                      {assessment.topicId === 'public-safety'
+                        ? 'Serious harm, reporting-sensitive safety, investigation, justice, and cyber resilience.'
+                        : 'Capability, prevention, borders, internal conflict, and strategic autonomy.'}
                     </span>
                   </div>
                   <div>
                     <small>{assessment.adjustedLabel}</small>
                     <strong>{assessment.adjustedScore.toFixed(1)}/10</strong>
                     <span>
-                      The same record with civilian protection, due process,
-                      proportionality, and remedies included.
+                      {assessment.topicId === 'public-safety'
+                        ? 'The same record with reporting access, charge-sheeting, conviction, pendency, and federal responsibility emphasized.'
+                        : 'The same record with civilian protection, due process, proportionality, and remedies included.'}
                     </span>
                   </div>
                 </div>
@@ -421,9 +423,13 @@ export function LeadersView({
                         <span style={{ width: `${component.score * 10}%` }} />
                       </div>
                       <small>
-                        Operational{' '}
+                        {assessment.topicId === 'public-safety'
+                          ? 'Recorded outcomes'
+                          : 'Operational'}{' '}
                         {Math.round(component.operationalWeight * 100)}% ·
-                        rights-adjusted{' '}
+                        {assessment.topicId === 'public-safety'
+                          ? 'system-adjusted'
+                          : 'rights-adjusted'}{' '}
                         {Math.round(component.adjustedWeight * 100)}%
                       </small>
                       <p>{component.rationale}</p>

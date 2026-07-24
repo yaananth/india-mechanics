@@ -55,6 +55,18 @@ import {
   budgets,
 } from './seed-data/budgets.ts'
 import {
+  crimeSafetyClaims,
+  crimeSafetyCuratedAnswers,
+  crimeSafetyEventAssessments,
+  crimeSafetyEvents,
+  crimeSafetyIndicatorDefinitions,
+  crimeSafetyIndicatorObservations,
+  crimeSafetySources,
+  crimeSafetySpecialistAssessments,
+  crimeSafetySpecialistDimensions,
+  crimeSafetySpecialistTopics,
+} from './seed-data/crime-safety.ts'
+import {
   developmentClaims,
   developmentEventAssessments,
   developmentEvents,
@@ -78,7 +90,7 @@ import {
 } from './seed-data/security.ts'
 import type { IndicatorObservationSeed, PolicyRegisterSeed } from './types.ts'
 
-export const seedVersion = '2026-07-24.9'
+export const seedVersion = '2026-07-24.10'
 const sourceRosterVersion = 'source-roster-v0.11'
 const allJurisdictions = [...jurisdictions, ...andhraJurisdictions]
 const allOffices = [...offices, ...andhraOffices]
@@ -91,6 +103,7 @@ const allSources = [
   ...developmentSources,
   ...securitySources,
   ...andhraSources,
+  ...crimeSafetySources,
 ]
 const allPolicies = [
   ...policies,
@@ -109,29 +122,49 @@ const allEvents = [
   ...developmentEvents,
   ...securityEvents,
   ...andhraEvents,
+  ...crimeSafetyEvents,
 ]
 const allEventAssessments = [
   ...eventAssessments,
   ...developmentEventAssessments,
   ...securityEventAssessments,
   ...andhraEventAssessments,
+  ...crimeSafetyEventAssessments,
 ]
 const allClaims = [
   ...claims,
   ...developmentClaims,
   ...securityClaims,
   ...andhraClaims,
+  ...crimeSafetyClaims,
 ]
 const allIndicatorDefinitions = [
   ...indicatorDefinitions,
   ...developmentIndicatorDefinitions,
   ...andhraIndicatorDefinitions,
+  ...crimeSafetyIndicatorDefinitions,
 ]
 const allBudgets = [...budgets, ...andhraBudgets]
 const allBudgetScores = [...budgetScores, ...andhraBudgetScores]
 const allBudgetAllocations = [...budgetAllocations, ...andhraBudgetAllocations]
 const allBudgetPoints = [...budgetPoints, ...andhraBudgetPoints]
-const allCuratedAnswers = [...curatedAnswers, ...andhraCuratedAnswers]
+const allCuratedAnswers = [
+  ...curatedAnswers,
+  ...andhraCuratedAnswers,
+  ...crimeSafetyCuratedAnswers,
+]
+const allSpecialistTopics = [
+  ...securitySpecialistTopics,
+  ...crimeSafetySpecialistTopics,
+]
+const allSpecialistDimensions = [
+  ...securitySpecialistDimensions,
+  ...crimeSafetySpecialistDimensions,
+]
+const allSpecialistAssessments = [
+  ...securitySpecialistAssessments,
+  ...crimeSafetySpecialistAssessments,
+]
 const defaultDatabasePath = fileURLToPath(
   new URL('../data/india-mechanics.sqlite', import.meta.url),
 )
@@ -302,7 +335,7 @@ function insertRows(
       (id, name, description, operational_label, adjusted_label, methodology)
      VALUES (?, ?, ?, ?, ?, ?)`,
   )
-  for (const row of securitySpecialistTopics) {
+  for (const row of allSpecialistTopics) {
     specialistTopicInsert.run(
       row.id,
       row.name,
@@ -317,7 +350,7 @@ function insertRows(
       (id, topic_id, name, operational_weight, adjusted_weight, description)
      VALUES (?, ?, ?, ?, ?, ?)`,
   )
-  for (const row of securitySpecialistDimensions) {
+  for (const row of allSpecialistDimensions) {
     specialistDimensionInsert.run(
       row.id,
       row.topicId,
@@ -438,7 +471,7 @@ function insertRows(
     `INSERT INTO leader_specialist_sources (assessment_id, source_id)
      VALUES (?, ?)`,
   )
-  for (const row of securitySpecialistAssessments) {
+  for (const row of allSpecialistAssessments) {
     specialistAssessmentInsert.run(
       row.id,
       row.termId,
@@ -845,6 +878,7 @@ function insertRows(
     ...manualIndicatorObservations,
     ...developmentIndicatorObservations,
     ...andhraIndicatorObservations,
+    ...crimeSafetyIndicatorObservations,
   ]) {
     observationInsert.run(
       row.indicatorId,
@@ -1170,6 +1204,25 @@ function insertRows(
     'published',
     metadata.generated_at,
     'Added a reviewed rural-roads policy, annual PMGSY and road-safety series, road and Panchayat events, term-specific achievements and execution concerns, and explicit Union-state-local attribution. Awards are corroboration, not standalone CM evidence.',
+  )
+  db.prepare(
+    `INSERT INTO ingestion_batches
+      (id, source_roster_version, query_scope, run_at, agent_model,
+       candidates_found, rejected_records, reviewer, review_status,
+       published_at, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).run(
+    'crime-public-safety-india-ap-2026-07-24',
+    sourceRosterVersion,
+    'India and post-split Andhra Pradesh crime, public safety, investigation, justice delivery, cybercrime, and current news signals',
+    metadata.generated_at,
+    'Codex official-statistics and corroborated-news research lane',
+    14,
+    0,
+    'India Mechanics crime and public-safety review',
+    'published',
+    metadata.generated_at,
+    'Published a 2015-2019-2023 comparable crime series, public-safety specialist assessments for data-covered terms, the July 2024 legal break, and separately labeled post-2023 current signals. Registered crime is never treated mechanically as underlying victimization.',
   )
 }
 

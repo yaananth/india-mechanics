@@ -31,6 +31,7 @@ import { LeadersView } from './views/LeadersView.tsx'
 import { OverviewView } from './views/OverviewView.tsx'
 import { PoliciesView } from './views/PoliciesView.tsx'
 import { BudgetsView } from './views/BudgetsView.tsx'
+import { SafetyView } from './views/SafetyView.tsx'
 import { SourcesView } from './views/SourcesView.tsx'
 import { TimelineView } from './views/TimelineView.tsx'
 
@@ -422,6 +423,23 @@ function App() {
             onSelectBudget={(budgetId) => updateNavigation({ budgetId })}
             knowledge={data.overview.knowledge}
             jurisdiction={data.overview.jurisdiction}
+          />
+        )}
+        {navigation.view === 'safety' && (
+          <SafetyView
+            key={data.overview.jurisdiction.id}
+            indicators={data.indicators}
+            leaders={data.leaders}
+            events={data.events}
+            knowledge={data.overview.knowledge}
+            jurisdiction={data.overview.jurisdiction}
+            onOpenIndicator={(indicatorId) =>
+              updateNavigation({ view: 'indicators', indicatorId })
+            }
+            onOpenLeader={selectLeader}
+            onOpenEvent={(eventId) =>
+              updateNavigation({ view: 'timeline', eventId })
+            }
           />
         )}
         {navigation.view === 'indicators' && (

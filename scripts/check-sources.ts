@@ -1,5 +1,6 @@
 import { sources } from '../server/seed-data/catalog.ts'
 import { budgetSources } from '../server/seed-data/budgets.ts'
+import { crimeSafetySources } from '../server/seed-data/crime-safety.ts'
 import { andhraSources } from '../server/seed-data/andhra-pradesh.ts'
 import { developmentSources } from '../server/seed-data/development-trade.ts'
 import { securitySources } from '../server/seed-data/security.ts'
@@ -9,6 +10,7 @@ const allSources = [
   ...developmentSources,
   ...securitySources,
   ...andhraSources,
+  ...crimeSafetySources,
   ...budgetSources,
 ]
 
@@ -130,4 +132,4 @@ console.log(
   `\n${results.length} checked: ${results.length - failures.length - blocked.length} reachable, ${blocked.length} access-blocked, ${failures.length} failed.`,
 )
 
-if (failures.length > 0) process.exitCode = 1
+process.exit(failures.length > 0 ? 1 : 0)

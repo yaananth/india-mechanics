@@ -8,6 +8,7 @@ import {
   MapPin,
   ScrollText,
   Search,
+  ShieldCheck,
   WalletCards,
 } from 'lucide-react'
 import type { ReactNode } from 'react'
@@ -38,6 +39,12 @@ const baseNavigation: Array<{
     label: 'Budgets',
     shortLabel: 'Budget',
     icon: WalletCards,
+  },
+  {
+    id: 'safety',
+    label: 'Crime & Safety',
+    shortLabel: 'Safety',
+    icon: ShieldCheck,
   },
   {
     id: 'indicators',

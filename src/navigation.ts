@@ -34,6 +34,7 @@ const viewIds = new Set<ViewId>([
   'leaders',
   'policies',
   'budgets',
+  'safety',
   'indicators',
   'sources',
 ])

@@ -2150,7 +2150,7 @@ export const leaderTerms: LeaderTermSeed[] = [
     ratingScore: 6.7,
     ratingConfidence: 'medium',
     ratingSummary:
-      'Large poverty and basic-service gains, major road expansion, digital systems, stronger operational security, and a broader trade-agreement strategy; reduced by job quality, uneven inclusion, crisis response, political-finance transparency, border and prevention failures, safety and execution gaps, and institutional decline. Balanced estimate 6.7/10; alternative weighting lenses span 6.0-7.1.',
+      'Large poverty and basic-service gains, major road expansion, digital systems, stronger operational security, a lower registered murder rate, and a broader trade-agreement strategy; reduced by job quality, uneven inclusion, cybercrime and justice gaps, crisis response, political-finance transparency, border and prevention failures, safety and execution gaps, and institutional decline. Balanced estimate 6.7/10; alternative weighting lenses span 6.0-7.1.',
     assessmentAsOf: '2026-07-24',
     sourceIds: [
       'pm-india-current',
@@ -2168,6 +2168,13 @@ export const leaderTerms: LeaderTermSeed[] = [
       'morth-year-end-2025',
       'world-bank-poverty-trend-2026',
       'commerce-fta-achievements-2026',
+      'ncrb-crime-2015-index',
+      'ncrb-crime-2019-index',
+      'ncrb-crime-2023-part-i',
+      'ncrb-crime-2023-part-ii',
+      'mha-cctns',
+      'i4c-official',
+      'mha-cybercrime-reply-2025',
     ],
   },
 ]
@@ -2232,7 +2239,7 @@ const componentScores: Record<string, number[]> = {
   'gujral-1997': [5.4, 6.0, 5.5, 6.8, 6.0, 5.8],
   'vajpayee-1998': [7.5, 8.0, 6.5, 6.8, 6.2, 6.5],
   'manmohan-2004': [8.0, 7.5, 8.0, 6.2, 7.0, 5.5],
-  'modi-2014': [7.7, 7.4, 6.5, 6.3, 4.5, 6.0],
+  'modi-2014': [7.7, 7.4, 6.5, 6.4, 4.5, 5.9],
 }
 
 const scoreRationales: Record<string, string[]> = {
@@ -2352,9 +2359,9 @@ const scoreRationales: Record<string, string[]> = {
     'Monetary and multidimensional poverty fell substantially while roads, basic services, formalisation, and aggregate output expanded; survey changes and job quality limit attribution.',
     'GST, insolvency reform, digital public infrastructure, highway investment, and a broader trade-agreement strategy endure; IBC delay, Bharatmala cost control, safety, and execution gaps prevent a higher score.',
     'Poverty and service access improved materially; productive-job quality, nutrition, gender, regional, earnings, and minority-inclusion gaps prevent a high score.',
-    'LWE and most Northeast security indicators, retaliation capacity, vaccination, and defence capability are strengths; Uri, Pulwama, Pahalgam, Galwan, the lockdown, pandemic mortality uncertainty, Manipur, and conflict response keep the combined record mixed-positive.',
+    'LWE and most Northeast security indicators, retaliation capacity, vaccination, defence capability, and a lower registered murder rate are strengths; violent crime, women and child safety, cybercrime, Uri, Pulwama, Pahalgam, Galwan, the lockdown, pandemic mortality uncertainty, Manipur, and conflict response keep the combined record mixed-positive.',
     'Independent indices show material democratic deterioration, while the competitive 2024 election and electoral-bonds judgment show electoral and judicial checks still imposed meaningful limits.',
-    'Central execution is strong; electoral bonds, transparency gaps, concentration of power, project-control failures, and the bounded demonetisation penalty reduce the score.',
+    'Central execution and national crime-data and cyber-coordination systems are strengths; electoral bonds, transparency gaps, concentration of power, project-control failures, uneven criminal-justice outcomes, and the bounded demonetisation penalty reduce the score.',
   ],
 }
 

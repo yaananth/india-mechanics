@@ -21,7 +21,7 @@ describe('research database integrity', () => {
          FROM events`,
       )
       .get() as { count: number; first_date: string }
-    expect(summary.count).toBe(84)
+    expect(summary.count).toBe(87)
     expect(summary.first_date).toBe('1945-11-05')
 
     const categories = db
@@ -65,7 +65,7 @@ describe('research database integrity', () => {
       .get() as { assessments: number; responsibilities: number }
     expect(missingAssessments).toEqual([])
     expect(eventsWithoutActors).toEqual([])
-    expect(counts.assessments).toBe(84)
+    expect(counts.assessments).toBe(87)
     expect(counts.responsibilities).toBeGreaterThanOrEqual(150)
   })
 
@@ -949,7 +949,7 @@ describe('research database integrity', () => {
     const count = db
       .prepare(`SELECT COUNT(*) AS count FROM indicator_definitions`)
       .get() as { count: number }
-    expect(count.count).toBe(38)
+    expect(count.count).toBe(60)
     expect(incomplete).toEqual([])
   })
 
@@ -1164,11 +1164,11 @@ describe('state and Chief Minister extensibility', () => {
       )
       .get()
     expect(counts).toEqual({
-      events: 9,
+      events: 10,
       policies: 7,
       budgets: 3,
-      observations: 62,
-      answers: 2,
+      observations: 88,
+      answers: 3,
     })
 
     const roadPolicy = db
@@ -1203,6 +1203,41 @@ describe('state and Chief Minister extensibility', () => {
       union_role: expect.stringContaining('Andhra Pradesh government'),
       state_local_role: expect.stringContaining('Union'),
     })
+
+    const publicSafetyAssessments = db
+      .prepare(
+        `SELECT a.term_id,
+                ROUND(
+                  SUM(s.score * d.operational_weight) /
+                  SUM(d.operational_weight),
+                  1
+                ) AS outcome_score,
+                ROUND(
+                  SUM(s.score * d.adjusted_weight) /
+                  SUM(d.adjusted_weight),
+                  1
+                ) AS adjusted_score
+         FROM leader_specialist_assessments a
+         JOIN leader_specialist_scores s ON s.assessment_id = a.id
+         JOIN leader_specialist_dimensions d ON d.id = s.dimension_id
+         WHERE a.topic_id = 'public-safety'
+         GROUP BY a.term_id
+         ORDER BY a.term_id`,
+      )
+      .all()
+    expect(publicSafetyAssessments).toEqual([
+      { term_id: 'ap-jagan-2019', outcome_score: 5.7, adjusted_score: 5.8 },
+      { term_id: 'ap-naidu-2014', outcome_score: 5.9, adjusted_score: 6.1 },
+      { term_id: 'modi-2014', outcome_score: 5.9, adjusted_score: 5.9 },
+    ])
+
+    const currentSafetyAssessment = db
+      .prepare(
+        `SELECT id FROM leader_specialist_assessments
+         WHERE term_id = 'ap-naidu-2024' AND topic_id = 'public-safety'`,
+      )
+      .get()
+    expect(currentSafetyAssessment).toBeUndefined()
   })
 
   it('accepts a state jurisdiction and head-of-government office without schema changes', () => {

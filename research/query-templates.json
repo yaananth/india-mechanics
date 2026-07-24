@@ -1,5 +1,5 @@
 {
-  "version": "query-templates-v0.5",
+  "version": "query-templates-v0.6",
   "templates": [
     {
       "id": "official-policy",
@@ -103,6 +103,30 @@
         "site:niti.gov.in India {outcome}",
         "site:undp.org India {outcome}",
         "{outcome} India measurement dispute methodology"
+      ]
+    },
+    {
+      "id": "crime-public-safety",
+      "lane": "crime-public-safety",
+      "queries": [
+        "site:ncrb.gov.in Crime in India {year} {jurisdiction} {crimeMetric}",
+        "site:mha.gov.in {crimeMetric} {jurisdiction} parliamentary reply",
+        "site:bprd.nic.in {jurisdiction} police organization vacancies strength",
+        "site:indiacode.nic.in {criminalLaw} official act",
+        "site:prsindia.org {criminalLaw} analysis",
+        "{jurisdiction} {crimeMetric} reporting registration conviction methodology"
+      ]
+    },
+    {
+      "id": "current-crime-signal",
+      "lane": "crime-current-news",
+      "queries": [
+        "site:{policeDomain} {jurisdiction} annual crime review {year}",
+        "site:reuters.com OR site:ptinews.com {jurisdiction} {crimeTopic} after:{fromDate}",
+        "site:thehindu.com OR site:indianexpress.com OR site:newindianexpress.com {jurisdiction} {crimeTopic} after:{fromDate}",
+        "site:{courtDomain} {jurisdiction} {crimeTopic} order judgment",
+        "site:mha.gov.in OR site:pib.gov.in {crimeTopic} latest statistics",
+        "{jurisdiction} {crimeTopic} official response independent corroboration"
       ]
     },
     {

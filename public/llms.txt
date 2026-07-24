@@ -40,6 +40,13 @@ Interpretation rules:
     maintenance, safety, and Union-state-local attribution.
 12. Awards may corroborate specific outcomes but are not standalone proof of
     statewide performance or exclusive Chief Minister credit.
+13. Crime data separate serious harm, reporting-sensitive FIR rates,
+    charge-sheeting, conviction, pendency, and current news signals.
+14. Police and public order are primarily state responsibilities; PM crime
+    attribution is bounded to Union law, national systems, central agencies,
+    cyber coordination, and interstate capacity.
+15. Current crime news must not be converted into an aggregate crime rate.
+    Treat the July 2024 criminal-law transition as a classification break.
 
 Repository maintenance and latest-data workflow are documented in:
 - AGENTS.md

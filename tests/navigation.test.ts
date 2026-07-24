@@ -45,6 +45,7 @@ describe('shareable navigation URLs', () => {
         { view: 'indicators', indicatorId: 'official-exchange-rate' },
         '/?view=indicators&indicator=official-exchange-rate',
       ],
+      [{ view: 'safety' }, '/?view=safety'],
       [{ view: 'sources' }, '/?view=sources'],
     ]
 

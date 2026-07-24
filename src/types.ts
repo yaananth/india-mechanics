@@ -4,6 +4,7 @@ export type ViewId =
   | 'leaders'
   | 'policies'
   | 'budgets'
+  | 'safety'
   | 'indicators'
   | 'sources'
 
