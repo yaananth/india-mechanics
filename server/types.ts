@@ -220,7 +220,12 @@ export type PolicySeed = {
   introducedDate?: string
   enactedDate?: string
   effectiveDate?: string
-  status: 'enacted' | 'pending' | 'repealed' | 'executive-action'
+  status:
+    | 'enacted'
+    | 'pending'
+    | 'repealed'
+    | 'executive-action'
+    | 'infructuous'
   coverageStatus: 'reviewed' | 'partial' | 'placeholder'
   ratingBasis?: 'retrospective' | 'design'
   summary: string
@@ -244,6 +249,7 @@ export type PolicyRegisterSeed = {
   jurisdictionId: string
   leaderTermId?: string
   linkedPolicyId?: string
+  linkedPolicyScope?: 'bill-specific' | 'policy-family'
   billNumber?: string
   title: string
   ministry?: string
@@ -253,6 +259,10 @@ export type PolicyRegisterSeed = {
   billType: string
   category?: string
   status: string
+  sourceStatus?: string
+  statusAsOf?: string
+  statusNote?: string
+  statusSourceId?: string
   passedLokSabhaDate?: string
   passedRajyaSabhaDate?: string
   referredCommitteeDate?: string
@@ -269,6 +279,44 @@ export type PolicyRegisterSeed = {
   synopsisFile?: string
   sourceId: string
   reviewStatus: 'discovered' | 'reviewing' | 'reviewed'
+}
+
+export type BillDocumentExtractSeed = {
+  billId: string
+  sourceUrl: string
+  sourceKind:
+    | 'introduced'
+    | 'passed-both-houses'
+    | 'passed-lok-sabha'
+    | 'passed-rajya-sabha'
+    | 'synopsis'
+    | 'gazette'
+  extractionStatus: 'official-text' | 'unreadable' | 'failed'
+  officialPurpose?: string
+  governmentRationale?: string
+  contentHash?: string
+  extractedAt: string
+}
+
+export type BillExplanationSeed = {
+  billId: string
+  proposalSummary: string
+  officialPurpose?: string
+  governmentRationale?: string
+  affectedGroups: string[]
+  potentialBenefits: string
+  potentialRisks: string
+  evidenceBasis: 'title-only' | 'official-text' | 'independent-review'
+  specificity: 'explicit' | 'domain-only' | 'opaque'
+  assessmentScope: 'none' | 'bill-specific' | 'policy-family'
+  verdict: 'not-assessed' | 'reviewed-policy'
+  verdictKind: 'none' | 'provisional-design' | 'retrospective'
+  verdictRationale: string
+  confidence: Confidence
+  assessmentAsOf: string
+  methodologyVersion: string
+  documentUrl?: string
+  documentHash?: string
 }
 
 export type BudgetSeed = {

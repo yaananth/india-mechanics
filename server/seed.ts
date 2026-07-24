@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import { deriveBillExplanation } from './bill-explanations.ts'
 import { applySchema } from './schema.ts'
 import { leaderRatingProfiles, profileScore } from './rating-profiles.ts'
 import {
@@ -88,9 +89,13 @@ import {
   securitySpecialistDimensions,
   securitySpecialistTopics,
 } from './seed-data/security.ts'
-import type { IndicatorObservationSeed, PolicyRegisterSeed } from './types.ts'
+import type {
+  BillDocumentExtractSeed,
+  IndicatorObservationSeed,
+  PolicyRegisterSeed,
+} from './types.ts'
 
-export const seedVersion = '2026-07-24.10'
+export const seedVersion = '2026-07-24.14'
 const sourceRosterVersion = 'source-roster-v0.11'
 const allJurisdictions = [...jurisdictions, ...andhraJurisdictions]
 const allOffices = [...offices, ...andhraOffices]
@@ -187,6 +192,18 @@ type GeneratedBills = {
   bills: PolicyRegisterSeed[]
 }
 
+type GeneratedBillDocuments = {
+  generatedAt: string
+  asOfDate: string
+  extractionVersion: string
+  totalBills: number
+  attempted: number
+  officialText: number
+  unreadable: number
+  failed: number
+  documents: BillDocumentExtractSeed[]
+}
+
 function resolveDatabasePath() {
   return process.env.DATABASE_PATH
     ? resolve(process.env.DATABASE_PATH)
@@ -217,10 +234,31 @@ function readGeneratedBills(): GeneratedBills {
   return JSON.parse(readFileSync(path, 'utf8')) as GeneratedBills
 }
 
+function readGeneratedBillDocuments(): GeneratedBillDocuments {
+  const path = fileURLToPath(
+    new URL('./seed-data/generated-bill-documents.json', import.meta.url),
+  )
+  if (!existsSync(path)) {
+    return {
+      generatedAt: 'not-generated',
+      asOfDate: 'not-generated',
+      extractionVersion: 'title-only-fallback',
+      totalBills: 0,
+      attempted: 0,
+      officialText: 0,
+      unreadable: 0,
+      failed: 0,
+      documents: [],
+    }
+  }
+  return JSON.parse(readFileSync(path, 'utf8')) as GeneratedBillDocuments
+}
+
 function insertRows(
   db: DatabaseSync,
   generated: GeneratedIndicators,
   generatedBills: GeneratedBills,
+  generatedBillDocuments: GeneratedBillDocuments,
 ) {
   const jurisdictionInsert = db.prepare(
     `INSERT INTO jurisdictions
@@ -549,15 +587,17 @@ function insertRows(
 
   const policyRegisterInsert = db.prepare(
     `INSERT INTO policy_register
-      (id, jurisdiction_id, leader_term_id, linked_policy_id, bill_number,
-       title, ministry, introduced_by, introduced_date, introduced_house,
-       bill_type, category, status, passed_lok_sabha_date,
+      (id, jurisdiction_id, leader_term_id, linked_policy_id,
+       linked_policy_scope, bill_number, title, ministry, introduced_by,
+       introduced_date, introduced_house, bill_type, category, status,
+       source_status, status_as_of, status_note, status_source_id,
+       passed_lok_sabha_date,
        passed_rajya_sabha_date, referred_committee_date,
        report_presented_date, assent_date, act_number, act_year,
        introduced_file, passed_lok_sabha_file, passed_rajya_sabha_file,
        passed_both_houses_file, committee_report_file, gazette_file,
        synopsis_file, source_id, review_status)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   )
   for (const row of generatedBills.bills) {
     policyRegisterInsert.run(
@@ -565,6 +605,7 @@ function insertRows(
       row.jurisdictionId,
       row.leaderTermId ?? null,
       row.linkedPolicyId ?? null,
+      row.linkedPolicyScope ?? null,
       row.billNumber ?? null,
       row.title,
       row.ministry ?? null,
@@ -574,6 +615,10 @@ function insertRows(
       row.billType,
       row.category ?? null,
       row.status,
+      row.sourceStatus ?? row.status,
+      row.statusAsOf ?? generatedBills.asOfDate,
+      row.statusNote ?? null,
+      row.statusSourceId ?? null,
       row.passedLokSabhaDate ?? null,
       row.passedRajyaSabhaDate ?? null,
       row.referredCommitteeDate ?? null,
@@ -590,6 +635,57 @@ function insertRows(
       row.synopsisFile ?? null,
       row.sourceId,
       row.reviewStatus,
+    )
+  }
+
+  const documentByBillId = new Map(
+    generatedBillDocuments.documents.map((document) => [
+      document.billId,
+      document,
+    ]),
+  )
+  const policyBasisById = new Map(
+    allPolicies.map((policy) => [
+      policy.id,
+      policy.ratingBasis ?? 'retrospective',
+    ]),
+  )
+  const billExplanationInsert = db.prepare(
+    `INSERT INTO bill_explanations
+      (bill_id, proposal_summary, official_purpose, government_rationale,
+       affected_groups_json, potential_benefits, potential_risks,
+       evidence_basis, specificity, assessment_scope, verdict, verdict_kind,
+       verdict_rationale, confidence, assessment_as_of, methodology_version,
+       document_url, document_hash)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  )
+  for (const row of generatedBills.bills) {
+    const explanation = deriveBillExplanation(row, {
+      document: documentByBillId.get(row.id),
+      assessmentAsOf: generatedBills.asOfDate,
+      linkedPolicyBasis: row.linkedPolicyId
+        ? policyBasisById.get(row.linkedPolicyId)
+        : undefined,
+    })
+    billExplanationInsert.run(
+      explanation.billId,
+      explanation.proposalSummary,
+      explanation.officialPurpose ?? null,
+      explanation.governmentRationale ?? null,
+      JSON.stringify(explanation.affectedGroups),
+      explanation.potentialBenefits,
+      explanation.potentialRisks,
+      explanation.evidenceBasis,
+      explanation.specificity,
+      explanation.assessmentScope,
+      explanation.verdict,
+      explanation.verdictKind,
+      explanation.verdictRationale,
+      explanation.confidence,
+      explanation.assessmentAsOf,
+      explanation.methodologyVersion,
+      explanation.documentUrl ?? null,
+      explanation.documentHash ?? null,
     )
   }
 
@@ -941,6 +1037,11 @@ function insertRows(
     bill_register_total: String(generatedBills.total),
     bill_register_reviewed: String(generatedBills.reviewed),
     bill_register_source_total: String(generatedBills.sourceTotal),
+    bill_explanation_generated_at: generatedBillDocuments.generatedAt,
+    bill_explanation_version: generatedBillDocuments.extractionVersion,
+    bill_official_text_explanations: String(
+      generatedBillDocuments.officialText,
+    ),
     political_status_checked: researchMetadata.politicalStatusChecked,
     editorial_reviewed_through: researchMetadata.editorialReviewedThrough,
     knowledge_cutoff: researchMetadata.knowledgeCutoff,
@@ -1224,6 +1325,25 @@ function insertRows(
     metadata.generated_at,
     'Published a 2015-2019-2023 comparable crime series, public-safety specialist assessments for data-covered terms, the July 2024 legal break, and separately labeled post-2023 current signals. Registered crime is never treated mechanically as underlying victimization.',
   )
+  db.prepare(
+    `INSERT INTO ingestion_batches
+      (id, source_roster_version, query_scope, run_at, agent_model,
+       candidates_found, rejected_records, reviewer, review_status,
+       published_at, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).run(
+    'bill-explanations-delimitation-2026-07-24',
+    sourceRosterVersion,
+    'All 4,407 national government-bill records plus bill-specific review of the Delimitation Bill, 2026',
+    metadata.generated_at,
+    'Codex deterministic extraction and legislative-analysis lane',
+    generatedBills.total,
+    0,
+    'India Mechanics bill explanation review',
+    'published',
+    metadata.generated_at,
+    `Published a plain-language explanation for every register record; extracted ${generatedBillDocuments.officialText} official-text purposes, preserved title-derived fallbacks for unavailable or unreadable documents, labelled bill-specific versus policy-family links, corrected the Delimitation Bill status with a sourced override, and published a provisional design rating without an effectiveness score.`,
+  )
 }
 
 export function buildDatabase(path = resolveDatabasePath()) {
@@ -1236,9 +1356,10 @@ export function buildDatabase(path = resolveDatabasePath()) {
     applySchema(db)
     const generated = readGeneratedIndicators()
     const generatedBills = readGeneratedBills()
+    const generatedBillDocuments = readGeneratedBillDocuments()
     db.exec('BEGIN IMMEDIATE')
     try {
-      insertRows(db, generated, generatedBills)
+      insertRows(db, generated, generatedBills, generatedBillDocuments)
       db.exec('COMMIT')
     } catch (error) {
       db.exec('ROLLBACK')

@@ -16,6 +16,8 @@ Primary machine-readable entry points:
 - /api/search?q=<question>&jurisdiction=india
 - /api/leaders?jurisdiction=india
 - /api/policies?jurisdiction=india
+- /api/bills?jurisdiction=india
+- /api/bills/<bill-id>?jurisdiction=india
 - /api/events?jurisdiction=india
 - /api/indicators?jurisdiction=india
 - /api/sources?jurisdiction=india
@@ -47,6 +49,13 @@ Interpretation rules:
     cyber coordination, and interstate capacity.
 15. Current crime news must not be converted into an aggregate crime rate.
     Treat the July 2024 criminal-law transition as a classification break.
+16. Bill explanations disclose one of three evidence bases: title/register,
+    official text, or independent assessment. Only an independent policy
+    assessment can carry a score.
+17. A policy-family rating may cover only part of an omnibus or Finance Bill.
+    Read `linkedPolicyScope` before applying a rating to the whole Bill.
+18. `sourceStatus` preserves the upstream register value when a later
+    evidence-backed status correction is published.
 
 Repository maintenance and latest-data workflow are documented in:
 - AGENTS.md

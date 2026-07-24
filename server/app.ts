@@ -693,10 +693,58 @@ function billRegisterWhere(
         `(LOWER(register.title) LIKE ?
           OR LOWER(COALESCE(register.ministry, '')) LIKE ?
           OR LOWER(COALESCE(register.bill_number, '')) LIKE ?
-          OR LOWER(COALESCE(register.act_number, '')) LIKE ?)`,
+          OR LOWER(COALESCE(register.act_number, '')) LIKE ?
+          OR EXISTS (
+            SELECT 1
+            FROM bill_explanations explanation_search
+            WHERE explanation_search.bill_id = register.id
+              AND (
+                LOWER(explanation_search.proposal_summary) LIKE ?
+                OR LOWER(COALESCE(explanation_search.official_purpose, '')) LIKE ?
+                OR LOWER(explanation_search.affected_groups_json) LIKE ?
+                OR LOWER(explanation_search.potential_benefits) LIKE ?
+                OR LOWER(explanation_search.potential_risks) LIKE ?
+              )
+          )
+          OR EXISTS (
+            SELECT 1
+            FROM policies policy_search
+            WHERE policy_search.id = register.linked_policy_id
+              AND (
+                LOWER(policy_search.title) LIKE ?
+                OR LOWER(policy_search.summary) LIKE ?
+                OR LOWER(policy_search.intended_goal) LIKE ?
+                OR LOWER(policy_search.rating_summary) LIKE ?
+              )
+          )
+          OR EXISTS (
+            SELECT 1
+            FROM claims claim_search
+            WHERE claim_search.policy_id = register.linked_policy_id
+              AND (
+                LOWER(claim_search.title) LIKE ?
+                OR LOWER(claim_search.body) LIKE ?
+              )
+          ))`,
       )
       const query = `%${token}%`
-      params.push(query, query, query, query)
+      params.push(
+        query,
+        query,
+        query,
+        query,
+        query,
+        query,
+        query,
+        query,
+        query,
+        query,
+        query,
+        query,
+        query,
+        query,
+        query,
+      )
     }
   }
   if (filters.status) {
@@ -738,6 +786,10 @@ function billRegisterShape(row: Record<string, unknown>) {
     billType: row.bill_type,
     category: row.category,
     status: row.status,
+    sourceStatus: row.source_status,
+    statusAsOf: row.status_as_of,
+    statusNote: row.status_note,
+    statusSourceId: row.status_source_id,
     passedLokSabhaDate: row.passed_lok_sabha_date,
     passedRajyaSabhaDate: row.passed_rajya_sabha_date,
     referredCommitteeDate: row.referred_committee_date,
@@ -754,7 +806,44 @@ function billRegisterShape(row: Record<string, unknown>) {
     synopsisFile: row.synopsis_file,
     reviewStatus: row.review_status,
     linkedPolicyId: row.linked_policy_id,
+    linkedPolicyScope: row.linked_policy_scope,
     leaderTermId: row.leader_term_id,
+    explanation: {
+      proposalSummary: row.proposal_summary,
+      officialPurpose: row.official_purpose,
+      governmentRationale: row.government_rationale,
+      affectedGroups: JSON.parse(
+        String(row.affected_groups_json ?? '[]'),
+      ) as string[],
+      potentialBenefits: row.potential_benefits,
+      potentialRisks: row.potential_risks,
+      evidenceBasis: row.evidence_basis,
+      specificity: row.specificity,
+      assessmentScope: row.assessment_scope,
+      verdict: row.verdict,
+      verdictKind: row.verdict_kind,
+      verdictRationale: row.verdict_rationale,
+      confidence: row.explanation_confidence,
+      assessmentAsOf: row.explanation_assessment_as_of,
+      methodologyVersion: row.explanation_methodology_version,
+      documentUrl: row.explanation_document_url,
+      documentHash: row.explanation_document_hash,
+    },
+    assessment: row.assessment_policy_id
+      ? {
+          policyId: row.assessment_policy_id,
+          title: row.assessment_title,
+          summary: row.assessment_summary,
+          intendedGoal: row.assessment_intended_goal,
+          ratingScore: row.assessment_rating_score,
+          ratingConfidence: row.assessment_rating_confidence,
+          ratingSummary: row.assessment_rating_summary,
+          ratingBasis: row.assessment_rating_basis,
+          status: row.assessment_status,
+          assessmentAsOf: row.assessment_as_of,
+          scope: row.linked_policy_scope ?? 'bill-specific',
+        }
+      : null,
     leader: row.person_id
       ? {
           id: row.person_id,
@@ -770,6 +859,28 @@ function billRegisterShape(row: Record<string, unknown>) {
           color: row.party_color,
         }
       : null,
+  }
+}
+
+function billRegisterRecord(
+  db: DatabaseSync,
+  row: Record<string, unknown>,
+) {
+  const statusSourceId = row.status_source_id
+    ? String(row.status_source_id)
+    : null
+  return {
+    ...billRegisterShape(row),
+    sources: getSourcesByIds(
+      db,
+      Array.from(
+        new Set(
+          ['sansad-government-bills-api', statusSourceId].filter(
+            (sourceId): sourceId is string => Boolean(sourceId),
+          ),
+        ),
+      ),
+    ),
   }
 }
 
@@ -803,6 +914,33 @@ function getBillRegister(
   const rows = db
     .prepare(
       `SELECT register.*,
+              explanation.proposal_summary,
+              explanation.official_purpose,
+              explanation.government_rationale,
+              explanation.affected_groups_json,
+              explanation.potential_benefits,
+              explanation.potential_risks,
+              explanation.evidence_basis,
+              explanation.specificity,
+              explanation.assessment_scope,
+              explanation.verdict,
+              explanation.verdict_kind,
+              explanation.verdict_rationale,
+              explanation.confidence AS explanation_confidence,
+              explanation.assessment_as_of AS explanation_assessment_as_of,
+              explanation.methodology_version AS explanation_methodology_version,
+              explanation.document_url AS explanation_document_url,
+              explanation.document_hash AS explanation_document_hash,
+              assessment.id AS assessment_policy_id,
+              assessment.title AS assessment_title,
+              assessment.summary AS assessment_summary,
+              assessment.intended_goal AS assessment_intended_goal,
+              assessment.rating_score AS assessment_rating_score,
+              assessment.rating_confidence AS assessment_rating_confidence,
+              assessment.rating_summary AS assessment_rating_summary,
+              assessment.rating_basis AS assessment_rating_basis,
+              assessment.status AS assessment_status,
+              assessment.assessment_as_of AS assessment_as_of,
               term.start_date AS term_start_date,
               term.end_date AS term_end_date,
               person.id AS person_id,
@@ -811,6 +949,8 @@ function getBillRegister(
               party.short_name AS party_short_name,
               party.color AS party_color
        FROM policy_register register
+       JOIN bill_explanations explanation ON explanation.bill_id = register.id
+       LEFT JOIN policies assessment ON assessment.id = register.linked_policy_id
        LEFT JOIN leader_terms term ON term.id = register.leader_term_id
        LEFT JOIN people person ON person.id = term.person_id
        LEFT JOIN parties party ON party.id = term.party_id
@@ -860,6 +1000,19 @@ function getBillRegister(
       )
       .get(jurisdictionId) as { count: number }
   ).count
+  const explanationCoverage = db
+    .prepare(
+      `SELECT COUNT(*) AS explained,
+              SUM(CASE WHEN explanation.evidence_basis != 'title-only'
+                       THEN 1 ELSE 0 END) AS official_or_reviewed
+       FROM bill_explanations explanation
+       JOIN policy_register register ON register.id = explanation.bill_id
+       WHERE register.jurisdiction_id = ?`,
+    )
+    .get(jurisdictionId) as {
+    explained: number
+    official_or_reviewed: number
+  }
 
   return {
     page,
@@ -867,7 +1020,9 @@ function getBillRegister(
     total,
     totalPages: Math.max(1, Math.ceil(total / pageSize)),
     reviewed,
-    records: rows.map(billRegisterShape),
+    explained: explanationCoverage.explained,
+    officialOrReviewed: explanationCoverage.official_or_reviewed,
+    records: rows.map((row) => billRegisterRecord(db, row)),
     facets: { statuses, ministries, leaders },
     source: getSourcesByIds(db, ['sansad-government-bills-api'])[0],
   }
@@ -881,6 +1036,33 @@ function getBillRecord(
   const row = db
     .prepare(
       `SELECT register.*,
+              explanation.proposal_summary,
+              explanation.official_purpose,
+              explanation.government_rationale,
+              explanation.affected_groups_json,
+              explanation.potential_benefits,
+              explanation.potential_risks,
+              explanation.evidence_basis,
+              explanation.specificity,
+              explanation.assessment_scope,
+              explanation.verdict,
+              explanation.verdict_kind,
+              explanation.verdict_rationale,
+              explanation.confidence AS explanation_confidence,
+              explanation.assessment_as_of AS explanation_assessment_as_of,
+              explanation.methodology_version AS explanation_methodology_version,
+              explanation.document_url AS explanation_document_url,
+              explanation.document_hash AS explanation_document_hash,
+              assessment.id AS assessment_policy_id,
+              assessment.title AS assessment_title,
+              assessment.summary AS assessment_summary,
+              assessment.intended_goal AS assessment_intended_goal,
+              assessment.rating_score AS assessment_rating_score,
+              assessment.rating_confidence AS assessment_rating_confidence,
+              assessment.rating_summary AS assessment_rating_summary,
+              assessment.rating_basis AS assessment_rating_basis,
+              assessment.status AS assessment_status,
+              assessment.assessment_as_of AS assessment_as_of,
               term.start_date AS term_start_date,
               term.end_date AS term_end_date,
               person.id AS person_id,
@@ -889,13 +1071,15 @@ function getBillRecord(
               party.short_name AS party_short_name,
               party.color AS party_color
        FROM policy_register register
+       JOIN bill_explanations explanation ON explanation.bill_id = register.id
+       LEFT JOIN policies assessment ON assessment.id = register.linked_policy_id
        LEFT JOIN leader_terms term ON term.id = register.leader_term_id
        LEFT JOIN people person ON person.id = term.person_id
        LEFT JOIN parties party ON party.id = term.party_id
        WHERE register.jurisdiction_id = ? AND register.id = ?`,
     )
     .get(jurisdictionId, billId) as Record<string, unknown> | undefined
-  return row ? billRegisterShape(row) : null
+  return row ? billRegisterRecord(db, row) : null
 }
 
 function getAllBillRecords(db: DatabaseSync, jurisdictionId: string) {
@@ -903,6 +1087,33 @@ function getAllBillRecords(db: DatabaseSync, jurisdictionId: string) {
     db
       .prepare(
         `SELECT register.*,
+                explanation.proposal_summary,
+                explanation.official_purpose,
+                explanation.government_rationale,
+                explanation.affected_groups_json,
+                explanation.potential_benefits,
+                explanation.potential_risks,
+                explanation.evidence_basis,
+                explanation.specificity,
+                explanation.assessment_scope,
+                explanation.verdict,
+                explanation.verdict_kind,
+                explanation.verdict_rationale,
+                explanation.confidence AS explanation_confidence,
+                explanation.assessment_as_of AS explanation_assessment_as_of,
+                explanation.methodology_version AS explanation_methodology_version,
+                explanation.document_url AS explanation_document_url,
+                explanation.document_hash AS explanation_document_hash,
+                assessment.id AS assessment_policy_id,
+                assessment.title AS assessment_title,
+                assessment.summary AS assessment_summary,
+                assessment.intended_goal AS assessment_intended_goal,
+                assessment.rating_score AS assessment_rating_score,
+                assessment.rating_confidence AS assessment_rating_confidence,
+                assessment.rating_summary AS assessment_rating_summary,
+                assessment.rating_basis AS assessment_rating_basis,
+                assessment.status AS assessment_status,
+                assessment.assessment_as_of AS assessment_as_of,
                 term.start_date AS term_start_date,
                 term.end_date AS term_end_date,
                 person.id AS person_id,
@@ -911,6 +1122,8 @@ function getAllBillRecords(db: DatabaseSync, jurisdictionId: string) {
                 party.short_name AS party_short_name,
                 party.color AS party_color
          FROM policy_register register
+         JOIN bill_explanations explanation ON explanation.bill_id = register.id
+         LEFT JOIN policies assessment ON assessment.id = register.linked_policy_id
          LEFT JOIN leader_terms term ON term.id = register.leader_term_id
          LEFT JOIN people person ON person.id = term.person_id
          LEFT JOIN parties party ON party.id = term.party_id
@@ -918,7 +1131,7 @@ function getAllBillRecords(db: DatabaseSync, jurisdictionId: string) {
          ORDER BY register.introduced_date DESC, register.title`,
       )
       .all(jurisdictionId) as unknown as Array<Record<string, unknown>>
-  ).map(billRegisterShape)
+  ).map((row) => billRegisterRecord(db, row))
 }
 
 function getEvents(
@@ -2095,34 +2308,47 @@ export function createApp(db: DatabaseSync) {
     const billResults = (
       db
         .prepare(
-          `SELECT id, title, ministry, status, introduced_date, linked_policy_id
-           FROM policy_register
-           WHERE jurisdiction_id = ?
+          `SELECT register.id, register.title, register.ministry,
+                  register.status, register.introduced_date,
+                  register.linked_policy_id, explanation.proposal_summary
+           FROM policy_register register
+           JOIN bill_explanations explanation ON explanation.bill_id = register.id
+           WHERE register.jurisdiction_id = ?
              AND ${searchClause([
-               'title',
-               'bill_number',
-               'ministry',
-               'status',
-               'act_number',
+               'register.title',
+               "COALESCE(register.bill_number, '')",
+               "COALESCE(register.ministry, '')",
+               'register.status',
+               "COALESCE(register.act_number, '')",
+               'explanation.proposal_summary',
+               "COALESCE(explanation.official_purpose, '')",
+               'explanation.affected_groups_json',
+               'explanation.potential_benefits',
+               'explanation.potential_risks',
              ])}
-           ORDER BY introduced_date DESC
+           ORDER BY register.introduced_date DESC
            LIMIT 12`,
         )
         .all(
           jurisdictionId,
           ...searchParams([
-            'title',
-            'bill_number',
-            'ministry',
-            'status',
-            'act_number',
+            'register.title',
+            "COALESCE(register.bill_number, '')",
+            "COALESCE(register.ministry, '')",
+            'register.status',
+            "COALESCE(register.act_number, '')",
+            'explanation.proposal_summary',
+            "COALESCE(explanation.official_purpose, '')",
+            'explanation.affected_groups_json',
+            'explanation.potential_benefits',
+            'explanation.potential_risks',
           ]),
         ) as unknown as Array<Record<string, unknown>>
     ).map((row) => ({
       type: 'bill',
       id: row.id,
       title: row.title,
-      subtitle: `${row.status}${row.ministry ? ` · ${row.ministry}` : ''}`,
+      subtitle: row.proposal_summary,
       date: row.introduced_date,
       policyId: row.linked_policy_id,
     }))
@@ -2215,7 +2441,7 @@ export function createApp(db: DatabaseSync) {
     }))
     response.json({
       version:
-        'progress-v0.1|leader-v0.2|security-v0.1|public-safety-v0.1',
+        'progress-v0.1|leader-v0.2|security-v0.1|public-safety-v0.1|bill-v0.1',
       progress: {
         purpose:
           'A transparent diagnostic lens, not an official statistic or causal ranking.',
@@ -2248,6 +2474,29 @@ export function createApp(db: DatabaseSync) {
         formula:
           'Weighted average of available 0–10 components. Pending bills and newly issued rules receive a provisional design rating: unobservable effectiveness is marked unavailable and excluded rather than assigned a neutral score.',
         dimensions: policyDimensions,
+      },
+      billExplanations: {
+        purpose:
+          'Make every parliamentary register record understandable without presenting discovery metadata as an evaluation.',
+        evidenceBases: {
+          'title-only':
+            'Register-derived legal-operation and subject summary with conditional upside and downside questions; no score.',
+          'official-text':
+            'Official long title and stated rationale extracted from a parliamentary document; exact impact still requires independent review.',
+          'independent-review':
+            'Official text plus source-backed policy analysis; may support a provisional design or retrospective rating.',
+        },
+        specificity: {
+          explicit: 'The available text identifies the operative proposal.',
+          'domain-only':
+            'The title identifies the legal domain but not exact clauses.',
+          opaque:
+            'An annual, numbered, omnibus, or similarly broad title cannot reveal the operative proposal.',
+        },
+        scope:
+          'A bill-specific rating reviews this proposal. A policy-family link may cover only one measure within an omnibus or Finance Bill.',
+        status:
+          'The upstream register status is preserved as sourceStatus when a dated, sourced procedural correction is published.',
       },
       budgetEvaluation: {
         purpose:

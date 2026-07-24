@@ -1,5 +1,6 @@
 export type PolicyRegisterMatcher = {
   policyId: string
+  assessmentScope?: 'bill-specific' | 'policy-family'
   matches: (title: string, date: string) => boolean
 }
 
@@ -46,16 +47,19 @@ export const reviewedPolicyRegisterMatchers: PolicyRegisterMatcher[] = [
   },
   {
     policyId: 'modvat-1986',
+    assessmentScope: 'policy-family',
     matches: (title, date) =>
       date === '1986-02-28' && title === 'THE FINANCE BILL 1986',
   },
   {
     policyId: 'tax-rationalisation-1991',
+    assessmentScope: 'policy-family',
     matches: (title, date) =>
       date === '1991-07-24' && title === 'THE FINANCE NO 2 BILL 1991',
   },
   {
     policyId: 'service-tax-1994',
+    assessmentScope: 'policy-family',
     matches: (title, date) =>
       date === '1994-02-28' && title === 'THE FINANCE BILL 1994',
   },
@@ -67,6 +71,7 @@ export const reviewedPolicyRegisterMatchers: PolicyRegisterMatcher[] = [
   },
   {
     policyId: 'rti-2005',
+    assessmentScope: 'policy-family',
     matches: (title) => title.includes('RIGHT TO INFORMATION BILL'),
   },
   {
@@ -110,11 +115,13 @@ export const reviewedPolicyRegisterMatchers: PolicyRegisterMatcher[] = [
   },
   {
     policyId: 'personal-tax-regime-2020',
+    assessmentScope: 'policy-family',
     matches: (title, date) =>
       date === '2020-02-01' && title === 'THE FINANCE BILL 2020',
   },
   {
     policyId: 'farm-laws-2020',
+    assessmentScope: 'policy-family',
     matches: (title, date) =>
       date.startsWith('2020') &&
       (title.includes('FARMERS PRODUCE TRADE AND COMMERCE') ||
@@ -129,6 +136,7 @@ export const reviewedPolicyRegisterMatchers: PolicyRegisterMatcher[] = [
   },
   {
     policyId: 'income-tax-act-2025',
+    assessmentScope: 'policy-family',
     matches: (title, date) =>
       date.startsWith('2025') && title.includes('INCOME TAX BILL 2025'),
   },
@@ -138,11 +146,26 @@ export const reviewedPolicyRegisterMatchers: PolicyRegisterMatcher[] = [
       date.startsWith('2026') &&
       title.includes('FOREIGN CONTRIBUTION REGULATION AMENDMENT BILL'),
   },
+  {
+    policyId: 'delimitation-bill-2026',
+    matches: (title, date) =>
+      date === '2026-04-16' && title === 'THE DELIMITATION BILL 2026',
+  },
 ]
 
-export function linkedPolicyId(title: string, date: string) {
+export function linkedPolicyMatch(title: string, date: string) {
   const normalized = normalizedTitle(title)
-  return reviewedPolicyRegisterMatchers.find((matcher) =>
-    matcher.matches(normalized, date),
-  )?.policyId
+  const matcher = reviewedPolicyRegisterMatchers.find((candidate) =>
+    candidate.matches(normalized, date),
+  )
+  return matcher
+    ? {
+        policyId: matcher.policyId,
+        assessmentScope: matcher.assessmentScope ?? 'bill-specific',
+      }
+    : undefined
+}
+
+export function linkedPolicyId(title: string, date: string) {
+  return linkedPolicyMatch(title, date)?.policyId
 }

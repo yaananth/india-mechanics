@@ -1,0 +1,66 @@
+{
+  "batchId": "delimitation-bill-2026-review-2026-07-24",
+  "rosterVersion": "source-roster-v0.11",
+  "jurisdictionId": "india",
+  "lane": "policy",
+  "topic": "Delimitation Bill 2026",
+  "fromDate": "2026-04-16",
+  "throughDate": "2026-07-24",
+  "reviewer": "India Mechanics editorial pass",
+  "queries": [
+    "site:sansad.in Delimitation Bill 2026 official bill text",
+    "site:prsindia.org Delimitation Bill 2026 analysis",
+    "site:pib.gov.in Delimitation Bill 2026 parliamentary status",
+    "Delimitation Bill 2026 latest census state seat allocation federal concerns",
+    "Delimitation Bill 2026 women reservation rotation judicial review"
+  ],
+  "reviewNotes": [
+    "The official bill text controls the proposal, commission composition, census trigger, seat allocation, women reservation, public-hearing procedure, force of final orders, and repeal clause.",
+    "PRS is used for independent provision analysis and records the bill as infructuous on April 17, 2026 after the linked constitutional amendment was negatived.",
+    "The rating is provisional design only. No effectiveness score is assigned because the bill was not implemented."
+  ],
+  "candidates": [
+    {
+      "id": "delimitation-bill-2026-sansad",
+      "url": "https://sansad.in/getFile/BillsTexts/LSBillTexts/Asintroduced/AS%20INTRO%20THE%20DELIMITATION416202611944PM.pdf?source=legislation",
+      "publisher": "Lok Sabha Secretariat, Parliament of India",
+      "sourceRegistryId": "sansad",
+      "sourceClass": "official",
+      "independenceGroup": "parliament",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "prs-delimitation-bill-2026",
+      "url": "https://prsindia.org/billtrack/the-delimitation-bill-2026",
+      "publisher": "PRS Legislative Research",
+      "sourceRegistryId": "prs",
+      "sourceClass": "independent-national",
+      "independenceGroup": "prs",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

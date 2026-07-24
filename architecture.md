@@ -75,6 +75,7 @@ data/india-mechanics.sqlite            generated runtime DB, gitignored
 public/llms.txt                         agent discovery and interpretation rules
 scripts/fetch-indicators.ts             machine-data refresh
 scripts/fetch-bill-register.ts           official government-bill register refresh
+scripts/extract-bill-documents.ts         official-PDF purpose extraction and cache
 scripts/check-sources.ts                live source-link validation
 server/schema.ts                        SQLite DDL
 server/seed.ts                          deterministic DB build
@@ -91,6 +92,7 @@ server/seed-data/andhra-pradesh.ts      post-split AP state and CM corpus
 server/seed-data/research-metadata.ts   knowledge and review cutoffs
 server/seed-data/generated-indicators.json checked-in feed snapshot
 server/seed-data/generated-bills.json    checked-in Sansad government-bill snapshot
+server/seed-data/generated-bill-documents.json checked-in official-text extracts
 src/                                   React interface
 src/views/SafetyView.tsx               crime, justice, and current-signal UI
 tests/                                 scoring, provenance, API, state fixture
@@ -836,6 +838,29 @@ Policies and bills are records tied to a jurisdiction and the office term that
 introduced them. The Sansad bill register is exposed only for the national
 jurisdiction; state legislation appears only after an editorial policy review.
 
+Every national register record has a `bill_explanations` row. The explanation
+pipeline is deliberately tiered:
+
+| Evidence basis | What the site may say | Rating treatment |
+| --- | --- | --- |
+| Register-derived | legal operation, subject, potentially affected groups, conditional upside and downside | no score |
+| Official-text reviewed | clause-specific purpose, government rationale, scope, commencement, and safeguards | at most a provisional design judgment |
+| Independently assessed | official text plus independent analysis, implementation evidence, audits, courts, or outcomes | provisional design or retrospective five-component rating |
+
+`npm run bills:explain` downloads available official parliamentary PDFs,
+extracts the long-title purpose and bounded statement-of-objects rationale, and
+writes a reproducible cache. Records without a usable document receive a
+conservative title-derived fallback. The UI discloses the evidence basis and
+title specificity (`explicit`, `domain-only`, or `opaque`) for every record.
+
+A policy link also records whether the assessment is `bill-specific` or only a
+`policy-family` review. A family score must not be presented as though every
+clause in an omnibus or annual Finance Bill was individually assessed.
+
+The register preserves the upstream `source_status` separately from an
+evidence-backed status correction. This is necessary because the feed can lag
+later parliamentary procedure. Corrections require a dated note and source.
+
 | Component | Weight |
 | --- | ---: |
 | Problem fit and design | 20% |
@@ -848,6 +873,12 @@ Pending bills receive provisional low-confidence design ratings. Outcome claims
 remain unscored until outcome evidence exists. Enacted laws, executive actions,
 rules, and later amendment bills are separate records even when they share a
 name.
+
+The 2026 Delimitation proposal demonstrates the expanded model: the official
+text supports the proposal summary; PRS supplies independent provision and
+status analysis; the register preserves Sansad's stale `Pending` value while
+publishing the sourced `Infructuous` status; and the 5.4/10 score is explicitly a
+low-confidence design judgment with no effectiveness score.
 
 The FCRA family demonstrates the model:
 

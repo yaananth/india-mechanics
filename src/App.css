@@ -2612,7 +2612,8 @@ a.icon-button {
   background: #fbf8ef;
 }
 
-.policy-status--repealed {
+.policy-status--repealed,
+.policy-status--infructuous {
   color: var(--brick);
   border-color: #ddb5b0;
   background: #fbf2f1;
@@ -2857,8 +2858,14 @@ a.icon-button {
 }
 
 .bill-register__coverage {
+  display: grid;
+  flex: 0 0 260px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.bill-register__coverage > div {
   display: flex;
-  flex: 0 0 160px;
   flex-direction: column;
   align-items: flex-end;
 }
@@ -3001,7 +3008,8 @@ a.icon-button {
 .bill-status--withdrawn,
 .bill-status--negatived,
 .bill-status--lapsed,
-.bill-status--repealed {
+.bill-status--repealed,
+.bill-status--infructuous {
   color: var(--brick);
   border-color: #ddb5b0;
   background: #fbf2f1;
@@ -3020,6 +3028,7 @@ a.icon-button {
 .bill-detail {
   position: sticky;
   top: 86px;
+  scroll-margin-top: 12px;
   max-height: calc(100vh - 112px);
   overflow: auto;
   border: 1px solid var(--line-strong);
@@ -3081,6 +3090,247 @@ a.icon-button {
   color: var(--ink-soft);
   font-size: 10px;
   line-height: 1.4;
+}
+
+.bill-detail__status-note {
+  display: flex;
+  align-items: flex-start;
+  padding: 14px 18px;
+  color: #725516;
+  border-top: 1px solid #dec991;
+  border-bottom: 1px solid #dec991;
+  background: #fbf8ef;
+  gap: 10px;
+}
+
+.bill-detail__status-note > span {
+  min-width: 0;
+}
+
+.bill-detail__status-note strong {
+  font-size: 10px;
+}
+
+.bill-detail__status-note p {
+  margin-top: 4px;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.bill-detail__status-note small {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.bill-detail__section-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bill-detail__section-heading > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.bill-detail__section-heading > span,
+.bill-detail__section-heading > div > span {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.bill-detail__section-heading small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 8px;
+  text-transform: capitalize;
+}
+
+.bill-detail__explanation {
+  padding: 19px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.bill-detail__explanation > p {
+  margin-top: 12px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.62;
+}
+
+.bill-detail__rationale {
+  margin-top: 15px;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+}
+
+.bill-detail__rationale strong {
+  color: var(--faint);
+  font-size: 8px;
+  text-transform: uppercase;
+}
+
+.bill-detail__rationale p {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+.bill-detail__affected {
+  padding: 17px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.bill-detail__affected ul {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 11px 0 0;
+  padding: 0;
+  list-style: none;
+  gap: 6px;
+}
+
+.bill-detail__affected li {
+  padding: 5px 7px;
+  color: var(--ink-soft);
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  background: var(--surface);
+  font-size: 8px;
+  line-height: 1.35;
+}
+
+.bill-detail__tradeoffs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-bottom: 1px solid var(--line);
+}
+
+.bill-detail__tradeoffs > div {
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 17px 18px;
+  gap: 9px;
+}
+
+.bill-detail__tradeoffs > div:first-child {
+  color: var(--green);
+  border-right: 1px solid var(--line);
+}
+
+.bill-detail__tradeoffs > div:last-child {
+  color: var(--brick);
+}
+
+.bill-detail__tradeoffs span {
+  min-width: 0;
+}
+
+.bill-detail__tradeoffs strong {
+  color: var(--ink);
+  font-size: 10px;
+}
+
+.bill-detail__tradeoffs p {
+  margin-top: 6px;
+  color: var(--ink-soft);
+  font-size: 9px;
+  line-height: 1.52;
+}
+
+.bill-detail__verdict {
+  padding: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.bill-detail__verdict.is-rated {
+  box-shadow: inset 3px 0 var(--blue);
+}
+
+.bill-detail__rating {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  align-items: start;
+  margin-top: 13px;
+  gap: 7px 14px;
+}
+
+.bill-detail__rating > div {
+  grid-row: 1 / 4;
+}
+
+.bill-detail__rating > div strong {
+  font-family: var(--serif);
+  font-size: 31px;
+  line-height: 1;
+}
+
+.bill-detail__rating > div > span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.bill-detail__rating > div small {
+  display: block;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+.bill-detail__rating > p {
+  color: var(--ink-soft);
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.bill-detail__rating > small {
+  color: var(--muted);
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.bill-detail__rating button {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  min-height: 31px;
+  padding: 0 9px;
+  color: white;
+  border-radius: 3px;
+  background: var(--ink);
+  font-size: 9px;
+  font-weight: 750;
+  cursor: pointer;
+  gap: 4px;
+}
+
+.bill-detail__not-rated {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 13px;
+  padding: 13px 0 0;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  gap: 9px;
+}
+
+.bill-detail__not-rated strong {
+  color: var(--ink);
+  font-size: 10px;
+}
+
+.bill-detail__not-rated p {
+  margin-top: 4px;
+  color: var(--ink-soft);
+  font-size: 9px;
+  line-height: 1.5;
 }
 
 .bill-detail__review {
@@ -5633,6 +5883,7 @@ a.icon-button {
     position: static;
     order: -1;
     max-height: none;
+    scroll-margin-top: 68px;
   }
 
   .budget-workspace {
@@ -6184,6 +6435,11 @@ a.icon-button {
   }
 
   .bill-register__coverage {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .bill-register__coverage > div {
     align-items: flex-start;
   }
 
@@ -6273,6 +6529,19 @@ a.icon-button {
   .bill-detail__review button {
     width: 100%;
     justify-content: center;
+  }
+
+  .bill-detail__tradeoffs {
+    grid-template-columns: 1fr;
+  }
+
+  .bill-detail__tradeoffs > div:first-child {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bill-detail__rating {
+    grid-template-columns: 72px minmax(0, 1fr);
   }
 
   .policy-detail__header h2 {

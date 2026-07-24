@@ -602,15 +602,86 @@ describe('read API', () => {
     })
     expect(response.status).toBe(200)
     expect(response.body.total).toBe(4407)
+    expect(response.body.explained).toBe(4407)
+    expect(response.body.officialOrReviewed).toBeGreaterThan(2300)
+    expect(response.body.reviewed).toBe(35)
     expect(response.body.records).toHaveLength(5)
     expect(response.body.records[0]).toMatchObject({
       introducedDate: '2026-07-20',
       leader: { name: 'Narendra Modi' },
       reviewStatus: 'discovered',
+      explanation: {
+        verdict: 'not-assessed',
+      },
     })
     expect(response.body.facets.statuses.length).toBeGreaterThan(5)
     expect(response.body.facets.leaders.length).toBeGreaterThan(10)
     expect(response.body.source.id).toBe('sansad-government-bills-api')
+  })
+
+  it('explains and rates the 2026 Delimitation proposal with corrected status', async () => {
+    const response = await request(app).get(
+      '/api/bills/sansad-bill-2026-04-16-c5048cfc8d852cca',
+    )
+    expect(response.status).toBe(200)
+    expect(response.body).toMatchObject({
+      status: 'Infructuous',
+      sourceStatus: 'Pending',
+      statusAsOf: '2026-04-17',
+      reviewStatus: 'reviewed',
+      linkedPolicyId: 'delimitation-bill-2026',
+      linkedPolicyScope: 'bill-specific',
+      explanation: {
+        evidenceBasis: 'independent-review',
+        specificity: 'explicit',
+        verdictKind: 'provisional-design',
+      },
+      assessment: {
+        policyId: 'delimitation-bill-2026',
+        ratingScore: 5.4,
+        ratingBasis: 'design',
+        status: 'infructuous',
+        scope: 'bill-specific',
+      },
+    })
+    expect(response.body.explanation.proposalSummary).toContain(
+      'Delimitation Commission',
+    )
+    expect(response.body.explanation.potentialBenefits).toContain(
+      'women reservation',
+    )
+    expect(response.body.explanation.potentialRisks).toContain(
+      'political power',
+    )
+    expect(response.body.sources.map((source: { id: string }) => source.id)).toEqual(
+      expect.arrayContaining([
+        'sansad-government-bills-api',
+        'prs-delimitation-bill-2026',
+      ]),
+    )
+  })
+
+  it('searches bill explanations, not only register titles', async () => {
+    const [explanationSearch, linkedAssessmentSearch] = await Promise.all([
+      request(app).get('/api/bills').query({
+        q: 'redistribute political power',
+        pageSize: 5,
+      }),
+      request(app).get('/api/bills').query({
+        q: 'foreign contribution asset',
+        pageSize: 5,
+      }),
+    ])
+    expect(explanationSearch.status).toBe(200)
+    expect(explanationSearch.body.records[0]).toMatchObject({
+      id: 'sansad-bill-2026-04-16-c5048cfc8d852cca',
+    })
+    expect(linkedAssessmentSearch.status).toBe(200)
+    expect(linkedAssessmentSearch.body.records).toContainEqual(
+      expect.objectContaining({
+        linkedPolicyId: 'fcra-amendment-bill-2026',
+      }),
+    )
   })
 
   it('finds the official FCRA Bill record and links its reviewed assessment', async () => {

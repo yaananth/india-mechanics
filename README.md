@@ -89,7 +89,8 @@ the evidence cutoff.
 | `npm run dev` | Start the website and SQLite API |
 | `npm run db:seed` | Rebuild SQLite deterministically from checked-in data |
 | `npm run data:refresh` | Refresh World Bank and V-Dem series, audit, and reseed |
-| `npm run bills:refresh` | Refresh the Sansad government-bill register |
+| `npm run bills:explain` | Extract official purposes from available parliamentary PDFs |
+| `npm run bills:refresh` | Refresh the Sansad register, bill explanations, audits, and database |
 | `npm run research:validate -- <batch.json>` | Validate a deterministic research batch |
 | `npm run policy:audit` | Check the reviewed-policy funnel |
 | `npm run claims:audit` | Check heard-claim coverage |
@@ -114,8 +115,11 @@ server/seed-data/security.ts          national-security lane
 server/seed-data/crime-safety.ts      crime, justice, and current-signal lane
 server/seed-data/andhra-pradesh.ts    post-split AP corpus
 server/seed-data/budgets.ts           budget records and ratings
+server/seed-data/generated-bills.json official Sansad register snapshot
+server/seed-data/generated-bill-documents.json official-PDF purpose cache
 research/                             validated source-discovery batches
-scripts/                              refresh, validation, and audit commands
+scripts/extract-bill-documents.ts     reproducible official-text extraction
+scripts/                              other refresh, validation, and audit commands
 src/views/                            jurisdiction-aware website views
 hosting/worker.ts                     hosted API/static worker
 tests/                                database, scoring, API, and URL contracts
@@ -124,6 +128,11 @@ tests/                                database, scoring, API, and URL contracts
 The generated `data/india-mechanics.sqlite` file is disposable and gitignored.
 The source of truth is the schema, seed data, reviewed research batches, and
 checked-in feed snapshots.
+
+Every government Bill has a plain-language explanation. The UI distinguishes
+register-derived summaries, official-text reviews, and independent assessments.
+Only the last tier can carry a policy rating, and a policy-family link is
+labelled separately from a review of the exact Bill.
 
 ## Reproducible research workflow
 
@@ -219,4 +228,3 @@ API links, and console errors.
   underrepresented.
 - The project does not yet include a public correction workflow or review CMS.
 - A polished interface does not make an incomplete evidence record exhaustive.
-

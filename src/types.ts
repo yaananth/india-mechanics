@@ -171,7 +171,12 @@ export type Policy = {
   introducedDate: string | null
   enactedDate: string | null
   effectiveDate: string | null
-  status: 'enacted' | 'pending' | 'repealed' | 'executive-action'
+  status:
+    | 'enacted'
+    | 'pending'
+    | 'repealed'
+    | 'executive-action'
+    | 'infructuous'
   coverageStatus: 'reviewed' | 'partial' | 'placeholder'
   ratingBasis: 'retrospective' | 'design'
   summary: string
@@ -205,6 +210,10 @@ export type BillRecord = {
   billType: string
   category: string | null
   status: string
+  sourceStatus: string
+  statusAsOf: string | null
+  statusNote: string | null
+  statusSourceId: string | null
   passedLokSabhaDate: string | null
   passedRajyaSabhaDate: string | null
   referredCommitteeDate: string | null
@@ -221,7 +230,40 @@ export type BillRecord = {
   synopsisFile: string | null
   reviewStatus: 'discovered' | 'reviewing' | 'reviewed'
   linkedPolicyId: string | null
+  linkedPolicyScope: 'bill-specific' | 'policy-family' | null
   leaderTermId: string | null
+  explanation: {
+    proposalSummary: string
+    officialPurpose: string | null
+    governmentRationale: string | null
+    affectedGroups: string[]
+    potentialBenefits: string
+    potentialRisks: string
+    evidenceBasis: 'title-only' | 'official-text' | 'independent-review'
+    specificity: 'explicit' | 'domain-only' | 'opaque'
+    assessmentScope: 'none' | 'bill-specific' | 'policy-family'
+    verdict: 'not-assessed' | 'reviewed-policy'
+    verdictKind: 'none' | 'provisional-design' | 'retrospective'
+    verdictRationale: string
+    confidence: Confidence
+    assessmentAsOf: string
+    methodologyVersion: string
+    documentUrl: string | null
+    documentHash: string | null
+  }
+  assessment: {
+    policyId: string
+    title: string
+    summary: string
+    intendedGoal: string
+    ratingScore: number
+    ratingConfidence: Confidence
+    ratingSummary: string
+    ratingBasis: 'design' | 'retrospective'
+    status: Policy['status']
+    assessmentAsOf: string
+    scope: 'bill-specific' | 'policy-family'
+  } | null
   leader: {
     id: string
     name: string
@@ -233,6 +275,7 @@ export type BillRecord = {
     shortName: string
     color: string
   } | null
+  sources: Source[]
 }
 
 export type BillRegisterResponse = {
@@ -241,6 +284,8 @@ export type BillRegisterResponse = {
   total: number
   totalPages: number
   reviewed: number
+  explained: number
+  officialOrReviewed: number
   records: BillRecord[]
   facets: {
     statuses: Array<{ status: string; count: number }>

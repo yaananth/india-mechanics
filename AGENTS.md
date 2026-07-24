@@ -78,6 +78,16 @@ changes with the same care as code changes.
 - Keep rules, enacted amendments, and pending bills as separate records.
 - Treat the Sansad register as discovery metadata. Never assign a rating merely
   because a Bill exists, passed, or received assent.
+- Every register record needs a `bill_explanations` row. Register-derived
+  explanations may identify legal operation, subject, affected groups, and
+  conditional upside/downside only; they may not claim exact clauses or quality.
+- Use `npm run bills:explain` to refresh the checked-in official-text cache.
+  Preserve the extraction basis, specificity, document URL, and content hash.
+- Distinguish `bill-specific` assessments from `policy-family` links. An
+  omnibus, Appropriation, or Finance Bill must not inherit a whole-bill verdict
+  from one reviewed measure inside it.
+- Preserve the upstream parliamentary status as `source_status`. A corrected
+  status needs a dated note and a controlling or high-quality source.
 - Link a register record to a reviewed policy only after source-backed design,
   implementation, rights, and outcome analysis exists.
 - A policy claim must show both intended purpose and independent outcome or risk

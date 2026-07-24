@@ -393,6 +393,7 @@ export function PoliciesView({
             <option value="all">All statuses</option>
             <option value="enacted">Enacted</option>
             <option value="pending">Pending</option>
+            <option value="infructuous">Infructuous</option>
             <option value="repealed">Repealed</option>
             <option value="executive-action">Executive action</option>
           </select>

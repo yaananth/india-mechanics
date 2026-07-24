@@ -2,14 +2,19 @@ import {
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
+  CircleAlert,
+  CircleHelp,
   Clock3,
   ExternalLink,
+  FileSearch,
   FileText,
   Filter,
   Landmark,
+  Scale,
   Search,
+  UsersRound,
 } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { api } from '../api.ts'
 import type { BillRecord, BillRegisterResponse } from '../types.ts'
 import { formatDate } from '../utils.ts'
@@ -56,6 +61,22 @@ function billDocuments(bill: BillRecord) {
   ].filter((entry): entry is [string, string] => Boolean(entry[1]))
 }
 
+function evidenceLabel(bill: BillRecord) {
+  if (bill.explanation.evidenceBasis === 'independent-review') {
+    return 'Independently assessed'
+  }
+  if (bill.explanation.evidenceBasis === 'official-text') {
+    return 'Official text read'
+  }
+  return 'Register-derived'
+}
+
+function reviewLabel(bill: BillRecord) {
+  if (bill.assessment) return 'Rated'
+  if (bill.explanation.evidenceBasis === 'official-text') return 'Text read'
+  return 'Explained'
+}
+
 export function BillRegisterPanel({
   selectedBillId,
   onSelectBill,
@@ -78,6 +99,7 @@ export function BillRegisterPanel({
   const [selected, setSelected] = useState<BillRecord | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const mobileScrollBillId = useRef<string | null>(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -138,6 +160,23 @@ export function BillRegisterPanel({
     return () => controller.abort()
   }, [onSelectBill, response, selectedBillId])
 
+  useEffect(() => {
+    if (
+      !selected ||
+      selected.id !== selectedBillId ||
+      mobileScrollBillId.current === selected.id ||
+      !window.matchMedia('(max-width: 720px)').matches
+    ) {
+      return
+    }
+    mobileScrollBillId.current = selected.id
+    window.requestAnimationFrame(() => {
+      document.getElementById('bill-detail')?.scrollIntoView({
+        block: 'start',
+      })
+    })
+  }, [selected, selectedBillId])
+
   const documents = useMemo(
     () => (selected ? billDocuments(selected) : []),
     [selected],
@@ -166,15 +205,21 @@ export function BillRegisterPanel({
             government bills
           </h2>
           <p>
-            Discovery records show what Parliament received and what happened
-            procedurally. A bill is not scored until a separate evidence review is
-            completed.
+            Every record explains the proposal, who may be affected, and the
+            main upside and downside to examine. Numerical ratings remain
+            separate and require an evidence review.
           </p>
         </div>
         {response && (
           <div className="bill-register__coverage">
-            <strong>{response.reviewed}</strong>
-            <span>records linked to reviewed assessments</span>
+            <div>
+              <strong>{response.explained.toLocaleString('en-IN')}</strong>
+              <span>plain-language explanations</span>
+            </div>
+            <div>
+              <strong>{response.reviewed}</strong>
+              <span>linked ratings</span>
+            </div>
           </div>
         )}
       </header>
@@ -291,8 +336,7 @@ export function BillRegisterPanel({
                   <span className="bill-register__identity">
                     <strong>{readableBillTitle(bill.title)}</strong>
                     <small>
-                      {bill.ministry ?? 'Ministry not recorded'}
-                      {bill.leader ? ` · ${bill.leader.name}` : ''}
+                      {bill.explanation.proposalSummary}
                     </small>
                   </span>
                   <span className={`bill-status bill-status--${bill.status.toLowerCase()}`}>
@@ -301,7 +345,7 @@ export function BillRegisterPanel({
                   <span
                     className={`bill-review-state bill-review-state--${bill.reviewStatus}`}
                   >
-                    {bill.reviewStatus === 'reviewed' ? 'Reviewed' : 'Unrated'}
+                    {reviewLabel(bill)}
                   </span>
                   <ChevronRight size={16} aria-hidden="true" />
                 </button>
@@ -312,7 +356,7 @@ export function BillRegisterPanel({
             </div>
 
             {selected && (
-              <article className="bill-detail">
+              <article className="bill-detail" id="bill-detail">
                 <header>
                   <div>
                     <span className={`bill-status bill-status--${selected.status.toLowerCase()}`}>
@@ -329,11 +373,29 @@ export function BillRegisterPanel({
                   <span
                     className={`bill-review-state bill-review-state--${selected.reviewStatus}`}
                   >
-                    {selected.reviewStatus === 'reviewed'
-                      ? 'Evidence reviewed'
-                      : 'No rating yet'}
+                    {evidenceLabel(selected)}
                   </span>
                 </header>
+
+                {selected.statusNote && (
+                  <section className="bill-detail__status-note">
+                    <CircleAlert size={17} aria-hidden="true" />
+                    <span>
+                      <strong>
+                        Status checked{' '}
+                        {selected.statusAsOf
+                          ? formatDate(selected.statusAsOf)
+                          : 'recently'}
+                      </strong>
+                      <p>{selected.statusNote}</p>
+                      {selected.sourceStatus !== selected.status && (
+                        <small>
+                          Sansad feed still reports: {selected.sourceStatus}
+                        </small>
+                      )}
+                    </span>
+                  </section>
+                )}
 
                 <dl className="bill-detail__facts">
                   <div>
@@ -387,43 +449,109 @@ export function BillRegisterPanel({
                     <dd>
                       {selected.referredCommitteeDate
                         ? `Referred ${formatDate(selected.referredCommitteeDate)}`
-                        : 'No referral recorded'}
+                        : 'Not available in this feed'}
                     </dd>
                   </div>
                 </dl>
 
-                <section className="bill-detail__review">
-                  {selected.linkedPolicyId ? (
-                    <>
-                      <CheckCircle2 size={18} aria-hidden="true" />
-                      <span>
-                        <strong>Linked to a reviewed policy assessment</strong>
+                <section className="bill-detail__explanation">
+                  <div className="bill-detail__section-heading">
+                    <FileSearch size={18} aria-hidden="true" />
+                    <div>
+                      <span>What it proposes</span>
+                      <small>
+                        {evidenceLabel(selected)} ·{' '}
+                        {selected.explanation.specificity.replace('-', ' ')}
+                      </small>
+                    </div>
+                  </div>
+                  <p>{selected.explanation.proposalSummary}</p>
+                  {selected.explanation.governmentRationale && (
+                    <div className="bill-detail__rationale">
+                      <strong>Government's stated reason</strong>
+                      <p>{selected.explanation.governmentRationale}</p>
+                    </div>
+                  )}
+                </section>
+
+                <section className="bill-detail__affected">
+                  <div className="bill-detail__section-heading">
+                    <UsersRound size={18} aria-hidden="true" />
+                    <span>Who may be affected</span>
+                  </div>
+                  <ul>
+                    {selected.explanation.affectedGroups.map((group) => (
+                      <li key={group}>{group}</li>
+                    ))}
+                  </ul>
+                </section>
+
+                <section className="bill-detail__tradeoffs">
+                  <div>
+                    <CheckCircle2 size={17} aria-hidden="true" />
+                    <span>
+                      <strong>Potential benefit</strong>
+                      <p>{selected.explanation.potentialBenefits}</p>
+                    </span>
+                  </div>
+                  <div>
+                    <CircleAlert size={17} aria-hidden="true" />
+                    <span>
+                      <strong>Potential risk</strong>
+                      <p>{selected.explanation.potentialRisks}</p>
+                    </span>
+                  </div>
+                </section>
+
+                <section
+                  id="bill-verdict"
+                  className={`bill-detail__verdict ${
+                    selected.assessment ? 'is-rated' : 'is-unrated'
+                  }`}
+                >
+                  <div className="bill-detail__section-heading">
+                    {selected.assessment ? (
+                      <Scale size={18} aria-hidden="true" />
+                    ) : (
+                      <CircleHelp size={18} aria-hidden="true" />
+                    )}
+                    <span>Is it good or bad?</span>
+                  </div>
+                  {selected.assessment ? (
+                    <div className="bill-detail__rating">
+                      <div>
+                        <strong>{selected.assessment.ratingScore}</strong>
+                        <span>/10</span>
                         <small>
-                          Open the sourced pros, cons, components, and editorial
-                          rating.
+                          {selected.assessment.ratingBasis === 'design'
+                            ? 'Provisional design rating'
+                            : 'Retrospective rating'}
                         </small>
-                      </span>
+                      </div>
+                      <p>{selected.assessment.ratingSummary}</p>
+                      <small>
+                        {selected.assessment.scope === 'policy-family'
+                          ? 'This is a broader policy-family assessment; it may cover only part of this bill.'
+                          : 'This assessment is specific to this bill.'}
+                      </small>
                       <button
                         type="button"
                         onClick={() =>
-                          onOpenPolicy(selected.linkedPolicyId as string)
+                          onOpenPolicy(selected.assessment?.policyId as string)
                         }
                       >
-                        Open assessment
+                        Open full assessment
                         <ChevronRight size={15} aria-hidden="true" />
                       </button>
-                    </>
+                    </div>
                   ) : (
-                    <>
-                      <Clock3 size={18} aria-hidden="true" />
+                    <div className="bill-detail__not-rated">
+                      <Clock3 size={17} aria-hidden="true" />
                       <span>
-                        <strong>Discovery record only</strong>
-                        <small>
-                          Parliamentary existence and status are verified. Policy
-                          impact and quality have not yet been reviewed.
-                        </small>
+                        <strong>Not rated yet</strong>
+                        <p>{selected.explanation.verdictRationale}</p>
                       </span>
-                    </>
+                    </div>
                   )}
                 </section>
 
@@ -445,7 +573,7 @@ export function BillRegisterPanel({
                 )}
 
                 <footer>
-                  <SourceLinks sources={[response.source]} />
+                  <SourceLinks sources={selected.sources ?? [response.source]} />
                 </footer>
               </article>
             )}

@@ -2,7 +2,8 @@ import { createHash } from 'node:crypto'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { leaderTerms } from '../server/seed-data/catalog.ts'
-import { linkedPolicyId } from '../server/seed-data/policy-register-links.ts'
+import { linkedPolicyMatch } from '../server/seed-data/policy-register-links.ts'
+import { applyPolicyRegisterOverride } from '../server/seed-data/policy-register-overrides.ts'
 import type { PolicyRegisterSeed } from '../server/types.ts'
 
 const asOfArgument = process.argv.find((argument) => argument.startsWith('--as-of='))
@@ -129,12 +130,14 @@ function toRegisterRecord(bill: SansadBill): PolicyRegisterSeed | null {
     return null
   }
   const term = termForDate(introducedDate)
-  const linkedPolicy = linkedPolicyId(title, introducedDate)
-  return {
+  const linkedPolicy = linkedPolicyMatch(title, introducedDate)
+  const sourceStatus = clean(bill.status) ?? 'Unknown'
+  return applyPolicyRegisterOverride({
     id: recordId(bill, introducedDate, title),
     jurisdictionId: 'india',
     leaderTermId: term?.id,
-    linkedPolicyId: linkedPolicy,
+    linkedPolicyId: linkedPolicy?.policyId,
+    linkedPolicyScope: linkedPolicy?.assessmentScope,
     billNumber: clean(bill.billNumber),
     title,
     ministry: clean(bill.ministryName),
@@ -143,7 +146,7 @@ function toRegisterRecord(bill: SansadBill): PolicyRegisterSeed | null {
     introducedHouse: clean(bill.billIntroducedInHouse),
     billType: clean(bill.billType) ?? 'Government',
     category: clean(bill.billCategory),
-    status: clean(bill.status) ?? 'Unknown',
+    status: sourceStatus,
     passedLokSabhaDate: normalizedDate(bill.billPassedInLSDate),
     passedRajyaSabhaDate: normalizedDate(bill.billPassedInRSDate),
     referredCommitteeDate: normalizedDate(bill.referredToCommitteeDate),
@@ -160,7 +163,7 @@ function toRegisterRecord(bill: SansadBill): PolicyRegisterSeed | null {
     synopsisFile: httpsUrl(bill.billSynopsisFile),
     sourceId: 'sansad-government-bills-api',
     reviewStatus: linkedPolicy ? 'reviewed' : 'discovered',
-  }
+  })
 }
 
 async function main() {

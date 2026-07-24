@@ -65,6 +65,38 @@ export const sources: SourceSeed[] = [
     accessedDate,
   },
   {
+    id: 'delimitation-bill-2026-sansad',
+    title: 'The Delimitation Bill, 2026, as introduced',
+    publisher: 'Lok Sabha Secretariat, Parliament of India',
+    url: 'https://sansad.in/getFile/BillsTexts/LSBillTexts/Asintroduced/AS%20INTRO%20THE%20DELIMITATION416202611944PM.pdf?source=legislation',
+    sourceType: 'official-bill-text',
+    reliability: 5,
+    ratingReason:
+      'The official as-introduced text controls what the bill proposed, including commission design, seat readjustment, constituency boundaries, and reservation provisions.',
+    bestFor:
+      'Exact clauses, the official long title, statement of objects and reasons, and financial memorandum.',
+    limitations:
+      'The government-authored rationale does not prove fairness, implementation quality, or downstream political effects.',
+    publishedDate: '2026-04-16',
+    accessedDate: '2026-07-24',
+  },
+  {
+    id: 'prs-delimitation-bill-2026',
+    title: 'The Delimitation Bill, 2026',
+    publisher: 'PRS Legislative Research',
+    url: 'https://prsindia.org/billtrack/the-delimitation-bill-2026',
+    sourceType: 'independent-legislative-analysis',
+    reliability: 4,
+    ratingReason:
+      'Structured provision summary, legislative status, and federal and representational issues linked to the official bill text.',
+    bestFor:
+      'Plain-language design analysis, the infructuous status, and questions about seat allocation, census choice, and women reservation.',
+    limitations:
+      'Secondary analysis rather than a court ruling or enacted implementation record; no outcome evidence can exist for an infructuous bill.',
+    publishedDate: '2026-04-16',
+    accessedDate: '2026-07-24',
+  },
+  {
     id: 'world-bank-india',
     title: 'India Data Profile',
     publisher: 'World Bank',
@@ -2471,6 +2503,7 @@ const policyComponentValues: Record<string, Array<number | null>> = {
   'income-tax-act-2025': [8, null, 6.5, 5.5, 7],
   'gst-rate-reset-2025': [8, null, 6.5, 6.5, 6],
   'fcra-amendment-bill-2026': [6.5, null, 4, 3.5, 4],
+  'delimitation-bill-2026': [7, null, 5, 5.5, 3.5],
   'fcra-amendment-rules-2026': [6, null, 5, 4, 4.5],
 }
 
@@ -2698,6 +2731,13 @@ const policyRationales: Record<string, string[]> = {
     'A Designated Authority clarifies custody, but renewal and asset processes remain administratively heavy.',
     'Vesting without a prior hearing or appeal raises due-process concerns.',
     'Penalty reduction is positive; potentially permanent asset vesting creates serious side effects.',
+  ],
+  'delimitation-bill-2026': [
+    'Targets genuine representational drift, large population changes, and the need to operationalise constitutional women reservation.',
+    'Not observable because the linked constitutional amendment was negatived and this Bill became infructuous before implementation.',
+    'A judicially chaired commission, Election Commission participation, published proposals, objections, and public sittings are meaningful safeguards, but the design arrived without a durable federal settlement.',
+    'Women, SC, and ST reservation provisions improve inclusion, while state-level seat redistribution, rotating constituencies, and limited judicial review create substantial equality and representation concerns.',
+    'A periodic delimitation framework could be durable, but this proposal did not survive Parliament and its unresolved federal distributional effects would have been exceptionally consequential.',
   ],
   'fcra-amendment-rules-2026': [
     'Creates a more explicit activity test and updated process for renewal decisions.',
@@ -3488,6 +3528,31 @@ export const policies: PolicySeed[] = [
       'gst-council-56-2025',
       'gst-rate-faq-2025',
       'prs-budget-analysis-2026-27',
+    ],
+  },
+  {
+    id: 'delimitation-bill-2026',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Delimitation Bill, 2026',
+    shortTitle: '2026 delimitation proposal',
+    policyType: 'electoral-federalism',
+    introducedDate: '2026-04-16',
+    status: 'infructuous',
+    coverageStatus: 'reviewed',
+    ratingBasis: 'design',
+    summary:
+      'Would have created a Delimitation Commission to use the latest published census figures to reallocate Lok Sabha and state-assembly seats, redraw constituencies, and reserve and rotate about one-third of seats for women.',
+    intendedGoal:
+      'Update representation after decades of population change and operationalise constitutional women reservation in Parliament and state assemblies.',
+    ratingScore: policyRating('delimitation-bill-2026'),
+    ratingConfidence: 'low',
+    ratingSummary:
+      'Provisional 5.4/10 design judgment: updating unequal constituencies and enabling women reservation address real problems, but the proposal left severe federal distribution, continuity, and review risks unresolved and became infructuous before any outcome could be observed.',
+    assessmentAsOf: '2026-07-24',
+    sourceIds: [
+      'delimitation-bill-2026-sansad',
+      'prs-delimitation-bill-2026',
     ],
   },
   {
@@ -8348,6 +8413,82 @@ export const claims: ClaimSeed[] = [
     confidence: 'high',
     asOfDate: ratingAsOf,
     sourceIds: ['gst-rate-faq-2025', 'prs-budget-analysis-2026-27'],
+  },
+  {
+    id: 'delimitation-2026-representation-case',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'delimitation-bill-2026',
+    title: 'Targets real representational drift',
+    body:
+      'The official text notes that Lok Sabha and Assembly seat allocation still rests on 1971 population figures while constituency division rests on 2001 figures; a new exercise could reduce severe population imbalance between constituencies.',
+    stance: 'achievement',
+    category: 'electoral-federalism',
+    confidence: 'high',
+    asOfDate: '2026-07-24',
+    sourceIds: [
+      'delimitation-bill-2026-sansad',
+      'prs-delimitation-bill-2026',
+    ],
+  },
+  {
+    id: 'delimitation-2026-women-reservation',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'delimitation-bill-2026',
+    title: 'Would operationalise women reservation',
+    body:
+      'The Bill would have reserved and rotated about one-third of Lok Sabha and state-assembly seats for women, including within seats reserved for Scheduled Castes and Scheduled Tribes.',
+    stance: 'achievement',
+    category: 'representation',
+    confidence: 'high',
+    asOfDate: '2026-07-24',
+    sourceIds: ['delimitation-bill-2026-sansad'],
+  },
+  {
+    id: 'delimitation-2026-federal-distribution-risk',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'delimitation-bill-2026',
+    title: 'Seat reallocation creates a major federal distribution conflict',
+    body:
+      'Using the latest published census to reallocate seats could materially shift Lok Sabha power among states. The Bill supplied a procedure but did not itself resolve the political dispute over whether states that reduced population growth should lose relative representation.',
+    stance: 'concern',
+    category: 'electoral-federalism',
+    confidence: 'high',
+    asOfDate: '2026-07-24',
+    sourceIds: ['prs-delimitation-bill-2026'],
+  },
+  {
+    id: 'delimitation-2026-review-continuity-risk',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'delimitation-bill-2026',
+    title: 'Rotation and final-order rules create continuity and remedy risks',
+    body:
+      'The design required rotating women-reserved seats and gave final Commission orders the force of law without court challenge. Those choices could disrupt constituency continuity and narrow ordinary legal remedies in a high-stakes allocation process.',
+    stance: 'concern',
+    category: 'rights-and-institutions',
+    confidence: 'high',
+    asOfDate: '2026-07-24',
+    sourceIds: [
+      'delimitation-bill-2026-sansad',
+      'prs-delimitation-bill-2026',
+    ],
+  },
+  {
+    id: 'delimitation-2026-infructuous',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'delimitation-bill-2026',
+    title: 'No effectiveness score is possible',
+    body:
+      'The linked constitutional amendment was negatived and PRS records the Delimitation Bill as infructuous on April 17, 2026. The rating therefore judges proposal design only and assigns no credit or penalty for unobserved outcomes.',
+    stance: 'context',
+    category: 'evidence-gap',
+    confidence: 'high',
+    asOfDate: '2026-07-24',
+    sourceIds: ['prs-delimitation-bill-2026'],
   },
   {
     id: 'fcra-2026-asset-governance',

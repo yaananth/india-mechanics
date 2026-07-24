@@ -260,7 +260,9 @@ CREATE TABLE IF NOT EXISTS policies (
   enacted_date TEXT,
   effective_date TEXT,
   status TEXT NOT NULL
-    CHECK (status IN ('enacted', 'pending', 'repealed', 'executive-action')),
+    CHECK (status IN (
+      'enacted', 'pending', 'repealed', 'executive-action', 'infructuous'
+    )),
   coverage_status TEXT NOT NULL
     CHECK (coverage_status IN ('reviewed', 'partial', 'placeholder')),
   rating_basis TEXT NOT NULL DEFAULT 'retrospective'
@@ -296,6 +298,8 @@ CREATE TABLE IF NOT EXISTS policy_register (
   jurisdiction_id TEXT NOT NULL REFERENCES jurisdictions(id),
   leader_term_id TEXT REFERENCES leader_terms(id),
   linked_policy_id TEXT REFERENCES policies(id),
+  linked_policy_scope TEXT
+    CHECK (linked_policy_scope IN ('bill-specific', 'policy-family')),
   bill_number TEXT,
   title TEXT NOT NULL,
   ministry TEXT,
@@ -305,6 +309,10 @@ CREATE TABLE IF NOT EXISTS policy_register (
   bill_type TEXT NOT NULL,
   category TEXT,
   status TEXT NOT NULL,
+  source_status TEXT NOT NULL,
+  status_as_of TEXT,
+  status_note TEXT,
+  status_source_id TEXT REFERENCES sources(id),
   passed_lok_sabha_date TEXT,
   passed_rajya_sabha_date TEXT,
   referred_committee_date TEXT,
@@ -322,6 +330,34 @@ CREATE TABLE IF NOT EXISTS policy_register (
   source_id TEXT NOT NULL REFERENCES sources(id),
   review_status TEXT NOT NULL
     CHECK (review_status IN ('discovered', 'reviewing', 'reviewed'))
+);
+
+CREATE TABLE IF NOT EXISTS bill_explanations (
+  bill_id TEXT PRIMARY KEY REFERENCES policy_register(id) ON DELETE CASCADE,
+  proposal_summary TEXT NOT NULL,
+  official_purpose TEXT,
+  government_rationale TEXT,
+  affected_groups_json TEXT NOT NULL,
+  potential_benefits TEXT NOT NULL,
+  potential_risks TEXT NOT NULL,
+  evidence_basis TEXT NOT NULL
+    CHECK (evidence_basis IN (
+      'title-only', 'official-text', 'independent-review'
+    )),
+  specificity TEXT NOT NULL
+    CHECK (specificity IN ('explicit', 'domain-only', 'opaque')),
+  assessment_scope TEXT NOT NULL
+    CHECK (assessment_scope IN ('none', 'bill-specific', 'policy-family')),
+  verdict TEXT NOT NULL
+    CHECK (verdict IN ('not-assessed', 'reviewed-policy')),
+  verdict_kind TEXT NOT NULL
+    CHECK (verdict_kind IN ('none', 'provisional-design', 'retrospective')),
+  verdict_rationale TEXT NOT NULL,
+  confidence TEXT NOT NULL CHECK (confidence IN ('low', 'medium', 'high')),
+  assessment_as_of TEXT NOT NULL,
+  methodology_version TEXT NOT NULL,
+  document_url TEXT,
+  document_hash TEXT
 );
 
 CREATE TABLE IF NOT EXISTS budget_evaluation_dimensions (
@@ -525,6 +561,8 @@ CREATE INDEX IF NOT EXISTS idx_policy_register_jurisdiction_date
   ON policy_register(jurisdiction_id, introduced_date DESC);
 CREATE INDEX IF NOT EXISTS idx_policy_register_status
   ON policy_register(status, review_status);
+CREATE INDEX IF NOT EXISTS idx_bill_explanations_basis
+  ON bill_explanations(evidence_basis, verdict);
 CREATE INDEX IF NOT EXISTS idx_budgets_jurisdiction_year
   ON budgets(jurisdiction_id, fiscal_year);
 CREATE INDEX IF NOT EXISTS idx_budget_allocations_budget

@@ -862,9 +862,80 @@ describe('research database integrity', () => {
       count: 4407,
       first_date: '1952-05-16',
       latest_date: '2026-07-20',
-      reviewed: 34,
+      reviewed: 35,
     })
     expect(incomplete).toEqual([])
+  })
+
+  it('explains every registered bill without rating unreviewed records', () => {
+    const coverage = db
+      .prepare(
+        `SELECT COUNT(*) AS total,
+                SUM(CASE WHEN evidence_basis = 'official-text' THEN 1 ELSE 0 END)
+                  AS official_text,
+                SUM(CASE WHEN evidence_basis = 'independent-review' THEN 1 ELSE 0 END)
+                  AS independent_review,
+                SUM(CASE WHEN evidence_basis = 'title-only' THEN 1 ELSE 0 END)
+                  AS title_only
+         FROM bill_explanations`,
+      )
+      .get()
+    const invalidVerdicts = db
+      .prepare(
+        `SELECT explanation.bill_id
+         FROM bill_explanations explanation
+         JOIN policy_register register ON register.id = explanation.bill_id
+         WHERE explanation.verdict = 'reviewed-policy'
+           AND register.linked_policy_id IS NULL`,
+      )
+      .all()
+    const missingText = db
+      .prepare(
+        `SELECT bill_id
+         FROM bill_explanations
+         WHERE TRIM(proposal_summary) = ''
+            OR TRIM(potential_benefits) = ''
+            OR TRIM(potential_risks) = ''
+            OR JSON_ARRAY_LENGTH(affected_groups_json) = 0`,
+      )
+      .all()
+
+    expect(coverage).toMatchObject({
+      total: 4407,
+      independent_review: 35,
+    })
+    expect((coverage as { official_text: number }).official_text).toBeGreaterThan(
+      2300,
+    )
+    expect((coverage as { title_only: number }).title_only).toBeGreaterThan(0)
+    expect(invalidVerdicts).toEqual([])
+    expect(missingText).toEqual([])
+  })
+
+  it('publishes a bill-specific Delimitation review and corrected status', () => {
+    const bill = db
+      .prepare(
+        `SELECT register.status, register.source_status,
+                register.linked_policy_id, register.linked_policy_scope,
+                explanation.evidence_basis, explanation.specificity,
+                policy.rating_score, policy.rating_basis, policy.status AS policy_status
+         FROM policy_register register
+         JOIN bill_explanations explanation ON explanation.bill_id = register.id
+         JOIN policies policy ON policy.id = register.linked_policy_id
+         WHERE register.id = 'sansad-bill-2026-04-16-c5048cfc8d852cca'`,
+      )
+      .get()
+    expect(bill).toEqual({
+      status: 'Infructuous',
+      source_status: 'Pending',
+      linked_policy_id: 'delimitation-bill-2026',
+      linked_policy_scope: 'bill-specific',
+      evidence_basis: 'independent-review',
+      specificity: 'explicit',
+      rating_score: 5.4,
+      rating_basis: 'design',
+      policy_status: 'infructuous',
+    })
   })
 
   it('links reviewed parliamentary records without scoring discovered bills', () => {

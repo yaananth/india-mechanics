@@ -157,6 +157,15 @@ function search(snapshot: JurisdictionSnapshot, rawQuery: string) {
           bill.ministry,
           bill.status,
           bill.actNumber,
+          (bill.explanation as JsonRecord | undefined)?.proposalSummary,
+          (bill.explanation as JsonRecord | undefined)?.officialPurpose,
+          (bill.explanation as JsonRecord | undefined)?.affectedGroups,
+          (bill.explanation as JsonRecord | undefined)?.potentialBenefits,
+          (bill.explanation as JsonRecord | undefined)?.potentialRisks,
+          (bill.assessment as JsonRecord | undefined)?.title,
+          (bill.assessment as JsonRecord | undefined)?.summary,
+          (bill.assessment as JsonRecord | undefined)?.intendedGoal,
+          (bill.assessment as JsonRecord | undefined)?.ratingSummary,
         ],
         queryTokens,
       ),
@@ -165,9 +174,12 @@ function search(snapshot: JurisdictionSnapshot, rawQuery: string) {
       type: 'bill',
       id: bill.id,
       title: bill.title,
-      subtitle: `${text(bill.status)}${
-        bill.ministry ? ` · ${text(bill.ministry)}` : ''
-      }`,
+      subtitle: text(
+        (bill.explanation as JsonRecord | undefined)?.proposalSummary ??
+          `${text(bill.status)}${
+            bill.ministry ? ` · ${text(bill.ministry)}` : ''
+          }`,
+      ),
       date: bill.introducedDate,
       policyId: bill.linkedPolicyId ?? null,
     }))
@@ -297,6 +309,15 @@ function filteredBills(snapshot: JurisdictionSnapshot, url: URL) {
             bill.ministry,
             bill.status,
             bill.actNumber,
+            (bill.explanation as JsonRecord | undefined)?.proposalSummary,
+            (bill.explanation as JsonRecord | undefined)?.officialPurpose,
+            (bill.explanation as JsonRecord | undefined)?.affectedGroups,
+            (bill.explanation as JsonRecord | undefined)?.potentialBenefits,
+            (bill.explanation as JsonRecord | undefined)?.potentialRisks,
+            (bill.assessment as JsonRecord | undefined)?.title,
+            (bill.assessment as JsonRecord | undefined)?.summary,
+            (bill.assessment as JsonRecord | undefined)?.intendedGoal,
+            (bill.assessment as JsonRecord | undefined)?.ratingSummary,
           ],
           queryTokens,
         )) &&
@@ -313,6 +334,12 @@ function filteredBills(snapshot: JurisdictionSnapshot, url: URL) {
     total: records.length,
     totalPages: Math.max(1, Math.ceil(records.length / pageSize)),
     reviewed: records.filter((bill) => bill.reviewStatus === 'reviewed').length,
+    explained: records.length,
+    officialOrReviewed: records.filter(
+      (bill) =>
+        (bill.explanation as JsonRecord | undefined)?.evidenceBasis !==
+        'title-only',
+    ).length,
     records: records.slice(start, start + pageSize),
     facets: snapshot.bills.facets,
     source: snapshot.bills.source,
