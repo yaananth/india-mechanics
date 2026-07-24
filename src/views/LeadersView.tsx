@@ -313,7 +313,7 @@ export function LeadersView({
                     ? selected.ratingScore.toFixed(1)
                     : 'NR'}
                 </strong>
-                <span>{selected.ratingScore !== null ? '/10' : 'short term'}</span>
+                <span>{selected.ratingScore !== null ? '/10' : 'not rated'}</span>
                 {selected.ratingConfidence && (
                   <ConfidenceMark confidence={selected.ratingConfidence} />
                 )}
@@ -321,7 +321,8 @@ export function LeadersView({
             </header>
             <p className="leader-detail__summary">{selected.ratingSummary}</p>
 
-            {selected.ratingProfiles.length > 0 && (
+            {selected.ratingScore !== null &&
+              selected.ratingProfiles.length > 0 && (
               <section className="leader-weight-sensitivity">
                 <header>
                   <div>

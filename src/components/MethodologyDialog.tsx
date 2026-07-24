@@ -49,7 +49,7 @@ export function MethodologyDialog({
         {methodology && (
           <div className="methodology-dialog__body">
             <section>
-              <h3>Country Progress Index</h3>
+              <h3>Country and State Progress Index</h3>
               <p>{methodology.progress.purpose}</p>
               <p>{methodology.progress.formula}</p>
               <div className="weight-list">
@@ -125,7 +125,7 @@ export function MethodologyDialog({
                   All four lenses use the same evidence scores. Each weighted sum
                   is rounded to one decimal. The lens range shows sensitivity to
                   priorities, not statistical uncertainty, and policy scores are
-                  not line-item additions to a PM score.
+                  not line-item additions to a head-of-government score.
                 </span>
               </div>
             </section>

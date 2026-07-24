@@ -398,14 +398,17 @@ function getLeaderTerms(db: DatabaseSync, jurisdictionId: string) {
           }
         : null,
       componentScores,
-      ratingProfiles: leaderRatingProfiles.map((profile) => ({
-        id: profile.id,
-        name: profile.name,
-        description: profile.description,
-        score: profileScore(scoreByDimension, profile),
-        weights: profile.weights,
-        isCanonical: profile.id === 'balanced',
-      })),
+      ratingProfiles:
+        componentScores.length > 0
+          ? leaderRatingProfiles.map((profile) => ({
+              id: profile.id,
+              name: profile.name,
+              description: profile.description,
+              score: profileScore(scoreByDimension, profile),
+              weights: profile.weights,
+              isCanonical: profile.id === 'balanced',
+            }))
+          : [],
       specialistAssessments,
       claims: (
         claimStatement.all(termId) as unknown as Array<{ id: string }>

@@ -20,12 +20,13 @@ export function formatValue(
   compact = false,
 ) {
   if (format === 'currency') {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'USD',
+    const prefix = /\b(?:Rs|INR|rupees?)\b/i.test(unit) ? 'Rs ' : '$'
+    const sign = value < 0 ? '-' : ''
+    const formatted = new Intl.NumberFormat('en-IN', {
       maximumFractionDigits: 0,
       notation: compact ? 'compact' : 'standard',
-    }).format(value)
+    }).format(Math.abs(value))
+    return `${sign}${prefix}${formatted}`
   }
   if (format === 'percent') {
     return `${new Intl.NumberFormat('en-IN', {

@@ -1,0 +1,369 @@
+{
+  "batchId": "tamil-nadu-modern-state-2026-07-24",
+  "rosterVersion": "source-roster-v0.11",
+  "lane": "state-assessment",
+  "throughDate": "2026-07-24",
+  "reviewer": "India Mechanics Tamil Nadu editorial review",
+  "candidates": [
+    {
+      "id": "tn-name-act-1968",
+      "url": "https://www.indiacode.nic.in/bitstream/123456789/1710/1/1968-53.pdf",
+      "sourceRegistryId": "india-code",
+      "sourceClass": "official",
+      "independenceGroup": "india-code",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "tn-assembly-cm-list",
+      "url": "https://www.assembly.tn.gov.in/history/cmlist.php",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "tn-assembly",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "eci-tn-2026",
+      "url": "https://results.eci.gov.in/ResultAcGenMay2026/partywiseresult-S22.htm",
+      "sourceRegistryId": "eci",
+      "sourceClass": "official",
+      "independenceGroup": "eci-tn-2026",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "tn-lok-bhavan-vijay-2026",
+      "url": "https://lokbhavan.tn.gov.in/lok-bhavan-press-release-no-37-dated-10-05-2026/",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "tn-lok-bhavan",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "tn-economic-survey-2025-26",
+      "url": "https://tamildigitallibrary.in/assets/docs/uploads/catalogue_article_file/BOK/upload/2026/02/TVA_TVA_BOK_062955/upload_primary_20260216113955411_20260216113539.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "tn-economic-survey",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "niti-tn-macro-fiscal-2025",
+      "url": "https://www.niti.gov.in/sites/default/files/2025-03/Macro-and-Fiscal-Landscape-of-the-State-of-Tamil-Nadu.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official-analysis",
+      "independenceGroup": "niti-state-fiscal",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "mospi-state-sdp-2024",
+      "url": "https://mospi.gov.in/sites/default/files/press_releases_statements/State_wise_SDP_as_on_15032024.xls",
+      "sourceRegistryId": "mospi",
+      "sourceClass": "official",
+      "independenceGroup": "mospi-state-sdp",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "nfhs4-tn",
+      "url": "https://dhsprogram.com/pubs/pdf/OF31/OF31.TN.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "nfhs4-tn",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "nfhs5-tn",
+      "url": "https://dhsprogram.com/pubs/pdf/OF43/OF43.TN.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "nfhs5-tn",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "prs-tn-budget-2019-20",
+      "url": "https://prsindia.org/files/budget/budget_state/tamil-nadu/2019/State%20Budget%20Analysis%20-%20Tamil%20Nadu%202019-20.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "independent-analysis",
+      "independenceGroup": "prs-state-budget",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "prs-tn-budget-2021-22",
+      "url": "https://prsindia.org/files/budget/budget_state/tamil-nadu/2021/Tamil%20Nadu%20Budget%20Analysis%202021-22.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "independent-analysis",
+      "independenceGroup": "prs-state-budget-2021",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "prs-tn-budget-2025-26",
+      "url": "https://prsindia.org/files/budget/budget_state/tamil-nadu/2025/TN_Budget_Analysis_2025-26.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "independent-analysis",
+      "independenceGroup": "prs-state-budget-2025",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "tn-noon-meal-study",
+      "url": "https://www.nber.org/system/files/working_papers/w26937/w26937.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "academic",
+      "independenceGroup": "nber-school-meals",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "tn-reservation-act-1994",
+      "url": "https://prsindia.org/files/bills_acts/acts_states/tamil-nadu/1994/1994TN45.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "tn-reservation-law",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "tn-medical-admission-act-2020",
+      "url": "https://www.indiacode.nic.in/bitstream/123456789/15431/1/tn_act_34_of_2020.pdf",
+      "sourceRegistryId": "india-code",
+      "sourceClass": "official",
+      "independenceGroup": "india-code-tn-medical",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "tn-thoothukudi-commission",
+      "url": "https://cms.tn.gov.in/cms_migrated/document/docfiles/eng_vol_4.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "tn-commission-thoothukudi",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ncrb-crime-2023-part-i",
+      "url": "https://www.ncrb.gov.in/uploads/files/1CrimeinIndia2023PartI.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ncrb-crime-2023",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "morth-road-accidents-2024-tn",
+      "url": "https://morth.gov.in/backend/documents/uploaded/1781177676_V1gUW8tJWT.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "morth-road-accidents-2024",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

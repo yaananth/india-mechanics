@@ -81,7 +81,14 @@ const safetyGroups: Array<{
 ]
 
 function safetyId(jurisdiction: Jurisdiction, suffix: string) {
-  return `${jurisdiction.id === 'andhra-pradesh' ? 'ap-' : ''}crime-${suffix}`
+  const prefix =
+    jurisdiction.level === 'country'
+      ? ''
+      : `${jurisdiction.id
+          .split('-')
+          .map((part) => part[0])
+          .join('')}-`
+  return `${prefix}crime-${suffix}`
 }
 
 function latestValue(
@@ -121,7 +128,9 @@ export function SafetyView({
         .map((suffix) =>
           indicators.find((item) => item.id === safetyId(jurisdiction, suffix)),
         )
-        .filter((item): item is IndicatorDefinition => Boolean(item)),
+        .filter(
+          (item): item is IndicatorDefinition => Boolean(item?.latest),
+        ),
     [group.suffixes, indicators, jurisdiction],
   )
   const [selectedId, setSelectedId] = useState(
@@ -200,12 +209,12 @@ export function SafetyView({
           <h2>
             {jurisdiction.level === 'country'
               ? 'National direction is mixed'
-              : 'AP harm rates improved; justice outcomes remain weak'}
+              : `${jurisdiction.shortName} harm and justice signals need separate reading`}
           </h2>
           <p>
             {jurisdiction.level === 'country'
               ? 'The registered murder rate improved, violent crime rose and then levelled, and reporting-sensitive categories increased while cyber and justice outcomes remained uneven.'
-              : 'Recorded violent crime fell by 2023 and murder remained comparatively low. High charge-sheeting did not translate into strong women, child, or cyber conviction rates.'}
+              : `Recorded harm, reporting-sensitive categories, investigation, convictions, cybercrime, and road safety are shown separately for ${jurisdiction.shortName}. A low FIR rate or high charge-sheeting rate is not treated as proof that people are safer.`}
           </p>
         </div>
         <div className="safety-overview__stats">

@@ -179,6 +179,182 @@ describe('read API', () => {
     expect(response.body.attributionCaveat).toContain('Chief Minister')
   })
 
+  it('publishes modern Tamil Nadu as an isolated state jurisdiction', async () => {
+    const [
+      jurisdictions,
+      overview,
+      leaders,
+      policies,
+      budgets,
+      events,
+      indicators,
+      sources,
+      answer,
+    ] = await Promise.all([
+      request(app).get('/api/jurisdictions'),
+      request(app).get('/api/overview').query({ jurisdiction: 'tamil-nadu' }),
+      request(app).get('/api/leaders').query({ jurisdiction: 'tamil-nadu' }),
+      request(app).get('/api/policies').query({ jurisdiction: 'tamil-nadu' }),
+      request(app).get('/api/budgets').query({ jurisdiction: 'tamil-nadu' }),
+      request(app).get('/api/events').query({ jurisdiction: 'tamil-nadu' }),
+      request(app).get('/api/indicators').query({ jurisdiction: 'tamil-nadu' }),
+      request(app).get('/api/sources').query({ jurisdiction: 'tamil-nadu' }),
+      request(app).get('/api/search').query({
+        jurisdiction: 'tamil-nadu',
+        q: 'how is tamil nadu doing',
+      }),
+    ])
+
+    expect(jurisdictions.body).toContainEqual(
+      expect.objectContaining({
+        id: 'tamil-nadu',
+        level: 'state',
+        parentId: 'india',
+        validFrom: '1969-01-14',
+      }),
+    )
+    expect(overview.status).toBe(200)
+    expect(overview.body).toMatchObject({
+      jurisdictionId: 'tamil-nadu',
+      jurisdiction: {
+        id: 'tamil-nadu',
+        level: 'state',
+        validFrom: '1969-01-14',
+      },
+      currentTerm: {
+        id: 'tn-vijay-2026',
+        ratingScore: null,
+        person: { name: 'C. Joseph Vijay' },
+        party: { id: 'tvk', shortName: 'TVK' },
+        office: { shortName: 'Chief Minister' },
+      },
+      featuredAnswer: { id: 'tn-modern-progress' },
+    })
+    expect(overview.body.knowledge).toMatchObject({
+      cutoff: '2026-07-24',
+      politicalStatusChecked: '2026-07-24',
+      timelineStarts: '1969-01-14',
+    })
+    expect(overview.body.progress.overall.score).toBeGreaterThan(0)
+    expect(leaders.body).toHaveLength(24)
+    expect(
+      leaders.body.find((leader: { id: string }) => leader.id === 'tn-stalin-2021')
+        .specialistAssessments,
+    ).toContainEqual(
+      expect.objectContaining({
+        topicId: 'public-safety',
+        operationalScore: 5.8,
+        adjustedScore: 5.9,
+      }),
+    )
+    expect(
+      leaders.body.find((leader: { id: string }) => leader.id === 'tn-vijay-2026')
+        .specialistAssessments,
+    ).toEqual([])
+    expect(policies.body).toHaveLength(15)
+    expect(budgets.body).toHaveLength(3)
+    expect(
+      budgets.body.every(
+        (budget: { leaderTermId: string }) =>
+          budget.leaderTermId !== 'tn-vijay-2026',
+      ),
+    ).toBe(true)
+    expect(events.body).toHaveLength(13)
+    expect(
+      events.body.every(
+        (event: {
+          date: string
+          accountability: { responsibilities: unknown[] } | null
+        }) =>
+          event.date >= '1969-01-14' &&
+          event.accountability &&
+          event.accountability.responsibilities.length > 0,
+      ),
+    ).toBe(true)
+    expect(indicators.body).toHaveLength(27)
+    expect(
+      indicators.body.every((indicator: { id: string }) =>
+        indicator.id.startsWith('tn-'),
+      ),
+    ).toBe(true)
+    expect(sources.body.length).toBeGreaterThanOrEqual(30)
+    expect(answer.body.answer.id).toBe('tn-modern-progress')
+    expect(
+      policies.body.some(
+        (policy: { id: string }) => policy.id === 'tn-road-renewal-2021',
+      ),
+    ).toBe(true)
+    expect(
+      events.body.some(
+        (event: { id: string }) =>
+          event.id === 'tn-road-delivery-and-safety-2025',
+      ),
+    ).toBe(true)
+  })
+
+  it('compares Tamil Nadu indicators by the closest observed CM data years', async () => {
+    const response = await request(app)
+      .get('/api/indicators/tn-real-nsdp-per-capita/series')
+      .query({ jurisdiction: 'tamil-nadu' })
+    expect(response.status).toBe(200)
+    expect(response.body.observations[0]).toMatchObject({
+      period: 2011,
+      value: 93112.41,
+    })
+    expect(response.body.termChanges).toContainEqual(
+      expect.objectContaining({
+        termId: 'tn-stalin-2021',
+        baseline: expect.objectContaining({
+          period: 2021,
+          value: 154557.2,
+        }),
+        endpoint: expect.objectContaining({
+          period: 2024,
+          value: 198000,
+          status: 'estimated',
+        }),
+        directionAssessment: 'improved',
+      }),
+    )
+    expect(response.body.termChanges).toContainEqual(
+      expect.objectContaining({
+        termId: 'tn-palaniswami-2017',
+        directionAssessment: 'improved',
+      }),
+    )
+    expect(response.body.attributionCaveat).toContain('Chief Minister')
+  })
+
+  it('publishes Tamil Nadu crime evidence without rating the new government', async () => {
+    const [violence, answer, current] = await Promise.all([
+      request(app)
+        .get('/api/indicators/tn-crime-violent-rate/series')
+        .query({ jurisdiction: 'tamil-nadu' }),
+      request(app).get('/api/search').query({
+        jurisdiction: 'tamil-nadu',
+        q: 'crime in tamil nadu',
+      }),
+      request(app)
+        .get('/api/leaders/tn-vijay-2026')
+        .query({ jurisdiction: 'tamil-nadu' }),
+    ])
+    expect(violence.status).toBe(200)
+    expect(violence.body.observations).toEqual([
+      expect.objectContaining({ period: 2023, value: 14.7 }),
+    ])
+    expect(violence.body.termChanges).toEqual([])
+    expect(answer.body.answer).toMatchObject({
+      id: 'tn-crime-safety',
+      confidence: 'medium',
+    })
+    expect(current.body).toMatchObject({
+      id: 'tn-vijay-2026',
+      ratingScore: null,
+      ratingProfiles: [],
+      specialistAssessments: [],
+    })
+  })
+
   it('publishes crime and public-safety trends without treating FIR counts as direct harm', async () => {
     const [indiaAnswer, indiaMurder, apViolence, apAnswer] = await Promise.all([
       request(app).get('/api/search').query({
@@ -386,7 +562,7 @@ describe('read API', () => {
   })
 
   it('filters timeline events by PM or CM term and party', async () => {
-    const [modi, bjp, prePm, andhra] = await Promise.all([
+    const [modi, bjp, prePm, andhra, tamilNadu] = await Promise.all([
       request(app).get('/api/events').query({ leaderTerm: 'modi-2014' }),
       request(app).get('/api/events').query({ party: 'bjp' }),
       request(app).get('/api/events').query({ leaderTerm: 'unmapped' }),
@@ -394,6 +570,11 @@ describe('read API', () => {
         jurisdiction: 'andhra-pradesh',
         leaderTerm: 'ap-naidu-2024',
         party: 'tdp',
+      }),
+      request(app).get('/api/events').query({
+        jurisdiction: 'tamil-nadu',
+        leaderTerm: 'tn-stalin-2021',
+        party: 'dmk',
       }),
     ])
 
@@ -432,6 +613,18 @@ describe('read API', () => {
       office: { shortName: 'Chief Minister' },
       party: { id: 'tdp', shortName: 'TDP' },
     })
+
+    expect(tamilNadu.status).toBe(200)
+    expect(tamilNadu.body.length).toBeGreaterThanOrEqual(3)
+    expect(
+      tamilNadu.body.every((event: TimelineEvent) =>
+        event.governments.some(
+          (government) =>
+            government.termId === 'tn-stalin-2021' &&
+            government.party?.id === 'dmk',
+        ),
+      ),
+    ).toBe(true)
   })
 
   it('publishes complete agent-facing methodology and export endpoints', async () => {

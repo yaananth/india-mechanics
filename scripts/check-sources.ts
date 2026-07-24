@@ -4,12 +4,14 @@ import { crimeSafetySources } from '../server/seed-data/crime-safety.ts'
 import { andhraSources } from '../server/seed-data/andhra-pradesh.ts'
 import { developmentSources } from '../server/seed-data/development-trade.ts'
 import { securitySources } from '../server/seed-data/security.ts'
+import { tamilNaduSources } from '../server/seed-data/tamil-nadu.ts'
 
 const allSources = [
   ...sources,
   ...developmentSources,
   ...securitySources,
   ...andhraSources,
+  ...tamilNaduSources,
   ...crimeSafetySources,
   ...budgetSources,
 ]

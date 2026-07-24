@@ -121,10 +121,20 @@ export function BudgetsView({
       )
     })
     .sort((left, right) => right.fiscalYear.localeCompare(left.fiscalYear))
+  const currentBudgets = budgets.filter((budget) => budget.status === 'current')
+  const latestReviewedBudget = [...budgets].sort((left, right) =>
+    right.fiscalYear.localeCompare(left.fiscalYear),
+  )[0]
+  const spotlightBudgets =
+    currentBudgets.length > 0
+      ? currentBudgets
+      : latestReviewedBudget
+        ? [latestReviewedBudget]
+        : []
   const selected =
     budgets.find((budget) => budget.id === selectedBudgetId) ??
-    budgets.find((budget) => budget.status === 'current') ??
-    budgets.at(-1)
+    currentBudgets[0] ??
+    latestReviewedBudget
 
   const metricRows = selected
     ? [
@@ -160,7 +170,7 @@ export function BudgetsView({
         <div>
           <span className="freshness-line">
             Budget assessments reviewed {knowledge.editorialReviewedThrough} ·
-            current fiscal plan checked {knowledge.politicalStatusChecked}
+            fiscal-plan status checked {knowledge.politicalStatusChecked}
           </span>
           <h1>What each government chose to fund</h1>
           <p>
@@ -184,10 +194,15 @@ export function BudgetsView({
         </span>
       </section>
 
-      <section className="budget-current-strip" aria-label={`Current ${budgetLabel}`}>
-        {budgets
-          .filter((budget) => budget.status === 'current')
-          .map((budget) => (
+      <section
+        className="budget-current-strip"
+        aria-label={
+          currentBudgets.length > 0
+            ? `Current ${budgetLabel}`
+            : `Latest reviewed ${budgetLabel}`
+        }
+      >
+        {spotlightBudgets.map((budget) => (
             <button
               type="button"
               key={budget.id}
@@ -200,7 +215,11 @@ export function BudgetsView({
               </span>
               <span>
                 <strong>{budget.shortTitle}</strong>
-                <small>{budget.plainLanguage}</small>
+                <small>
+                  {currentBudgets.length === 0
+                    ? `Latest reviewed budget. No current-government budget assessment is published yet. ${budget.plainLanguage}`
+                    : budget.plainLanguage}
+                </small>
               </span>
               <span className="budget-current-strip__rating">
                 <EditorialLabel />

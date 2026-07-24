@@ -80,6 +80,18 @@ export function OverviewView({
   const officeLabel = isCountry ? 'Prime Minister' : 'Chief Minister'
   const officePlural = isCountry ? 'Prime Ministers' : 'Chief Ministers'
   const startYear = overview.knowledge.timelineStarts.slice(0, 4)
+  const stateStartDate = new Intl.DateTimeFormat('en-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(`${overview.jurisdiction.validFrom}T00:00:00Z`))
+  const stateIntroduction =
+    overview.jurisdiction.id === 'andhra-pradesh'
+      ? `This state record begins on ${stateStartDate}, the appointed day for post-split Andhra Pradesh. It does not merge observations from the undivided state or present-day Telangana.`
+      : overview.jurisdiction.id === 'tamil-nadu'
+        ? `This state record begins on ${stateStartDate}, when the name Tamil Nadu formally took effect. Earlier Madras State records remain related history rather than being silently relabelled.`
+        : `This state record begins on ${stateStartDate}, its documented validity boundary. Earlier or differently bounded records are not silently merged into current-state comparisons.`
 
   return (
     <div className="view overview-view">
@@ -93,12 +105,12 @@ export function OverviewView({
           <h1>
             {isCountry
               ? 'How is India doing?'
-              : `How is ${overview.jurisdiction.shortName} doing since bifurcation?`}
+              : `How is ${overview.jurisdiction.shortName} doing since ${stateStartDate}?`}
           </h1>
           <p>
             {isCountry
               ? 'India is more capable, connected, and materially secure than at independence. Progress is real but unbalanced: jobs, inclusion, institutional restraints, and environmental health trail the strongest gains.'
-              : `This state record begins on ${overview.jurisdiction.validFrom}. It does not merge observations from undivided Andhra Pradesh or present-day Telangana. Growth, services, welfare, fiscal pressure, capital development, and institutional continuity are assessed inside the post-split boundary.`}
+              : `${stateIntroduction} Growth, services, welfare, fiscal pressure, infrastructure, safety, and institutional continuity are assessed inside that boundary.`}
           </p>
         </div>
         <div className="overview-intro__actions">

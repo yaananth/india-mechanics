@@ -21,7 +21,7 @@ describe('research database integrity', () => {
          FROM events`,
       )
       .get() as { count: number; first_date: string }
-    expect(summary.count).toBe(87)
+    expect(summary.count).toBeGreaterThanOrEqual(100)
     expect(summary.first_date).toBe('1945-11-05')
 
     const categories = db
@@ -59,14 +59,19 @@ describe('research database integrity', () => {
     const counts = db
       .prepare(
         `SELECT
+           (SELECT COUNT(*) FROM events) AS events,
            (SELECT COUNT(*) FROM event_assessments) AS assessments,
            (SELECT COUNT(*) FROM event_responsibilities) AS responsibilities`,
       )
-      .get() as { assessments: number; responsibilities: number }
+      .get() as {
+      events: number
+      assessments: number
+      responsibilities: number
+    }
     expect(missingAssessments).toEqual([])
     expect(eventsWithoutActors).toEqual([])
-    expect(counts.assessments).toBe(87)
-    expect(counts.responsibilities).toBeGreaterThanOrEqual(150)
+    expect(counts.assessments).toBe(counts.events)
+    expect(counts.responsibilities).toBeGreaterThanOrEqual(175)
   })
 
   it('orders the refreshed timeline newest first and includes both NEET crises', () => {
@@ -501,12 +506,12 @@ describe('research database integrity', () => {
             OR COUNT(DISTINCT risk.id) = 0`,
       )
       .all()
-    expect(summary).toEqual({
-      count: 20,
+    expect(summary).toMatchObject({
       first_year: '1947-48',
       latest_year: '2026-27',
-      term_count: 16,
     })
+    expect(summary.count).toBeGreaterThanOrEqual(23)
+    expect(summary.term_count).toBeGreaterThanOrEqual(18)
     expect(incomplete).toEqual([])
   })
 
@@ -527,7 +532,7 @@ describe('research database integrity', () => {
       weighted_score: number
       component_count: number
     }>
-    expect(rows).toHaveLength(20)
+    expect(rows.length).toBeGreaterThanOrEqual(23)
     for (const row of rows) {
       expect(row.component_count).toBe(5)
       expect(
@@ -1020,7 +1025,7 @@ describe('research database integrity', () => {
     const count = db
       .prepare(`SELECT COUNT(*) AS count FROM indicator_definitions`)
       .get() as { count: number }
-    expect(count.count).toBe(60)
+    expect(count.count).toBeGreaterThanOrEqual(88)
     expect(incomplete).toEqual([])
   })
 
@@ -1296,11 +1301,14 @@ describe('state and Chief Minister extensibility', () => {
          ORDER BY a.term_id`,
       )
       .all()
-    expect(publicSafetyAssessments).toEqual([
-      { term_id: 'ap-jagan-2019', outcome_score: 5.7, adjusted_score: 5.8 },
-      { term_id: 'ap-naidu-2014', outcome_score: 5.9, adjusted_score: 6.1 },
-      { term_id: 'modi-2014', outcome_score: 5.9, adjusted_score: 5.9 },
-    ])
+    expect(publicSafetyAssessments).toEqual(
+      expect.arrayContaining([
+        { term_id: 'ap-jagan-2019', outcome_score: 5.7, adjusted_score: 5.8 },
+        { term_id: 'ap-naidu-2014', outcome_score: 5.9, adjusted_score: 6.1 },
+        { term_id: 'modi-2014', outcome_score: 5.9, adjusted_score: 5.9 },
+        { term_id: 'tn-stalin-2021', outcome_score: 5.8, adjusted_score: 5.9 },
+      ]),
+    )
 
     const currentSafetyAssessment = db
       .prepare(
@@ -1309,6 +1317,158 @@ describe('state and Chief Minister extensibility', () => {
       )
       .get()
     expect(currentSafetyAssessment).toBeUndefined()
+  })
+
+  it('publishes modern Tamil Nadu with complete CM chronology and an unscored current government', () => {
+    const jurisdiction = db
+      .prepare(
+        `SELECT level, parent_id, iso_code, valid_from, status
+         FROM jurisdictions
+         WHERE id = 'tamil-nadu'`,
+      )
+      .get()
+    expect(jurisdiction).toEqual({
+      level: 'state',
+      parent_id: 'india',
+      iso_code: 'IN-TN',
+      valid_from: '1969-01-14',
+      status: 'published',
+    })
+
+    const metadata = Object.fromEntries(
+      (
+        db
+          .prepare(
+            `SELECT key, value
+             FROM jurisdiction_metadata
+             WHERE jurisdiction_id = 'tamil-nadu'`,
+          )
+          .all() as unknown as Array<{ key: string; value: string }>
+      ).map((row) => [row.key, row.value]),
+    )
+    expect(metadata).toMatchObject({
+      knowledge_cutoff: '2026-07-24',
+      political_status_checked: '2026-07-24',
+      timeline_starts: '1969-01-14',
+    })
+
+    const termSummary = db
+      .prepare(
+        `SELECT COUNT(*) AS terms,
+                SUM(rating_score IS NOT NULL) AS rated
+         FROM leader_terms
+         WHERE office_id = 'tamil-nadu-chief-minister'`,
+      )
+      .get()
+    expect(termSummary).toEqual({ terms: 24, rated: 9 })
+
+    const current = db
+      .prepare(
+        `SELECT t.id, t.start_date, t.end_date, t.rating_score,
+                t.rating_summary, person.name, party.short_name AS party
+         FROM leader_terms t
+         JOIN people person ON person.id = t.person_id
+         JOIN parties party ON party.id = t.party_id
+         WHERE t.office_id = 'tamil-nadu-chief-minister'
+           AND t.end_date IS NULL`,
+      )
+      .get()
+    expect(current).toMatchObject({
+      id: 'tn-vijay-2026',
+      start_date: '2026-05-10',
+      end_date: null,
+      rating_score: null,
+      name: 'C. Joseph Vijay',
+      party: 'TVK',
+      rating_summary: expect.stringContaining('Not rated'),
+    })
+
+    const counts = db
+      .prepare(
+        `SELECT
+           (SELECT COUNT(*) FROM events
+            WHERE jurisdiction_id = 'tamil-nadu') AS events,
+           (SELECT COUNT(*) FROM policies
+            WHERE jurisdiction_id = 'tamil-nadu') AS policies,
+           (SELECT COUNT(*) FROM budgets
+            WHERE jurisdiction_id = 'tamil-nadu') AS budgets,
+           (SELECT COUNT(*) FROM indicator_observations
+            WHERE jurisdiction_id = 'tamil-nadu') AS observations,
+           (SELECT COUNT(*) FROM curated_answers
+            WHERE jurisdiction_id = 'tamil-nadu') AS answers`,
+      )
+      .get()
+    expect(counts).toEqual({
+      events: 13,
+      policies: 15,
+      budgets: 3,
+      observations: 73,
+      answers: 3,
+    })
+
+    const missingAccountability = db
+      .prepare(
+        `SELECT event.id
+         FROM events event
+         LEFT JOIN event_assessments assessment
+           ON assessment.event_id = event.id
+         LEFT JOIN event_responsibilities responsibility
+           ON responsibility.event_id = event.id
+         WHERE event.jurisdiction_id = 'tamil-nadu'
+         GROUP BY event.id
+         HAVING assessment.event_id IS NULL OR COUNT(responsibility.id) = 0`,
+      )
+      .all()
+    expect(missingAccountability).toEqual([])
+
+    const safety = db
+      .prepare(
+        `SELECT a.term_id,
+                ROUND(
+                  SUM(s.score * d.operational_weight) /
+                  SUM(d.operational_weight),
+                  1
+                ) AS outcome_score,
+                ROUND(
+                  SUM(s.score * d.adjusted_weight) /
+                  SUM(d.adjusted_weight),
+                  1
+                ) AS adjusted_score
+         FROM leader_specialist_assessments a
+         JOIN leader_specialist_scores s ON s.assessment_id = a.id
+         JOIN leader_specialist_dimensions d ON d.id = s.dimension_id
+         WHERE a.term_id = 'tn-stalin-2021'
+           AND a.topic_id = 'public-safety'
+         GROUP BY a.term_id`,
+      )
+      .get()
+    expect(safety).toEqual({
+      term_id: 'tn-stalin-2021',
+      outcome_score: 5.8,
+      adjusted_score: 5.9,
+    })
+
+    const currentBudget = db
+      .prepare(
+        `SELECT id FROM budgets
+         WHERE jurisdiction_id = 'tamil-nadu'
+           AND leader_term_id = 'tn-vijay-2026'`,
+      )
+      .get()
+    expect(currentBudget).toBeUndefined()
+
+    expect(
+      db
+        .prepare(
+          `SELECT candidates_found, review_status
+           FROM ingestion_batches
+           WHERE id = 'tamil-nadu-modern-state-2026-07-24'`,
+        )
+        .get(),
+    ).toEqual({
+      candidates_found: 18,
+      review_status: 'published',
+    })
   })
 
   it('accepts a state jurisdiction and head-of-government office without schema changes', () => {

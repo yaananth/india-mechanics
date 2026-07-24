@@ -89,6 +89,7 @@ server/seed-data/budgets.ts             reviewed budgets, allocations, and ratin
 server/seed-data/security.ts            all-PM national-security assessment lane
 server/seed-data/crime-safety.ts        crime, justice, cyber, and current-news lane
 server/seed-data/andhra-pradesh.ts      post-split AP state and CM corpus
+server/seed-data/tamil-nadu.ts          modern Tamil Nadu state and CM corpus
 server/seed-data/research-metadata.ts   knowledge and review cutoffs
 server/seed-data/generated-indicators.json checked-in feed snapshot
 server/seed-data/generated-bills.json    checked-in Sansad government-bill snapshot
@@ -218,8 +219,9 @@ resilience. It publishes:
 - a reporting-and-justice-adjusted result.
 
 The public-safety topic is scored only for terms with a complete comparable
-evidence window. The current AP term is deliberately unscored because the latest
-downloadable NCRB data are for 2023, before that term began.
+evidence window. The current AP and Tamil Nadu terms are deliberately unscored
+because the latest downloadable NCRB data are for 2023, before either term
+began.
 
 Public safety informs the general crisis and integrity rationales but is not
 added again as a second headline rating. PM attribution is bounded because police
@@ -227,6 +229,27 @@ and public order are primarily state subjects. CM attribution is larger but
 remains shared with courts, prosecution, Union law and platforms, local
 administration, financial institutions, reporting behavior, and social
 conditions.
+
+### Published state modules
+
+State modules are isolated seed catalogs composed by `server/seed.ts`. They use
+the common schema and scoring engine but keep state evidence, IDs, cutoffs, and
+office terms separate from national data and from other states.
+
+- **Andhra Pradesh** begins on June 2, 2014, the appointed day creating the
+  successor state. No undivided-state observation enters a CM comparison.
+- **Tamil Nadu** begins on January 14, 1969, when the Madras State name-change
+  law took effect. It publishes the complete in-scope CM chronology through
+  C. Joseph Vijay taking office on May 10, 2026.
+- Tamil Nadu rates nine substantial historical terms with the same six-component
+  CM rubric. Acting, very short, evidence-poor, and the current roughly
+  75-day-old term remain unscored.
+- Tamil Nadu's latest fully reviewed budgets are 2019-20, 2021-22, and 2025-26.
+  No future or unreviewed 2026-27 full-budget proposal is fabricated for the
+  current government.
+- Tamil Nadu progress uses MoSPI, RBI/NITI, PLFS, SRS, NFHS, state-survey, PRS,
+  NCRB, and MoRTH evidence. Sparse surveys retain their actual fieldwork periods,
+  and budget debt is not silently merged with broader public-debt definitions.
 
 ### Budget
 
@@ -339,7 +362,8 @@ carry `jurisdiction=<id>`. Switching jurisdiction reloads a complete scoped
 bundle: overview, leaders, events, policies, budgets, indicators, answers, and
 sources.
 
-The first published state is post-bifurcation Andhra Pradesh:
+Two state modules are published. Post-bifurcation Andhra Pradesh demonstrates
+a successor-state boundary:
 
 ```text
 jurisdiction id: andhra-pradesh
@@ -367,6 +391,28 @@ national border and strategic-autonomy scores are not projected onto a CM.
 The public-safety specialist rubric is available for the two completed AP terms.
 The current term remains visibly `Not yet rateable`.
 
+Modern Tamil Nadu demonstrates a naming-validity boundary:
+
+```text
+jurisdiction id: tamil-nadu
+level: state
+parent: india
+ISO subdivision: IN-TN
+valid from: 1969-01-14
+office: Chief Minister of Tamil Nadu
+```
+
+The published Tamil Nadu corpus contains:
+
+- twenty-four in-scope CM terms, including acting and short transitions;
+- nine rated substantial terms using the same six-component formula;
+- an explicitly unscored Vijay government beginning May 10, 2026;
+- thirteen accountability events and fifteen reviewed policies;
+- three reviewed budgets, with no fabricated current-government budget rating;
+- twenty-seven visible TN-coded indicators and seventy-three observations;
+- three reviewed state questions and a state-only source ledger;
+- one public-safety specialist assessment for the data-covered Stalin term.
+
 Boundary rules:
 
 - do not project today’s state boundaries backward automatically;
@@ -380,6 +426,9 @@ Boundary rules:
   publishes one continuous table;
 - use AP-specific indicator IDs when cadence, unit, or methodology differs from
   the national series;
+- use the January 14, 1969 name-validity boundary for Tamil Nadu and retain
+  earlier Madras State material as related history rather than silently
+  relabelling it;
 - the progress engine only counts definitions that have observations for the
   selected jurisdiction, preventing state definitions from reducing national
   coverage or vice versa.
@@ -390,6 +439,9 @@ Shareable examples:
 /?jurisdiction=andhra-pradesh
 /?jurisdiction=andhra-pradesh&view=leaders&term=ap-naidu-2024
 /?jurisdiction=andhra-pradesh&view=indicators&indicator=ap-real-nsdp-per-capita
+/?jurisdiction=tamil-nadu
+/?jurisdiction=tamil-nadu&view=leaders&term=tn-vijay-2026
+/?jurisdiction=tamil-nadu&view=indicators&indicator=tn-real-nsdp-per-capita
 ```
 
 Recommended state source hierarchy:
@@ -669,7 +721,7 @@ When a user or agent asks for the latest:
 4. research stale narrative lanes using the source hierarchy;
 5. add or revise sources first;
 6. add events and claims with as-of dates, confidence, and corroboration;
-7. revise a PM score only when component evidence changes;
+7. revise a PM or CM score only when component evidence changes;
 8. create or update an `ingestion_batches` record for the reviewed scope;
 9. update `research-metadata.ts` only for lanes actually reviewed;
 10. reseed, test, build, check links, and run Browser E2E;
@@ -1017,6 +1069,8 @@ The current automated suite checks:
 - explicit knowledge cutoffs;
 - 1945 timeline and protest/communal-violence coverage;
 - AP boundary isolation, CM chronology, and no pre-split observations;
+- Tamil Nadu naming-boundary isolation, full CM chronology, current-term
+  no-score behavior, and state-only evidence;
 - reviewed-answer balance;
 - search and export APIs.
 
@@ -1051,15 +1105,22 @@ This is a strong foundation, not an exhaustive history.
 - the 2021 Census delay limits current demographic analysis;
 - state results still hide district and community differences;
 - the current PM scores have one editorial pass, not an external review panel;
-- only Andhra Pradesh is published at state level;
-- AP policy, event, and budget coverage is a reviewed starting corpus, not an
-  exhaustive state archive;
+- Andhra Pradesh and Tamil Nadu are published at state level; all other states
+  remain absent;
+- AP and Tamil Nadu policy, event, and budget coverage are reviewed starting
+  corpora, not exhaustive state archives;
 - AP road evidence now covers network stock, annual PMGSY delivery through
   July 16, 2026, targeted access, maintenance, fatalities, and one CAG
   execution finding, but lacks a consistent independent annual road-condition
   and travel-time series;
 - AP labour, health, and household indicators rely on survey years and should
   not be read as annual measurements;
+- Tamil Nadu historical ratings before the 1990s have sparse fiscal, outcome,
+  audit, and institutional evidence; most early and short terms remain unscored;
+- Tamil Nadu's latest reviewed full budget is 2025-26. The current Vijay
+  government has no published budget rating in this corpus as of July 24, 2026;
+- Tamil Nadu crime rates currently use the latest downloadable 2023 NCRB
+  record, while road-safety evidence extends to calendar 2024;
 - comparable crime trends currently stop at 2023; the official 2024 NCRB page
   exposes no downloadable records as of July 24, 2026;
 - current crime reporting is selective and is displayed as a provisional

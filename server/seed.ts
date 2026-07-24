@@ -27,6 +27,28 @@ import {
   andhraSources,
 } from './seed-data/andhra-pradesh.ts'
 import {
+  tamilNaduBudgetAllocations,
+  tamilNaduBudgetPoints,
+  tamilNaduBudgets,
+  tamilNaduBudgetScores,
+  tamilNaduClaims,
+  tamilNaduCuratedAnswers,
+  tamilNaduEventAssessments,
+  tamilNaduEvents,
+  tamilNaduIndicatorDefinitions,
+  tamilNaduIndicatorObservations,
+  tamilNaduJurisdictions,
+  tamilNaduLeaderScores,
+  tamilNaduLeaderTerms,
+  tamilNaduOffices,
+  tamilNaduParties,
+  tamilNaduPeople,
+  tamilNaduPolicies,
+  tamilNaduPolicyScores,
+  tamilNaduSources,
+  tamilNaduSpecialistAssessments,
+} from './seed-data/tamil-nadu.ts'
+import {
   claims,
   curatedAnswers,
   evaluationDimensions,
@@ -95,19 +117,32 @@ import type {
   PolicyRegisterSeed,
 } from './types.ts'
 
-export const seedVersion = '2026-07-24.14'
+export const seedVersion = '2026-07-24.15'
 const sourceRosterVersion = 'source-roster-v0.11'
-const allJurisdictions = [...jurisdictions, ...andhraJurisdictions]
-const allOffices = [...offices, ...andhraOffices]
-const allPeople = [...people, ...andhraPeople]
-const allParties = [...parties, ...andhraParties]
-const allLeaderTerms = [...leaderTerms, ...andhraLeaderTerms]
-const allLeaderScores = [...leaderScores, ...andhraLeaderScores]
+const allJurisdictions = [
+  ...jurisdictions,
+  ...andhraJurisdictions,
+  ...tamilNaduJurisdictions,
+]
+const allOffices = [...offices, ...andhraOffices, ...tamilNaduOffices]
+const allPeople = [...people, ...andhraPeople, ...tamilNaduPeople]
+const allParties = [...parties, ...andhraParties, ...tamilNaduParties]
+const allLeaderTerms = [
+  ...leaderTerms,
+  ...andhraLeaderTerms,
+  ...tamilNaduLeaderTerms,
+]
+const allLeaderScores = [
+  ...leaderScores,
+  ...andhraLeaderScores,
+  ...tamilNaduLeaderScores,
+]
 const allSources = [
   ...sources,
   ...developmentSources,
   ...securitySources,
   ...andhraSources,
+  ...tamilNaduSources,
   ...crimeSafetySources,
 ]
 const allPolicies = [
@@ -115,18 +150,21 @@ const allPolicies = [
   ...developmentPolicies,
   ...securityPolicies,
   ...andhraPolicies,
+  ...tamilNaduPolicies,
 ]
 const allPolicyScores = [
   ...policyScores,
   ...developmentPolicyScores,
   ...securityPolicyScores,
   ...andhraPolicyScores,
+  ...tamilNaduPolicyScores,
 ]
 const allEvents = [
   ...events,
   ...developmentEvents,
   ...securityEvents,
   ...andhraEvents,
+  ...tamilNaduEvents,
   ...crimeSafetyEvents,
 ]
 const allEventAssessments = [
@@ -134,6 +172,7 @@ const allEventAssessments = [
   ...developmentEventAssessments,
   ...securityEventAssessments,
   ...andhraEventAssessments,
+  ...tamilNaduEventAssessments,
   ...crimeSafetyEventAssessments,
 ]
 const allClaims = [
@@ -141,21 +180,36 @@ const allClaims = [
   ...developmentClaims,
   ...securityClaims,
   ...andhraClaims,
+  ...tamilNaduClaims,
   ...crimeSafetyClaims,
 ]
 const allIndicatorDefinitions = [
   ...indicatorDefinitions,
   ...developmentIndicatorDefinitions,
   ...andhraIndicatorDefinitions,
+  ...tamilNaduIndicatorDefinitions,
   ...crimeSafetyIndicatorDefinitions,
 ]
-const allBudgets = [...budgets, ...andhraBudgets]
-const allBudgetScores = [...budgetScores, ...andhraBudgetScores]
-const allBudgetAllocations = [...budgetAllocations, ...andhraBudgetAllocations]
-const allBudgetPoints = [...budgetPoints, ...andhraBudgetPoints]
+const allBudgets = [...budgets, ...andhraBudgets, ...tamilNaduBudgets]
+const allBudgetScores = [
+  ...budgetScores,
+  ...andhraBudgetScores,
+  ...tamilNaduBudgetScores,
+]
+const allBudgetAllocations = [
+  ...budgetAllocations,
+  ...andhraBudgetAllocations,
+  ...tamilNaduBudgetAllocations,
+]
+const allBudgetPoints = [
+  ...budgetPoints,
+  ...andhraBudgetPoints,
+  ...tamilNaduBudgetPoints,
+]
 const allCuratedAnswers = [
   ...curatedAnswers,
   ...andhraCuratedAnswers,
+  ...tamilNaduCuratedAnswers,
   ...crimeSafetyCuratedAnswers,
 ]
 const allSpecialistTopics = [
@@ -169,6 +223,7 @@ const allSpecialistDimensions = [
 const allSpecialistAssessments = [
   ...securitySpecialistAssessments,
   ...crimeSafetySpecialistAssessments,
+  ...tamilNaduSpecialistAssessments,
 ]
 const defaultDatabasePath = fileURLToPath(
   new URL('../data/india-mechanics.sqlite', import.meta.url),
@@ -282,14 +337,26 @@ function insertRows(
     `INSERT INTO jurisdiction_metadata (jurisdiction_id, key, value)
      VALUES (?, ?, ?)`,
   )
-  for (const [key, value] of Object.entries({
-    knowledge_cutoff: '2026-07-24',
-    editorial_reviewed_through: '2026-07-24',
-    political_status_checked: '2026-07-24',
-    indicator_as_of_date: '2026-07-24',
-    timeline_starts: '2014-06-02',
-  })) {
-    jurisdictionMetadataInsert.run('andhra-pradesh', key, value)
+  const stateMetadata = {
+    'andhra-pradesh': {
+      knowledge_cutoff: '2026-07-24',
+      editorial_reviewed_through: '2026-07-24',
+      political_status_checked: '2026-07-24',
+      indicator_as_of_date: '2026-07-24',
+      timeline_starts: '2014-06-02',
+    },
+    'tamil-nadu': {
+      knowledge_cutoff: '2026-07-24',
+      editorial_reviewed_through: '2026-07-24',
+      political_status_checked: '2026-07-24',
+      indicator_as_of_date: '2026-07-24',
+      timeline_starts: '1969-01-14',
+    },
+  }
+  for (const [jurisdictionId, values] of Object.entries(stateMetadata)) {
+    for (const [key, value] of Object.entries(values)) {
+      jurisdictionMetadataInsert.run(jurisdictionId, key, value)
+    }
   }
 
   const officeInsert = db.prepare(
@@ -352,7 +419,7 @@ function insertRows(
       row.sourceType,
       row.reliability,
       row.rubricVersion ?? 'source-v0.2',
-      row.linkStatus ?? 'checked-2026-07-23',
+      row.linkStatus ?? 'checked-2026-07-24',
       row.ratingReason,
       row.bestFor,
       row.limitations,
@@ -974,6 +1041,7 @@ function insertRows(
     ...manualIndicatorObservations,
     ...developmentIndicatorObservations,
     ...andhraIndicatorObservations,
+    ...tamilNaduIndicatorObservations,
     ...crimeSafetyIndicatorObservations,
   ]) {
     observationInsert.run(
@@ -1286,6 +1354,25 @@ function insertRows(
     'published',
     metadata.generated_at,
     'Published Andhra Pradesh as an independent state jurisdiction with a hard June 2, 2014 boundary, three CM terms, state-only indicators, six accountability events, six policies, three budgets, and two reviewed answers. No undivided-state observation enters CM comparisons.',
+  )
+  db.prepare(
+    `INSERT INTO ingestion_batches
+      (id, source_roster_version, query_scope, run_at, agent_model,
+       candidates_found, rejected_records, reviewer, review_status,
+       published_at, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).run(
+    'tamil-nadu-modern-state-2026-07-24',
+    sourceRosterVersion,
+    'Modern Tamil Nadu from January 14, 1969 through July 24, 2026: CM chronology, ratings, indicators, crime, budgets, policies, events, and claims',
+    metadata.generated_at,
+    'Codex with political-history, indicators-budget, and policy-safety research sub-agents',
+    18,
+    0,
+    'India Mechanics Tamil Nadu editorial review',
+    'published',
+    metadata.generated_at,
+    'Published Tamil Nadu as an independent state jurisdiction from an 18-source core review with a hard January 14, 1969 naming boundary, complete CM chronology, nine formula-rated substantial terms, fifteen reviewed policies, thirteen accountability events, three reviewed budgets, state progress and public-safety series, three reviewed answers, and an explicitly unscored May 10, 2026 Vijay government. No future August 2026 budget is treated as completed evidence.',
   )
   db.prepare(
     `INSERT INTO ingestion_batches

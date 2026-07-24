@@ -84,6 +84,21 @@ describe('shareable navigation URLs', () => {
       '/?jurisdiction=andhra-pradesh&view=leaders&term=ap-naidu-2024',
     )
     expect(parseNavigation(href)).toEqual(state)
+
+    const tamilNaduState: NavigationState = {
+      ...defaultNavigation,
+      jurisdictionId: 'tamil-nadu',
+      view: 'leaders',
+      termId: 'tn-vijay-2026',
+    }
+    const tamilNaduHref = navigationHref(
+      tamilNaduState,
+      'https://example.test/',
+    )
+    expect(tamilNaduHref).toBe(
+      '/?jurisdiction=tamil-nadu&view=leaders&term=tn-vijay-2026',
+    )
+    expect(parseNavigation(tamilNaduHref)).toEqual(tamilNaduState)
   })
 
   it('infers a view when a share URL omits the view parameter', () => {
