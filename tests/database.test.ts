@@ -21,7 +21,7 @@ describe('research database integrity', () => {
          FROM events`,
       )
       .get() as { count: number; first_date: string }
-    expect(summary.count).toBe(67)
+    expect(summary.count).toBe(84)
     expect(summary.first_date).toBe('1945-11-05')
 
     const categories = db
@@ -65,7 +65,7 @@ describe('research database integrity', () => {
       .get() as { assessments: number; responsibilities: number }
     expect(missingAssessments).toEqual([])
     expect(eventsWithoutActors).toEqual([])
-    expect(counts.assessments).toBe(67)
+    expect(counts.assessments).toBe(84)
     expect(counts.responsibilities).toBeGreaterThanOrEqual(150)
   })
 
@@ -78,8 +78,8 @@ describe('research database integrity', () => {
       )
       .all() as unknown as Array<{ id: string; event_date: string }>
     expect(rows[0]).toMatchObject({
-      id: 'sikkim-tunnel-disaster-2026',
-      event_date: '2026-07-20',
+      id: 'ap-current-road-delivery-2026',
+      event_date: '2026-07-21',
     })
     expect(rows.at(-1)).toMatchObject({
       id: 'ina-trials-1945',
@@ -186,11 +186,11 @@ describe('research database integrity', () => {
       expect(
         Math.abs(row.rating_score - row.weighted_score),
         `${row.id} rating differs from component formula`,
-      ).toBeLessThanOrEqual(0.151)
+      ).toBeLessThanOrEqual(0.051)
     }
   })
 
-  it('records the five-run Modi rating replication and published revision', () => {
+  it('records the Modi methodology review and published revision', () => {
     const term = db
       .prepare(
         `SELECT rating_score, rating_confidence
@@ -206,19 +206,71 @@ describe('research database integrity', () => {
       )
       .get()
     expect(term).toEqual({
-      rating_score: 6.3,
+      rating_score: 6.7,
       rating_confidence: 'medium',
     })
     expect(audit).toEqual({
-      run_count: 5,
-      standardized_mean: 6.22,
-      standard_deviation: 0.07,
-      minimum: 6.1,
-      maximum: 6.3,
-      previous_rating: 6.2,
-      revised_rating: 6.3,
+      run_count: 3,
+      standardized_mean: 6.6,
+      standard_deviation: 0.17,
+      minimum: 6.3,
+      maximum: 6.7,
+      previous_rating: 6.6,
+      revised_rating: 6.7,
       status: 'stable',
     })
+  })
+
+  it('publishes formula-derived operational and rights-adjusted security scores', () => {
+    const rows = db
+      .prepare(
+        `SELECT a.term_id,
+                ROUND(
+                  SUM(s.score * d.operational_weight) /
+                  SUM(d.operational_weight),
+                  1
+                ) AS operational_score,
+                ROUND(
+                  SUM(s.score * d.adjusted_weight) /
+                  SUM(d.adjusted_weight),
+                  1
+                ) AS adjusted_score,
+                COUNT(*) AS component_count
+         FROM leader_specialist_assessments a
+         JOIN leader_specialist_scores s ON s.assessment_id = a.id
+         JOIN leader_specialist_dimensions d ON d.id = s.dimension_id
+         WHERE a.topic_id = 'national-security'
+         GROUP BY a.term_id
+         ORDER BY a.term_id`,
+      )
+      .all()
+    expect(rows).toHaveLength(15)
+    expect(rows).toContainEqual({
+      term_id: 'manmohan-2004',
+      operational_score: 6.1,
+      adjusted_score: 6.2,
+      component_count: 5,
+    })
+    expect(rows).toContainEqual({
+      term_id: 'modi-2014',
+      operational_score: 7,
+      adjusted_score: 6.5,
+      component_count: 5,
+    })
+
+    const missing = db
+      .prepare(
+        `SELECT t.id
+         FROM leader_terms t
+         JOIN offices office ON office.id = t.office_id
+         LEFT JOIN leader_specialist_assessments a
+           ON a.term_id = t.id AND a.topic_id = 'national-security'
+         WHERE t.rating_score IS NOT NULL
+           AND office.id = 'india-prime-minister'
+           AND a.id IS NULL`,
+      )
+      .all()
+    expect(missing).toEqual([])
   })
 
   it('reproduces the disclosed BJP and Congress term-rating comparison', () => {
@@ -258,31 +310,40 @@ describe('research database integrity', () => {
       {
         party: 'BJP',
         terms: 2,
-        simple_average: 6.75,
-        day_weighted_average: 6.6,
+        simple_average: 6.9,
+        day_weighted_average: 6.83,
         rated_years: 18.3,
       },
       {
         party: 'INC',
         terms: 7,
-        simple_average: 6.73,
-        day_weighted_average: 6.84,
+        simple_average: 6.76,
+        day_weighted_average: 6.88,
         rated_years: 54.3,
       },
     ])
+
+    const removedAnswers = db
+      .prepare(
+        `SELECT id
+         FROM curated_answers
+         WHERE id IN ('modi-doing-good', 'bjp-vs-congress')`,
+      )
+      .all()
+    expect(removedAnswers).toEqual([])
 
     const sections = db
       .prepare(
         `SELECT section, COUNT(*) AS count
          FROM answer_claims
-         WHERE answer_id = 'bjp-vs-congress'
+         WHERE answer_id = 'regime-change-now'
          GROUP BY section
          ORDER BY section`,
       )
       .all()
     expect(sections).toEqual([
       { section: 'achievement', count: 1 },
-      { section: 'concern', count: 2 },
+      { section: 'concern', count: 1 },
       { section: 'context', count: 3 },
     ])
   })
@@ -393,7 +454,7 @@ describe('research database integrity', () => {
       .get() as { rating_score: number; score: number; rationale: string }
 
     expect(policy).toEqual({
-      rating_score: 7.2,
+      rating_score: 5.8,
       rating_confidence: 'medium',
       status: 'executive-action',
     })
@@ -405,8 +466,8 @@ describe('research database integrity', () => {
       leader_term_id: 'manmohan-2004',
     })
     expect(leader.rating_score).toBe(7.3)
-    expect(leader.score).toBe(6)
-    expect(leader.rationale).toContain('UN-routed Pakistan flood relief')
+    expect(leader.score).toBe(6.2)
+    expect(leader.rationale).toContain('post-26/11 institutions')
   })
 
   it('publishes sourced budgets with allocations and balanced assessments', () => {
@@ -441,10 +502,10 @@ describe('research database integrity', () => {
       )
       .all()
     expect(summary).toEqual({
-      count: 17,
+      count: 20,
       first_year: '1947-48',
       latest_year: '2026-27',
-      term_count: 13,
+      term_count: 16,
     })
     expect(incomplete).toEqual([])
   })
@@ -466,7 +527,7 @@ describe('research database integrity', () => {
       weighted_score: number
       component_count: number
     }>
-    expect(rows).toHaveLength(17)
+    expect(rows).toHaveLength(20)
     for (const row of rows) {
       expect(row.component_count).toBe(5)
       expect(
@@ -888,7 +949,7 @@ describe('research database integrity', () => {
     const count = db
       .prepare(`SELECT COUNT(*) AS count FROM indicator_definitions`)
       .get() as { count: number }
-    expect(count.count).toBe(20)
+    expect(count.count).toBe(38)
     expect(incomplete).toEqual([])
   })
 
@@ -903,9 +964,15 @@ describe('research database integrity', () => {
     const scoredEconomicIndicators = db
       .prepare(
         `SELECT COUNT(*) AS count
-         FROM indicator_definitions
-         WHERE dimension_id = 'economic-opportunity'
-           AND score_role = 'scored'`,
+         FROM indicator_definitions definition
+         WHERE definition.dimension_id = 'economic-opportunity'
+           AND definition.score_role = 'scored'
+           AND EXISTS (
+             SELECT 1
+             FROM indicator_observations observation
+             WHERE observation.jurisdiction_id = 'india'
+               AND observation.indicator_id = definition.id
+           )`,
       )
       .get() as { count: number }
     expect(exchange).toEqual({
@@ -1018,6 +1085,114 @@ describe('research database integrity', () => {
 })
 
 describe('state and Chief Minister extensibility', () => {
+  it('publishes only post-bifurcation Andhra Pradesh records', () => {
+    const jurisdiction = db
+      .prepare(
+        `SELECT level, parent_id, iso_code, valid_from, status
+         FROM jurisdictions
+         WHERE id = 'andhra-pradesh'`,
+      )
+      .get()
+    expect(jurisdiction).toEqual({
+      level: 'state',
+      parent_id: 'india',
+      iso_code: 'IN-AP',
+      valid_from: '2014-06-02',
+      status: 'published',
+    })
+
+    const terms = db
+      .prepare(
+        `SELECT t.id, t.start_date, t.end_date, t.rating_score,
+                person.name, office.short_name
+         FROM leader_terms t
+         JOIN offices office ON office.id = t.office_id
+         JOIN people person ON person.id = t.person_id
+         WHERE office.jurisdiction_id = 'andhra-pradesh'
+         ORDER BY t.start_date`,
+      )
+      .all()
+    expect(terms).toEqual([
+      {
+        id: 'ap-naidu-2014',
+        start_date: '2014-06-08',
+        end_date: '2019-05-29',
+        rating_score: 6.9,
+        name: 'N. Chandrababu Naidu',
+        short_name: 'Chief Minister',
+      },
+      {
+        id: 'ap-jagan-2019',
+        start_date: '2019-05-30',
+        end_date: '2024-06-11',
+        rating_score: 6.3,
+        name: 'Y. S. Jagan Mohan Reddy',
+        short_name: 'Chief Minister',
+      },
+      {
+        id: 'ap-naidu-2024',
+        start_date: '2024-06-12',
+        end_date: null,
+        rating_score: 6.6,
+        name: 'N. Chandrababu Naidu',
+        short_name: 'Chief Minister',
+      },
+    ])
+
+    const preSplit = db
+      .prepare(
+        `SELECT indicator_id, period
+         FROM indicator_observations
+         WHERE jurisdiction_id = 'andhra-pradesh' AND period < 2014`,
+      )
+      .all()
+    expect(preSplit).toEqual([])
+
+    const counts = db
+      .prepare(
+        `SELECT
+           (SELECT COUNT(*) FROM events
+            WHERE jurisdiction_id = 'andhra-pradesh') AS events,
+           (SELECT COUNT(*) FROM policies
+            WHERE jurisdiction_id = 'andhra-pradesh') AS policies,
+           (SELECT COUNT(*) FROM budgets
+            WHERE jurisdiction_id = 'andhra-pradesh') AS budgets,
+           (SELECT COUNT(*) FROM indicator_observations
+            WHERE jurisdiction_id = 'andhra-pradesh') AS observations,
+           (SELECT COUNT(*) FROM curated_answers
+            WHERE jurisdiction_id = 'andhra-pradesh') AS answers`,
+      )
+      .get()
+    expect(counts).toEqual({
+      events: 9,
+      policies: 7,
+      budgets: 3,
+      observations: 62,
+      answers: 2,
+    })
+
+    const roadPolicy = db
+      .prepare(
+        `SELECT rating_score, rating_confidence
+         FROM policies WHERE id = 'ap-rural-road-connectivity-2016'`,
+      )
+      .get()
+    expect(roadPolicy).toEqual({
+      rating_score: 7.3,
+      rating_confidence: 'medium',
+    })
+
+    const externalValidation = db
+      .prepare(
+        `SELECT COUNT(*) AS count
+         FROM events
+         WHERE id = 'ap-panchayat-awards-2025'
+           AND jurisdiction_id = 'andhra-pradesh'`,
+      )
+      .get()
+    expect(externalValidation).toEqual({ count: 1 })
+  })
+
   it('accepts a state jurisdiction and head-of-government office without schema changes', () => {
     const stateDb = new DatabaseSync(':memory:')
     applySchema(stateDb)

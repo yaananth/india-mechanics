@@ -5,9 +5,7 @@ import {
 
 type JsonRecord = Record<string, unknown>
 
-type SitesSnapshot = {
-  schemaVersion: string
-  generatedAt: string
+type JurisdictionSnapshot = {
   exportMeta: JsonRecord
   overview: JsonRecord
   leaders: JsonRecord[]
@@ -17,7 +15,6 @@ type SitesSnapshot = {
   indicators: JsonRecord[]
   indicatorSeries: Record<string, JsonRecord>
   sources: JsonRecord[]
-  methodology: JsonRecord
   answers: Record<string, JsonRecord>
   claims: JsonRecord[]
   bills: {
@@ -25,6 +22,14 @@ type SitesSnapshot = {
     facets: JsonRecord
     source: JsonRecord
   }
+}
+
+type SitesSnapshot = {
+  schemaVersion: string
+  generatedAt: string
+  jurisdictions: JsonRecord[]
+  jurisdictionData: Record<string, JurisdictionSnapshot>
+  methodology: JsonRecord
   meta: JsonRecord
   openapi: JsonRecord
 }
@@ -66,7 +71,7 @@ function descendingDate(left: JsonRecord, right: JsonRecord) {
   return text(right.date).localeCompare(text(left.date))
 }
 
-function search(snapshot: SitesSnapshot, rawQuery: string) {
+function search(snapshot: JurisdictionSnapshot, rawQuery: string) {
   const query = rawQuery.trim().toLowerCase()
   const queryTokens = tokens(query)
   if (queryTokens.length === 0) {
@@ -270,7 +275,7 @@ function search(snapshot: SitesSnapshot, rawQuery: string) {
   }
 }
 
-function filteredBills(snapshot: SitesSnapshot, url: URL) {
+function filteredBills(snapshot: JurisdictionSnapshot, url: URL) {
   const queryTokens = tokens(url.searchParams.get('q') ?? '')
   const status = url.searchParams.get('status')
   const ministry = url.searchParams.get('ministry')
@@ -333,26 +338,35 @@ async function apiResponse(
   }
   if (path === '/api/meta') return json(snapshot.meta)
   if (path === '/api/openapi.json') return json(snapshot.openapi)
-  if (path === '/api/overview') return json(snapshot.overview)
-  if (path === '/api/leaders') return json(snapshot.leaders)
+  if (path === '/api/jurisdictions') return json(snapshot.jurisdictions)
+  if (path === '/api/methodology') return json(snapshot.methodology)
+
+  const jurisdictionId = url.searchParams.get('jurisdiction') ?? 'india'
+  const jurisdiction = snapshot.jurisdictionData[jurisdictionId]
+  if (!jurisdiction) {
+    return json({ error: 'Jurisdiction not found' }, 404)
+  }
+
+  if (path === '/api/overview') return json(jurisdiction.overview)
+  if (path === '/api/leaders') return json(jurisdiction.leaders)
   if (path.startsWith('/api/leaders/')) {
     const id = decodeURIComponent(path.slice('/api/leaders/'.length))
-    const leader = snapshot.leaders.find((candidate) => candidate.id === id)
+    const leader = jurisdiction.leaders.find((candidate) => candidate.id === id)
     return leader ? json(leader) : json({ error: 'Leader not found' }, 404)
   }
-  if (path === '/api/policies') return json(snapshot.policies)
+  if (path === '/api/policies') return json(jurisdiction.policies)
   if (path.startsWith('/api/policies/')) {
     const id = decodeURIComponent(path.slice('/api/policies/'.length))
-    const policy = snapshot.policies.find((candidate) => candidate.id === id)
+    const policy = jurisdiction.policies.find((candidate) => candidate.id === id)
     return policy ? json(policy) : json({ error: 'Policy not found' }, 404)
   }
-  if (path === '/api/budgets') return json(snapshot.budgets)
+  if (path === '/api/budgets') return json(jurisdiction.budgets)
   if (path === '/api/events') {
     const category = url.searchParams.get('category')
     const from = url.searchParams.get('from')
     const to = url.searchParams.get('to')
     return json(
-      snapshot.events.filter(
+      jurisdiction.events.filter(
         (event) =>
           (!category || event.category === category) &&
           (!from || text(event.date) >= from) &&
@@ -360,7 +374,7 @@ async function apiResponse(
       ),
     )
   }
-  if (path === '/api/indicators') return json(snapshot.indicators)
+  if (path === '/api/indicators') return json(jurisdiction.indicators)
   if (
     path.startsWith('/api/indicators/') &&
     path.endsWith('/series')
@@ -368,39 +382,42 @@ async function apiResponse(
     const id = decodeURIComponent(
       path.slice('/api/indicators/'.length, -'/series'.length),
     )
-    const series = snapshot.indicatorSeries[id]
+    const series = jurisdiction.indicatorSeries[id]
     return series ? json(series) : json({ error: 'Indicator not found' }, 404)
   }
-  if (path === '/api/sources') return json(snapshot.sources)
-  if (path === '/api/methodology') return json(snapshot.methodology)
+  if (path === '/api/sources') return json(jurisdiction.sources)
   if (path.startsWith('/api/questions/')) {
     const id = decodeURIComponent(path.slice('/api/questions/'.length))
-    const answer = snapshot.answers[id]
+    const answer =
+      jurisdiction.answers[id] ??
+      Object.values(snapshot.jurisdictionData)
+        .map((candidate) => candidate.answers[id])
+        .find(Boolean)
     return answer ? json(answer) : json({ error: 'Answer not found' }, 404)
   }
   if (path === '/api/search') {
-    return json(search(snapshot, url.searchParams.get('q') ?? ''))
+    return json(search(jurisdiction, url.searchParams.get('q') ?? ''))
   }
   if (path === '/api/bills') {
-    return json(filteredBills(snapshot, url))
+    return json(filteredBills(jurisdiction, url))
   }
   if (path.startsWith('/api/bills/')) {
     const id = decodeURIComponent(path.slice('/api/bills/'.length))
-    const bill = snapshot.bills.records.find((candidate) => candidate.id === id)
+    const bill = jurisdiction.bills.records.find((candidate) => candidate.id === id)
     return bill
-      ? json({ ...bill, source: snapshot.bills.source })
+      ? json({ ...bill, source: jurisdiction.bills.source })
       : json({ error: 'Bill not found' }, 404)
   }
   if (path === '/api/export') {
     return json({
-      ...snapshot.exportMeta,
-      leaders: snapshot.leaders,
-      policies: snapshot.policies,
-      budgets: snapshot.budgets,
-      events: snapshot.events,
-      indicators: snapshot.indicators,
-      bills: snapshot.bills.records,
-      sources: snapshot.sources,
+      ...jurisdiction.exportMeta,
+      leaders: jurisdiction.leaders,
+      policies: jurisdiction.policies,
+      budgets: jurisdiction.budgets,
+      events: jurisdiction.events,
+      indicators: jurisdiction.indicators,
+      bills: jurisdiction.bills.records,
+      sources: jurisdiction.sources,
       methodology: snapshot.methodology,
     })
   }

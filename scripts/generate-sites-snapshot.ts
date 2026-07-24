@@ -16,22 +16,19 @@ async function getJson<T>(path: string) {
   return response.body as T
 }
 
-try {
-  const [
-    exportData,
-    overview,
-    methodology,
-    meta,
-    openapi,
-    billSummary,
-  ] = await Promise.all([
-    getJson<Record<string, unknown>>('/api/export?jurisdiction=india'),
-    getJson<Record<string, unknown>>('/api/overview?jurisdiction=india'),
-    getJson<Record<string, unknown>>('/api/methodology'),
-    getJson<Record<string, unknown>>('/api/meta'),
-    getJson<Record<string, unknown>>('/api/openapi.json'),
+async function buildJurisdictionSnapshot(jurisdictionId: string) {
+  const [exportData, overview, sources, billSummary] = await Promise.all([
     getJson<Record<string, unknown>>(
-      '/api/bills?jurisdiction=india&page=1&pageSize=1',
+      `/api/export?jurisdiction=${encodeURIComponent(jurisdictionId)}`,
+    ),
+    getJson<Record<string, unknown>>(
+      `/api/overview?jurisdiction=${encodeURIComponent(jurisdictionId)}`,
+    ),
+    getJson<Array<Record<string, unknown>>>(
+      `/api/sources?jurisdiction=${encodeURIComponent(jurisdictionId)}`,
+    ),
+    getJson<Record<string, unknown>>(
+      `/api/bills?jurisdiction=${encodeURIComponent(jurisdictionId)}&page=1&pageSize=1`,
     ),
   ])
 
@@ -40,7 +37,6 @@ try {
   const budgets = exportData.budgets as Array<Record<string, unknown>>
   const events = exportData.events as Array<Record<string, unknown>>
   const indicators = exportData.indicators as Array<Record<string, unknown>>
-  const sources = exportData.sources as Array<Record<string, unknown>>
   const bills = exportData.bills as Array<Record<string, unknown>>
   const overviewQuestions = overview.questions as Array<{ id: string }>
 
@@ -59,7 +55,7 @@ try {
         return [
           id,
           await getJson<Record<string, unknown>>(
-            `/api/indicators/${encodeURIComponent(id)}/series?jurisdiction=india`,
+            `/api/indicators/${encodeURIComponent(id)}/series?jurisdiction=${encodeURIComponent(jurisdictionId)}`,
           ),
         ]
       }),
@@ -71,14 +67,12 @@ try {
       `SELECT id, title, body, stance, category, confidence, as_of_date,
               leader_term_id, event_id, policy_id
        FROM claims
-       WHERE jurisdiction_id = 'india' AND review_status = 'published'
+       WHERE jurisdiction_id = ? AND review_status = 'published'
        ORDER BY rowid DESC`,
     )
-    .all()
+    .all(jurisdictionId)
 
-  const snapshot = {
-    schemaVersion: 'india-mechanics-sites-v1',
-    generatedAt: new Date().toISOString(),
+  return {
     exportMeta: {
       schemaVersion: exportData.schemaVersion,
       generatedAt: exportData.generatedAt,
@@ -94,7 +88,6 @@ try {
     indicators,
     indicatorSeries: Object.fromEntries(indicatorEntries),
     sources,
-    methodology,
     answers: Object.fromEntries(answerEntries),
     claims,
     bills: {
@@ -102,6 +95,32 @@ try {
       facets: billSummary.facets,
       source: billSummary.source,
     },
+  }
+}
+
+try {
+  const [jurisdictions, methodology, meta, openapi] = await Promise.all([
+    getJson<Array<{ id: string; status: string }>>('/api/jurisdictions'),
+    getJson<Record<string, unknown>>('/api/methodology'),
+    getJson<Record<string, unknown>>('/api/meta'),
+    getJson<Record<string, unknown>>('/api/openapi.json'),
+  ])
+  const publishedJurisdictions = jurisdictions.filter(
+    (jurisdiction) => jurisdiction.status === 'published',
+  )
+  const jurisdictionEntries = await Promise.all(
+    publishedJurisdictions.map(async (jurisdiction) => [
+      jurisdiction.id,
+      await buildJurisdictionSnapshot(jurisdiction.id),
+    ]),
+  )
+
+  const snapshot = {
+    schemaVersion: 'india-mechanics-sites-v2',
+    generatedAt: new Date().toISOString(),
+    jurisdictions: publishedJurisdictions,
+    jurisdictionData: Object.fromEntries(jurisdictionEntries),
+    methodology,
     meta,
     openapi,
   }
@@ -114,7 +133,7 @@ try {
   )
   await copyFile('.openai/hosting.json', 'dist/.openai/hosting.json')
   console.log(
-    `Wrote Sites API snapshot with ${bills.length} bills to dist/api-snapshot.json`,
+    `Wrote Sites API snapshot for ${publishedJurisdictions.length} jurisdictions to dist/api-snapshot.json`,
   )
 } finally {
   db.close()

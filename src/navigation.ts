@@ -3,6 +3,7 @@ import type { ViewId } from './types.ts'
 export type PolicyViewMode = 'reviews' | 'register'
 
 export type NavigationState = {
+  jurisdictionId: string
   view: ViewId
   answerId: string | null
   termId: string
@@ -15,6 +16,7 @@ export type NavigationState = {
 }
 
 export const defaultNavigation: NavigationState = {
+  jurisdictionId: 'india',
   view: 'overview',
   answerId: null,
   termId: 'modi-2014',
@@ -61,6 +63,9 @@ export function parseNavigation(input: string | URL): NavigationState {
   const requestedMode = optionalParam(params, 'mode')
 
   return {
+    jurisdictionId:
+      optionalParam(params, 'jurisdiction') ??
+      defaultNavigation.jurisdictionId,
     view: inferredView(params),
     answerId: optionalParam(params, 'answer'),
     termId: optionalParam(params, 'term') ?? defaultNavigation.termId,
@@ -85,6 +90,9 @@ export function navigationHref(
       : currentLocation
   const params = new URLSearchParams()
 
+  if (state.jurisdictionId !== defaultNavigation.jurisdictionId) {
+    params.set('jurisdiction', state.jurisdictionId)
+  }
   if (state.view !== 'overview') params.set('view', state.view)
 
   if (state.view === 'overview' && state.answerId) {
@@ -93,7 +101,7 @@ export function navigationHref(
   if (state.view === 'timeline' && state.eventId) {
     params.set('event', state.eventId)
   }
-  if (state.view === 'leaders') {
+  if (state.view === 'leaders' && state.termId) {
     params.set('term', state.termId)
   }
   if (state.view === 'policies') {
@@ -101,14 +109,14 @@ export function navigationHref(
       params.set('mode', 'register')
       if (state.billId) params.set('bill', state.billId)
     } else {
-      params.set('policy', state.policyId)
+      if (state.policyId) params.set('policy', state.policyId)
     }
   }
   if (state.view === 'budgets') {
-    params.set('budget', state.budgetId)
+    if (state.budgetId) params.set('budget', state.budgetId)
   }
   if (state.view === 'indicators') {
-    params.set('indicator', state.indicatorId)
+    if (state.indicatorId) params.set('indicator', state.indicatorId)
   }
 
   const search = params.toString()

@@ -330,7 +330,7 @@ export const sources: SourceSeed[] = [
     id: 'rbi-history-gold-1991',
     title: 'Reserve Bank of India History, Volume IV: External Payments Crisis',
     publisher: 'Reserve Bank of India',
-    url: 'https://rbidocs.rbi.org.in/rdocs/content/PDFs/Chapter12_04122018.pdf',
+    url: 'https://www.rbi.org.in/commonman/english/scripts/PressReleases.aspx?Id=1299',
     sourceType: 'official-institutional-history',
     reliability: 5,
     ratingReason:
@@ -1219,7 +1219,7 @@ export const sources: SourceSeed[] = [
     id: 'caa-rules-2024',
     title: 'MHA citizenship acts and rules index: CAA Rules 2024',
     publisher: 'Ministry of Home Affairs, Government of India',
-    url: 'https://www.mha.gov.in/en/divisionofmha/foreigners-division/acts-rules-and-regulations-pertaining-foreigners-division',
+    url: 'https://www.mha.gov.in/sites/default/files/2024-09/TheCitizenshipAmendmentRule_10092024.pdf',
     sourceType: 'official-rules-index',
     reliability: 5,
     ratingReason:
@@ -1541,13 +1541,13 @@ export const sources: SourceSeed[] = [
   },
   {
     id: 'mha-fcra-division',
-    title: 'Foreigners-II Division: FCRA',
+    title: 'Foreigners-II Division: Foreign Contribution Regulation Act',
     publisher: 'Ministry of Home Affairs, Government of India',
     url: 'https://www.mha.gov.in/en/commoncontent/foreigners-ii-division',
     sourceType: 'official-record',
     reliability: 5,
     ratingReason: 'Primary statement of the regulator’s role and national-interest rationale.',
-    bestFor: 'Government purpose, responsible division, and official portal linkage.',
+    bestFor: 'Government purpose, responsible administration, forms, and official portal linkage.',
     limitations: 'The regulator’s stated rationale is not an independent impact evaluation.',
     accessedDate,
   },
@@ -2147,10 +2147,10 @@ export const leaderTerms: LeaderTermSeed[] = [
     partyId: 'bjp',
     startDate: '2014-05-26',
     mandateLabel: 'NDA governments, 2014–present',
-    ratingScore: 6.3,
+    ratingScore: 6.7,
     ratingConfidence: 'medium',
     ratingSummary:
-      'Large poverty and basic-service gains, major road expansion, digital systems, and a broader trade-agreement strategy; reduced by job quality, uneven inclusion, crisis response, political-finance transparency, safety and execution gaps, and institutional decline.',
+      'Large poverty and basic-service gains, major road expansion, digital systems, stronger operational security, and a broader trade-agreement strategy; reduced by job quality, uneven inclusion, crisis response, political-finance transparency, border and prevention failures, safety and execution gaps, and institutional decline. Balanced estimate 6.7/10; alternative weighting lenses span 6.0-7.1.',
     assessmentAsOf: '2026-07-24',
     sourceIds: [
       'pm-india-current',
@@ -2176,7 +2176,7 @@ export const evaluationDimensions = [
   {
     id: 'outcomes',
     name: 'Observed outcomes',
-    weight: 0.25,
+    weight: 0.3,
     description:
       'Direction and durability of economic, human-development, and basic-service outcomes during and shortly after the term.',
   },
@@ -2197,7 +2197,7 @@ export const evaluationDimensions = [
   {
     id: 'crisis',
     name: 'Crisis and security',
-    weight: 0.15,
+    weight: 0.1,
     description:
       'Performance under wars, economic shocks, disasters, public-health emergencies, and internal conflict.',
   },
@@ -2231,8 +2231,8 @@ const componentScores: Record<string, number[]> = {
   'deve-gowda-1996': [5.5, 5.5, 6.0, 5.0, 6.2, 5.8],
   'gujral-1997': [5.4, 6.0, 5.5, 6.8, 6.0, 5.8],
   'vajpayee-1998': [7.5, 8.0, 6.5, 6.8, 6.2, 6.5],
-  'manmohan-2004': [8.0, 7.5, 8.0, 6.0, 7.0, 5.5],
-  'modi-2014': [7.7, 7.2, 6.2, 5.8, 3.8, 5.8],
+  'manmohan-2004': [8.0, 7.5, 8.0, 6.2, 7.0, 5.5],
+  'modi-2014': [7.7, 7.4, 6.5, 6.3, 4.5, 6.0],
 }
 
 const scoreRationales: Record<string, string[]> = {
@@ -2344,17 +2344,17 @@ const scoreRationales: Record<string, string[]> = {
     'High growth, poverty reduction, and service expansion were substantial over the decade.',
     'RTI, MGNREGA, Aadhaar’s launch, and the nuclear agreement were durable changes.',
     'Rights-based welfare and rural spending materially expanded the social floor.',
-    'Global financial-crisis response and UN-routed Pakistan flood relief were strengths; 26/11 preparedness failures, later inflation, and other security shocks hurt.',
+    'The global financial-crisis response, major pre-2014 internal-security declines, and post-26/11 institutions were strengths; 26/11 preparedness failures and the wider urban terror-attack wave prevent a high score.',
     'RTI strengthened accountability, while second-term executive drift weakened it.',
     'Major corruption scandals and perceived policy paralysis reduce the integrity score.',
   ],
   'modi-2014': [
     'Monetary and multidimensional poverty fell substantially while roads, basic services, formalisation, and aggregate output expanded; survey changes and job quality limit attribution.',
-    'GST, insolvency reform, digital public infrastructure, highway investment, and a broader trade-agreement strategy endure, but IBC, Bharatmala, safety, and execution gaps lower the score.',
-    'Poverty and service access improved materially; job quality, nutrition, gender, regional, earnings, and minority-inclusion gaps remain substantial.',
-    'Vaccination and security capacity are strengths; the lockdown, pandemic mortality uncertainty, Manipur, and conflict response produce a mixed record.',
-    'V-Dem and Freedom House show material deterioration, while the electoral-bonds judgment exposed a major political-finance transparency failure.',
-    'Central execution is strong; demonetisation, electoral bonds, transparency gaps, and concentration of power reduce the score.',
+    'GST, insolvency reform, digital public infrastructure, highway investment, and a broader trade-agreement strategy endure; IBC delay, Bharatmala cost control, safety, and execution gaps prevent a higher score.',
+    'Poverty and service access improved materially; productive-job quality, nutrition, gender, regional, earnings, and minority-inclusion gaps prevent a high score.',
+    'LWE and most Northeast security indicators, retaliation capacity, vaccination, and defence capability are strengths; Uri, Pulwama, Pahalgam, Galwan, the lockdown, pandemic mortality uncertainty, Manipur, and conflict response keep the combined record mixed-positive.',
+    'Independent indices show material democratic deterioration, while the competitive 2024 election and electoral-bonds judgment show electoral and judicial checks still imposed meaningful limits.',
+    'Central execution is strong; electoral bonds, transparency gaps, concentration of power, project-control failures, and the bounded demonetisation penalty reduce the score.',
   ],
 }
 
@@ -2370,18 +2370,18 @@ export const leaderScores: LeaderScoreSeed[] = Object.entries(componentScores).f
 
 export const leaderRatingAudits = [
   {
-    id: 'modi-rating-evidence-refresh-2026-07-24',
+    id: 'modi-rating-methodology-review-2026-07-24',
     termId: 'modi-2014',
-    runCount: 5,
-    genericMean: 6.28,
-    standardizedMean: 6.22,
-    standardDeviation: 0.07,
-    minimum: 6.1,
-    maximum: 6.3,
-    previousRating: 6.2,
-    revisedRating: 6.3,
+    runCount: 3,
+    genericMean: 6.6,
+    standardizedMean: 6.6,
+    standardDeviation: 0.17,
+    minimum: 6.3,
+    maximum: 6.7,
+    previousRating: 6.6,
+    revisedRating: 6.7,
     promptHash:
-      'sha256:60951df18bdb3970896eccaba4f1c9f8e5ff30ade58a70975cbcf9ee51c27cbc',
+      'sha256:89a3e279ae2044e4f81de22936c00fe06388fbcde0de4f01b6138e1617446da7',
     status: 'stable',
     reviewedAt: '2026-07-24',
     consensusSources: [
@@ -2394,7 +2394,7 @@ export const leaderRatingAudits = [
       'commerce.gov.in',
     ],
     notes:
-      'Five blinded live-search replications produced a 6.1-6.3 standardized range. A July 2026 evidence refresh made roads, poverty, and trade agreements explicit, raising outcomes and inclusion while leaving the revised rating within that range.',
+      'The published review found 6.3-6.7 defensible. Development and inclusion credit, calibrated institutional costs, and a separate security backfill all contribute. Demonetisation remains bounded at roughly 0.05-0.20 balanced points; the reviewed security lane raises the combined crisis-security component while separately exposing a stronger operational score and a lower rights-adjusted score.',
   },
 ] satisfies import('../types.ts').LeaderRatingAuditSeed[]
 
@@ -2449,7 +2449,7 @@ const policyComponentValues: Record<string, Array<number | null>> = {
   'mgnrega-2005': [8, 8, 7, 8, 8],
   'state-vat-2005': [8.5, 7.5, 6.5, 6.5, 8.5],
   'fcra-2010': [7, 6, 6, 5, 6],
-  'pakistan-flood-relief-2010': [8.5, 6, 7, 9, 6.5],
+  'pakistan-flood-relief-2010': [6.5, 4.5, 6.5, 7.5, 4.5],
   'aadhaar-2016': [8, 8, 6.5, 4.5, 7],
   'ibc-2016': [8, 7.5, 6, 7, 7],
   'demonetisation-2016': [5, 2.5, 3, 3, 3],
@@ -2588,11 +2588,11 @@ const policyRationales: Record<string, string[]> = {
     'The framework endured and became the base for progressively tighter amendments.',
   ],
   'pakistan-flood-relief-2010': [
-    'Responded to a catastrophic civilian disaster with a limited, targeted humanitarian commitment rather than an open-ended bilateral transfer.',
-    'United Nations records confirm a US$20 million Indian contribution to the Pakistan Emergency Response Fund, but recipient-level outcomes attributable to India cannot be isolated.',
-    'The offer was expanded promptly and channelled through the United Nations, reducing diversion and bilateral-control risks despite initial political hesitation.',
-    'The decision distinguished Pakistani civilians in urgent need from the state and non-state actors implicated in India’s security conflict.',
-    'The contribution supported a regional humanitarian norm but did not create a durable diplomatic or counterterrorism breakthrough.',
+    'The civilian emergency was real, but the design did not publish India-specific end-use conditions or a measurable strategic objective beyond humanitarian relief.',
+    'United Nations records confirm the contribution reached a multilateral emergency fund, but recipient-level outcomes, diversion risk, and any security or diplomatic benefit cannot be isolated.',
+    'United Nations routing reduced direct bilateral-control risk, but it did not guarantee against downstream diversion, substitution, or fungibility within Pakistan’s wider public finances.',
+    'The decision distinguished civilians from hostile state and non-state actors, while the government still had a duty to assess whether assistance could indirectly free resources for other uses.',
+    'No durable diplomatic or counterterrorism benefit is demonstrated, and the available records cannot prove either diversion to terrorism or a guarantee that no indirect benefit occurred.',
   ],
   'aadhaar-2016': [
     'Targeted identity gaps, duplicate beneficiaries, and authentication at national scale.',
@@ -3141,7 +3141,7 @@ export const policies: PolicySeed[] = [
     ratingScore: policyRating('pakistan-flood-relief-2010'),
     ratingConfidence: 'medium',
     ratingSummary:
-      'A proportionate and well-routed humanitarian decision despite severe bilateral tension, limited by modest scale, incomplete recipient-level impact evidence, and little durable diplomatic effect.',
+      'A defensible humanitarian aim with lower-risk UN routing, but no guarantee against diversion or fungibility, no India-specific recipient-level outcome evidence, and no demonstrated security or diplomatic payoff.',
     assessmentAsOf: heardClaimReviewedDate,
     sourceIds: [
       'mea-pakistan-flood-aid-2010',
@@ -5750,19 +5750,19 @@ export const eventAssessments: EventAssessmentSeed[] = [
   },
   {
     eventId: 'pakistan-flood-aid-2010',
-    choiceAssessment: 'mostly-right',
-    choiceScore: 7.5,
+    choiceAssessment: 'mixed',
+    choiceScore: 5.8,
     choiceReason:
-      'Providing limited civilian disaster relief through United Nations channels was a proportionate humanitarian choice that did not require India to relax terrorism accountability or bilateral security policy.',
+      'Helping civilians through United Nations channels had a defensible humanitarian rationale and reduced direct-transfer risk, but the public record does not guarantee end use, exclude fungibility, or demonstrate a security or diplomatic return for India.',
     unionRole:
       'Prime Minister Manmohan Singh, External Affairs Minister S. M. Krishna, and the Union government made and publicly defended the assistance decision.',
     stateLocalRole:
       'Indian state and local governments had no material decision role; implementation was handled through Union foreign policy and multilateral relief institutions.',
     positiveOutcomes:
-      'India contributed to emergency relief, reinforced a regional humanitarian norm, and distinguished Pakistani civilians from the actors responsible for terrorism and state security policy.',
+      'The multilateral route reduced direct control by Pakistan’s government and placed the contribution inside an established humanitarian mechanism; no separate national-security benefit is credited.',
     lessons:
-      'Humanitarian relief after conflict should use transparent multilateral channels, disclose delivery, and remain explicitly separate from security concessions or unresolved accountability.',
-    confidence: 'high',
+      'Aid to a hostile or high-risk state should publish end-use safeguards, audit access, fungibility analysis, strategic objectives, and post-disbursement evidence rather than treating the delivery channel as a guarantee.',
+    confidence: 'medium',
     assessmentAsOf: heardClaimReviewedDate,
     responsibilities: [
       eventResponsibility(
@@ -5776,10 +5776,10 @@ export const eventAssessments: EventAssessmentSeed[] = [
       eventResponsibility(
         'Manmohan Singh government and External Affairs Ministry',
         'union-government',
-        'positive-leadership',
-        5,
-        'Authorised and expanded the relief commitment despite severe bilateral tension.',
-        'high',
+        'policy-decision',
+        4,
+        'Authorised and expanded the relief commitment and therefore owned both its humanitarian rationale and its unresolved strategic-risk controls.',
+        'medium',
       ),
       eventResponsibility(
         'United Nations humanitarian agencies',
@@ -7103,12 +7103,12 @@ export const claims: ClaimSeed[] = [
     leaderTermId: 'manmohan-2004',
     eventId: 'pakistan-flood-aid-2010',
     policyId: 'pakistan-flood-relief-2010',
-    title: 'Humanitarian restraint amid India–Pakistan hostility',
+    title: 'UN routing reduced but did not eliminate strategic risk',
     body:
-      'The UPA government separated civilian flood relief from unresolved terrorism and security disputes, committing US$25 million through United Nations humanitarian channels.',
-    stance: 'achievement',
+      'The UPA government committed US$25 million for civilian flood relief through United Nations channels. That structure reduced direct-transfer risk, but the available record does not guarantee end use, rule out fungibility, or establish a security benefit for India.',
+    stance: 'context',
     category: 'foreign-policy',
-    confidence: 'high',
+    confidence: 'medium',
     asOfDate: heardClaimReviewedDate,
     sourceIds: [
       'mea-pakistan-flood-aid-2010',
@@ -7124,7 +7124,7 @@ export const claims: ClaimSeed[] = [
     policyId: 'pakistan-flood-relief-2010',
     title: 'Fact check: true amount, misleading frame',
     body:
-      '“Congress gave Pakistan US$25 million after 26/11” is substantially true on amount and chronology, but omits that this was 2010 flood relief for civilians, channelled through the United Nations rather than unrestricted support to Pakistan’s government or a concession on terrorism.',
+      '“Congress gave Pakistan US$25 million after 26/11” is substantially true on amount and chronology. It was civilian flood relief channelled through the United Nations rather than an unrestricted state transfer, but the public evidence neither proves diversion to terrorism nor guarantees that no indirect or fungible benefit occurred.',
     stance: 'mixed',
     category: 'fact-check',
     confidence: 'high',
@@ -7144,7 +7144,7 @@ export const claims: ClaimSeed[] = [
     policyId: 'pakistan-flood-relief-2010',
     title: 'The gesture did not resolve the security conflict',
     body:
-      'The contribution was modest relative to the disaster, and available evidence does not isolate recipient-level effects or show a durable India–Pakistan diplomatic or counterterrorism breakthrough.',
+      'The contribution was modest relative to the disaster. Available evidence does not isolate recipient-level effects, publish India-specific end-use auditing, rule out fungibility, or show a durable diplomatic or counterterrorism breakthrough.',
     stance: 'concern',
     category: 'foreign-policy',
     confidence: 'medium',
@@ -7383,7 +7383,7 @@ export const claims: ClaimSeed[] = [
     jurisdictionId: 'india',
     title: 'The published term averages are effectively close',
     body:
-      'Using this site’s current editorial PM-term estimates, the simple mean is 6.75 for BJP-led rated terms and 6.73 for Congress-led terms. Weighting by days in office through July 24, 2026 gives 6.60 for BJP and 6.84 for Congress.',
+      'Using this site’s current balanced PM-term estimates, the simple mean is 6.90 for BJP-led rated terms and 6.76 for Congress-led terms. Weighting by days in office through July 24, 2026 gives 6.83 for BJP and 6.88 for Congress.',
     stance: 'context',
     category: 'methodology',
     confidence: 'high',
@@ -8426,97 +8426,136 @@ export const claims: ClaimSeed[] = [
     asOfDate: ratingAsOf,
     sourceIds: ['fcra-2026-rules', 'fcra-2026-sansad', 'fcra-2026-prs'],
   },
+  {
+    id: 'regime-change-continuity-case',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'The case for continuity is substantial',
+    body:
+      'The current government’s strongest case is delivery at scale: roads and logistics, basic services and poverty reduction, digital public infrastructure, formalisation, trade strategy, defence-industrial growth, and stronger operational-security performance.',
+    stance: 'achievement',
+    category: 'government-change',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'morth-year-end-2025',
+      'world-bank-poverty-trend-2026',
+      'npci-upi-statistics',
+      'commerce-fta-achievements-2026',
+      'mha-annual-report-2024-25',
+      'pib-defence-exports-2026',
+    ],
+  },
+  {
+    id: 'regime-change-change-case',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'The case for electoral change is also real',
+    body:
+      'Productive-job quality, institutional checks, political-finance transparency, social cohesion, Manipur, major attack and border-prevention failures, consultation, and concentration of executive power create a serious case for a different government or materially stronger coalition and institutional constraints.',
+    stance: 'concern',
+    category: 'government-change',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'ilo-india-employment-2024',
+      'vdem-v16',
+      'supreme-electoral-bonds-2024',
+      'supreme-court-manipur-2023',
+      'ap-galwan-2020',
+      'ap-pahalgam-2025',
+    ],
+  },
+  {
+    id: 'regime-change-previous-term-comparison',
+    jurisdictionId: 'india',
+    title: 'The previous full government term scored higher overall but lower on operational security',
+    body:
+      'Using the same published rubric, Manmohan Singh’s 2004-2014 term scores 7.3 balanced versus 6.7 for Modi’s 2014-present term. Modi leads the separate operational-security assessment 7.0 to 6.1, while Manmohan’s record scores higher on inclusion, institutions, and the full-period observed-outcomes assessment.',
+    stance: 'context',
+    category: 'government-change',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'pm-india-current',
+      'pm-india-former',
+      'world-bank-india',
+      'mha-annual-report-2008-09',
+      'mha-annual-report-2013-14',
+      'mha-annual-report-2024-25',
+      'rti-act',
+      'mgnrega-act',
+      'vdem-v16',
+    ],
+  },
+  {
+    id: 'regime-change-alternative-uncertainty',
+    jurisdictionId: 'india',
+    title: 'A previous government’s record is not a forecast for a future alternative',
+    body:
+      'The opposition’s future coalition, leadership, programme, fiscal choices, security team, and ability to preserve current infrastructure and delivery gains are not known from historical UPA performance. Replacement should be judged against a credible governing offer, not anti-incumbency alone.',
+    stance: 'context',
+    category: 'government-change',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['eci-2024', 'pm-india-current', 'pm-india-former'],
+  },
+  {
+    id: 'regime-change-constitutional-choice',
+    jurisdictionId: 'india',
+    title: 'Government change means constitutional electoral choice',
+    body:
+      'This assessment concerns peaceful change through elections and parliamentary confidence. It is not an argument for extra-constitutional removal, instability, or weakening democratic institutions.',
+    stance: 'context',
+    category: 'government-change',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['india-constitution', 'eci-2024'],
+  },
 ]
 
 export const curatedAnswers: CuratedAnswerSeed[] = [
   {
-    id: 'modi-doing-good',
+    id: 'regime-change-now',
     jurisdictionId: 'india',
-    question: 'Is Modi doing good?',
+    question: 'As of now, do we need regime change?',
     aliases: [
-      'is modi good',
-      'how is modi doing',
-      'modi performance',
-      'is narendra modi doing well',
-      'modi achievements and cons',
+      'does india need regime change',
+      'should india change government',
+      'do we need a new government',
+      'should modi government be replaced',
+      'does india need change now',
+      'continuity or change in india',
     ],
     shortAnswer:
-      'The evidence is mixed. Delivery capacity, infrastructure, digital systems, and basic services are meaningful strengths. Jobs quality, disruptive policy choices, social cohesion, and independent institutional indicators are substantial weaknesses.',
+      'Not an automatic yes. India has a credible case for electoral change or much stronger checks because jobs quality, institutions, transparency, social cohesion, Manipur, and some prevention and border failures remain serious. Continuity also has a credible case because infrastructure, delivery capacity, poverty and basic-service gains, digital systems, operational security, defence capability, and trade strategy are real strengths.',
     verdict:
-      'Editorial estimate: 6.3/10, medium confidence. Five blinded replications returned 6.1–6.3; a July 2026 evidence refresh made road expansion, poverty reduction, and trade agreements explicit while preserving major jobs, crisis, integrity, and institutional deductions.',
-    confidence: 'medium',
-    asOfDate: '2026-07-24',
-    claimSections: [
-      { claimId: 'modi-road-expansion', section: 'achievement', sortOrder: 1 },
-      { claimId: 'modi-poverty-services', section: 'achievement', sortOrder: 2 },
-      {
-        claimId: 'modi-monetary-poverty-decline',
-        section: 'achievement',
-        sortOrder: 3,
-      },
-      {
-        claimId: 'modi-trade-agreement-strategy',
-        section: 'achievement',
-        sortOrder: 4,
-      },
-      { claimId: 'modi-infrastructure-digital', section: 'achievement', sortOrder: 5 },
-      { claimId: 'modi-macro-formalisation', section: 'achievement', sortOrder: 6 },
-      { claimId: 'modi-demonetisation', section: 'concern', sortOrder: 1 },
-      { claimId: 'modi-jobs-inclusion', section: 'concern', sortOrder: 2 },
-      { claimId: 'modi-institutions', section: 'concern', sortOrder: 3 },
-      { claimId: 'modi-electoral-bonds', section: 'concern', sortOrder: 4 },
-      { claimId: 'modi-social-cohesion-response', section: 'concern', sortOrder: 5 },
-      { claimId: 'poverty-methodology-caveat', section: 'context', sortOrder: 1 },
-      { claimId: 'highway-network-classification-caveat', section: 'context', sortOrder: 2 },
-      { claimId: 'india-causality-context', section: 'context', sortOrder: 3 },
-    ],
-  },
-  {
-    id: 'bjp-vs-congress',
-    jurisdictionId: 'india',
-    question: 'Is BJP better than Congress?',
-    aliases: [
-      'bjp vs congress',
-      'congress vs bjp',
-      'is congress better than bjp',
-      'which party is better in india',
-      'who governed better bjp or congress',
-      'bjp congress comparison',
-    ],
-    shortAnswer:
-      'There is no defensible categorical winner. BJP has a tiny simple-average edge, while the day-weighted average gives Congress a modest edge. BJP’s strongest case is recent execution, roads, digital systems, and trade diplomacy; Congress’s strongest case is institution-building, the 1991 reforms, and rights-based public policy.',
-    verdict:
-      'Current editorial comparison: no decisive winner. BJP leads the simple mean 6.75 to 6.73; Congress leads the day-weighted mean 6.84 to 6.60. Both records contain major institutional, social, economic, and integrity failures, and the periods are too different for a scientific party ranking.',
+      'Editorial opinion: there is a conditional case for constitutional electoral change, not a blanket “must replace now” verdict. The previous Manmohan Singh term scores higher overall on this site, 7.3 versus Modi’s 6.7, while Modi is stronger on operational security, 7.0 versus 6.1, and has clearer recent infrastructure and delivery strengths. Change is preferable only if a credible alternative can preserve those strengths while materially improving jobs, institutions, social cohesion, transparency, and accountability. Without that credible offer, stronger coalition, parliamentary, judicial, media, and federal checks on the current government may be the lower-risk correction.',
     confidence: 'medium',
     asOfDate: '2026-07-24',
     claimSections: [
       {
-        claimId: 'bjp-comparison-execution-case',
+        claimId: 'regime-change-continuity-case',
         section: 'achievement',
         sortOrder: 1,
       },
       {
-        claimId: 'congress-comparison-institution-reform-case',
+        claimId: 'regime-change-change-case',
         section: 'concern',
         sortOrder: 1,
       },
       {
-        claimId: 'bjp-comparison-institution-costs',
-        section: 'concern',
-        sortOrder: 2,
-      },
-      {
-        claimId: 'party-comparison-rating-math',
+        claimId: 'regime-change-previous-term-comparison',
         section: 'context',
         sortOrder: 1,
       },
       {
-        claimId: 'party-comparison-era-sample-limit',
+        claimId: 'regime-change-alternative-uncertainty',
         section: 'context',
         sortOrder: 2,
       },
       {
-        claimId: 'india-causality-context',
+        claimId: 'regime-change-constitutional-choice',
         section: 'context',
         sortOrder: 3,
       },

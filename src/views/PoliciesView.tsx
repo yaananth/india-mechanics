@@ -11,8 +11,8 @@ import {
   Search,
   Target,
 } from 'lucide-react'
-import { useMemo, useState } from 'react'
-import type { Overview, Policy } from '../types.ts'
+import { useEffect, useMemo, useState } from 'react'
+import type { Jurisdiction, Overview, Policy } from '../types.ts'
 import { formatDate, sentenceCase } from '../utils.ts'
 import {
   ConfidenceMark,
@@ -74,6 +74,7 @@ const roadPolicyIds = [
   'national-highway-expansion-2014',
   'bharatmala-phase-1-2017',
   'pmgsy-iii-2019',
+  'ap-rural-road-connectivity-2016',
 ] as const
 
 export function PoliciesView({
@@ -85,6 +86,8 @@ export function PoliciesView({
   selectedBillId,
   onSelectBill,
   knowledge,
+  jurisdiction,
+  allowBillRegister,
 }: {
   policies: Policy[]
   selectedPolicyId: string | null
@@ -94,11 +97,22 @@ export function PoliciesView({
   selectedBillId: string | null
   onSelectBill: (billId: string | null) => void
   knowledge: Overview['knowledge']
+  jurisdiction: Jurisdiction
+  allowBillRegister: boolean
 }) {
+  const officeLabel =
+    jurisdiction.level === 'country' ? 'Prime Minister' : 'Chief Minister'
+  const effectiveMode = allowBillRegister ? mode : 'reviews'
   const [leader, setLeader] = useState('all')
   const [policyType, setPolicyType] = useState('all')
   const [status, setStatus] = useState('all')
   const [query, setQuery] = useState('')
+  useEffect(() => {
+    setLeader('all')
+    setPolicyType('all')
+    setStatus('all')
+    setQuery('')
+  }, [jurisdiction.id])
   const leaderOptions = useMemo(
     () => Array.from(new Set(policies.map((policy) => policy.leader.name))).sort(),
     [policies],
@@ -138,8 +152,10 @@ export function PoliciesView({
       <header className="view-header">
         <div>
           <span className="freshness-line">
-            Policy assessments reviewed {knowledge.editorialReviewedThrough} ·
-            official bill register refreshed {knowledge.billRegisterAsOfDate}
+            Policy assessments reviewed {knowledge.editorialReviewedThrough}
+            {allowBillRegister
+              ? ` · official bill register refreshed ${knowledge.billRegisterAsOfDate}`
+              : ''}
           </span>
           <h1>Policies, judged on design and outcomes</h1>
           <p>
@@ -158,13 +174,15 @@ export function PoliciesView({
         <ScrollText size={18} aria-hidden="true" />
         <span>
           <strong>Coverage is expanding.</strong>
-          Ratings cover high-impact policies. The official register preserves
-          discovered government Bills separately; unreviewed does not mean good
-          or bad.
+          Ratings cover high-impact policies.
+          {allowBillRegister
+            ? ' The official register preserves discovered government Bills separately; unreviewed does not mean good or bad.'
+            : ' State legislation is added only after a source-backed design and outcome review.'}
         </span>
       </section>
 
-      <div className="policy-mode-switch" role="tablist" aria-label="Policy data view">
+      {allowBillRegister && (
+        <div className="policy-mode-switch" role="tablist" aria-label="Policy data view">
         <button
           type="button"
           role="tab"
@@ -183,9 +201,10 @@ export function PoliciesView({
         >
           Official bill register
         </button>
-      </div>
+        </div>
+      )}
 
-      {mode === 'register' ? (
+      {effectiveMode === 'register' ? (
         <BillRegisterPanel
           selectedBillId={selectedBillId}
           onSelectBill={onSelectBill}
@@ -196,7 +215,8 @@ export function PoliciesView({
         />
       ) : (
         <>
-      <section className="development-policy-family" aria-label="Road infrastructure policies">
+      {roadFamily.length > 0 && (
+        <section className="development-policy-family" aria-label="Road infrastructure policies">
         <div className="section-heading">
           <div>
             <span className="section-label">Roads and connectivity</span>
@@ -225,7 +245,8 @@ export function PoliciesView({
             </button>
           ))}
         </div>
-      </section>
+        </section>
+      )}
 
       {tradeFamily.length > 0 && (
         <section className="trade-agreement-family" aria-label="Trade agreements">
@@ -269,7 +290,8 @@ export function PoliciesView({
         </section>
       )}
 
-      <section className="tax-evolution" aria-label="Tax reform evolution">
+      {taxFamily.length > 0 && (
+        <section className="tax-evolution" aria-label="Tax reform evolution">
         <div className="section-heading">
           <div>
             <span className="section-label">Tax reform evolution</span>
@@ -333,16 +355,17 @@ export function PoliciesView({
         </div>
         <p className="tax-evolution__note">
           Ratings judge each reform against its own objective. They are not a
-          claim that the Prime Minister alone caused every observed tax outcome.
+          claim that the {officeLabel} alone caused every observed tax outcome.
         </p>
-      </section>
+        </section>
+      )}
 
       <section className="filter-bar policy-filter-bar" aria-label="Policy filters">
         <label>
           <Filter size={15} aria-hidden="true" />
-          <span>Prime Minister</span>
+          <span>{officeLabel}</span>
           <select value={leader} onChange={(event) => setLeader(event.target.value)}>
-            <option value="all">All Prime Ministers</option>
+            <option value="all">All {officeLabel}s</option>
             {leaderOptions.map((name) => (
               <option key={name} value={name}>
                 {name}

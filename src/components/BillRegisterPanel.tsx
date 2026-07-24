@@ -97,6 +97,7 @@ export function BillRegisterPanel({
             page,
             pageSize: 40,
           },
+          'india',
           controller.signal,
         )
         .then(setResponse)
@@ -126,7 +127,7 @@ export function BillRegisterPanel({
     }
     const controller = new AbortController()
     api
-      .bill(selectedBillId, controller.signal)
+      .bill(selectedBillId, 'india', controller.signal)
       .then(setSelected)
       .catch((reason: Error) => {
         if (reason.name !== 'AbortError') {

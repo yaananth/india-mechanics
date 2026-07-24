@@ -12,8 +12,13 @@ import {
   Target,
   WalletCards,
 } from 'lucide-react'
-import { useMemo, useState } from 'react'
-import type { Budget, BudgetPoint, Overview } from '../types.ts'
+import { useEffect, useMemo, useState } from 'react'
+import type {
+  Budget,
+  BudgetPoint,
+  Jurisdiction,
+  Overview,
+} from '../types.ts'
 import { sentenceCase } from '../utils.ts'
 import {
   ConfidenceMark,
@@ -47,16 +52,28 @@ export function BudgetsView({
   selectedBudgetId,
   onSelectBudget,
   knowledge,
+  jurisdiction,
 }: {
   budgets: Budget[]
   selectedBudgetId: string | null
   onSelectBudget: (budgetId: string) => void
   knowledge: Overview['knowledge']
+  jurisdiction: Jurisdiction
 }) {
+  const officeLabel =
+    jurisdiction.level === 'country' ? 'Prime Minister' : 'Chief Minister'
+  const budgetLabel =
+    jurisdiction.level === 'country' ? 'Union Budget' : 'State Budget'
   const [leader, setLeader] = useState('all')
   const [kind, setKind] = useState('all')
   const [decade, setDecade] = useState('all')
   const [query, setQuery] = useState('')
+  useEffect(() => {
+    setLeader('all')
+    setKind('all')
+    setDecade('all')
+    setQuery('')
+  }, [jurisdiction.id])
 
   const leaderOptions = useMemo(
     () => Array.from(new Set(budgets.map((budget) => budget.leader.name))).sort(),
@@ -99,7 +116,7 @@ export function BudgetsView({
           label: 'Total expenditure',
           value: formatCrore(selected.totalExpenditureCrore),
           note: selected.totalExpenditureCrore
-            ? 'Union Budget estimate'
+            ? `${budgetLabel} estimate`
             : 'Historical total not comparable',
         },
         {
@@ -132,7 +149,7 @@ export function BudgetsView({
           <h1>What each government chose to fund</h1>
           <p>
             Compare the plan, headline allocations, deficit, tradeoffs, and
-            evidence behind landmark Union Budgets from independence to today.
+            evidence behind landmark {budgetLabel}s in the reviewed period.
           </p>
         </div>
         <div className="view-header__stat">
@@ -151,7 +168,7 @@ export function BudgetsView({
         </span>
       </section>
 
-      <section className="budget-current-strip" aria-label="Current Union Budget">
+      <section className="budget-current-strip" aria-label={`Current ${budgetLabel}`}>
         {budgets
           .filter((budget) => budget.status === 'current')
           .map((budget) => (
@@ -182,9 +199,9 @@ export function BudgetsView({
       <section className="filter-bar budget-filter-bar" aria-label="Budget filters">
         <label>
           <Filter size={15} aria-hidden="true" />
-          <span>Prime Minister</span>
+          <span>{officeLabel}</span>
           <select value={leader} onChange={(event) => setLeader(event.target.value)}>
-            <option value="all">All Prime Ministers</option>
+            <option value="all">All {officeLabel}s</option>
             {leaderOptions.map((name) => (
               <option key={name} value={name}>
                 {name}
@@ -242,11 +259,11 @@ export function BudgetsView({
       </div>
 
       <section className="budget-workspace">
-        <div className="budget-list" role="list" aria-label="Reviewed Union Budgets">
+        <div className="budget-list" role="list" aria-label={`Reviewed ${budgetLabel}s`}>
           <div className="budget-list__header" aria-hidden="true">
             <span>Fiscal year</span>
             <span>Budget</span>
-            <span>Prime Minister</span>
+            <span>{officeLabel}</span>
             <span>Estimate</span>
             <span />
           </div>
@@ -286,7 +303,7 @@ export function BudgetsView({
                 </span>
                 <h2>{selected.title}</h2>
                 <p>
-                  {selected.fiscalYear} · Prime Minister {selected.leader.name} ·
+                  {selected.fiscalYear} · {officeLabel} {selected.leader.name} ·
                   Finance Minister {selected.financeMinister}
                 </p>
               </div>

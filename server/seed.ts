@@ -3,6 +3,28 @@ import { dirname, resolve } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { applySchema } from './schema.ts'
+import { leaderRatingProfiles, profileScore } from './rating-profiles.ts'
+import {
+  andhraBudgetAllocations,
+  andhraBudgetPoints,
+  andhraBudgets,
+  andhraBudgetScores,
+  andhraClaims,
+  andhraCuratedAnswers,
+  andhraEventAssessments,
+  andhraEvents,
+  andhraIndicatorDefinitions,
+  andhraIndicatorObservations,
+  andhraJurisdictions,
+  andhraLeaderScores,
+  andhraLeaderTerms,
+  andhraOffices,
+  andhraParties,
+  andhraPeople,
+  andhraPolicies,
+  andhraPolicyScores,
+  andhraSources,
+} from './seed-data/andhra-pradesh.ts'
 import {
   claims,
   curatedAnswers,
@@ -43,23 +65,73 @@ import {
   developmentSources,
 } from './seed-data/development-trade.ts'
 import { researchMetadata } from './seed-data/research-metadata.ts'
+import {
+  securityClaims,
+  securityEventAssessments,
+  securityEvents,
+  securityPolicies,
+  securityPolicyScores,
+  securitySources,
+  securitySpecialistAssessments,
+  securitySpecialistDimensions,
+  securitySpecialistTopics,
+} from './seed-data/security.ts'
 import type { IndicatorObservationSeed, PolicyRegisterSeed } from './types.ts'
 
-export const seedVersion = '2026-07-24.3'
+export const seedVersion = '2026-07-24.8'
 const sourceRosterVersion = 'source-roster-v0.11'
-const allSources = [...sources, ...developmentSources]
-const allPolicies = [...policies, ...developmentPolicies]
-const allPolicyScores = [...policyScores, ...developmentPolicyScores]
-const allEvents = [...events, ...developmentEvents]
+const allJurisdictions = [...jurisdictions, ...andhraJurisdictions]
+const allOffices = [...offices, ...andhraOffices]
+const allPeople = [...people, ...andhraPeople]
+const allParties = [...parties, ...andhraParties]
+const allLeaderTerms = [...leaderTerms, ...andhraLeaderTerms]
+const allLeaderScores = [...leaderScores, ...andhraLeaderScores]
+const allSources = [
+  ...sources,
+  ...developmentSources,
+  ...securitySources,
+  ...andhraSources,
+]
+const allPolicies = [
+  ...policies,
+  ...developmentPolicies,
+  ...securityPolicies,
+  ...andhraPolicies,
+]
+const allPolicyScores = [
+  ...policyScores,
+  ...developmentPolicyScores,
+  ...securityPolicyScores,
+  ...andhraPolicyScores,
+]
+const allEvents = [
+  ...events,
+  ...developmentEvents,
+  ...securityEvents,
+  ...andhraEvents,
+]
 const allEventAssessments = [
   ...eventAssessments,
   ...developmentEventAssessments,
+  ...securityEventAssessments,
+  ...andhraEventAssessments,
 ]
-const allClaims = [...claims, ...developmentClaims]
+const allClaims = [
+  ...claims,
+  ...developmentClaims,
+  ...securityClaims,
+  ...andhraClaims,
+]
 const allIndicatorDefinitions = [
   ...indicatorDefinitions,
   ...developmentIndicatorDefinitions,
+  ...andhraIndicatorDefinitions,
 ]
+const allBudgets = [...budgets, ...andhraBudgets]
+const allBudgetScores = [...budgetScores, ...andhraBudgetScores]
+const allBudgetAllocations = [...budgetAllocations, ...andhraBudgetAllocations]
+const allBudgetPoints = [...budgetPoints, ...andhraBudgetPoints]
+const allCuratedAnswers = [...curatedAnswers, ...andhraCuratedAnswers]
 const defaultDatabasePath = fileURLToPath(
   new URL('../data/india-mechanics.sqlite', import.meta.url),
 )
@@ -122,7 +194,7 @@ function insertRows(
       (id, name, short_name, level, parent_id, iso_code, valid_from, valid_to, status)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   )
-  for (const row of jurisdictions) {
+  for (const row of allJurisdictions) {
     jurisdictionInsert.run(
       row.id,
       row.name,
@@ -135,12 +207,25 @@ function insertRows(
       row.status,
     )
   }
+  const jurisdictionMetadataInsert = db.prepare(
+    `INSERT INTO jurisdiction_metadata (jurisdiction_id, key, value)
+     VALUES (?, ?, ?)`,
+  )
+  for (const [key, value] of Object.entries({
+    knowledge_cutoff: '2026-07-24',
+    editorial_reviewed_through: '2026-07-24',
+    political_status_checked: '2026-07-24',
+    indicator_as_of_date: '2026-07-24',
+    timeline_starts: '2014-06-02',
+  })) {
+    jurisdictionMetadataInsert.run('andhra-pradesh', key, value)
+  }
 
   const officeInsert = db.prepare(
     `INSERT INTO offices (id, jurisdiction_id, name, short_name, role)
      VALUES (?, ?, ?, ?, ?)`,
   )
-  for (const row of offices) {
+  for (const row of allOffices) {
     officeInsert.run(
       row.id,
       row.jurisdictionId,
@@ -154,7 +239,7 @@ function insertRows(
     `INSERT INTO people (id, name, sort_name, birth_date, death_date)
      VALUES (?, ?, ?, ?, ?)`,
   )
-  for (const row of people) {
+  for (const row of allPeople) {
     personInsert.run(
       row.id,
       row.name,
@@ -167,7 +252,7 @@ function insertRows(
   const partyInsert = db.prepare(
     `INSERT INTO parties (id, name, short_name, color) VALUES (?, ?, ?, ?)`,
   )
-  for (const row of parties) {
+  for (const row of allParties) {
     partyInsert.run(row.id, row.name, row.shortName, row.color)
   }
 
@@ -212,6 +297,36 @@ function insertRows(
   for (const row of evaluationDimensions) {
     dimensionInsert.run(row.id, row.name, row.weight, row.description)
   }
+  const specialistTopicInsert = db.prepare(
+    `INSERT INTO leader_specialist_topics
+      (id, name, description, operational_label, adjusted_label, methodology)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+  )
+  for (const row of securitySpecialistTopics) {
+    specialistTopicInsert.run(
+      row.id,
+      row.name,
+      row.description,
+      row.operationalLabel,
+      row.adjustedLabel,
+      row.methodology,
+    )
+  }
+  const specialistDimensionInsert = db.prepare(
+    `INSERT INTO leader_specialist_dimensions
+      (id, topic_id, name, operational_weight, adjusted_weight, description)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+  )
+  for (const row of securitySpecialistDimensions) {
+    specialistDimensionInsert.run(
+      row.id,
+      row.topicId,
+      row.name,
+      row.operationalWeight,
+      row.adjustedWeight,
+      row.description,
+    )
+  }
   const policyDimensionInsert = db.prepare(
     `INSERT INTO policy_evaluation_dimensions (id, name, weight, description)
      VALUES (?, ?, ?, ?)`,
@@ -237,7 +352,23 @@ function insertRows(
   const termSourceInsert = db.prepare(
     `INSERT INTO term_sources (term_id, source_id) VALUES (?, ?)`,
   )
-  for (const row of leaderTerms) {
+  const scoreByTerm = new Map<string, Record<string, number>>()
+  for (const score of allLeaderScores) {
+    const termScores = scoreByTerm.get(score.termId) ?? {}
+    termScores[score.dimensionId] = score.score
+    scoreByTerm.set(score.termId, termScores)
+  }
+  const balancedProfile = leaderRatingProfiles.find(
+    (profile) => profile.id === 'balanced',
+  )
+  if (!balancedProfile) {
+    throw new Error('Balanced leader rating profile missing.')
+  }
+  for (const row of allLeaderTerms) {
+    const termScores = scoreByTerm.get(row.id)
+    const calculatedRating = termScores
+      ? profileScore(termScores, balancedProfile)
+      : null
     termInsert.run(
       row.id,
       row.officeId,
@@ -248,7 +379,7 @@ function insertRows(
       row.isActing ? 1 : 0,
       row.governmentName ?? null,
       row.mandateLabel ?? null,
-      row.ratingScore ?? null,
+      calculatedRating,
       row.ratingConfidence ?? null,
       row.ratingSummary,
       row.assessmentAsOf,
@@ -262,7 +393,7 @@ function insertRows(
     `INSERT INTO leader_term_scores (term_id, dimension_id, score, rationale)
      VALUES (?, ?, ?, ?)`,
   )
-  for (const row of leaderScores) {
+  for (const row of allLeaderScores) {
     scoreInsert.run(row.termId, row.dimensionId, row.score, row.rationale)
   }
 
@@ -291,6 +422,43 @@ function insertRows(
       JSON.stringify(row.consensusSources),
       row.notes,
     )
+  }
+
+  const specialistAssessmentInsert = db.prepare(
+    `INSERT INTO leader_specialist_assessments
+      (id, term_id, topic_id, confidence, status, summary, assessment_as_of)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+  )
+  const specialistScoreInsert = db.prepare(
+    `INSERT INTO leader_specialist_scores
+      (assessment_id, dimension_id, score, rationale)
+     VALUES (?, ?, ?, ?)`,
+  )
+  const specialistSourceInsert = db.prepare(
+    `INSERT INTO leader_specialist_sources (assessment_id, source_id)
+     VALUES (?, ?)`,
+  )
+  for (const row of securitySpecialistAssessments) {
+    specialistAssessmentInsert.run(
+      row.id,
+      row.termId,
+      row.topicId,
+      row.confidence,
+      row.status,
+      row.summary,
+      row.assessmentAsOf,
+    )
+    for (const score of row.scores) {
+      specialistScoreInsert.run(
+        row.id,
+        score.dimensionId,
+        score.score,
+        score.rationale,
+      )
+    }
+    for (const sourceId of row.sourceIds) {
+      specialistSourceInsert.run(row.id, sourceId)
+    }
   }
 
   const policyInsert = db.prepare(
@@ -407,7 +575,7 @@ function insertRows(
       (budget_id, source_id, evidence_role, locator)
      VALUES (?, ?, ?, ?)`,
   )
-  for (const row of budgets) {
+  for (const row of allBudgets) {
     budgetInsert.run(
       row.id,
       row.jurisdictionId,
@@ -443,7 +611,7 @@ function insertRows(
       (budget_id, dimension_id, score, rationale)
      VALUES (?, ?, ?, ?)`,
   )
-  for (const row of budgetScores) {
+  for (const row of allBudgetScores) {
     budgetScoreInsert.run(
       row.budgetId,
       row.dimensionId,
@@ -458,7 +626,7 @@ function insertRows(
        change_percent, note, source_id, sort_order)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   )
-  for (const row of budgetAllocations) {
+  for (const row of allBudgetAllocations) {
     budgetAllocationInsert.run(
       row.id,
       row.budgetId,
@@ -478,7 +646,7 @@ function insertRows(
       (id, budget_id, point_type, title, body, source_id, sort_order)
      VALUES (?, ?, ?, ?, ?, ?, ?)`,
   )
-  for (const row of budgetPoints) {
+  for (const row of allBudgetPoints) {
     budgetPointInsert.run(
       row.id,
       row.budgetId,
@@ -676,6 +844,7 @@ function insertRows(
     ...generated.observations,
     ...manualIndicatorObservations,
     ...developmentIndicatorObservations,
+    ...andhraIndicatorObservations,
   ]) {
     observationInsert.run(
       row.indicatorId,
@@ -699,7 +868,7 @@ function insertRows(
       (answer_id, claim_id, section, sort_order)
      VALUES (?, ?, ?, ?)`,
   )
-  for (const row of curatedAnswers) {
+  for (const row of allCuratedAnswers) {
     answerInsert.run(
       row.id,
       row.jurisdictionId,
@@ -764,7 +933,7 @@ function insertRows(
     'Codex',
     allEvents.length +
       allPolicies.length +
-      budgets.length +
+      allBudgets.length +
       generatedBills.bills.length +
       allClaims.length +
       generated.observations.length,
@@ -867,7 +1036,7 @@ function insertRows(
     'India Mechanics editorial fact-check',
     'published',
     metadata.generated_at,
-    'Verified amount and chronology, restored flood-relief and UN-routing context, linked the result to Timeline and Policies, and recorded rationale-only treatment for the Manmohan Singh rating.',
+    'Verified amount and chronology, recorded UN routing without treating it as an end-use guarantee, documented fungibility and outcome gaps, linked the result to Timeline and Policies, and removed positive PM-rating credit.',
   )
   db.prepare(
     `INSERT INTO ingestion_batches
@@ -925,6 +1094,82 @@ function insertRows(
     'published',
     metadata.generated_at,
     'Published separate treaty records and kept newly effective, signed, and unsigned agreements design-only where outcomes cannot yet exist.',
+  )
+  db.prepare(
+    `INSERT INTO ingestion_batches
+      (id, source_roster_version, query_scope, run_at, agent_model,
+       candidates_found, rejected_records, reviewer, review_status,
+       published_at, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).run(
+    'leader-rating-methodology-review-2026-07-24',
+    sourceRosterVersion,
+    'Cross-PM rating weights, component calibration, alternative national-priority lenses, and arithmetic consistency',
+    metadata.generated_at,
+    'Codex with development-economics, governance, and quantitative-audit sub-agents',
+    3,
+    0,
+    'India Mechanics editorial methodology review',
+    'published',
+    metadata.generated_at,
+    'Changed the canonical profile consistently for every rated term, recalibrated Modi components, published four weighting lenses, bounded demonetisation treatment, and made every headline rating formula-derived.',
+  )
+  db.prepare(
+    `INSERT INTO ingestion_batches
+      (id, source_roster_version, query_scope, run_at, agent_model,
+       candidates_found, rejected_records, reviewer, review_status,
+       published_at, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).run(
+    'modi-manmohan-security-strength-2026-07-24',
+    sourceRosterVersion,
+    'Operational and rights-adjusted security comparison covering terrorism, borders, internal conflict, strategic autonomy, and safeguards',
+    metadata.generated_at,
+    'Codex with public-policy methodology review and primary-source backfill',
+    10,
+    0,
+    'India Mechanics security evidence review',
+    'published',
+    metadata.generated_at,
+    'Added separate operational and rights-adjusted security scores, backfilled major attacks and responses, credited LWE and Northeast improvements with inherited-trend caveats, and excluded Pakistan flood aid from positive security credit.',
+  )
+  db.prepare(
+    `INSERT INTO ingestion_batches
+      (id, source_roster_version, query_scope, run_at, agent_model,
+       candidates_found, rejected_records, reviewer, review_status,
+       published_at, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).run(
+    'andhra-pradesh-post-split-2026-07-24',
+    sourceRosterVersion,
+    'Post-bifurcation Andhra Pradesh from June 2, 2014 through July 24, 2026: CM terms, indicators, budgets, policies, events, and claims',
+    metadata.generated_at,
+    'Codex state-research lane',
+    11,
+    0,
+    'India Mechanics Andhra Pradesh editorial review',
+    'published',
+    metadata.generated_at,
+    'Published Andhra Pradesh as an independent state jurisdiction with a hard June 2, 2014 boundary, three CM terms, state-only indicators, six accountability events, six policies, three budgets, and two reviewed answers. No undivided-state observation enters CM comparisons.',
+  )
+  db.prepare(
+    `INSERT INTO ingestion_batches
+      (id, source_roster_version, query_scope, run_at, agent_model,
+       candidates_found, rejected_records, reviewer, review_status,
+       published_at, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).run(
+    'andhra-pradesh-roads-panchayats-2026-07-24',
+    sourceRosterVersion,
+    'Post-bifurcation Andhra Pradesh roads, rural connectivity, maintenance, safety, and Panchayat external validation',
+    metadata.generated_at,
+    'Codex with independent evidence-audit sub-agent',
+    9,
+    0,
+    'India Mechanics Andhra Pradesh infrastructure review',
+    'published',
+    metadata.generated_at,
+    'Added a reviewed rural-roads policy, annual PMGSY and road-safety series, road and Panchayat events, term-specific achievements and execution concerns, and explicit Union-state-local attribution. Awards are corroboration, not standalone CM evidence.',
   )
 }
 

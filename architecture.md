@@ -1,6 +1,6 @@
 # India Mechanics Architecture
 
-Last updated: 2026-07-23
+Last updated: 2026-07-24
 
 This document is the operating map for the India Mechanics research system. It
 describes where data comes from, how evidence becomes a published record, how
@@ -12,7 +12,8 @@ model extends from India and Prime Ministers to states and Chief Ministers.
 India Mechanics must let a human or agent answer questions such as:
 
 - Has India progressed since independence?
-- Is the current Prime Minister doing well?
+- As of now, is there an evidence-based case for constitutional electoral
+  change or continuity?
 - What did each government achieve, mishandle, or damage?
 - What did each Union Budget prioritise, allocate, borrow, and leave unfunded?
 - Which protests, riots, wars, disasters, reforms, and institutional changes
@@ -35,7 +36,7 @@ can be free of judgment. The project instead makes judgment inspectable:
 ## 2. Runtime architecture
 
 ```text
-React + Vite frontend
+React + Vite multi-jurisdiction frontend
         |
         | /api via Vite proxy
         v
@@ -45,7 +46,7 @@ Express read API
 SQLite generated database
         ^
         |
-checked-in seed catalog + generated indicator snapshot
+checked-in national/state seed catalogs + generated indicator snapshot
         ^
         |
 World Bank API / V-Dem mirror / reviewed manual research
@@ -79,14 +80,20 @@ server/schema.ts                        SQLite DDL
 server/seed.ts                          deterministic DB build
 server/progress.ts                      Country Progress calculations
 server/scoring.ts                       normalization and aggregation math
+server/rating-profiles.ts               balanced and alternative leader lenses
+server/specialist-ratings.ts            specialist-topic weighted scoring
 server/app.ts                           read API
 server/seed-data/catalog.ts             reviewed sources, terms, events, claims
 server/seed-data/budgets.ts             reviewed budgets, allocations, and ratings
+server/seed-data/security.ts            all-PM national-security assessment lane
+server/seed-data/andhra-pradesh.ts      post-split AP state and CM corpus
 server/seed-data/research-metadata.ts   knowledge and review cutoffs
 server/seed-data/generated-indicators.json checked-in feed snapshot
 server/seed-data/generated-bills.json    checked-in Sansad government-bill snapshot
 src/                                   React interface
 tests/                                 scoring, provenance, API, state fixture
+.openai/hosting.json                   persistent Sites project identity
+hosting/worker.ts                       hosted static/API snapshot worker
 ```
 
 The SQLite file is disposable. The reproducible source of truth is the schema,
@@ -179,6 +186,20 @@ because one person can have multiple materially different governments.
 Acting and ultra-short terms can remain `Not rated`. This is preferable to false
 precision.
 
+### Specialist evaluation
+
+A specialist evaluation is a disclosed topic rubric attached to an eligible
+office term. National security currently uses five dimensions and publishes:
+
+- an operational-security result; and
+- a rights-adjusted result that includes civilian protection, due process, and
+  proportionality.
+
+The same national-security rubric is applied to every rated Prime Minister term.
+It is not applied to Chief Ministers because interstate war, border defence, and
+national strategic autonomy are outside a state government’s constitutional
+authority. Chief Ministers still use the same six-part general leader rubric.
+
 ### Budget
 
 An annual or interim fiscal plan linked to the jurisdiction and Prime Minister
@@ -221,6 +242,9 @@ erDiagram
   PARTIES ||--o{ LEADER_TERMS : supports
   LEADER_TERMS ||--o{ LEADER_TERM_SCORES : receives
   EVALUATION_DIMENSIONS ||--o{ LEADER_TERM_SCORES : defines
+  LEADER_TERMS ||--o{ LEADER_SPECIALIST_ASSESSMENTS : receives
+  LEADER_SPECIALIST_TOPICS ||--o{ LEADER_SPECIALIST_DIMENSIONS : defines
+  LEADER_SPECIALIST_ASSESSMENTS ||--o{ LEADER_SPECIALIST_SCORES : receives
   JURISDICTIONS ||--o{ EVENTS : contains
   EVENTS }o--o{ SOURCES : cites
   LEADER_TERMS }o--o{ EVENTS : overlaps
@@ -280,24 +304,38 @@ source-roster version, query scope, run time, agent/model, candidate and rejecti
 counts, reviewer, and publication transaction. This prevents a displayed cutoff
 from implying a review that did not happen.
 
-## 6. State and Chief Minister extension
+## 6. State and Chief Minister implementation
 
-No schema migration is required to add a state.
+The schema and UI are jurisdiction-native. Every API request and share URL can
+carry `jurisdiction=<id>`. Switching jurisdiction reloads a complete scoped
+bundle: overview, leaders, events, policies, budgets, indicators, answers, and
+sources.
 
-1. Add a state jurisdiction:
+The first published state is post-bifurcation Andhra Pradesh:
 
-   ```sql
-   INSERT INTO jurisdictions
-     (id, name, short_name, level, parent_id, iso_code, valid_from, status)
-   VALUES
-     ('karnataka', 'State of Karnataka', 'Karnataka', 'state', 'india',
-      'IN-KA', '1956-11-01', 'researching');
-   ```
+```text
+jurisdiction id: andhra-pradesh
+level: state
+parent: india
+ISO subdivision: IN-AP
+valid from: 2014-06-02
+office: Chief Minister of Andhra Pradesh
+```
 
-2. Add a Chief Minister office owned by that jurisdiction.
-3. Add people, parties, and office terms.
-4. Attach events, claims, and observations to `karnataka`.
-5. Publish the jurisdiction only after source and coverage review.
+The published AP corpus contains:
+
+- three CM terms: Naidu 2014-19, Jagan 2019-24, and Naidu 2024-present;
+- the same six-component leader formula used for PM terms;
+- nine post-split accountability events;
+- seven reviewed state policies, including a cross-term rural-road record;
+- three landmark state budgets, including the current 2026-27 proposal;
+- eighteen AP-coded indicators and sixty-two observations;
+- two reviewed state questions;
+- a state-only source ledger.
+
+The national security specialist rubric is absent from CM pages by design. State
+public order and crisis performance remain inside the general crisis component;
+national border and strategic-autonomy scores are not projected onto a CM.
 
 Boundary rules:
 
@@ -308,6 +346,21 @@ Boundary rules:
 - label observations whose geographic definitions changed;
 - do not compare GSDP or population series across a boundary break without a
   documented harmonization.
+- do not infer an AP baseline from an undivided-state value even when a source
+  publishes one continuous table;
+- use AP-specific indicator IDs when cadence, unit, or methodology differs from
+  the national series;
+- the progress engine only counts definitions that have observations for the
+  selected jurisdiction, preventing state definitions from reducing national
+  coverage or vice versa.
+
+Shareable examples:
+
+```text
+/?jurisdiction=andhra-pradesh
+/?jurisdiction=andhra-pradesh&view=leaders&term=ap-naidu-2024
+/?jurisdiction=andhra-pradesh&view=indicators&indicator=ap-real-nsdp-per-capita
+```
 
 Recommended state source hierarchy:
 
@@ -317,6 +370,29 @@ Recommended state source hierarchy:
 4. Election Commission of India and state chief electoral offices;
 5. CAG audits, court judgments, commissions, and state gazettes;
 6. independent academic and newspaper corroboration.
+
+Mandatory state research lanes:
+
+1. boundary validity, successor/predecessor mapping, office terms, and elections;
+2. macroeconomy, labour, public finance, debt, and budget execution;
+3. health, education, poverty, nutrition, household services, and inclusion;
+4. infrastructure stocks and outcomes for roads, power, water, irrigation,
+   transport, ports, and digital access;
+5. annual infrastructure delivery, maintenance, condition, safety, and
+   Union-state-local attribution, not just announced spending or total stock;
+6. policies, legislation, court decisions, CAG findings, crises, protests, and
+   institutional accountability;
+7. awards and external benchmarks as a discovery and corroboration lane only;
+   the underlying measured result must exist before an award affects a leader
+   score;
+8. independent corroboration and an explicit evidence-gap list before
+   publication.
+
+Every new state gets its own research batch, jurisdiction-coded indicator IDs,
+scoped cutoffs, and API/E2E checks. The AP roads review is the reference pattern:
+it stores cumulative access, annual target delivery, maintenance, safety, and
+shared attribution separately so the same checklist can be repeated for the
+next state.
 
 ## 7. Source hierarchy
 
@@ -585,7 +661,7 @@ currency from the current date. Cutoffs should ultimately be tracked per topic
 or dataset; refreshing World Bank data must not advance the riot, court, election,
 or PM-evaluation cutoff.
 
-## 11. Country Progress Index
+## 11. Country and State Progress Index
 
 The index is a diagnostic lens, not an official statistic.
 
@@ -642,12 +718,13 @@ statistical confidence interval.
 
 - fixed goalposts are normative choices;
 - consumption Gini is not wealth or income inequality;
-- national averages hide states, caste, class, gender, and urban/rural gaps;
+- national and state averages hide district, caste, class, gender, and
+  urban/rural gaps;
 - V-Dem uses expert-coded estimates with uncertainty;
 - annual data revisions can change history;
 - an index can conceal trade-offs and should always be read with raw series.
 
-### Indicator interpretation and PM data windows
+### Indicator interpretation and office-term data windows
 
 Every indicator definition stores:
 
@@ -656,7 +733,7 @@ Every indicator definition stores:
 - a concrete numerical example;
 - unit, direction, transform, and goalposts.
 
-For each non-acting PM term lasting at least 300 days, the API calculates:
+For each non-acting PM or CM term lasting at least 300 days, the API calculates:
 
 1. the observation at or nearest before the term-start year, or the first
    observation inside the term when no earlier value exists;
@@ -664,22 +741,22 @@ For each non-acting PM term lasting at least 300 days, the API calculates:
 3. absolute, relative, and annualized change;
 4. whether that direction improved or worsened under the indicator definition.
 
-The UI highlights the current PM and the previous PM, then lists every comparable
-term. Actual data years are always shown. These windows are descriptive:
-national movement while a PM was in office does not prove that PM caused it.
-States, earlier reforms, courts, global conditions, demographics, and data lags
-also affect the result.
+The UI highlights the current and previous office terms, then lists every
+comparable term. Actual data years are always shown. These windows are
+descriptive: movement while an office-holder served does not prove causality.
+Other levels of government, prior reforms, courts, global conditions,
+demographics, and data lags also affect the result.
 
-## 12. Prime Minister evaluation
+## 12. Prime Minister and Chief Minister evaluation
 
 Each rated term receives six 0–10 component judgments:
 
 | Component | Weight |
 | --- | ---: |
-| Observed outcomes | 25% |
+| Observed outcomes | 30% |
 | Durable reforms | 20% |
 | Inclusion | 15% |
-| Crisis and security | 15% |
+| Crisis and security | 10% |
 | Institutions and liberties | 15% |
 | Integrity and execution | 10% |
 
@@ -702,11 +779,38 @@ Evaluation safeguards:
 - short and acting terms are not forced into a score;
 - score changes require rationale and source changes.
 
+Four published lenses recalculate the same six components:
+
+- balanced;
+- development first;
+- human capability first;
+- governance first.
+
+The balanced result is the headline. The displayed lens range is a
+priority-sensitivity range, not a confidence interval.
+
+National security is additionally published for all rated PM terms using:
+
+```text
+Operational =
+  31.25% counterterrorism and intelligence
++ 25% interstate and border defence
++ 25% internal-conflict management
++ 18.75% strategic autonomy and capability
+
+Rights-adjusted =
+  25% counterterrorism and intelligence
++ 20% interstate and border defence
++ 20% internal-conflict management
++ 15% strategic autonomy and capability
++ 20% rule-of-law and civilian safeguards
+```
+
 ## 13. Policy and bill evaluation
 
 Policies and bills are records tied to a jurisdiction and the office term that
-introduced them. The first release includes fifteen high-impact policies; it is
-not yet a complete parliamentary bill register.
+introduced them. The Sansad bill register is exposed only for the national
+jurisdiction; state legislation appears only after an editorial policy review.
 
 | Component | Weight |
 | --- | ---: |
@@ -735,41 +839,47 @@ The API is intentionally agent-friendly and read-only.
 | Endpoint | Purpose |
 | --- | --- |
 | `/api/meta` | cutoffs, versions, and row counts |
+| `/api/jurisdictions` | published country/state choices and validity dates |
 | `/api/overview` | progress snapshot, current term, questions, recent events |
 | `/api/leaders` | terms, component scores, claims, sources |
 | `/api/policies` | policies, bills, component scores, claims, sources |
 | `/api/events` | filterable timeline |
 | `/api/indicators` | definitions and latest observations |
-| `/api/indicators/:id/series` | raw series, PM-tenure changes, explanation, example, and source |
-| `/api/sources` | source ledger |
+| `/api/indicators/:id/series` | raw series, office-term changes, explanation, example, and source |
+| `/api/sources` | jurisdiction-scoped source ledger |
 | `/api/search?q=` | cross-entity search and reviewed-question matching |
 | `/api/questions/:id` | one reviewed answer |
 | `/api/methodology` | formulas, weights, source rubric, bias controls |
 | `/api/export` | complete jurisdiction research bundle |
 | `/api/openapi.json` | machine-readable API overview |
 
-`public/llms.txt` directs agents to the cutoff and methodology endpoints.
+Except for global methodology and metadata, read endpoints accept a
+`jurisdiction` query parameter. `public/llms.txt` directs agents to the cutoff
+and methodology endpoints.
 
 ## 15. UI architecture
 
-Six responsive views use the same API:
+Seven responsive views use the same jurisdiction-scoped API:
 
 1. **Overview**: current direction, progress score, uncertainty, reviewed
-   questions, PM strip, and recent events.
+   questions, leader strip, and recent events.
 2. **Timeline**: category and date filters with expandable provenance,
    decision quality, PM/Union and state/local roles, responsible actors,
    positives, and lessons.
-3. **Prime Ministers**: all terms, same-rubric comparison graph, detailed
+3. **Prime Ministers / Chief Ministers**: all terms, same-rubric comparison graph, detailed
    component reasons and claims.
-4. **Policies**: PM-linked policy inventory, status filters, FCRA evolution,
+4. **Policies**: office-term-linked policy inventory, status filters,
    five-part ratings, benefits, risks, and evidence gaps.
-5. **Indicators**: raw graph, latest value, ten-year change, goalposts, source
-   fitness, and state-source readiness.
-6. **Sources**: reliability distribution, filters, limitations, and agent data
+5. **Budgets**: jurisdiction budgets, allocations, fiscal frame, strengths, and
+   delivery risks.
+6. **Indicators**: raw graph, latest value, office-term change, goalposts, and
+   source fitness.
+7. **Sources**: reliability distribution, filters, limitations, and agent data
    access.
 
-Desktop uses a compact top navigation. Mobile uses a stable six-item bottom
-navigation, full-screen search, and stacked evidence layouts.
+Desktop uses a compact top navigation with a jurisdiction selector. Mobile uses
+a stable bottom navigation, compact jurisdiction selector, full-screen search,
+and stacked evidence layouts.
 
 ## 16. Adding research
 
@@ -823,10 +933,12 @@ The current automated suite checks:
 - normalization and aggregation behavior;
 - source coverage for every event and claim;
 - weighted PM score consistency;
+- weighted CM score consistency;
+- the same national-security formula for every rated PM term;
 - at least one claim and one event, policy, or budget record for every rated PM term;
 - explicit knowledge cutoffs;
 - 1945 timeline and protest/communal-violence coverage;
-- state and Chief Minister schema extensibility;
+- AP boundary isolation, CM chronology, and no pre-split observations;
 - reviewed-answer balance;
 - search and export APIs.
 
@@ -838,6 +950,8 @@ Browser E2E must cover:
 - arbitrary event and leader search;
 - timeline category/date filters and expansion;
 - PM selection and comparison;
+- jurisdiction switching and URL persistence;
+- CM selection and comparison;
 - indicator switching and chart rendering;
 - source filters and external links;
 - methodology modal;
@@ -855,9 +969,17 @@ This is a strong foundation, not an exhaustive history.
   disputed-count model exists;
 - early economic and social series are sparse;
 - the 2021 Census delay limits current demographic analysis;
-- national results hide large state differences;
+- state results still hide district and community differences;
 - the current PM scores have one editorial pass, not an external review panel;
-- no states are published yet, although the schema and tests support them;
+- only Andhra Pradesh is published at state level;
+- AP policy, event, and budget coverage is a reviewed starting corpus, not an
+  exhaustive state archive;
+- AP road evidence now covers network stock, annual PMGSY delivery through
+  July 16, 2026, targeted access, maintenance, fatalities, and one CAG
+  execution finding, but lacks a consistent independent annual road-condition
+  and travel-time series;
+- AP labour, health, and household indicators rely on survey years and should
+  not be read as annual measurements;
 - no multilingual research or UI yet;
 - no user-submitted corrections workflow yet;
 - no formal versioned data migrations or signed releases yet.

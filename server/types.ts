@@ -101,6 +101,40 @@ export type LeaderRatingAuditSeed = {
   notes: string
 }
 
+export type LeaderSpecialistTopicSeed = {
+  id: string
+  name: string
+  description: string
+  operationalLabel: string
+  adjustedLabel: string
+  methodology: string
+}
+
+export type LeaderSpecialistDimensionSeed = {
+  id: string
+  topicId: string
+  name: string
+  operationalWeight: number
+  adjustedWeight: number
+  description: string
+}
+
+export type LeaderSpecialistAssessmentSeed = {
+  id: string
+  termId: string
+  topicId: string
+  confidence: Confidence
+  status: 'reviewed' | 'provisional'
+  summary: string
+  assessmentAsOf: string
+  sourceIds: string[]
+  scores: Array<{
+    dimensionId: string
+    score: number
+    rationale: string
+  }>
+}
+
 export type EventSeed = {
   id: string
   jurisdictionId: string

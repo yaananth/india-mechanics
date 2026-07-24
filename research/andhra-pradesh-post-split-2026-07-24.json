@@ -1,0 +1,229 @@
+{
+  "batchId": "andhra-pradesh-post-split-2026-07-24",
+  "rosterVersion": "source-roster-v0.11",
+  "lane": "state-assessment",
+  "throughDate": "2026-07-24",
+  "reviewer": "India Mechanics Andhra Pradesh state review",
+  "candidates": [
+    {
+      "id": "ap-reorganisation-act-2014",
+      "url": "https://upload.indiacode.nic.in/view-casepdf?id=AC_CEN_5_5_00058_201406_1517807327989&type=act",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "india-code",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ap-ses-2024-25",
+      "url": "https://s3.ap-south-1.amazonaws.com/apfinance.gov.in/uploads/index-docs/AP_Socio_Economic_Survey_2024_25.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ap-finance-statistics",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "niti-ap-macro-fiscal-2025",
+      "url": "https://www.niti.gov.in/sites/default/files/2025-03/Macro-and-Fiscal-Landscape-of-the-State-of-Andhra-Pradesh-1.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official-analysis",
+      "independenceGroup": "niti-state-fiscal",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "nfhs4-ap",
+      "url": "https://dhsprogram.com/pubs/pdf/OF31/OF31.AP.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "nfhs4-ap",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "nfhs5-ap",
+      "url": "https://dhsprogram.com/pubs/pdf/OF43/OF43.AP.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "nfhs5-ap",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "eci-ap-2019",
+      "url": "https://hindi.eci.gov.in/files/file/10252-andhra-pradesh-legislative-assembly-election-2019/?do=download",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "eci-ap-2019",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "eci-ap-2024",
+      "url": "https://www.eci.gov.in/statistical-report/ae/2024/2",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "eci-ap-2024",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ap-budget-2014-15",
+      "url": "https://s3.ap-south-1.amazonaws.com/apfinance.gov.in/uploads/budget-volumes/2014-15/Volume-I-1.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ap-budget-2014",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ap-budget-2019-20",
+      "url": "https://s3.ap-south-1.amazonaws.com/apfinance.gov.in/uploads/budget-volumes/2019-20/Volume-I-1%20%281%29.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ap-budget-2019",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ap-budget-2026-27",
+      "url": "https://apfinance.gov.in/...Bud@et26-27/documents/Volume-I-1.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ap-budget-2026",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ap-amaravati-judgment-2022",
+      "url": "https://images.assettype.com/barandbench/2022-03/78b1f2e8-ab78-4438-ba28-99561a981886/Rajadhani_Rythu_Parirakshnana_Samithi_v__The_State_of_Andhra_Pradesh.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "court-record",
+      "independenceGroup": "ap-high-court",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

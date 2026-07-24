@@ -16,6 +16,7 @@ import type {
   Budget,
   CuratedAnswer,
   IndicatorDefinition,
+  Jurisdiction,
   LeaderTerm,
   Methodology,
   Overview,
@@ -34,6 +35,7 @@ import { SourcesView } from './views/SourcesView.tsx'
 import { TimelineView } from './views/TimelineView.tsx'
 
 type AppData = {
+  jurisdictions: Jurisdiction[]
   overview: Overview
   leaders: LeaderTerm[]
   policies: Policy[]
@@ -83,6 +85,7 @@ function App() {
     setError(null)
     try {
       const [
+        jurisdictions,
         overview,
         leaders,
         policies,
@@ -93,16 +96,18 @@ function App() {
         methodology,
       ] =
         await Promise.all([
-          api.overview(controller.signal),
-          api.leaders(controller.signal),
-          api.policies(controller.signal),
-          api.budgets(controller.signal),
-          api.events(controller.signal),
-          api.indicators(controller.signal),
-          api.sources(controller.signal),
+          api.jurisdictions(controller.signal),
+          api.overview(navigation.jurisdictionId, controller.signal),
+          api.leaders(navigation.jurisdictionId, controller.signal),
+          api.policies(navigation.jurisdictionId, controller.signal),
+          api.budgets(navigation.jurisdictionId, controller.signal),
+          api.events(navigation.jurisdictionId, controller.signal),
+          api.indicators(navigation.jurisdictionId, controller.signal),
+          api.sources(navigation.jurisdictionId, controller.signal),
           api.methodology(controller.signal),
         ])
       setData({
+        jurisdictions,
         overview,
         leaders,
         policies,
@@ -112,7 +117,7 @@ function App() {
         sources,
         methodology,
       })
-      setSelectedAnswer((current) => current ?? overview.featuredAnswer)
+      setSelectedAnswer(overview.featuredAnswer)
     } catch (reason) {
       if ((reason as Error).name !== 'AbortError') {
         setError((reason as Error).message)
@@ -121,7 +126,7 @@ function App() {
       setLoading(false)
     }
     return () => controller.abort()
-  }, [])
+  }, [navigation.jurisdictionId])
 
   useEffect(() => {
     void load()
@@ -282,6 +287,23 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const handleJurisdictionChange = (jurisdictionId: string) => {
+    if (jurisdictionId === navigation.jurisdictionId) return
+    setData(null)
+    setSelectedAnswer(null)
+    updateNavigation({
+      jurisdictionId,
+      answerId: null,
+      termId: '',
+      eventId: null,
+      policyId: '',
+      billId: null,
+      policyMode: 'reviews',
+      budgetId: '',
+      indicatorId: '',
+    })
+  }
+
   const handlePolicyModeChange = (policyMode: PolicyViewMode) => {
     updateNavigation({ policyMode })
   }
@@ -326,11 +348,15 @@ function App() {
       <AppShell
         activeView={navigation.view}
         onViewChange={handleViewChange}
+        jurisdictions={data.jurisdictions}
+        jurisdiction={data.overview.jurisdiction}
+        onJurisdictionChange={handleJurisdictionChange}
         onSearchOpen={() => setSearchOpen(true)}
         onMethodologyOpen={() => setMethodologyOpen(true)}
       >
         {navigation.view === 'overview' && (
           <OverviewView
+            key={data.overview.jurisdiction.id}
             overview={data.overview}
             leaders={data.leaders}
             answer={selectedAnswer}
@@ -344,6 +370,7 @@ function App() {
         )}
         {navigation.view === 'timeline' && (
           <TimelineView
+            key={data.overview.jurisdiction.id}
             events={data.events}
             selectedEventId={navigation.eventId}
             onSelectEvent={(eventId) => updateNavigation({ eventId })}
@@ -358,10 +385,12 @@ function App() {
               updateNavigation({ view: 'indicators', indicatorId })
             }
             knowledge={data.overview.knowledge}
+            jurisdiction={data.overview.jurisdiction}
           />
         )}
         {navigation.view === 'leaders' && (
           <LeadersView
+            key={data.overview.jurisdiction.id}
             leaders={data.leaders}
             selectedTermId={navigation.termId}
             onSelectTerm={(termId) => updateNavigation({ termId })}
@@ -370,6 +399,7 @@ function App() {
         )}
         {navigation.view === 'policies' && (
           <PoliciesView
+            key={data.overview.jurisdiction.id}
             policies={data.policies}
             selectedPolicyId={navigation.policyId}
             onSelectPolicy={(policyId) =>
@@ -380,18 +410,23 @@ function App() {
             selectedBillId={navigation.billId}
             onSelectBill={handleBillSelect}
             knowledge={data.overview.knowledge}
+            jurisdiction={data.overview.jurisdiction}
+            allowBillRegister={data.overview.jurisdiction.level === 'country'}
           />
         )}
         {navigation.view === 'budgets' && (
           <BudgetsView
+            key={data.overview.jurisdiction.id}
             budgets={data.budgets}
             selectedBudgetId={navigation.budgetId}
             onSelectBudget={(budgetId) => updateNavigation({ budgetId })}
             knowledge={data.overview.knowledge}
+            jurisdiction={data.overview.jurisdiction}
           />
         )}
         {navigation.view === 'indicators' && (
           <IndicatorsView
+            key={data.overview.jurisdiction.id}
             indicators={data.indicators}
             selectedIndicatorId={navigation.indicatorId}
             onSelectIndicator={(indicatorId) =>
@@ -399,10 +434,12 @@ function App() {
             }
             onSelectLeaderTerm={selectLeader}
             knowledge={data.overview.knowledge}
+            jurisdiction={data.overview.jurisdiction}
           />
         )}
         {navigation.view === 'sources' && (
           <SourcesView
+            key={data.overview.jurisdiction.id}
             sources={data.sources}
             onMethodologyOpen={() => setMethodologyOpen(true)}
             knowledge={data.overview.knowledge}
@@ -411,6 +448,11 @@ function App() {
       </AppShell>
       <SearchDialog
         open={searchOpen}
+        jurisdictionId={navigation.jurisdictionId}
+        jurisdictionName={data.overview.jurisdiction.shortName}
+        sampleQuestions={data.overview.questions.map(
+          (question) => question.question,
+        )}
         onClose={() => setSearchOpen(false)}
         onSelectAnswer={(answer) => {
           setSelectedAnswer(answer)

@@ -1,6 +1,8 @@
 import express from 'express'
 import type { DatabaseSync } from 'node:sqlite'
 import { calculateProgress, calculateProgressHistory } from './progress.ts'
+import { leaderRatingProfiles, profileScore } from './rating-profiles.ts'
+import { specialistScore } from './specialist-ratings.ts'
 
 const DEFAULT_JURISDICTION = 'india'
 
@@ -11,6 +13,25 @@ function metadataMap(db: DatabaseSync) {
         Array<{ key: string; value: string }>
     ).map((row) => [row.key, row.value]),
   )
+}
+
+function metadataForJurisdiction(db: DatabaseSync, jurisdictionId: string) {
+  const scoped = Object.fromEntries(
+    (
+      db
+        .prepare(
+          `SELECT key, value
+           FROM jurisdiction_metadata
+           WHERE jurisdiction_id = ?
+           ORDER BY key`,
+        )
+        .all(jurisdictionId) as unknown as Array<{
+        key: string
+        value: string
+      }>
+    ).map((row) => [row.key, row.value]),
+  )
+  return { ...metadataMap(db), ...scoped }
 }
 
 function progressYear(db: DatabaseSync) {
@@ -209,9 +230,47 @@ function getLeaderTerms(db: DatabaseSync, jurisdictionId: string) {
      FROM leader_rating_audits
      WHERE term_id = ?`,
   )
+  const specialistAssessmentStatement = db.prepare(
+    `SELECT a.id, a.topic_id, a.confidence, a.status, a.summary,
+            a.assessment_as_of, topic.name AS topic_name,
+            topic.description AS topic_description,
+            topic.operational_label, topic.adjusted_label,
+            topic.methodology
+     FROM leader_specialist_assessments a
+     JOIN leader_specialist_topics topic ON topic.id = a.topic_id
+     WHERE a.term_id = ?
+     ORDER BY a.rowid`,
+  )
+  const specialistScoreStatement = db.prepare(
+    `SELECT dimension.id, dimension.name, dimension.operational_weight,
+            dimension.adjusted_weight, dimension.description,
+            score.score, score.rationale
+     FROM leader_specialist_scores score
+     JOIN leader_specialist_dimensions dimension
+       ON dimension.id = score.dimension_id
+     WHERE score.assessment_id = ?
+     ORDER BY dimension.rowid`,
+  )
+  const specialistSourceStatement = db.prepare(
+    `SELECT source_id
+     FROM leader_specialist_sources
+     WHERE assessment_id = ?
+     ORDER BY rowid`,
+  )
 
   return rows.map((row) => {
     const termId = String(row.id)
+    const componentScores = scoreStatement.all(termId) as Array<{
+      id: string
+      name: string
+      weight: number
+      description: string
+      score: number
+      rationale: string
+    }>
+    const scoreByDimension = Object.fromEntries(
+      componentScores.map((component) => [component.id, component.score]),
+    )
     const sourceIds = (
       sourceStatement.all(termId) as unknown as Array<{ source_id: string }>
     ).map((source) => source.source_id)
@@ -233,6 +292,84 @@ function getLeaderTerms(db: DatabaseSync, jurisdictionId: string) {
           notes: string
         }
       | undefined
+    const specialistAssessments = (
+      specialistAssessmentStatement.all(termId) as unknown as Array<{
+        id: string
+        topic_id: string
+        confidence: string
+        status: string
+        summary: string
+        assessment_as_of: string
+        topic_name: string
+        topic_description: string
+        operational_label: string
+        adjusted_label: string
+        methodology: string
+      }>
+    ).map((assessment) => {
+      const specialistComponents = specialistScoreStatement.all(
+        assessment.id,
+      ) as unknown as Array<{
+        id: string
+        name: string
+        operational_weight: number
+        adjusted_weight: number
+        description: string
+        score: number
+        rationale: string
+      }>
+      const specialistScores = Object.fromEntries(
+        specialistComponents.map((component) => [
+          component.id,
+          component.score,
+        ]),
+      )
+      const scoreDimensions = specialistComponents.map((component) => ({
+        id: component.id,
+        operationalWeight: component.operational_weight,
+        adjustedWeight: component.adjusted_weight,
+      }))
+      const specialistSourceIds = (
+        specialistSourceStatement.all(assessment.id) as unknown as Array<{
+          source_id: string
+        }>
+      ).map((source) => source.source_id)
+      return {
+        id: assessment.id,
+        topicId: assessment.topic_id,
+        topicName: assessment.topic_name,
+        topicDescription: assessment.topic_description,
+        methodology: assessment.methodology,
+        operationalLabel: assessment.operational_label,
+        operationalScore:
+          specialistScore(
+            specialistScores,
+            scoreDimensions,
+            'operationalWeight',
+          ) ?? 0,
+        adjustedLabel: assessment.adjusted_label,
+        adjustedScore:
+          specialistScore(
+            specialistScores,
+            scoreDimensions,
+            'adjustedWeight',
+          ) ?? 0,
+        confidence: assessment.confidence,
+        status: assessment.status,
+        summary: assessment.summary,
+        assessmentAsOf: assessment.assessment_as_of,
+        componentScores: specialistComponents.map((component) => ({
+          id: component.id,
+          name: component.name,
+          operationalWeight: component.operational_weight,
+          adjustedWeight: component.adjusted_weight,
+          description: component.description,
+          score: component.score,
+          rationale: component.rationale,
+        })),
+        sources: getSourcesByIds(db, specialistSourceIds),
+      }
+    })
     return {
       id: termId,
       startDate: row.start_date,
@@ -260,7 +397,16 @@ function getLeaderTerms(db: DatabaseSync, jurisdictionId: string) {
             color: row.party_color,
           }
         : null,
-      componentScores: scoreStatement.all(termId),
+      componentScores,
+      ratingProfiles: leaderRatingProfiles.map((profile) => ({
+        id: profile.id,
+        name: profile.name,
+        description: profile.description,
+        score: profileScore(scoreByDimension, profile),
+        weights: profile.weights,
+        isCanonical: profile.id === 'balanced',
+      })),
+      specialistAssessments,
       claims: (
         claimStatement.all(termId) as unknown as Array<{ id: string }>
       )
@@ -963,9 +1109,15 @@ function getIndicators(
               p.name AS dimension_name, p.color AS dimension_color
        FROM indicator_definitions d
        JOIN progress_dimensions p ON p.id = d.dimension_id
+       WHERE EXISTS (
+         SELECT 1
+         FROM indicator_observations observation
+         WHERE observation.jurisdiction_id = ?
+           AND observation.indicator_id = d.id
+       )
        ORDER BY p.rowid, d.rowid`,
     )
-    .all() as unknown as Array<Record<string, unknown>>
+    .all(jurisdictionId) as unknown as Array<Record<string, unknown>>
   const latestStatement = db.prepare(
     `SELECT period, value, status, source_id, note
      FROM indicator_observations
@@ -1249,6 +1401,29 @@ export function createApp(db: DatabaseSync) {
 
   app.get('/api/meta', (_request, response) => {
     const metadata = metadataMap(db)
+    const jurisdictionMetadata = Object.fromEntries(
+      (
+        db
+          .prepare(
+            `SELECT jurisdiction_id, key, value
+             FROM jurisdiction_metadata
+             ORDER BY jurisdiction_id, key`,
+          )
+          .all() as unknown as Array<{
+          jurisdiction_id: string
+          key: string
+          value: string
+        }>
+      ).reduce<Array<[string, Record<string, string>]>>((groups, row) => {
+        let entry = groups.find(([id]) => id === row.jurisdiction_id)
+        if (!entry) {
+          entry = [row.jurisdiction_id, {}]
+          groups.push(entry)
+        }
+        entry[1][row.key] = row.value
+        return groups
+      }, []),
+    )
     const counts = Object.fromEntries(
       [
         'jurisdictions',
@@ -1274,6 +1449,7 @@ export function createApp(db: DatabaseSync) {
       project: 'India Mechanics',
       scope: 'India, 1945 to present',
       metadata,
+      jurisdictionMetadata,
       counts,
       editorialPolicy:
         'Measured observations, sourced claims, and editorial evaluations are separate record types.',
@@ -1309,11 +1485,77 @@ export function createApp(db: DatabaseSync) {
       request.query.jurisdiction ?? DEFAULT_JURISDICTION,
     )
     const targetYear = Number(request.query.year ?? progressYear(db))
-    const metadata = metadataMap(db)
+    const metadata = metadataForJurisdiction(db, jurisdictionId)
+    const jurisdiction = db
+      .prepare(
+        `SELECT id, name, short_name, level, parent_id, iso_code, valid_from,
+                valid_to, status
+         FROM jurisdictions
+         WHERE id = ?`,
+      )
+      .get(jurisdictionId) as Record<string, unknown> | undefined
+    if (!jurisdiction) {
+      response.status(404).json({ error: 'Jurisdiction not found' })
+      return
+    }
     const terms = getLeaderTerms(db, jurisdictionId)
     const currentTerm = terms.find((term) => !term.endDate)
+    const policies = getPolicies(db, jurisdictionId)
+    const answers = (
+      db
+        .prepare(
+          `SELECT id, question, short_answer, confidence, as_of_date
+           FROM curated_answers
+           WHERE jurisdiction_id = ?
+           ORDER BY rowid`,
+        )
+        .all(jurisdictionId) as unknown as Array<Record<string, unknown>>
+    ).map((row) => ({
+      id: row.id,
+      question: row.question,
+      shortAnswer: row.short_answer,
+      confidence: row.confidence,
+      asOfDate: row.as_of_date,
+    }))
+    const validFromYear = Number(String(jurisdiction.valid_from).slice(0, 4))
+    const historyYears = [
+      1960,
+      1970,
+      1980,
+      1990,
+      2000,
+      2010,
+      2015,
+      2018,
+      2020,
+      2022,
+      2024,
+      targetYear,
+    ].filter((year) => year >= validFromYear)
+    const featuredPolicy =
+      policies.find((policy) => policy.id === 'economic-reforms-1991') ??
+      policies[0] ??
+      null
+    const featuredAnswerId =
+      jurisdictionId === 'india'
+        ? 'regime-change-now'
+        : String(answers[0]?.id ?? '')
+    const featuredAnswer = featuredAnswerId
+      ? getAnswer(db, featuredAnswerId)
+      : null
     response.json({
       jurisdictionId,
+      jurisdiction: {
+        id: jurisdiction.id,
+        name: jurisdiction.name,
+        shortName: jurisdiction.short_name,
+        level: jurisdiction.level,
+        parentId: jurisdiction.parent_id,
+        isoCode: jurisdiction.iso_code,
+        validFrom: jurisdiction.valid_from,
+        validTo: jurisdiction.valid_to,
+        status: jurisdiction.status,
+      },
       targetYear,
       knowledge: {
         cutoff: metadata.knowledge_cutoff,
@@ -1323,47 +1565,18 @@ export function createApp(db: DatabaseSync) {
         indicatorAsOfDate: metadata.indicator_as_of_date,
         latestWorldBankPeriod: Number(metadata.latest_world_bank_period),
         latestVdemPeriod: Number(metadata.latest_vdem_period),
-        timelineStarts: metadata.timeline_starts,
+        timelineStarts: jurisdiction.valid_from,
       },
       progress: calculateProgress(db, jurisdictionId, targetYear),
       progressHistory: calculateProgressHistory(
         db,
         jurisdictionId,
-        Array.from(
-          new Set([
-            1960,
-            1970,
-            1980,
-            1990,
-            2000,
-            2010,
-            2015,
-            2020,
-            targetYear,
-          ]),
-        ),
+        Array.from(new Set(historyYears)),
       ),
       currentTerm,
-      featuredPolicy: getPolicies(db, jurisdictionId).find(
-        (policy) => policy.id === 'economic-reforms-1991',
-      ),
-      featuredAnswer: getAnswer(db, 'modi-doing-good'),
-      questions: (
-        db
-          .prepare(
-            `SELECT id, question, short_answer, confidence, as_of_date
-             FROM curated_answers
-             WHERE jurisdiction_id = ?
-             ORDER BY rowid`,
-          )
-          .all(jurisdictionId) as unknown as Array<Record<string, unknown>>
-      ).map((row) => ({
-        id: row.id,
-        question: row.question,
-        shortAnswer: row.short_answer,
-        confidence: row.confidence,
-        asOfDate: row.as_of_date,
-      })),
+      featuredPolicy,
+      featuredAnswer,
+      questions: answers,
       recentEvents: getEvents(db, jurisdictionId).slice(0, 5),
     })
   })
@@ -1525,9 +1738,15 @@ export function createApp(db: DatabaseSync) {
       definition.direction as 'higher' | 'lower' | 'neutral',
     )
     const comparison =
+      jurisdictionId === 'india' &&
       request.params.indicatorId === 'official-exchange-rate'
         ? getCurrencyGrowthComparison(db, jurisdictionId, observations)
         : null
+    const jurisdiction = db
+      .prepare(`SELECT level FROM jurisdictions WHERE id = ?`)
+      .get(jurisdictionId) as { level: string } | undefined
+    const officeLabel =
+      jurisdiction?.level === 'country' ? 'Prime Minister' : 'Chief Minister'
     response.json({
       definition,
       observations: observations.map((row) => ({
@@ -1540,8 +1759,8 @@ export function createApp(db: DatabaseSync) {
       termChanges,
       attributionCaveat:
         definition.direction === 'neutral'
-          ? 'This is a contextual market and policy indicator, not a higher-is-better score. Exchange-rate movements reflect domestic and global forces and are not mechanically assigned to the Prime Minister in office.'
-          : 'These are observed national changes while a Prime Minister was in office. They do not prove that the Prime Minister caused the change; state governments, prior reforms, global conditions, demographics, and data timing also matter.',
+          ? `This is a contextual indicator, not a higher-is-better score, and it is not mechanically assigned to the ${officeLabel} in office.`
+          : `These are observed changes while a ${officeLabel} was in office. They do not prove that the ${officeLabel} caused the change; prior policy, other levels of government, global conditions, demographics, and data timing also matter.`,
       source: getSourcesByIds(db, [String(definition.sourceId)])[0],
       comparison,
     })
@@ -1549,13 +1768,55 @@ export function createApp(db: DatabaseSync) {
 
   app.get('/api/sources', (request, response) => {
     const minimum = Number(request.query.minRating ?? 1)
+    const jurisdictionId = String(
+      request.query.jurisdiction ?? DEFAULT_JURISDICTION,
+    )
     const rows = db
       .prepare(
         `SELECT * FROM sources
          WHERE reliability >= ?
+           AND id IN (
+             SELECT term_source.source_id
+             FROM term_sources term_source
+             JOIN leader_terms term ON term.id = term_source.term_id
+             JOIN offices office ON office.id = term.office_id
+             WHERE office.jurisdiction_id = ?
+             UNION
+             SELECT event_source.source_id
+             FROM event_sources event_source
+             JOIN events event ON event.id = event_source.event_id
+             WHERE event.jurisdiction_id = ?
+             UNION
+             SELECT claim_source.source_id
+             FROM claim_sources claim_source
+             JOIN claims claim ON claim.id = claim_source.claim_id
+             WHERE claim.jurisdiction_id = ?
+             UNION
+             SELECT policy_source.source_id
+             FROM policy_sources policy_source
+             JOIN policies policy ON policy.id = policy_source.policy_id
+             WHERE policy.jurisdiction_id = ?
+             UNION
+             SELECT budget_source.source_id
+             FROM budget_sources budget_source
+             JOIN budgets budget ON budget.id = budget_source.budget_id
+             WHERE budget.jurisdiction_id = ?
+             UNION
+             SELECT source_id
+             FROM indicator_observations
+             WHERE jurisdiction_id = ?
+           )
          ORDER BY reliability DESC, publisher, title`,
       )
-      .all(minimum) as unknown as SourceRow[]
+      .all(
+        minimum,
+        jurisdictionId,
+        jurisdictionId,
+        jurisdictionId,
+        jurisdictionId,
+        jurisdictionId,
+        jurisdictionId,
+      ) as unknown as SourceRow[]
     response.json(rows.map(sourceShape))
   })
 
@@ -1906,8 +2167,54 @@ export function createApp(db: DatabaseSync) {
          FROM budget_evaluation_dimensions ORDER BY rowid`,
       )
       .all()
+    const specialistTopics = (
+      db
+        .prepare(
+          `SELECT id, name, description, operational_label, adjusted_label,
+                  methodology
+           FROM leader_specialist_topics
+           ORDER BY rowid`,
+        )
+        .all() as unknown as Array<{
+        id: string
+        name: string
+        description: string
+        operational_label: string
+        adjusted_label: string
+        methodology: string
+      }>
+    ).map((topic) => ({
+      id: topic.id,
+      name: topic.name,
+      description: topic.description,
+      operationalLabel: topic.operational_label,
+      adjustedLabel: topic.adjusted_label,
+      methodology: topic.methodology,
+      dimensions: (
+        db
+          .prepare(
+            `SELECT id, name, operational_weight, adjusted_weight, description
+             FROM leader_specialist_dimensions
+             WHERE topic_id = ?
+             ORDER BY rowid`,
+          )
+          .all(topic.id) as unknown as Array<{
+          id: string
+          name: string
+          operational_weight: number
+          adjusted_weight: number
+          description: string
+        }>
+      ).map((dimension) => ({
+        id: dimension.id,
+        name: dimension.name,
+        operationalWeight: dimension.operational_weight,
+        adjustedWeight: dimension.adjusted_weight,
+        description: dimension.description,
+      })),
+    }))
     response.json({
-      version: 'progress-v0.1|leader-v0.1',
+      version: 'progress-v0.1|leader-v0.2|security-v0.1',
       progress: {
         purpose:
           'A transparent diagnostic lens, not an official statistic or causal ranking.',
@@ -1923,9 +2230,17 @@ export function createApp(db: DatabaseSync) {
         purpose:
           'An evidence-led editorial estimate that forces achievements, concerns, starting conditions, and institutional costs into the same frame.',
         formula:
-          'Weighted average of six 0–10 component judgments, rounded to one decimal. Acting and ultra-short terms are not rated.',
+          'Balanced profile: 30% observed outcomes, 20% durable reforms, 15% inclusion, 10% crisis and security, 15% institutions and liberties, and 10% integrity and execution. The weighted sum is rounded to one decimal. Acting and ultra-short terms are not rated.',
         dimensions: leaderDimensions,
+        profiles: leaderRatingProfiles.map((profile) => ({
+          id: profile.id,
+          name: profile.name,
+          description: profile.description,
+          weights: profile.weights,
+          isCanonical: profile.id === 'balanced',
+        })),
       },
+      specialistEvaluations: specialistTopics,
       policyEvaluation: {
         purpose:
           'A disclosed editorial assessment of policy design, observed outcomes, execution, rights, and side effects.',

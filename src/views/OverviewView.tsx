@@ -71,10 +71,15 @@ export function OverviewView({
   onLeaderSelect: (leaderId: string) => void
   onMethodologyOpen: () => void
 }) {
-  const ratedLeaders = ['modi-2014', 'manmohan-2004', 'vajpayee-1998', 'rao-1991']
-    .map((id) => leaders.find((leader) => leader.id === id))
-    .filter((leader): leader is LeaderTerm => Boolean(leader))
+  const ratedLeaders = leaders
+    .filter((leader) => leader.ratingScore !== null)
+    .slice(-4)
+    .reverse()
   const score = overview.progress.overall
+  const isCountry = overview.jurisdiction.level === 'country'
+  const officeLabel = isCountry ? 'Prime Minister' : 'Chief Minister'
+  const officePlural = isCountry ? 'Prime Ministers' : 'Chief Ministers'
+  const startYear = overview.knowledge.timelineStarts.slice(0, 4)
 
   return (
     <div className="view overview-view">
@@ -85,12 +90,15 @@ export function OverviewView({
             through {overview.knowledge.latestVdemPeriod} · political record
             checked {overview.knowledge.politicalStatusChecked}
           </span>
-          <h1>How is India doing?</h1>
+          <h1>
+            {isCountry
+              ? 'How is India doing?'
+              : `How is ${overview.jurisdiction.shortName} doing since bifurcation?`}
+          </h1>
           <p>
-            India is more capable, connected, and materially secure than at
-            independence. Progress is real but unbalanced: jobs, inclusion,
-            institutional restraints, and environmental health trail the
-            strongest gains.
+            {isCountry
+              ? 'India is more capable, connected, and materially secure than at independence. Progress is real but unbalanced: jobs, inclusion, institutional restraints, and environmental health trail the strongest gains.'
+              : `This state record begins on ${overview.jurisdiction.validFrom}. It does not merge observations from undivided Andhra Pradesh or present-day Telangana. Growth, services, welfare, fiscal pressure, capital development, and institutional continuity are assessed inside the post-split boundary.`}
           </p>
         </div>
         <div className="overview-intro__actions">
@@ -104,7 +112,9 @@ export function OverviewView({
       <section className="progress-section">
         <div className="section-heading">
           <div>
-            <span className="section-label">Country Progress Index</span>
+            <span className="section-label">
+              {isCountry ? 'Country Progress Index' : 'State Progress Index'}
+            </span>
             <h2>Progress is broad, not evenly distributed</h2>
           </div>
           <button type="button" className="text-command" onClick={onMethodologyOpen}>
@@ -251,15 +261,15 @@ export function OverviewView({
       <section className="leader-strip">
         <div className="section-heading">
           <div>
-            <span className="section-label">Prime Minister evaluations</span>
-            <h2>Recent governments, one disclosed rubric</h2>
+            <span className="section-label">{officeLabel} evaluations</span>
+            <h2>Recent {officePlural.toLowerCase()}, one disclosed rubric</h2>
           </div>
           <button
             type="button"
             className="text-command"
             onClick={() => onViewChange('leaders')}
           >
-            Compare all Prime Ministers
+            Compare all {officePlural}
             <ArrowRight size={15} aria-hidden="true" />
           </button>
         </div>
@@ -286,7 +296,7 @@ export function OverviewView({
               <span className="leader-strip__summary">{leader.ratingSummary}</span>
               <span className="leader-strip__rating">
                 <EditorialLabel />
-                <strong>{leader.ratingScore}/10</strong>
+                <strong>{leader.ratingScore?.toFixed(1)}/10</strong>
                 {leader.ratingConfidence && (
                   <ConfidenceMark confidence={leader.ratingConfidence} compact />
                 )}
@@ -308,7 +318,7 @@ export function OverviewView({
             className="text-command"
             onClick={() => onViewChange('timeline')}
           >
-            Explore 1945–2026
+            Explore {startYear}–2026
             <ArrowRight size={15} aria-hidden="true" />
           </button>
         </div>

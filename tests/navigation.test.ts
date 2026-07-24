@@ -71,6 +71,20 @@ describe('shareable navigation URLs', () => {
     ).toBe('/india/?view=leaders&term=rao-1991')
   })
 
+  it('keeps the selected jurisdiction in every shareable state URL', () => {
+    const state: NavigationState = {
+      ...defaultNavigation,
+      jurisdictionId: 'andhra-pradesh',
+      view: 'leaders',
+      termId: 'ap-naidu-2024',
+    }
+    const href = navigationHref(state, 'https://example.test/')
+    expect(href).toBe(
+      '/?jurisdiction=andhra-pradesh&view=leaders&term=ap-naidu-2024',
+    )
+    expect(parseNavigation(href)).toEqual(state)
+  })
+
   it('infers a view when a share URL omits the view parameter', () => {
     expect(parseNavigation('https://example.test/?event=neet-2026')).toMatchObject({
       view: 'timeline',

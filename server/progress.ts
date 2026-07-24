@@ -58,6 +58,12 @@ export function calculateProgress(
             transform, goalpost_low, goalpost_high, frequency
      FROM indicator_definitions
      WHERE dimension_id = ? AND score_role = 'scored'
+       AND EXISTS (
+         SELECT 1
+         FROM indicator_observations observation
+         WHERE observation.jurisdiction_id = ?
+           AND observation.indicator_id = indicator_definitions.id
+       )
      ORDER BY rowid`,
   )
   const observationStatement = db.prepare(
@@ -71,6 +77,7 @@ export function calculateProgress(
   const scoredDimensions: ProgressDimension[] = dimensions.map((dimension) => {
     const definitions = indicatorStatement.all(
       dimension.id,
+      jurisdictionId,
     ) as unknown as IndicatorRow[]
     const totalWeight = definitions.reduce(
       (sum, definition) => sum + definition.dimension_weight,

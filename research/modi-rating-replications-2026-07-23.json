@@ -14,14 +14,14 @@
     }
   },
   "website": {
-    "rating": 6.3,
+    "rating": 6.7,
     "componentScores": {
       "outcomes": 7.7,
-      "reforms": 7.2,
-      "inclusion": 6.2,
-      "crisis": 5.8,
-      "institutions": 3.8,
-      "integrity": 5.8
+      "reforms": 7.4,
+      "inclusion": 6.5,
+      "crisis": 6.3,
+      "institutions": 4.5,
+      "integrity": 6.0
     },
     "sourceUrls": [
       "https://www.pmindia.gov.in/en/pms-profile/",
@@ -52,10 +52,73 @@
   },
   "evidenceRefresh": {
     "date": "2026-07-24",
-    "previousRating": 6.2,
-    "revisedRating": 6.3,
-    "reason": "Road expansion, monetary poverty, and trade-agreement evidence were made explicit. Outcomes and inclusion increased within the original 6.1-6.3 replication range; reforms remained unchanged to avoid double-counting."
+    "previousRating": 6.6,
+    "revisedRating": 6.7,
+    "reason": "The security evidence backfill made LWE and Northeast improvements, retaliation capacity, defence capability, prevention failures, the China border shock, Manipur, and safeguards explicit. The combined crisis-security component rose from 5.8 to 6.3 while a separate specialist formula published 7.0 operational and 6.5 rights-adjusted security."
   },
+  "publishedProfiles": [
+    {
+      "id": "balanced",
+      "score": 6.7,
+      "weights": {
+        "outcomes": 0.30,
+        "reforms": 0.20,
+        "inclusion": 0.15,
+        "crisis": 0.10,
+        "institutions": 0.15,
+        "integrity": 0.10
+      }
+    },
+    {
+      "id": "development",
+      "score": 7.1,
+      "weights": {
+        "outcomes": 0.40,
+        "reforms": 0.25,
+        "inclusion": 0.15,
+        "crisis": 0.10,
+        "institutions": 0.05,
+        "integrity": 0.05
+      }
+    },
+    {
+      "id": "human-capability",
+      "score": 6.7,
+      "weights": {
+        "outcomes": 0.30,
+        "reforms": 0.10,
+        "inclusion": 0.35,
+        "crisis": 0.10,
+        "institutions": 0.10,
+        "integrity": 0.05
+      }
+    },
+    {
+      "id": "governance",
+      "score": 6.0,
+      "weights": {
+        "outcomes": 0.10,
+        "reforms": 0.15,
+        "inclusion": 0.10,
+        "crisis": 0.15,
+        "institutions": 0.30,
+        "integrity": 0.20
+      }
+    }
+  ],
+  "specialistSecurity": {
+    "operationalScore": 7.0,
+    "rightsAdjustedScore": 6.5,
+    "componentScores": {
+      "counterterrorismAndIntelligence": 7.2,
+      "interstateAndBorderDefence": 6.4,
+      "internalConflictManagement": 6.8,
+      "strategicAutonomyAndCapability": 7.6,
+      "ruleOfLawAndCivilianSafeguards": 4.6
+    },
+    "researchBatch": "research/security-strength-2026-07-24.json"
+  },
+  "interpretation": "The five runs below remain a reproducibility record for the earlier prompt and rubric. They are not independent scholarly validation of the final weights. The July 24 methodology review is the controlling publication decision.",
   "runs": [
     {
       "id": "replication-1",

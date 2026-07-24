@@ -21,6 +21,13 @@ CREATE TABLE IF NOT EXISTS jurisdictions (
   status TEXT NOT NULL CHECK (status IN ('published', 'researching', 'planned'))
 );
 
+CREATE TABLE IF NOT EXISTS jurisdiction_metadata (
+  jurisdiction_id TEXT NOT NULL REFERENCES jurisdictions(id),
+  key TEXT NOT NULL,
+  value TEXT NOT NULL,
+  PRIMARY KEY (jurisdiction_id, key)
+);
+
 CREATE TABLE IF NOT EXISTS offices (
   id TEXT PRIMARY KEY,
   jurisdiction_id TEXT NOT NULL REFERENCES jurisdictions(id),
@@ -122,6 +129,51 @@ CREATE TABLE IF NOT EXISTS leader_rating_audits (
   reviewed_at TEXT NOT NULL,
   consensus_sources_json TEXT NOT NULL,
   notes TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS leader_specialist_topics (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  operational_label TEXT NOT NULL,
+  adjusted_label TEXT NOT NULL,
+  methodology TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS leader_specialist_dimensions (
+  id TEXT PRIMARY KEY,
+  topic_id TEXT NOT NULL REFERENCES leader_specialist_topics(id),
+  name TEXT NOT NULL,
+  operational_weight REAL NOT NULL CHECK (operational_weight BETWEEN 0 AND 1),
+  adjusted_weight REAL NOT NULL CHECK (adjusted_weight BETWEEN 0 AND 1),
+  description TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS leader_specialist_assessments (
+  id TEXT PRIMARY KEY,
+  term_id TEXT NOT NULL REFERENCES leader_terms(id) ON DELETE CASCADE,
+  topic_id TEXT NOT NULL REFERENCES leader_specialist_topics(id),
+  confidence TEXT NOT NULL CHECK (confidence IN ('low', 'medium', 'high')),
+  status TEXT NOT NULL CHECK (status IN ('reviewed', 'provisional')),
+  summary TEXT NOT NULL,
+  assessment_as_of TEXT NOT NULL,
+  UNIQUE (term_id, topic_id)
+);
+
+CREATE TABLE IF NOT EXISTS leader_specialist_scores (
+  assessment_id TEXT NOT NULL
+    REFERENCES leader_specialist_assessments(id) ON DELETE CASCADE,
+  dimension_id TEXT NOT NULL REFERENCES leader_specialist_dimensions(id),
+  score REAL NOT NULL CHECK (score BETWEEN 0 AND 10),
+  rationale TEXT NOT NULL,
+  PRIMARY KEY (assessment_id, dimension_id)
+);
+
+CREATE TABLE IF NOT EXISTS leader_specialist_sources (
+  assessment_id TEXT NOT NULL
+    REFERENCES leader_specialist_assessments(id) ON DELETE CASCADE,
+  source_id TEXT NOT NULL REFERENCES sources(id),
+  PRIMARY KEY (assessment_id, source_id)
 );
 
 CREATE TABLE IF NOT EXISTS events (

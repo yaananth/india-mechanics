@@ -1,8 +1,16 @@
 import { sources } from '../server/seed-data/catalog.ts'
 import { budgetSources } from '../server/seed-data/budgets.ts'
+import { andhraSources } from '../server/seed-data/andhra-pradesh.ts'
 import { developmentSources } from '../server/seed-data/development-trade.ts'
+import { securitySources } from '../server/seed-data/security.ts'
 
-const allSources = [...sources, ...developmentSources, ...budgetSources]
+const allSources = [
+  ...sources,
+  ...developmentSources,
+  ...securitySources,
+  ...andhraSources,
+  ...budgetSources,
+]
 
 type Result = {
   id: string

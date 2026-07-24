@@ -15,13 +15,6 @@ import { api } from '../api.ts'
 import type { CuratedAnswer, SearchResponse } from '../types.ts'
 import { ConfidenceMark, SourceLinks } from './common.tsx'
 
-const sampleQuestions = [
-  'Is Modi doing good?',
-  'Where is India heading?',
-  'Has India progressed since independence?',
-  'Why can the rupee weaken while real GDP rises?',
-]
-
 const resultIcons = {
   leader: Landmark,
   event: History,
@@ -34,11 +27,17 @@ const resultIcons = {
 
 export function SearchDialog({
   open,
+  jurisdictionId,
+  jurisdictionName,
+  sampleQuestions,
   onClose,
   onSelectAnswer,
   onSelectResult,
 }: {
   open: boolean
+  jurisdictionId: string
+  jurisdictionName: string
+  sampleQuestions: string[]
   onClose: () => void
   onSelectAnswer: (answer: CuratedAnswer) => void
   onSelectResult: (item: SearchResponse['results'][number]) => void
@@ -64,7 +63,7 @@ export function SearchDialog({
     const timeout = window.setTimeout(async () => {
       setLoading(true)
       try {
-        setResult(await api.search(query, controller.signal))
+        setResult(await api.search(query, jurisdictionId, controller.signal))
       } catch (error) {
         if ((error as Error).name !== 'AbortError') {
           setResult({ query, answer: null, results: [] })
@@ -77,7 +76,7 @@ export function SearchDialog({
       controller.abort()
       window.clearTimeout(timeout)
     }
-  }, [open, query])
+  }, [jurisdictionId, open, query])
 
   useEffect(() => {
     if (!open) return
@@ -101,7 +100,7 @@ export function SearchDialog({
         className="search-dialog"
         role="dialog"
         aria-modal="true"
-        aria-label="Search India Mechanics"
+        aria-label={`Search ${jurisdictionName}`}
         onMouseDown={(event) => event.stopPropagation()}
       >
         <div className="search-dialog__input">
@@ -110,7 +109,7 @@ export function SearchDialog({
             ref={inputRef}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Ask or search India's history..."
+            placeholder={`Ask or search ${jurisdictionName}...`}
             aria-label="Search query"
           />
           {loading && <span className="search-spinner" aria-label="Searching" />}

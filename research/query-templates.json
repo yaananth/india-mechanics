@@ -1,5 +1,5 @@
 {
-  "version": "query-templates-v0.4",
+  "version": "query-templates-v0.5",
   "templates": [
     {
       "id": "official-policy",
@@ -46,7 +46,30 @@
         "site:{stateLegislatureDomain} {topic}",
         "site:{stateStatisticsDomain} {topic}",
         "site:{stateHighCourtDomain} {topic}",
+        "site:cag.gov.in {state} {topic} audit",
         "{state} {topic} reputable regional newspaper"
+      ]
+    },
+    {
+      "id": "state-infrastructure-outcomes",
+      "lane": "state-infrastructure",
+      "queries": [
+        "site:{stateStatisticsDomain} {state} {sector} network completed works maintenance safety",
+        "site:{stateDepartmentDomain} {state} {programme} annual report target achievement",
+        "site:{unionMinistryDomain} {state} {programme} target completed performance review",
+        "site:cag.gov.in {state} {programme} audit",
+        "{state} {sector} condition travel time access safety independent analysis"
+      ]
+    },
+    {
+      "id": "state-external-validation",
+      "lane": "state-external-validation",
+      "queries": [
+        "site:pib.gov.in {state} national award {topic}",
+        "site:{awardAuthorityDomain} {state} {award} winners methodology",
+        "site:{stateStatisticsDomain} {state} {awardedOutcome} measured result",
+        "site:cag.gov.in {state} {awardedOutcome} audit",
+        "{state} {awardedOutcome} independent evaluation"
       ]
     },
     {

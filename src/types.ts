@@ -9,6 +9,18 @@ export type ViewId =
 
 export type Confidence = 'low' | 'medium' | 'high'
 
+export type Jurisdiction = {
+  id: string
+  name: string
+  shortName: string
+  level: 'country' | 'state' | 'union-territory'
+  parentId: string | null
+  isoCode: string | null
+  validFrom: string
+  validTo: string | null
+  status: 'published' | 'researching' | 'planned'
+}
+
 export type Source = {
   id: string
   title: string
@@ -96,6 +108,39 @@ export type LeaderTerm = {
     color: string
   } | null
   componentScores: ComponentScore[]
+  ratingProfiles: Array<{
+    id: string
+    name: string
+    description: string
+    score: number
+    weights: Record<string, number>
+    isCanonical: boolean
+  }>
+  specialistAssessments: Array<{
+    id: string
+    topicId: string
+    topicName: string
+    topicDescription: string
+    methodology: string
+    operationalLabel: string
+    operationalScore: number
+    adjustedLabel: string
+    adjustedScore: number
+    confidence: Confidence
+    status: 'reviewed' | 'provisional'
+    summary: string
+    assessmentAsOf: string
+    componentScores: Array<{
+      id: string
+      name: string
+      operationalWeight: number
+      adjustedWeight: number
+      description: string
+      score: number
+      rationale: string
+    }>
+    sources: Source[]
+  }>
   claims: Claim[]
   sourceIds: string[]
   sources: Source[]
@@ -368,6 +413,7 @@ export type ProgressHistoryPoint = {
 
 export type Overview = {
   jurisdictionId: string
+  jurisdiction: Jurisdiction
   targetYear: number
   knowledge: {
     cutoff: string
@@ -516,7 +562,29 @@ export type Methodology = {
       weight: number
       description: string
     }>
+    profiles: Array<{
+      id: string
+      name: string
+      description: string
+      weights: Record<string, number>
+      isCanonical: boolean
+    }>
   }
+  specialistEvaluations: Array<{
+    id: string
+    name: string
+    description: string
+    operationalLabel: string
+    adjustedLabel: string
+    methodology: string
+    dimensions: Array<{
+      id: string
+      name: string
+      operationalWeight: number
+      adjustedWeight: number
+      description: string
+    }>
+  }>
   policyEvaluation: {
     purpose: string
     formula: string

@@ -27,53 +27,172 @@ describe('read API', () => {
     expect(response.body.progress.overall.score).toBeLessThan(100)
   })
 
-  it('answers the example Modi question with both achievements and concerns', async () => {
+  it('publishes post-split Andhra Pradesh as an isolated state jurisdiction', async () => {
+    const [
+      jurisdictions,
+      overview,
+      leaders,
+      policies,
+      budgets,
+      events,
+      indicators,
+      sources,
+      answer,
+    ] = await Promise.all([
+      request(app).get('/api/jurisdictions'),
+      request(app)
+        .get('/api/overview')
+        .query({ jurisdiction: 'andhra-pradesh' }),
+      request(app)
+        .get('/api/leaders')
+        .query({ jurisdiction: 'andhra-pradesh' }),
+      request(app)
+        .get('/api/policies')
+        .query({ jurisdiction: 'andhra-pradesh' }),
+      request(app)
+        .get('/api/budgets')
+        .query({ jurisdiction: 'andhra-pradesh' }),
+      request(app)
+        .get('/api/events')
+        .query({ jurisdiction: 'andhra-pradesh' }),
+      request(app)
+        .get('/api/indicators')
+        .query({ jurisdiction: 'andhra-pradesh' }),
+      request(app)
+        .get('/api/sources')
+        .query({ jurisdiction: 'andhra-pradesh' }),
+      request(app).get('/api/search').query({
+        jurisdiction: 'andhra-pradesh',
+        q: 'how is andhra doing',
+      }),
+    ])
+
+    expect(jurisdictions.body).toContainEqual(
+      expect.objectContaining({
+        id: 'andhra-pradesh',
+        level: 'state',
+        parentId: 'india',
+        validFrom: '2014-06-02',
+      }),
+    )
+    expect(overview.status).toBe(200)
+    expect(overview.body).toMatchObject({
+      jurisdictionId: 'andhra-pradesh',
+      jurisdiction: {
+        id: 'andhra-pradesh',
+        level: 'state',
+        validFrom: '2014-06-02',
+      },
+      currentTerm: {
+        id: 'ap-naidu-2024',
+        person: { name: 'N. Chandrababu Naidu' },
+        office: { shortName: 'Chief Minister' },
+      },
+      featuredAnswer: { id: 'ap-post-split-progress' },
+    })
+    expect(overview.body.knowledge.timelineStarts).toBe('2014-06-02')
+    expect(overview.body.progress.overall.score).toBeGreaterThan(0)
+    expect(leaders.body).toHaveLength(3)
+    expect(leaders.body.every((leader: { specialistAssessments: unknown[] }) =>
+      leader.specialistAssessments.length === 0,
+    )).toBe(true)
+    expect(policies.body).toHaveLength(7)
+    expect(budgets.body).toHaveLength(3)
+    expect(events.body).toHaveLength(9)
+    expect(
+      events.body.every(
+        (event: {
+          date: string
+          accountability: { responsibilities: unknown[] } | null
+        }) =>
+          event.date >= '2014-06-02' &&
+          event.accountability &&
+          event.accountability.responsibilities.length > 0,
+      ),
+    ).toBe(true)
+    expect(indicators.body).toHaveLength(18)
+    expect(
+      indicators.body.every((indicator: { id: string }) =>
+        indicator.id.startsWith('ap-'),
+      ),
+    ).toBe(true)
+    expect(sources.body.length).toBeGreaterThanOrEqual(15)
+    expect(answer.body.answer.id).toBe('ap-post-split-progress')
+    expect(
+      policies.body.some(
+        (policy: { id: string }) =>
+          policy.id === 'ap-rural-road-connectivity-2016',
+      ),
+    ).toBe(true)
+    expect(
+      events.body.some(
+        (event: { id: string }) => event.id === 'ap-panchayat-awards-2025',
+      ),
+    ).toBe(true)
+  })
+
+  it('compares AP indicators only across post-split CM terms', async () => {
+    const response = await request(app)
+      .get('/api/indicators/ap-real-nsdp-per-capita/series')
+      .query({ jurisdiction: 'andhra-pradesh' })
+    expect(response.status).toBe(200)
+    expect(response.body.observations[0]).toMatchObject({
+      period: 2014,
+      value: 79174,
+    })
+    expect(response.body.termChanges).toContainEqual(
+      expect.objectContaining({
+        termId: 'ap-naidu-2014',
+        baseline: expect.objectContaining({ period: 2014, value: 79174 }),
+        endpoint: expect.objectContaining({ period: 2019, value: 110587 }),
+        directionAssessment: 'improved',
+      }),
+    )
+    expect(
+      response.body.observations.every(
+        (observation: { period: number }) => observation.period >= 2014,
+      ),
+    ).toBe(true)
+    expect(response.body.attributionCaveat).toContain('Chief Minister')
+  })
+
+  it('answers the constitutional regime-change question with both cases', async () => {
     const response = await request(app).get('/api/search').query({
       jurisdiction: 'india',
-      q: 'is modi doing good',
+      q: 'as of now do we need regime change',
     })
     expect(response.status).toBe(200)
-    expect(response.body.answer.id).toBe('modi-doing-good')
+    expect(response.body.answer.id).toBe('regime-change-now')
     const sections = new Set(
       response.body.answer.claims.map((claim: { section: string }) => claim.section),
     )
     expect(sections.has('achievement')).toBe(true)
     expect(sections.has('concern')).toBe(true)
     expect(sections.has('context')).toBe(true)
-    expect(response.body.answer.verdict).toContain('6.3/10')
+    expect(response.body.answer.verdict).toContain('conditional case')
     expect(
       response.body.answer.claims.some(
-        (claim: { id: string }) => claim.id === 'modi-electoral-bonds',
+        (claim: { id: string }) =>
+          claim.id === 'regime-change-previous-term-comparison',
       ),
     ).toBe(true)
   })
 
-  it('answers whether BJP is better than Congress with balanced party math', async () => {
-    const response = await request(app).get('/api/search').query({
-      jurisdiction: 'india',
-      q: 'is BJP better than Congress',
-    })
-    expect(response.status).toBe(200)
-    expect(response.body.answer).toMatchObject({
-      id: 'bjp-vs-congress',
-      confidence: 'medium',
-    })
-    expect(response.body.answer.shortAnswer).toContain(
-      'no defensible categorical winner',
-    )
-    expect(response.body.answer.verdict).toContain('no decisive winner')
-    const sections = new Set(
-      response.body.answer.claims.map((claim: { section: string }) => claim.section),
-    )
-    expect(sections).toEqual(
-      new Set(['achievement', 'concern', 'context']),
-    )
-    expect(
-      response.body.answer.claims.some(
-        (claim: { id: string }) =>
-          claim.id === 'party-comparison-rating-math',
-      ),
-    ).toBe(true)
+  it('removes the old partisan-style curated questions', async () => {
+    const [modiQuestion, partyQuestion] = await Promise.all([
+      request(app).get('/api/search').query({
+        jurisdiction: 'india',
+        q: 'is modi doing good',
+      }),
+      request(app).get('/api/search').query({
+        jurisdiction: 'india',
+        q: 'is BJP better than Congress',
+      }),
+    ])
+    expect(modiQuestion.status).toBe(200)
+    expect(partyQuestion.status).toBe(200)
+    expect(modiQuestion.body.answer).toBeNull()
+    expect(partyQuestion.body.answer).toBeNull()
   })
 
   it('answers natural rupee-dollar questions and links the contextual indicator', async () => {
@@ -93,19 +212,47 @@ describe('read API', () => {
     })
   })
 
-  it('returns the Modi replication audit with the revised component score', async () => {
+  it('returns the transparent Modi scorecard and methodology review', async () => {
     const response = await request(app).get('/api/leaders/modi-2014')
     expect(response.status).toBe(200)
-    expect(response.body.ratingScore).toBe(6.3)
+    expect(response.body.ratingScore).toBe(6.7)
+    expect(
+      response.body.ratingProfiles.map(
+        (profile: { id: string; score: number }) => ({
+          id: profile.id,
+          score: profile.score,
+        }),
+      ),
+    ).toEqual([
+      { id: 'balanced', score: 6.7 },
+      { id: 'development', score: 7.1 },
+      { id: 'human-capability', score: 6.7 },
+      { id: 'governance', score: 6 },
+    ])
+    for (const profile of response.body.ratingProfiles) {
+      expect(
+        Object.values(profile.weights as Record<string, number>).reduce(
+          (sum: number, weight) => sum + weight,
+          0,
+        ),
+      ).toBeCloseTo(1)
+    }
     expect(response.body.ratingAudit).toMatchObject({
-      runCount: 5,
-      standardizedMean: 6.22,
-      standardDeviation: 0.07,
-      minimum: 6.1,
-      maximum: 6.3,
-      previousRating: 6.2,
-      revisedRating: 6.3,
+      runCount: 3,
+      standardizedMean: 6.6,
+      standardDeviation: 0.17,
+      minimum: 6.3,
+      maximum: 6.7,
+      previousRating: 6.6,
+      revisedRating: 6.7,
       status: 'stable',
+    })
+    expect(response.body.specialistAssessments).toHaveLength(1)
+    expect(response.body.specialistAssessments[0]).toMatchObject({
+      topicId: 'national-security',
+      operationalScore: 7,
+      adjustedScore: 6.5,
+      status: 'reviewed',
     })
     expect(response.body.sources.length).toBeGreaterThanOrEqual(12)
   })
@@ -126,7 +273,7 @@ describe('read API', () => {
   it('returns a sourced accountability brief for every timeline event', async () => {
     const response = await request(app).get('/api/events')
     expect(response.status).toBe(200)
-    expect(response.body).toHaveLength(67)
+    expect(response.body).toHaveLength(75)
     expect(response.body[0].id).toBe('sikkim-tunnel-disaster-2026')
     expect(
       response.body.every(
@@ -166,6 +313,25 @@ describe('read API', () => {
       'independent national reporting',
     )
     expect(methodology.body.budgetEvaluation.dimensions).toHaveLength(5)
+    expect(methodology.body.leaderEvaluation.profiles).toHaveLength(4)
+    expect(methodology.body.specialistEvaluations).toHaveLength(1)
+    expect(methodology.body.specialistEvaluations[0]).toMatchObject({
+      id: 'national-security',
+      operationalLabel: 'Operational security',
+      adjustedLabel: 'Rights-adjusted security',
+    })
+    expect(methodology.body.leaderEvaluation.profiles[0]).toMatchObject({
+      id: 'balanced',
+      isCanonical: true,
+      weights: {
+        outcomes: 0.3,
+        reforms: 0.2,
+        inclusion: 0.15,
+        crisis: 0.1,
+        institutions: 0.15,
+        integrity: 0.1,
+      },
+    })
     expect(exportResponse.status).toBe(200)
     expect(exportResponse.body.events.length).toBeGreaterThanOrEqual(44)
     expect(exportResponse.body.policies.length).toBeGreaterThanOrEqual(30)
@@ -296,7 +462,7 @@ describe('read API', () => {
 
     expect(policy.status).toBe(200)
     expect(policy.body).toMatchObject({
-      ratingScore: 7.2,
+      ratingScore: 5.8,
       status: 'executive-action',
       leader: { name: 'Manmohan Singh' },
     })
@@ -329,7 +495,7 @@ describe('read API', () => {
       leader.body.componentScores.find(
         (component: { id: string }) => component.id === 'crisis',
       ).rationale,
-    ).toContain('UN-routed Pakistan flood relief')
+    ).toContain('post-26/11 institutions')
   })
 
   it('searches budgets by familiar names and fiscal years', async () => {

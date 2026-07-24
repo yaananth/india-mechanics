@@ -2,6 +2,15 @@ import { Scale, X } from 'lucide-react'
 import type { Methodology } from '../types.ts'
 import { SourceRating } from './common.tsx'
 
+const leaderDimensionNames: Record<string, string> = {
+  outcomes: 'outcomes',
+  reforms: 'reforms',
+  inclusion: 'inclusion',
+  crisis: 'crisis',
+  institutions: 'institutions',
+  integrity: 'integrity',
+}
+
 export function MethodologyDialog({
   open,
   methodology,
@@ -68,7 +77,7 @@ export function MethodologyDialog({
             </section>
 
             <section>
-              <h3>Prime Minister evaluations</h3>
+              <h3>Leader-term evaluations</h3>
               <p>{methodology.leaderEvaluation.purpose}</p>
               <p>{methodology.leaderEvaluation.formula}</p>
               <div className="weight-list weight-list--compact">
@@ -82,7 +91,72 @@ export function MethodologyDialog({
                   </div>
                 ))}
               </div>
+              <h4 className="subsection-heading">Published scorecard lenses</h4>
+              <div className="leader-profile-methods">
+                {methodology.leaderEvaluation.profiles.map((profile) => (
+                  <article
+                    key={profile.id}
+                    className={profile.isCanonical ? 'is-canonical' : undefined}
+                  >
+                    <header>
+                      <strong>{profile.name}</strong>
+                      <small>
+                        {profile.isCanonical ? 'Headline score' : 'Alternative lens'}
+                      </small>
+                    </header>
+                    <p>{profile.description}</p>
+                    <span>
+                      {Object.entries(profile.weights)
+                        .filter(([, weight]) => weight > 0)
+                        .map(
+                          ([dimension, weight]) =>
+                            `${Math.round(weight * 100)}% ${
+                              leaderDimensionNames[dimension] ?? dimension
+                            }`,
+                        )
+                        .join(' + ')}
+                    </span>
+                  </article>
+                ))}
+              </div>
+              <div className="method-note">
+                <Scale size={17} aria-hidden="true" />
+                <span>
+                  All four lenses use the same evidence scores. Each weighted sum
+                  is rounded to one decimal. The lens range shows sensitivity to
+                  priorities, not statistical uncertainty, and policy scores are
+                  not line-item additions to a PM score.
+                </span>
+              </div>
             </section>
+
+            {methodology.specialistEvaluations.map((topic) => (
+              <section key={topic.id}>
+                <h3>{topic.name}</h3>
+                <p>{topic.description}</p>
+                <p>{topic.methodology}</p>
+                <div className="weight-list weight-list--specialist">
+                  {topic.dimensions.map((dimension) => (
+                    <div key={dimension.id}>
+                      <span>
+                        <strong>{dimension.name}</strong>
+                        <small>{dimension.description}</small>
+                      </span>
+                      <span>
+                        <b>
+                          {Math.round(dimension.operationalWeight * 100)}%
+                        </b>
+                        <small>{topic.operationalLabel}</small>
+                      </span>
+                      <span>
+                        <b>{Math.round(dimension.adjustedWeight * 100)}%</b>
+                        <small>{topic.adjustedLabel}</small>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            ))}
 
             <section>
               <h3>Policy and bill evaluations</h3>

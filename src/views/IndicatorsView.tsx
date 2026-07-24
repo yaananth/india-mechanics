@@ -25,6 +25,7 @@ import type {
   IndicatorDefinition,
   IndicatorSeries,
   IndicatorTermChange,
+  Jurisdiction,
   Overview,
 } from '../types.ts'
 import { formatValue, formatYear, sentenceCase } from '../utils.ts'
@@ -77,13 +78,17 @@ export function IndicatorsView({
   onSelectIndicator,
   onSelectLeaderTerm,
   knowledge,
+  jurisdiction,
 }: {
   indicators: IndicatorDefinition[]
   selectedIndicatorId: string | null
   onSelectIndicator: (indicatorId: string) => void
   onSelectLeaderTerm: (termId: string) => void
   knowledge: Overview['knowledge']
+  jurisdiction: Jurisdiction
 }) {
+  const officeLabel =
+    jurisdiction.level === 'country' ? 'Prime Minister' : 'Chief Minister'
   const selectedId =
     selectedIndicatorId ?? indicators.find((item) => item.id === 'life-expectancy')?.id
   const [series, setSeries] = useState<IndicatorSeries | null>(null)
@@ -96,14 +101,14 @@ export function IndicatorsView({
     setLoading(true)
     setError(null)
     api
-      .indicatorSeries(selectedId, controller.signal)
+      .indicatorSeries(selectedId, jurisdiction.id, controller.signal)
       .then(setSeries)
       .catch((reason: Error) => {
         if (reason.name !== 'AbortError') setError(reason.message)
       })
       .finally(() => setLoading(false))
     return () => controller.abort()
-  }, [selectedId])
+  }, [jurisdiction.id, selectedId])
 
   const grouped = useMemo(
     () =>
@@ -130,7 +135,7 @@ export function IndicatorsView({
             {knowledge.latestWorldBankPeriod} · V-Dem through{' '}
             {knowledge.latestVdemPeriod}
           </span>
-          <h1>India in measurable trends</h1>
+          <h1>{jurisdiction.shortName} in measurable trends</h1>
           <p>
             Inspect the observations, units, revisions, normalization goalposts,
             and source limitations behind every graph.
@@ -431,7 +436,7 @@ export function IndicatorsView({
                   <div>
                     <h3>
                       <Landmark size={17} aria-hidden="true" />
-                      Change during each Prime Minister&apos;s tenure
+                      Change during each {officeLabel}&apos;s tenure
                     </h3>
                     <p>
                       Start and end values use the closest available observation
@@ -446,7 +451,7 @@ export function IndicatorsView({
                     <article
                       className={`tenure-card tenure-card--${currentTermChange.directionAssessment}`}
                     >
-                      <span className="section-label">Current Prime Minister</span>
+                      <span className="section-label">Current {officeLabel}</span>
                       <h4>{currentTermChange.leader.name}</h4>
                       <div className="tenure-card__values">
                         <span>
@@ -494,7 +499,7 @@ export function IndicatorsView({
                     </article>
                   ) : (
                     <article className="tenure-card tenure-card--empty">
-                      <span className="section-label">Current Prime Minister</span>
+                      <span className="section-label">Current {officeLabel}</span>
                       <h4>No comparable term data</h4>
                       <p>
                         This series does not contain two usable observations
@@ -507,7 +512,7 @@ export function IndicatorsView({
                     <article
                       className={`tenure-card tenure-card--${previousTermChange.directionAssessment}`}
                     >
-                      <span className="section-label">Previous Prime Minister</span>
+                      <span className="section-label">Previous {officeLabel}</span>
                       <h4>{previousTermChange.leader.name}</h4>
                       <div className="tenure-card__values">
                         <span>
@@ -555,7 +560,7 @@ export function IndicatorsView({
                     </article>
                   ) : (
                     <article className="tenure-card tenure-card--empty">
-                      <span className="section-label">Previous Prime Minister</span>
+                      <span className="section-label">Previous {officeLabel}</span>
                       <h4>No comparable predecessor data</h4>
                       <p>
                         The series begins too late or is too sparse for a
@@ -565,9 +570,13 @@ export function IndicatorsView({
                   )}
                 </div>
 
-                <div className="tenure-table" role="table" aria-label="Indicator change by Prime Minister">
+                <div
+                  className="tenure-table"
+                  role="table"
+                  aria-label={`Indicator change by ${officeLabel}`}
+                >
                   <div className="tenure-table__header" role="row">
-                    <span>Prime Minister</span>
+                    <span>{officeLabel}</span>
                     <span>Data window</span>
                     <span>Start → end</span>
                     <span>Total change</span>

@@ -14,7 +14,7 @@ import {
   UsersRound,
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
-import type { Overview, TimelineEvent } from '../types.ts'
+import type { Jurisdiction, Overview, TimelineEvent } from '../types.ts'
 import { formatDate, sentenceCase } from '../utils.ts'
 import {
   ConfidenceMark,
@@ -40,6 +40,7 @@ export function TimelineView({
   onOpenPolicy,
   onOpenIndicator,
   knowledge,
+  jurisdiction,
 }: {
   events: TimelineEvent[]
   selectedEventId: string | null
@@ -47,16 +48,25 @@ export function TimelineView({
   onOpenPolicy: (policyId: string) => void
   onOpenIndicator: (indicatorId: string) => void
   knowledge: Overview['knowledge']
+  jurisdiction: Jurisdiction
 }) {
   const cutoffYear = Number(knowledge.cutoff.slice(0, 4))
+  const startYear = Number(knowledge.timelineStarts.slice(0, 4))
   const categories = useMemo(
     () => Array.from(new Set(events.map((event) => event.category))).sort(),
     [events],
   )
   const [category, setCategory] = useState('all')
-  const [fromYear, setFromYear] = useState(1945)
+  const [fromYear, setFromYear] = useState(startYear)
   const [toYear, setToYear] = useState(cutoffYear)
   const [expanded, setExpanded] = useState<string | null>(selectedEventId)
+
+  useEffect(() => {
+    setCategory('all')
+    setFromYear(startYear)
+    setToYear(cutoffYear)
+    setExpanded(null)
+  }, [cutoffYear, jurisdiction.id, startYear])
 
   useEffect(() => {
     setExpanded(selectedEventId)
@@ -79,7 +89,7 @@ export function TimelineView({
 
   const reset = () => {
     setCategory('all')
-    setFromYear(1945)
+    setFromYear(startYear)
     setToYear(cutoffYear)
   }
 
@@ -88,13 +98,14 @@ export function TimelineView({
       <header className="view-header">
         <div>
           <span className="freshness-line">
-            Curated national timeline · 1945–{cutoffYear} · reviewed{' '}
+            Curated {jurisdiction.level === 'country' ? 'national' : 'state'} timeline ·{' '}
+            {startYear}–{cutoffYear} · reviewed{' '}
             {knowledge.editorialReviewedThrough}
           </span>
           <h1>What changed, and when?</h1>
           <p>
-            Political decisions, social ruptures, wars, reforms, institutions,
-            science, and public systems in one inspectable chronology.
+            Political decisions, crises, reforms, institutions, infrastructure,
+            and public systems in one inspectable chronology.
           </p>
         </div>
         <div className="view-header__stat">
@@ -238,14 +249,18 @@ export function TimelineView({
                         <article>
                           <h4>
                             <Landmark size={16} aria-hidden="true" />
-                            Union / PM role
+                            {jurisdiction.level === 'country'
+                              ? 'Union / PM role'
+                              : 'State / CM role'}
                           </h4>
                           <p>{event.accountability.unionRole}</p>
                         </article>
                         <article>
                           <h4>
                             <MapPin size={16} aria-hidden="true" />
-                            State / local role
+                            {jurisdiction.level === 'country'
+                              ? 'State / local role'
+                              : 'Union / local role'}
                           </h4>
                           <p>{event.accountability.stateLocalRole}</p>
                         </article>

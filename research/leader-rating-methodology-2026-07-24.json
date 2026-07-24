@@ -1,0 +1,115 @@
+{
+  "methodologyVersion": "leader-v0.2|security-v0.1",
+  "reviewedAt": "2026-07-24",
+  "reviewPromptHash": "sha256:89a3e279ae2044e4f81de22936c00fe06388fbcde0de4f01b6138e1617446da7",
+  "purpose": "Publish more than one defensible PM rating while keeping every result tied to the same evidence judgments.",
+  "canonicalProfile": {
+    "id": "balanced",
+    "weights": {
+      "outcomes": 0.30,
+      "reforms": 0.20,
+      "inclusion": 0.15,
+      "crisis": 0.10,
+      "institutions": 0.15,
+      "integrity": 0.10
+    }
+  },
+  "alternativeProfiles": [
+    {
+      "id": "development",
+      "definition": "Prioritises material outcomes, durable productive capacity, infrastructure, productivity, and poverty reduction.",
+      "weights": {
+        "outcomes": 0.40,
+        "reforms": 0.25,
+        "inclusion": 0.15,
+        "crisis": 0.10,
+        "institutions": 0.05,
+        "integrity": 0.05
+      }
+    },
+    {
+      "id": "human-capability",
+      "definition": "Prioritises poverty, health, education, broad access, and distribution alongside aggregate outcomes.",
+      "weights": {
+        "outcomes": 0.30,
+        "reforms": 0.10,
+        "inclusion": 0.35,
+        "crisis": 0.10,
+        "institutions": 0.10,
+        "integrity": 0.05
+      }
+    },
+    {
+      "id": "governance",
+      "definition": "Prioritises institutions, liberties, integrity, accountability, and crisis restraint.",
+      "weights": {
+        "outcomes": 0.10,
+        "reforms": 0.15,
+        "inclusion": 0.10,
+        "crisis": 0.15,
+        "institutions": 0.30,
+        "integrity": 0.20
+      }
+    }
+  ],
+  "reviewPerspectives": [
+    {
+      "perspective": "development economics",
+      "recommendedModiRating": 6.7,
+      "mainFinding": "Poverty, infrastructure, services, and productive capacity deserved more visible credit, while jobs quality and inclusion still limit the result."
+    },
+    {
+      "perspective": "governance and institutions",
+      "recommendedModiRating": 6.7,
+      "mainFinding": "Institutions and integrity must retain 25% combined weight, but the prior 3.8 institutions score was too severe without clearer calibration against the Emergency and surviving electoral and judicial checks."
+    },
+    {
+      "perspective": "quantitative audit",
+      "recommendedRange": [6.3, 6.7],
+      "mainFinding": "The prior arithmetic was reproducible, but several stored PM headlines did not exactly match their components and demonetisation could explain only about 0.05-0.20 balanced points."
+    },
+    {
+      "perspective": "national security evidence backfill",
+      "recommendedModiRating": 6.7,
+      "mainFinding": "Operational security is a comparative strength, but prevention failures, the China border shock, Manipur, and safeguards require a lower rights-adjusted score and only a bounded increase in the balanced PM total."
+    }
+  ],
+  "publicationRules": [
+    "Compute every headline directly from component scores and published weights.",
+    "Apply a formula change to every rated PM term, never one favoured leader.",
+    "Show the balanced result as the headline and publish all alternative lens results beside it.",
+    "Describe the lens range as priority sensitivity, not a confidence interval.",
+    "Treat policy ratings as evidence inputs, not automatic line-item additions or deductions.",
+    "Do not count the same policy failure independently in several components without distinct outcome evidence.",
+    "Keep observed change during a term separate from proof that the PM caused the change."
+  ],
+  "modiPublishedScorecard": {
+    "balanced": 6.7,
+    "development": 7.1,
+    "humanCapability": 6.7,
+    "governance": 6.0,
+    "componentScores": {
+      "outcomes": 7.7,
+      "reforms": 7.4,
+      "inclusion": 6.5,
+      "crisis": 6.3,
+      "institutions": 4.5,
+      "integrity": 6.0
+    },
+    "demonetisationSensitivity": {
+      "estimatedBalancedPointEffect": [0.05, 0.20],
+      "note": "This bounded effect is not an independently identified causal estimate; it prevents one policy from dominating or being counted repeatedly."
+    },
+    "security": {
+      "operational": 7.0,
+      "rightsAdjusted": 6.5,
+      "dimensions": {
+        "counterterrorismAndIntelligence": 7.2,
+        "interstateAndBorderDefence": 6.4,
+        "internalConflictManagement": 6.8,
+        "strategicAutonomyAndCapability": 7.6,
+        "ruleOfLawAndCivilianSafeguards": 4.6
+      }
+    }
+  }
+}

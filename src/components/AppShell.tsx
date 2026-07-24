@@ -5,14 +5,15 @@ import {
   Clock3,
   Database,
   Landmark,
+  MapPin,
   ScrollText,
   Search,
   WalletCards,
 } from 'lucide-react'
 import type { ReactNode } from 'react'
-import type { ViewId } from '../types.ts'
+import type { Jurisdiction, ViewId } from '../types.ts'
 
-const navigation: Array<{
+const baseNavigation: Array<{
   id: ViewId
   label: string
   shortLabel: string
@@ -22,8 +23,8 @@ const navigation: Array<{
   { id: 'timeline', label: 'Timeline', shortLabel: 'Timeline', icon: Clock3 },
   {
     id: 'leaders',
-    label: 'Prime Ministers',
-    shortLabel: 'PMs',
+    label: 'Leaders',
+    shortLabel: 'Leaders',
     icon: Landmark,
   },
   {
@@ -50,16 +51,34 @@ const navigation: Array<{
 export function AppShell({
   activeView,
   onViewChange,
+  jurisdictions,
+  jurisdiction,
+  onJurisdictionChange,
   onSearchOpen,
   onMethodologyOpen,
   children,
 }: {
   activeView: ViewId
   onViewChange: (view: ViewId) => void
+  jurisdictions: Jurisdiction[]
+  jurisdiction: Jurisdiction
+  onJurisdictionChange: (jurisdictionId: string) => void
   onSearchOpen: () => void
   onMethodologyOpen: () => void
   children: ReactNode
 }) {
+  const navigation = baseNavigation.map((item) =>
+    item.id === 'leaders'
+      ? {
+          ...item,
+          label:
+            jurisdiction.level === 'country'
+              ? 'Prime Ministers'
+              : 'Chief Ministers',
+          shortLabel: jurisdiction.level === 'country' ? 'PMs' : 'CMs',
+        }
+      : item,
+  )
   return (
     <div className="app-shell">
       <header className="app-header">
@@ -68,13 +87,31 @@ export function AppShell({
             type="button"
             className="brand"
             onClick={() => onViewChange('overview')}
-            aria-label="India Mechanics overview"
+            aria-label={`${jurisdiction.shortName} overview`}
           >
             <span className="brand__mark" aria-hidden="true">
               IM
             </span>
             <span className="brand__name">India Mechanics</span>
           </button>
+
+          <label className="jurisdiction-switcher">
+            <MapPin size={15} aria-hidden="true" />
+            <span className="sr-only">Jurisdiction</span>
+            <select
+              value={jurisdiction.id}
+              onChange={(event) => onJurisdictionChange(event.target.value)}
+              aria-label="Select jurisdiction"
+            >
+              {jurisdictions
+                .filter((item) => item.status === 'published')
+                .map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.shortName}
+                  </option>
+                ))}
+            </select>
+          </label>
 
           <nav className="desktop-nav" aria-label="Primary navigation">
             {navigation.map((item) => (
@@ -93,10 +130,10 @@ export function AppShell({
             type="button"
             className="global-search"
             onClick={onSearchOpen}
-            aria-label="Search India Mechanics"
+            aria-label={`Search ${jurisdiction.shortName}`}
           >
             <Search size={17} aria-hidden="true" />
-            <span>Ask or search India&apos;s history...</span>
+            <span>Ask or search {jurisdiction.shortName}...</span>
             <kbd>/</kbd>
           </button>
 

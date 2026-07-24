@@ -1,0 +1,189 @@
+{
+  "batchId": "andhra-pradesh-roads-panchayats-2026-07-24",
+  "rosterVersion": "source-roster-v0.11",
+  "lane": "state-infrastructure-external-validation",
+  "throughDate": "2026-07-24",
+  "reviewer": "India Mechanics Andhra Pradesh infrastructure review",
+  "candidates": [
+    {
+      "id": "ap-ses-2017-18",
+      "url": "https://s3.ap-south-1.amazonaws.com/apfinance.gov.in/uploads/index-docs/SocioEconomicalSurvey2017-18.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ap-finance-statistics-2017",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ap-ses-2024-25",
+      "url": "https://s3.ap-south-1.amazonaws.com/apfinance.gov.in/uploads/index-docs/AP_Socio_Economic_Survey_2024_25.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ap-finance-statistics-2024",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ap-ses-2019-20",
+      "url": "https://s3.ap-south-1.amazonaws.com/apfinance.gov.in/uploads/index-docs/Socio-Economic-Survey-2019-20.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ap-finance-statistics-2019",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "mord-ap-action-plan-2024-25",
+      "url": "https://www.dord.gov.in/static/uploads/2024/11/f078b63b2c314959796dcd635d7dc71d.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "union-rural-development",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-ap-panchayat-awards-2025",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2261368",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "union-panchayat-awards",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-ap-pmgsy-2019-24",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2043782",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "union-rural-development",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-ap-pmgsy-2026",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2287313",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "union-rural-development-current",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "morth-road-accidents-2024-ap",
+      "url": "https://morth.gov.in/backend/documents/uploaded/1781177676_V1gUW8tJWT.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "union-road-safety-statistics",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "cag-ap-appropriation-2022-23",
+      "url": "https://cag.gov.in/uploads/state_accounts_report/account-report-Appropriation-Accounts-2022-23-065c4cd689fba81-67734359.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "constitutional-audit",
+      "independenceGroup": "cag-ap",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

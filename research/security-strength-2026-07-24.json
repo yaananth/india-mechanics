@@ -1,0 +1,209 @@
+{
+  "batchId": "modi-manmohan-security-strength-2026-07-24",
+  "rosterVersion": "source-roster-v0.11",
+  "lane": "leader-assessment",
+  "throughDate": "2026-07-24",
+  "reviewer": "India Mechanics security methodology and evidence review",
+  "candidates": [
+    {
+      "id": "mha-annual-report-2008-09",
+      "url": "https://www.mha.gov.in/sites/default/files/AnnualReport_08_09.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "mha-2008-09",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "mha-annual-report-2013-14",
+      "url": "https://www.mha.gov.in/sites/default/files/AnnualReport_13_14.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "mha-2013-14",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "mha-annual-report-2024-25",
+      "url": "https://www.mha.gov.in/sites/default/files/AREnglish_24032026.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "mha-2024-25",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "nia-act-2008",
+      "url": "https://www.indiacode.nic.in/bitstream/123456789/2057/1/a2008-34.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "india-code",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ap-kashmir-standoff-2019",
+      "url": "https://indianexpress.com/article/india/pulwama-attack-crpf-jawans-killed-tributes-narendra-modi-amit-shah-rahul-gandhi-8443460/",
+      "sourceRegistryId": null,
+      "sourceClass": "independent-national",
+      "independenceGroup": "associated-press",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "mea-balakot-2019",
+      "url": "https://www.mea.gov.in/Speeches-Statements.htm?dtl/31090/Statement_by_Foreign_Secretary_on_26_February_2019_on_the_Strike_on_JeM_training_camp_at_Balakot",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "mea-balakot",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ap-galwan-2020",
+      "url": "https://indianexpress.com/article/india/galwan-valley-clash-troops-china-ladakh-line-of-actual-control-20-indian-soldiers-killed-7359874/",
+      "sourceRegistryId": null,
+      "sourceClass": "independent-national",
+      "independenceGroup": "associated-press",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ap-ladakh-disengagement-2024",
+      "url": "https://indianexpress.com/article/explained/explained-global/india-china-disengagement-agreement-9642825/",
+      "sourceRegistryId": null,
+      "sourceClass": "independent-national",
+      "independenceGroup": "associated-press",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "mod-dap-2020",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1659345",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ministry-of-defence",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-defence-exports-2026",
+      "url": "https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2313942&reg=3&lang=2",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "ministry-of-defence",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

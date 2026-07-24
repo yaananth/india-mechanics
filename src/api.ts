@@ -5,6 +5,7 @@ import type {
   BillRegisterResponse,
   IndicatorDefinition,
   IndicatorSeries,
+  Jurisdiction,
   LeaderTerm,
   Methodology,
   Overview,
@@ -23,14 +24,28 @@ async function apiFetch<T>(path: string, signal?: AbortSignal): Promise<T> {
 }
 
 export const api = {
-  overview: (signal?: AbortSignal) =>
-    apiFetch<Overview>('/api/overview?jurisdiction=india', signal),
-  leaders: (signal?: AbortSignal) =>
-    apiFetch<LeaderTerm[]>('/api/leaders?jurisdiction=india', signal),
-  policies: (signal?: AbortSignal) =>
-    apiFetch<Policy[]>('/api/policies?jurisdiction=india', signal),
-  budgets: (signal?: AbortSignal) =>
-    apiFetch<Budget[]>('/api/budgets?jurisdiction=india', signal),
+  jurisdictions: (signal?: AbortSignal) =>
+    apiFetch<Jurisdiction[]>('/api/jurisdictions', signal),
+  overview: (jurisdictionId: string, signal?: AbortSignal) =>
+    apiFetch<Overview>(
+      `/api/overview?jurisdiction=${encodeURIComponent(jurisdictionId)}`,
+      signal,
+    ),
+  leaders: (jurisdictionId: string, signal?: AbortSignal) =>
+    apiFetch<LeaderTerm[]>(
+      `/api/leaders?jurisdiction=${encodeURIComponent(jurisdictionId)}`,
+      signal,
+    ),
+  policies: (jurisdictionId: string, signal?: AbortSignal) =>
+    apiFetch<Policy[]>(
+      `/api/policies?jurisdiction=${encodeURIComponent(jurisdictionId)}`,
+      signal,
+    ),
+  budgets: (jurisdictionId: string, signal?: AbortSignal) =>
+    apiFetch<Budget[]>(
+      `/api/budgets?jurisdiction=${encodeURIComponent(jurisdictionId)}`,
+      signal,
+    ),
   bills: (
     filters: {
       query?: string
@@ -41,9 +56,10 @@ export const api = {
       page?: number
       pageSize?: number
     } = {},
+    jurisdictionId = 'india',
     signal?: AbortSignal,
   ) => {
-    const params = new URLSearchParams({ jurisdiction: 'india' })
+    const params = new URLSearchParams({ jurisdiction: jurisdictionId })
     if (filters.query) params.set('q', filters.query)
     if (filters.status) params.set('status', filters.status)
     if (filters.ministry) params.set('ministry', filters.ministry)
@@ -57,25 +73,39 @@ export const api = {
     if (filters.pageSize) params.set('pageSize', String(filters.pageSize))
     return apiFetch<BillRegisterResponse>(`/api/bills?${params}`, signal)
   },
-  bill: (billId: string, signal?: AbortSignal) =>
+  bill: (
+    billId: string,
+    jurisdictionId = 'india',
+    signal?: AbortSignal,
+  ) =>
     apiFetch<BillRecord & { source: Source }>(
-      `/api/bills/${encodeURIComponent(billId)}?jurisdiction=india`,
+      `/api/bills/${encodeURIComponent(billId)}?jurisdiction=${encodeURIComponent(jurisdictionId)}`,
       signal,
     ),
-  events: (signal?: AbortSignal) =>
-    apiFetch<TimelineEvent[]>('/api/events?jurisdiction=india', signal),
-  indicators: (signal?: AbortSignal) =>
+  events: (jurisdictionId: string, signal?: AbortSignal) =>
+    apiFetch<TimelineEvent[]>(
+      `/api/events?jurisdiction=${encodeURIComponent(jurisdictionId)}`,
+      signal,
+    ),
+  indicators: (jurisdictionId: string, signal?: AbortSignal) =>
     apiFetch<IndicatorDefinition[]>(
-      '/api/indicators?jurisdiction=india',
+      `/api/indicators?jurisdiction=${encodeURIComponent(jurisdictionId)}`,
       signal,
     ),
-  indicatorSeries: (indicatorId: string, signal?: AbortSignal) =>
+  indicatorSeries: (
+    indicatorId: string,
+    jurisdictionId: string,
+    signal?: AbortSignal,
+  ) =>
     apiFetch<IndicatorSeries>(
-      `/api/indicators/${encodeURIComponent(indicatorId)}/series?jurisdiction=india`,
+      `/api/indicators/${encodeURIComponent(indicatorId)}/series?jurisdiction=${encodeURIComponent(jurisdictionId)}`,
       signal,
     ),
-  sources: (signal?: AbortSignal) =>
-    apiFetch<Source[]>('/api/sources', signal),
+  sources: (jurisdictionId: string, signal?: AbortSignal) =>
+    apiFetch<Source[]>(
+      `/api/sources?jurisdiction=${encodeURIComponent(jurisdictionId)}`,
+      signal,
+    ),
   methodology: (signal?: AbortSignal) =>
     apiFetch<Methodology>('/api/methodology', signal),
   answer: (answerId: string, signal?: AbortSignal) =>
@@ -83,9 +113,13 @@ export const api = {
       `/api/questions/${encodeURIComponent(answerId)}`,
       signal,
     ),
-  search: (query: string, signal?: AbortSignal) =>
+  search: (
+    query: string,
+    jurisdictionId: string,
+    signal?: AbortSignal,
+  ) =>
     apiFetch<SearchResponse>(
-      `/api/search?jurisdiction=india&q=${encodeURIComponent(query)}`,
+      `/api/search?jurisdiction=${encodeURIComponent(jurisdictionId)}&q=${encodeURIComponent(query)}`,
       signal,
     ),
 }
