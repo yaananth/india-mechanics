@@ -78,7 +78,7 @@ import {
 } from './seed-data/security.ts'
 import type { IndicatorObservationSeed, PolicyRegisterSeed } from './types.ts'
 
-export const seedVersion = '2026-07-24.8'
+export const seedVersion = '2026-07-24.9'
 const sourceRosterVersion = 'source-roster-v0.11'
 const allJurisdictions = [...jurisdictions, ...andhraJurisdictions]
 const allOffices = [...offices, ...andhraOffices]

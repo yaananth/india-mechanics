@@ -1021,9 +1021,9 @@ export const andhraEventAssessments: EventAssessmentSeed[] = [
     choiceReason:
       'For the successor state this is a constitutional boundary event rather than a decision by its later Chief Ministers; accountability concerns the Union law and implementation of division commitments.',
     unionRole:
-      'The Union government and Parliament designed the division framework, appointed day, institutional sharing, and asset-liability rules.',
-    stateLocalRole:
       'The successor state administrations had to create institutions, divide staff and systems, and build a new fiscal and capital base.',
+    stateLocalRole:
+      'The Union government and Parliament designed the division framework, appointed day, institutional sharing, and asset-liability rules; local institutions implemented the transition on the ground.',
     positiveOutcomes:
       'The successor states gained separate democratic governments and policy focus; those benefits coexist with unresolved division and fiscal disputes.',
     lessons:
@@ -1235,9 +1235,9 @@ export const andhraEventAssessments: EventAssessmentSeed[] = [
     choiceReason:
       'A network and access milestone is an observed output, not a single policy choice. The underlying road programmes are rated separately on design, delivery, inclusion, maintenance, and safety.',
     unionRole:
-      'The Union financed and monitored PMGSY while national-highway institutions expanded the centrally controlled network.',
+      'Successive state governments, Panchayat Raj engineers, Roads and Buildings, districts, and contractors planned, built, and maintained the wider road system.',
     stateLocalRole:
-      'Successive state governments, Panchayat Raj engineers, Roads and Buildings, districts, contractors, and local bodies planned, built, and maintained the wider road system.',
+      'The Union financed and monitored PMGSY while national-highway institutions expanded the centrally controlled network; Panchayats and road users shaped local access and maintenance priorities.',
     positiveOutcomes:
       'High cumulative targeted-habitation connectivity and a larger surfaced-road stock improve access to markets and essential services.',
     lessons:
@@ -1280,9 +1280,9 @@ export const andhraEventAssessments: EventAssessmentSeed[] = [
     choiceReason:
       'An award is recognition of selected outcomes, not itself a government policy or proof that the entire state performed similarly.',
     unionRole:
-      'The Union Ministry of Panchayati Raj administered the national award process and published the selected outcomes.',
+      'State systems, schemes, finance, and administrative support created part of the enabling environment across more than one CM term, but do not displace local credit.',
     stateLocalRole:
-      'The awardee Panchayats and their elected leaders delivered the cited services; state systems, schemes, and finance created part of the enabling environment across more than one CM term.',
+      'The awardee Panchayats and their elected leaders delivered the cited services, while the Union Ministry of Panchayati Raj administered and published the award process.',
     positiveOutcomes:
       'The recognized Panchayats reported concrete gains in all-weather roads, tap water, livelihoods, women-led governance, citizen services, and local accountability.',
     lessons:
@@ -1324,9 +1324,9 @@ export const andhraEventAssessments: EventAssessmentSeed[] = [
     choiceReason:
       'Completed road length is an output rather than one discrete policy choice. The programme is assessed through its policy design, annual delivery, maintenance, safety, and shared financing.',
     unionRole:
-      'The Union sets PMGSY rules, provides the central share, monitors quality, and publishes the programme record.',
+      'The Andhra Pradesh government and State Rural Roads Development Agency contract, implement, quality-control, and maintain the roads.',
     stateLocalRole:
-      'The Andhra Pradesh government and State Rural Roads Development Agency contract, implement, quality-control, and maintain the roads with district and local participation.',
+      'The Union sets PMGSY rules, provides the central share, monitors quality, and publishes the programme record; districts and local institutions contribute priorities and maintenance feedback.',
     positiveOutcomes:
       'The 625 km completed in 2025-26 and 2026-27 through July 16 is tangible current-term infrastructure delivery.',
     lessons:

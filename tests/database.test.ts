@@ -1191,6 +1191,18 @@ describe('state and Chief Minister extensibility', () => {
       )
       .get()
     expect(externalValidation).toEqual({ count: 1 })
+
+    const stateRoleLabels = db
+      .prepare(
+        `SELECT union_role, state_local_role
+         FROM event_assessments
+         WHERE event_id = 'ap-current-road-delivery-2026'`,
+      )
+      .get()
+    expect(stateRoleLabels).toMatchObject({
+      union_role: expect.stringContaining('Andhra Pradesh government'),
+      state_local_role: expect.stringContaining('Union'),
+    })
   })
 
   it('accepts a state jurisdiction and head-of-government office without schema changes', () => {
