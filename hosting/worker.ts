@@ -1,3 +1,8 @@
+import {
+  assets as embeddedAssets,
+  snapshot as embeddedSnapshot,
+} from 'virtual:sites-assets'
+
 type JsonRecord = Record<string, unknown>
 
 type SitesSnapshot = {
@@ -24,16 +29,6 @@ type SitesSnapshot = {
   openapi: JsonRecord
 }
 
-type AssetFetcher = {
-  fetch(request: Request): Promise<Response>
-}
-
-type Env = {
-  ASSETS: AssetFetcher
-}
-
-let snapshotPromise: Promise<SitesSnapshot> | null = null
-
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -44,18 +39,6 @@ function json(data: unknown, status = 200) {
       'access-control-allow-origin': '*',
     },
   })
-}
-
-async function loadSnapshot(env: Env, requestUrl: string) {
-  snapshotPromise ??= env.ASSETS.fetch(
-    new Request(new URL('/api-snapshot.json', requestUrl)),
-  ).then(async (response) => {
-    if (!response.ok) {
-      throw new Error(`Could not load API snapshot: ${response.status}`)
-    }
-    return (await response.json()) as SitesSnapshot
-  })
-  return snapshotPromise
 }
 
 function text(value: unknown) {
@@ -333,13 +316,12 @@ function filteredBills(snapshot: SitesSnapshot, url: URL) {
 
 async function apiResponse(
   request: Request,
-  env: Env,
 ): Promise<Response | null> {
   const url = new URL(request.url)
   const path = url.pathname
   if (!path.startsWith('/api/')) return null
 
-  const snapshot = await loadSnapshot(env, request.url)
+  const snapshot = embeddedSnapshot as SitesSnapshot
 
   if (path === '/api/health') {
     const metadata = snapshot.meta.metadata as JsonRecord
@@ -427,20 +409,43 @@ async function apiResponse(
 }
 
 const worker = {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request): Promise<Response> {
     try {
-      const api = await apiResponse(request, env)
+      const api = await apiResponse(request)
       if (api) return api
 
-      const asset = await env.ASSETS.fetch(request)
-      if (asset.status !== 404 || request.method !== 'GET') return asset
+      const url = new URL(request.url)
+      const directPath = url.pathname === '/' ? '/index.html' : url.pathname
+      const directAsset = embeddedAssets[directPath]
+      if (directAsset) {
+        return new Response(directAsset.body, {
+          status: 200,
+          headers: {
+            'content-type': directAsset.contentType,
+            'cache-control':
+              directPath === '/index.html'
+                ? 'public, max-age=60'
+                : 'public, max-age=31536000, immutable',
+          },
+        })
+      }
+      if (request.method !== 'GET') {
+        return new Response('Not found', { status: 404 })
+      }
 
       const accept = request.headers.get('accept') ?? ''
-      if (!accept.includes('text/html')) return asset
+      if (!accept.includes('text/html')) {
+        return new Response('Not found', { status: 404 })
+      }
 
-      return env.ASSETS.fetch(
-        new Request(new URL('/index.html', request.url), request),
-      )
+      const index = embeddedAssets['/index.html']
+      return new Response(index.body, {
+        status: 200,
+        headers: {
+          'content-type': index.contentType,
+          'cache-control': 'public, max-age=60',
+        },
+      })
     } catch (error) {
       return json(
         {
