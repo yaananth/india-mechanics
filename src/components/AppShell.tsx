@@ -6,6 +6,7 @@ import {
   Database,
   Landmark,
   MapPin,
+  Menu,
   ScrollText,
   Search,
   ShieldCheck,
@@ -128,10 +129,29 @@ export function AppShell({
                 className={activeView === item.id ? 'is-active' : undefined}
                 onClick={() => onViewChange(item.id)}
               >
-                {item.label}
+                <span className="nav-label nav-label--long">{item.label}</span>
+                <span className="nav-label nav-label--short">
+                  {item.shortLabel}
+                </span>
               </button>
             ))}
           </nav>
+
+          <label className="compact-view-switcher">
+            <Menu size={15} aria-hidden="true" />
+            <span className="sr-only">View</span>
+            <select
+              value={activeView}
+              onChange={(event) => onViewChange(event.target.value as ViewId)}
+              aria-label="Select view"
+            >
+              {navigation.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </label>
 
           <button
             type="button"
