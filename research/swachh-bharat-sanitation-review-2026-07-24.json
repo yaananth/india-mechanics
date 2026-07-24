@@ -1,0 +1,125 @@
+{
+  "batchId": "swachh-bharat-sanitation-review-2026-07-24",
+  "rosterVersion": "source-roster-v0.11",
+  "jurisdictionId": "india",
+  "lane": "measured-outcome",
+  "topic": "Swachh Bharat Mission rural sanitation outcomes and viral infographic comparison",
+  "fromDate": "2014-05-26",
+  "throughDate": "2026-07-24",
+  "reviewer": "India Mechanics sanitation evidence pass",
+  "queries": [
+    "site:dhsprogram.com NFHS-4 India rural sanitation 2015-16",
+    "site:dhsprogram.com NFHS-5 India rural sanitation 2019-21",
+    "site:worldbank.org Swachh Bharat Mission completion results sanitation",
+    "site:api.worldbank.org India rural basic sanitation open defecation",
+    "\"38.7%\" \"95.6%\" rural toilet India"
+  ],
+  "candidates": [
+    {
+      "id": "nfhs-4-india-sanitation",
+      "url": "https://dhsprogram.com/pubs/pdf/FR339/FR339.pdf",
+      "publisher": "Ministry of Health and Family Welfare and International Institute for Population Sciences",
+      "sourceRegistryId": null,
+      "sourceClass": "official-statistical-survey",
+      "independenceGroup": "nfhs-4",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "nfhs-5-india-sanitation",
+      "url": "https://dhsprogram.com/pubs/pdf/FR375/FR375.pdf",
+      "publisher": "Ministry of Health and Family Welfare and International Institute for Population Sciences",
+      "sourceRegistryId": null,
+      "sourceClass": "official-statistical-survey",
+      "independenceGroup": "nfhs-5",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-sbm-icr-2023",
+      "url": "https://documents1.worldbank.org/curated/en/099041423111515061/pdf/BOSIB015ca6285040822d0975196c5848f.pdf",
+      "publisher": "World Bank",
+      "sourceRegistryId": "world-bank",
+      "sourceClass": "multilateral-programme-evaluation",
+      "independenceGroup": "world-bank-sbm",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-jmp-rural-sanitation",
+      "url": "https://api.worldbank.org/v2/country/IND/indicator/SH.STA.BASS.RU.ZS?format=json&per_page=100",
+      "publisher": "World Bank",
+      "sourceRegistryId": "world-bank",
+      "sourceClass": "multilateral-statistics",
+      "independenceGroup": "who-unicef-jmp",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "viral-toilet-map-instagram",
+      "url": "https://www.instagram.com/reel/DMrBlMxPKhs/",
+      "publisher": "Instagram account graphic",
+      "sourceRegistryId": null,
+      "sourceClass": "social-media-graphic",
+      "independenceGroup": "viral-graphic",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": false,
+        "namedEvidence": false,
+        "transparentMethod": false,
+        "independent": false,
+        "stableArchive": false,
+        "anonymous": true,
+        "partisan": true,
+        "brokenProvenance": true
+      },
+      "rating": 1,
+      "reviewStatus": "rejected",
+      "rejectionReason": "The graphic labels a 2015-16 survey as pre-2014, mixes survey and administrative measures, and provides no reproducible denominator or methodology."
+    }
+  ]
+}

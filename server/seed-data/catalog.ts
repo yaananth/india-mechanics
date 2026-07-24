@@ -19,6 +19,7 @@ import type {
 const accessedDate = '2026-07-23'
 const caaReviewedDate = '2026-07-24'
 const heardClaimReviewedDate = '2026-07-24'
+const sanitationReviewedDate = '2026-07-24'
 
 export const sources: SourceSeed[] = [
   {
@@ -123,6 +124,56 @@ export const sources: SourceSeed[] = [
     limitations:
       'Reliability still depends on the methodology of each underlying indicator.',
     accessedDate,
+  },
+  {
+    id: 'nfhs-4-india-sanitation',
+    title: 'National Family Health Survey (NFHS-4), India, 2015-16',
+    publisher:
+      'Ministry of Health and Family Welfare and International Institute for Population Sciences',
+    url: 'https://dhsprogram.com/pubs/pdf/FR339/FR339.pdf',
+    sourceType: 'official-household-survey',
+    reliability: 5,
+    ratingReason:
+      'Direct national household-survey report with disclosed sampling, fieldwork, sanitation definitions, and urban-rural tables.',
+    bestFor:
+      'Observed 2015-16 household sanitation facilities, including rural use of improved non-shared facilities and open defecation.',
+    limitations:
+      'Its 2015-16 reference period is not a pre-May-2014 baseline, and its categories cannot be equated with later programme-dashboard coverage.',
+    publishedDate: '2017-12-01',
+    accessedDate: sanitationReviewedDate,
+  },
+  {
+    id: 'nfhs-5-india-sanitation',
+    title: 'National Family Health Survey (NFHS-5), India, 2019-21',
+    publisher:
+      'Ministry of Health and Family Welfare and International Institute for Population Sciences',
+    url: 'https://dhsprogram.com/pubs/pdf/FR375/FR375.pdf',
+    sourceType: 'official-household-survey',
+    reliability: 5,
+    ratingReason:
+      'Direct national household-survey report with disclosed sampling, comparable sanitation categories, and a separate measure of toilet access.',
+    bestFor:
+      'Observed 2019-21 rural basic sanitation, toilet access, and open-defecation estimates.',
+    limitations:
+      'Fieldwork spans the pandemic period and survey access or use is not identical to administrative construction or ODF declarations.',
+    publishedDate: '2022-03-01',
+    accessedDate: sanitationReviewedDate,
+  },
+  {
+    id: 'world-bank-sbm-icr-2023',
+    title: 'Implementation Completion and Results Report: Swachh Bharat Mission Support Operation',
+    publisher: 'World Bank',
+    url: 'https://documents1.worldbank.org/curated/en/099041423111515061/pdf/BOSIB015ca6285040822d0975196c5848f.pdf',
+    sourceType: 'multilateral-programme-evaluation',
+    reliability: 4,
+    ratingReason:
+      'Named completion review that reconciles government monitoring with NFHS, NSS, NARSS, and programme evidence and documents implementation and sustainability limits.',
+    bestFor:
+      'Programme design, scale, independent outcome context, institutional delivery, and post-ODF sustainability risks.',
+    limitations:
+      'The World Bank financed part of the programme, and national outcome changes cannot be attributed exclusively to Union leadership.',
+    publishedDate: '2023-03-31',
+    accessedDate: sanitationReviewedDate,
   },
   {
     id: 'world-bank-exchange-rate',
@@ -2182,7 +2233,7 @@ export const leaderTerms: LeaderTermSeed[] = [
     ratingScore: 6.7,
     ratingConfidence: 'medium',
     ratingSummary:
-      'Large poverty and basic-service gains, major road expansion, digital systems, stronger operational security, a lower registered murder rate, and a broader trade-agreement strategy; reduced by job quality, uneven inclusion, cybercrime and justice gaps, crisis response, political-finance transparency, border and prevention failures, safety and execution gaps, and institutional decline. Balanced estimate 6.7/10; alternative weighting lenses span 6.0-7.1.',
+      'Large poverty and basic-service gains, including the Swachh Bharat rural-sanitation expansion, major road growth, digital systems, stronger operational security, a lower registered murder rate, and a broader trade-agreement strategy; reduced by job quality, uneven inclusion, cybercrime and justice gaps, crisis response, political-finance transparency, border and prevention failures, safety and execution gaps, and institutional decline. Balanced estimate 6.7/10; alternative weighting lenses span 6.0-7.1.',
     assessmentAsOf: '2026-07-24',
     sourceIds: [
       'pm-india-current',
@@ -2207,6 +2258,9 @@ export const leaderTerms: LeaderTermSeed[] = [
       'mha-cctns',
       'i4c-official',
       'mha-cybercrime-reply-2025',
+      'nfhs-4-india-sanitation',
+      'nfhs-5-india-sanitation',
+      'world-bank-sbm-icr-2023',
     ],
   },
 ]
@@ -2388,9 +2442,9 @@ const scoreRationales: Record<string, string[]> = {
     'Major corruption scandals and perceived policy paralysis reduce the integrity score.',
   ],
   'modi-2014': [
-    'Monetary and multidimensional poverty fell substantially while roads, basic services, formalisation, and aggregate output expanded; survey changes and job quality limit attribution.',
-    'GST, insolvency reform, digital public infrastructure, highway investment, and a broader trade-agreement strategy endure; IBC delay, Bharatmala cost control, safety, and execution gaps prevent a higher score.',
-    'Poverty and service access improved materially; productive-job quality, nutrition, gender, regional, earnings, and minority-inclusion gaps prevent a high score.',
+    'Monetary and multidimensional poverty fell substantially while roads, rural sanitation, electricity, other basic services, formalisation, and aggregate output expanded; survey definitions, state delivery, inherited programmes, and job quality limit exclusive attribution.',
+    'GST, insolvency reform, digital public infrastructure, Swachh Bharat delivery systems, highway investment, and a broader trade-agreement strategy endure; IBC delay, Bharatmala cost control, sanitation slippage and waste-treatment gaps, safety, and execution problems prevent a higher score.',
+    'Poverty and public-service access improved materially, with rural sanitation creating broad dignity and health benefits; productive-job quality, nutrition, gender, regional, earnings, minority-inclusion, water, and service-quality gaps prevent a high score.',
     'LWE and most Northeast security indicators, retaliation capacity, vaccination, defence capability, and a lower registered murder rate are strengths; violent crime, women and child safety, cybercrime, Uri, Pulwama, Pahalgam, Galwan, the lockdown, pandemic mortality uncertainty, Manipur, and conflict response keep the combined record mixed-positive.',
     'Independent indices show material democratic deterioration, while the competitive 2024 election and electoral-bonds judgment show electoral and judicial checks still imposed meaningful limits.',
     'Central execution and national crime-data and cyber-coordination systems are strengths; electoral bonds, transparency gaps, concentration of power, project-control failures, uneven criminal-justice outcomes, and the bounded demonetisation penalty reduce the score.',
@@ -2411,16 +2465,16 @@ export const leaderRatingAudits = [
   {
     id: 'modi-rating-methodology-review-2026-07-24',
     termId: 'modi-2014',
-    runCount: 3,
-    genericMean: 6.6,
-    standardizedMean: 6.6,
-    standardDeviation: 0.17,
-    minimum: 6.3,
-    maximum: 6.7,
-    previousRating: 6.6,
+    runCount: 5,
+    genericMean: 6.28,
+    standardizedMean: 6.22,
+    standardDeviation: 0.07,
+    minimum: 6.1,
+    maximum: 6.3,
+    previousRating: 6.7,
     revisedRating: 6.7,
     promptHash:
-      'sha256:89a3e279ae2044e4f81de22936c00fe06388fbcde0de4f01b6138e1617446da7',
+      'sha256:60951df18bdb3970896eccaba4f1c9f8e5ff30ade58a70975cbcf9ee51c27cbc',
     status: 'stable',
     reviewedAt: '2026-07-24',
     consensusSources: [
@@ -2433,7 +2487,7 @@ export const leaderRatingAudits = [
       'commerce.gov.in',
     ],
     notes:
-      'The published review found 6.3-6.7 defensible. Development and inclusion credit, calibrated institutional costs, and a separate security backfill all contribute. Demonetisation remains bounded at roughly 0.05-0.20 balanced points; the reviewed security lane raises the combined crisis-security component while separately exposing a stronger operational score and a lower rights-adjusted score.',
+      'Five standardized replications produced a narrow 6.1-6.3 range and a 6.22 mean. The published 6.7 sits 0.48 points above that mean but remains inside the declared stability threshold because the final evidence review gives more explicit credit to measured development, delivery, and security evidence while retaining institutional and execution penalties. The July 24 sanitation review makes Swachh Bharat credit explicit but does not raise the overall score because rural sanitation was already included in the 7.7 outcomes and 6.5 inclusion components; adding it again would double-count the same basic-service gain. Demonetisation remains bounded at roughly 0.05-0.20 balanced points, and the separate security assessment exposes both the stronger operational result and the lower rights-adjusted result.',
   },
 ] satisfies import('../types.ts').LeaderRatingAuditSeed[]
 
@@ -2489,6 +2543,7 @@ const policyComponentValues: Record<string, Array<number | null>> = {
   'state-vat-2005': [8.5, 7.5, 6.5, 6.5, 8.5],
   'fcra-2010': [7, 6, 6, 5, 6],
   'pakistan-flood-relief-2010': [6.5, 4.5, 6.5, 7.5, 4.5],
+  'swachh-bharat-gramin-2014': [9, 8, 7.5, 7.5, 6.5],
   'aadhaar-2016': [8, 8, 6.5, 4.5, 7],
   'ibc-2016': [8, 7.5, 6, 7, 7],
   'demonetisation-2016': [5, 2.5, 3, 3, 3],
@@ -2633,6 +2688,13 @@ const policyRationales: Record<string, string[]> = {
     'United Nations routing reduced direct bilateral-control risk, but it did not guarantee against downstream diversion, substitution, or fungibility within Pakistan’s wider public finances.',
     'The decision distinguished civilians from hostile state and non-state actors, while the government still had a duty to assess whether assistance could indirectly free resources for other uses.',
     'No durable diplomatic or counterterrorism benefit is demonstrated, and the available records cannot prove either diversion to terrorism or a guarantee that no indirect benefit occurred.',
+  ],
+  'swachh-bharat-gramin-2014': [
+    'Targeted a severe rural public-health, dignity, and service-access deficit through a clear mission combining household facilities, behaviour change, verification, and local delivery.',
+    'NFHS and WHO/UNICEF-modelled series show large gains in rural basic sanitation and a large decline in open defecation, while administrative coverage or ODF declarations remain higher than independently observed access and use.',
+    'The programme scaled nationwide and mobilised Union, state, district, panchayat, and household action, but water availability, construction quality, verification, local capacity, and slippage varied substantially.',
+    'Women, poorer rural households, and communities without prior facilities gained broad access and dignity benefits, while wealth, caste, geography, disability, water, and facility-quality differences left unequal realised benefit.',
+    'Toilets and changed norms are durable assets, but the continuing need for ODF Plus, fecal-sludge and waste management, repairs, water, and repeat verification prevents a near-perfect durability score.',
   ],
   'aadhaar-2016': [
     'Targeted identity gaps, duplicate beneficiaries, and authentication at national scale.',
@@ -3196,6 +3258,33 @@ export const policies: PolicySeed[] = [
       'un-ocha-india-pakistan-erf-2010',
       'guardian-pakistan-flood-aid-2010',
       'brookings-pakistan-flood-aid-2010',
+    ],
+  },
+  {
+    id: 'swachh-bharat-gramin-2014',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Swachh Bharat Mission (Gramin), 2014',
+    shortTitle: 'Swachh Bharat (rural sanitation)',
+    policyType: 'rural-sanitation',
+    introducedDate: '2014-10-02',
+    effectiveDate: '2014-10-02',
+    status: 'executive-action',
+    coverageStatus: 'reviewed',
+    summary:
+      'Created a mission-mode rural sanitation programme combining household and community toilets, behaviour change, village ODF verification, and later solid and liquid waste management.',
+    intendedGoal:
+      'End rural open defecation, expand safe household sanitation, improve health and dignity, and sustain clean villages through shared Union, state, local, and household delivery.',
+    ratingScore: policyRating('swachh-bharat-gramin-2014'),
+    ratingConfidence: 'high',
+    ratingSummary:
+      'A major and unusually broad basic-service achievement with large independently observed gains. It scores 7.8/10 rather than receiving full credit because dashboard coverage is not the same as surveyed use, gains were shared with states and households, and water, quality, slippage, and waste-treatment gaps remain.',
+    assessmentAsOf: sanitationReviewedDate,
+    sourceIds: [
+      'nfhs-4-india-sanitation',
+      'nfhs-5-india-sanitation',
+      'world-bank-sbm-icr-2023',
+      'world-bank-api',
     ],
   },
   {
@@ -7253,7 +7342,7 @@ export const claims: ClaimSeed[] = [
     eventId: 'national-mpi-decline-2023',
     title: 'Basic services and multidimensional poverty',
     body:
-      'National MPI fell from 24.85% in 2015-16 to an observed 14.96% in 2019-21, while electricity, sanitation, clean cooking, and other services improved; the 11.28% figure for 2022-23 is an official extrapolation, not a new survey.',
+      'National MPI fell from 24.85% in 2015-16 to an observed 14.96% in 2019-21, while electricity, rural sanitation, clean cooking, and other services improved. Swachh Bharat is a major part of this credit; the 11.28% MPI figure for 2022-23 is an official extrapolation, not a new survey.',
     stance: 'achievement',
     category: 'human-development',
     confidence: 'high',
@@ -7263,7 +7352,61 @@ export const claims: ClaimSeed[] = [
       'world-bank-poverty-equity-2025',
       'niti-mpi-2023',
       'undp-global-mpi-2022',
+      'nfhs-4-india-sanitation',
+      'nfhs-5-india-sanitation',
+      'world-bank-sbm-icr-2023',
     ],
+  },
+  {
+    id: 'modi-swachh-bharat-sanitation-gain',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'swachh-bharat-gramin-2014',
+    title: 'Rural sanitation improved on comparable measures',
+    body:
+      'WHO/UNICEF-modelled World Bank data estimate rural basic sanitation rising from 46.7% in 2014 to 81.0% in 2024, while rural open defecation fell from 44.4% to 10.7%. NFHS surveys also show a large gain: rural improved non-shared sanitation was 36.7% in 2015-16, rural basic sanitation was 63.6% in 2019-21, and 76.0% of rural households reported access to any toilet in 2019-21.',
+    stance: 'achievement',
+    category: 'rural-sanitation',
+    confidence: 'high',
+    asOfDate: sanitationReviewedDate,
+    sourceIds: [
+      'world-bank-api',
+      'nfhs-4-india-sanitation',
+      'nfhs-5-india-sanitation',
+      'world-bank-sbm-icr-2023',
+    ],
+  },
+  {
+    id: 'swachh-bharat-infographic-comparison',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'swachh-bharat-gramin-2014',
+    title: 'The “38.7% to 95.6%” graphic mixes unlike measures',
+    body:
+      'NFHS-4 was conducted in 2015-16, after Narendra Modi took office, so it is not a pre-2014 observation. NFHS survey use or access, programme-dashboard construction or coverage, and village ODF declarations have different denominators and verification methods. A dashboard percentage such as 95.6% therefore cannot be placed beside an NFHS percentage as though both came from one comparable series.',
+    stance: 'context',
+    category: 'fact-check',
+    confidence: 'high',
+    asOfDate: sanitationReviewedDate,
+    sourceIds: [
+      'nfhs-4-india-sanitation',
+      'nfhs-5-india-sanitation',
+      'world-bank-sbm-icr-2023',
+    ],
+  },
+  {
+    id: 'swachh-bharat-unfinished-sanitation',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'swachh-bharat-gramin-2014',
+    title: 'Toilet coverage is not the end of the sanitation problem',
+    body:
+      'Access does not prove consistent use, water availability, repair, safe fecal-sludge treatment, or freedom from open defecation. The 2024 modelled estimate still leaves about one in nine rural residents practising open defecation, while the World Bank review identifies slippage and sustainability risks in weaker-performing areas.',
+    stance: 'concern',
+    category: 'rural-sanitation',
+    confidence: 'high',
+    asOfDate: sanitationReviewedDate,
+    sourceIds: ['world-bank-api', 'world-bank-sbm-icr-2023'],
   },
   {
     id: 'modi-macro-formalisation',
@@ -8737,6 +8880,48 @@ export const curatedAnswers: CuratedAnswerSeed[] = [
     ],
   },
   {
+    id: 'swachh-bharat-rural-sanitation',
+    jurisdictionId: 'india',
+    question: 'Did Swachh Bharat really transform rural sanitation?',
+    aliases: [
+      'did modi improve toilets',
+      'modi toilet coverage',
+      'swachh bharat success',
+      'rural sanitation under modi',
+      '38.7 to 95.6 toilet coverage',
+      'is the toilet map true',
+      'open defecation india modi',
+    ],
+    shortAnswer:
+      'Yes, rural sanitation improved enormously and Swachh Bharat deserves substantial credit. But the viral “38.7% to 95.6%” comparison is not one comparable data series: it mixes a post-2014 household survey with administrative coverage or declaration data.',
+    verdict:
+      'Major achievement, misleading infographic. Comparable WHO/UNICEF-modelled data show rural basic sanitation rising from 46.7% in 2014 to 81.0% in 2024 and rural open defecation falling from 44.4% to 10.7%. That supports strong policy credit, while leaving a meaningful use, water, quality, waste-treatment, and sustainability gap. This achievement is already included in Modi’s 7.7/10 observed-outcomes and 6.5/10 inclusion components; making it explicit improves transparency but does not by itself justify double-counting it into a higher overall rating.',
+    confidence: 'high',
+    asOfDate: sanitationReviewedDate,
+    claimSections: [
+      {
+        claimId: 'modi-swachh-bharat-sanitation-gain',
+        section: 'achievement',
+        sortOrder: 1,
+      },
+      {
+        claimId: 'swachh-bharat-unfinished-sanitation',
+        section: 'concern',
+        sortOrder: 1,
+      },
+      {
+        claimId: 'swachh-bharat-infographic-comparison',
+        section: 'context',
+        sortOrder: 1,
+      },
+      {
+        claimId: 'india-causality-context',
+        section: 'context',
+        sortOrder: 2,
+      },
+    ],
+  },
+  {
     id: 'india-progress-since-independence',
     jurisdictionId: 'india',
     question: 'Has India progressed since independence?',
@@ -9028,6 +9213,54 @@ export const indicatorDefinitions: IndicatorDefinitionSeed[] = [
     sourceId: 'world-bank-api',
     frequency: 'annual',
     stateReady: true,
+  },
+  {
+    id: 'rural-basic-sanitation',
+    sourceCode: 'SH.STA.BASS.RU.ZS',
+    name: 'Rural population using at least basic sanitation',
+    shortName: 'Rural basic sanitation',
+    description:
+      'WHO/UNICEF-modelled share of the rural population using an improved sanitation facility that is not shared with other households.',
+    plainLanguage:
+      'Out of every 100 people living in rural India, this estimates how many use an improved toilet that is not shared with other households.',
+    example:
+      'A value of 81% means about 81 of every 100 rural residents use at least a basic sanitation service. It is not the same as toilets constructed, villages declared ODF, or safely treated waste.',
+    unit: '% rural population',
+    format: 'percent',
+    dimensionId: 'basic-systems',
+    dimensionWeight: 0,
+    direction: 'higher',
+    scoreRole: 'context',
+    transform: 'linear',
+    goalpostLow: 0,
+    goalpostHigh: 100,
+    sourceId: 'world-bank-api',
+    frequency: 'annual',
+    stateReady: false,
+  },
+  {
+    id: 'rural-open-defecation',
+    sourceCode: 'SH.STA.ODFC.RU.ZS',
+    name: 'Rural population practising open defecation',
+    shortName: 'Rural open defecation',
+    description:
+      'WHO/UNICEF-modelled share of the rural population practising open defecation.',
+    plainLanguage:
+      'Out of every 100 people living in rural India, this estimates how many usually defecate in fields, forests, water bodies, or other open spaces.',
+    example:
+      'A value of 10.7% means roughly 11 of every 100 rural residents still practise open defecation. Lower is better, but the estimate does not show why a toilet is unavailable or unused.',
+    unit: '% rural population',
+    format: 'percent',
+    dimensionId: 'basic-systems',
+    dimensionWeight: 0,
+    direction: 'lower',
+    scoreRole: 'context',
+    transform: 'linear',
+    goalpostLow: 0,
+    goalpostHigh: 100,
+    sourceId: 'world-bank-api',
+    frequency: 'annual',
+    stateReady: false,
   },
   {
     id: 'internet-use',

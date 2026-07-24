@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-24T02:57:44.533Z",
+  "generatedAt": "2026-07-24T18:00:14.721Z",
   "asOfDate": "2026-07-24",
   "recommendedProgressYear": 2025,
   "cutoffs": {
@@ -124,200 +124,225 @@
       "jurisdictionId": "india",
       "period": 2000,
       "value": 14.6638821125248,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2001,
       "value": 17.2206798996747,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2002,
       "value": 19.9645829063411,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2003,
       "value": 22.7256519741888,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2004,
       "value": 25.504088846955,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2005,
       "value": 28.2988919138167,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2006,
       "value": 31.1102746501892,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2007,
       "value": 33.9383850862219,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2008,
       "value": 36.7829765979312,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2009,
       "value": 39.6431708126058,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2010,
       "value": 42.5191116694177,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2011,
       "value": 45.4108795020998,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2012,
       "value": 48.3205923569019,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2013,
       "value": 51.2472926178236,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2014,
       "value": 54.1905506719672,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2015,
       "value": 57.1496392627885,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2016,
       "value": 60.1238284933312,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2017,
       "value": 63.1125583715917,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2018,
       "value": 66.1148742165368,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2019,
       "value": 69.1300220717047,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2020,
       "value": 72.0482326780192,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2021,
       "value": 74.9328568041953,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2022,
       "value": 77.8161883735175,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2023,
       "value": 80.6978943350927,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "basic-sanitation",
       "jurisdictionId": "india",
       "period": 2024,
       "value": 83.380872478201,
-      "status": "observed",
-      "sourceId": "world-bank-api"
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     },
     {
       "indicatorId": "consumption-gini",
@@ -6297,6 +6322,456 @@
       "value": 19.131292447169,
       "status": "observed",
       "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 1.88912425745776,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 4.8922179409597,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 7.93401955260515,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 11.0052673824726,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 14.1059614305605,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 17.2361016968697,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 20.3956881814001,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 23.5847208841517,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 26.8031998051246,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 30.0511249443187,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 33.3284963017341,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 36.6353138773706,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 39.9715776712284,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 43.3372876833075,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 46.7324439136077,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 50.1570463621293,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 53.611095028872,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 57.094589913836,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 60.6075310170212,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 64.1499183384276,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 67.5542354718427,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 70.9159272623599,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 74.2850736845519,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 77.66160269476,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 81.0454431746786,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 91.4089548627544,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 88.0515189585076,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 84.6940830542608,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 81.336647150014,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 77.9792112457671,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 74.6217753415203,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 71.2643394372735,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 67.9069035330267,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 64.5494676287799,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 61.1920317245331,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 57.8345958202863,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 54.4771599160394,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 51.1197240117926,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 47.7622881075458,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 44.404852203299,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 41.0474162990522,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 37.6899803948054,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 34.3325444905586,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 30.9751085863118,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 27.6176726820649,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 24.2002266988378,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 20.7834898815987,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 17.388837746013,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 14.0160568595016,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
+    },
+    {
+      "indicatorId": "rural-open-defecation",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 10.6649365308844,
+      "status": "modelled",
+      "sourceId": "world-bank-api",
+      "note": "WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API."
     }
   ]
 }

@@ -21,7 +21,7 @@ describe('read API', () => {
   it('returns an overview with source cutoffs and a current PM', async () => {
     const response = await request(app).get('/api/overview')
     expect(response.status).toBe(200)
-    expect(response.body.knowledge.cutoff).toBe('2026-07-23')
+    expect(response.body.knowledge.cutoff).toBe('2026-07-24')
     expect(response.body.knowledge.billRegisterAsOfDate).toBe('2026-07-24')
     expect(response.body.knowledge.timelineStarts).toBe('1945-01-01')
     expect(response.body.currentTerm.person.name).toBe('Narendra Modi')
@@ -454,6 +454,38 @@ describe('read API', () => {
     })
   })
 
+  it('fact-checks the viral sanitation comparison and exposes Swachh Bharat', async () => {
+    const [searchResponse, policyResponse] = await Promise.all([
+      request(app).get('/api/search').query({
+        jurisdiction: 'india',
+        q: '38.7 to 95.6 toilet coverage',
+      }),
+      request(app).get('/api/policies/swachh-bharat-gramin-2014'),
+    ])
+
+    expect(searchResponse.status).toBe(200)
+    expect(searchResponse.body.answer).toMatchObject({
+      id: 'swachh-bharat-rural-sanitation',
+      confidence: 'high',
+    })
+    expect(searchResponse.body.answer.shortAnswer).toContain('not one comparable')
+
+    expect(policyResponse.status).toBe(200)
+    expect(policyResponse.body.ratingScore).toBe(7.8)
+    expect(policyResponse.body.leader).toMatchObject({
+      name: 'Narendra Modi',
+    })
+    expect(
+      policyResponse.body.claims.map((claim: { id: string }) => claim.id),
+    ).toEqual(
+      expect.arrayContaining([
+        'modi-swachh-bharat-sanitation-gain',
+        'swachh-bharat-infographic-comparison',
+        'swachh-bharat-unfinished-sanitation',
+      ]),
+    )
+  })
+
   it('returns the transparent Modi scorecard and methodology review', async () => {
     const response = await request(app).get('/api/leaders/modi-2014')
     expect(response.status).toBe(200)
@@ -480,15 +512,17 @@ describe('read API', () => {
       ).toBeCloseTo(1)
     }
     expect(response.body.ratingAudit).toMatchObject({
-      runCount: 3,
-      standardizedMean: 6.6,
-      standardDeviation: 0.17,
-      minimum: 6.3,
-      maximum: 6.7,
-      previousRating: 6.6,
+      runCount: 5,
+      genericMean: 6.28,
+      standardizedMean: 6.22,
+      standardDeviation: 0.07,
+      minimum: 6.1,
+      maximum: 6.3,
+      previousRating: 6.7,
       revisedRating: 6.7,
       status: 'stable',
     })
+    expect(response.body.ratingAudit.notes).toContain('double-count')
     expect(response.body.specialistAssessments).toHaveLength(2)
     expect(response.body.specialistAssessments).toContainEqual(
       expect.objectContaining({
@@ -1173,5 +1207,38 @@ describe('read API', () => {
     expect(response.body.comparison.conclusion).toContain(
       'exchange rate alone cannot grade a Prime Minister',
     )
+  })
+
+  it('shows comparable rural sanitation gains without scoring dashboard coverage', async () => {
+    const [sanitation, openDefecation] = await Promise.all([
+      request(app).get('/api/indicators/rural-basic-sanitation/series'),
+      request(app).get('/api/indicators/rural-open-defecation/series'),
+    ])
+
+    expect(sanitation.status).toBe(200)
+    expect(sanitation.body.definition.scoreRole).toBe('context')
+    expect(sanitation.body.definition.dimensionWeight).toBe(0)
+    const sanitationCurrent = sanitation.body.termChanges.find(
+      (change: { isCurrent: boolean }) => change.isCurrent,
+    )
+    expect(sanitationCurrent.baseline).toMatchObject({
+      period: 2014,
+      status: 'modelled',
+    })
+    expect(sanitationCurrent.endpoint).toMatchObject({
+      period: 2024,
+      status: 'modelled',
+    })
+    expect(sanitationCurrent.baseline.value).toBeCloseTo(46.732, 3)
+    expect(sanitationCurrent.endpoint.value).toBeCloseTo(81.045, 3)
+    expect(sanitationCurrent.directionAssessment).toBe('improved')
+
+    expect(openDefecation.status).toBe(200)
+    const openDefecationCurrent = openDefecation.body.termChanges.find(
+      (change: { isCurrent: boolean }) => change.isCurrent,
+    )
+    expect(openDefecationCurrent.baseline.value).toBeCloseTo(44.405, 3)
+    expect(openDefecationCurrent.endpoint.value).toBeCloseTo(10.665, 3)
+    expect(openDefecationCurrent.directionAssessment).toBe('improved')
   })
 })

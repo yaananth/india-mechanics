@@ -119,6 +119,13 @@ Examples:
 An observation may be `observed`, `estimated`, or `modelled`. Those labels affect
 confidence and must never be removed for presentation.
 
+Administrative programme coverage, household-survey access or use, village
+declarations, and modelled population estimates are separate measurement
+families. They may corroborate direction, but they must not be joined into one
+before-and-after series unless the denominator and definition are genuinely
+comparable. WHO/UNICEF JMP sanitation estimates retrieved through the World Bank
+API are stored as `modelled`, not `observed`.
+
 Indicators can be `scored` or `context`. Contextual series such as a nominal
 exchange rate remain searchable and comparable by PM data window, but they do
 not receive a higher-is-better or lower-is-better judgment and do not enter the
@@ -630,6 +637,8 @@ For government achievements:
 - World Bank indicator series directly from the World Bank API;
 - selected V-Dem series through the Our World in Data CSV mirror, while the
   source record points to V-Dem methodology;
+- WHO/UNICEF JMP sanitation series through the World Bank API, labelled
+  `modelled`;
 - all available observations from 1945 through the configured as-of year.
 
 The script writes:
@@ -699,7 +708,7 @@ npm run data:refresh
 To reproduce a historical as-of:
 
 ```bash
-npx tsx scripts/fetch-indicators.ts --as-of=2026-07-23
+npx tsx scripts/fetch-indicators.ts --as-of=2026-07-24
 npm run db:seed
 ```
 

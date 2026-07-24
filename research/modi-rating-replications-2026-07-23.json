@@ -19,9 +19,9 @@
       "outcomes": 7.7,
       "reforms": 7.4,
       "inclusion": 6.5,
-      "crisis": 6.3,
+      "crisis": 6.4,
       "institutions": 4.5,
-      "integrity": 6.0
+      "integrity": 5.9
     },
     "sourceUrls": [
       "https://www.pmindia.gov.in/en/pms-profile/",
@@ -47,7 +47,10 @@
       "https://www.npci.org.in/what-we-do/upi/product-statistics",
       "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2209837",
       "https://documents.worldbank.org/curated/en/099042126035038379/pdf/P512371-d096273a-9b40-4085-a83c-5520c14aa17a.pdf",
-      "https://www.commerce.gov.in/files/2026-03/FTAs%20achievement%20v6%205%20pm.pdf"
+      "https://www.commerce.gov.in/files/2026-03/FTAs%20achievement%20v6%205%20pm.pdf",
+      "https://dhsprogram.com/pubs/pdf/FR339/FR339.pdf",
+      "https://dhsprogram.com/pubs/pdf/FR375/FR375.pdf",
+      "https://documents1.worldbank.org/curated/en/099041423111515061/pdf/BOSIB015ca6285040822d0975196c5848f.pdf"
     ]
   },
   "evidenceRefresh": {

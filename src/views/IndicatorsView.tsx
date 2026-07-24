@@ -664,15 +664,27 @@ export function IndicatorsView({
                     <dl>
                       <div>
                         <dt>Direction</dt>
-                        <dd>No automatic good or bad direction</dd>
+                        <dd>
+                          {series.definition.direction === 'neutral'
+                            ? 'No automatic good or bad direction'
+                            : `${sentenceCase(series.definition.direction)} is better`}
+                        </dd>
                       </div>
                       <div>
                         <dt>Progress score</dt>
-                        <dd>Excluded</dd>
+                        <dd>
+                          {series.definition.direction === 'neutral'
+                            ? 'Excluded because no universal direction is defined'
+                            : 'Excluded to avoid double-counting or an unsupported composite weight'}
+                        </dd>
                       </div>
                       <div>
                         <dt>Read alongside</dt>
-                        <dd>Real output, inflation, jobs, wages, and reserves</dd>
+                        <dd>
+                          {series.definition.direction === 'neutral'
+                            ? 'Related output, price, income, and risk measures'
+                            : 'Quality, distribution, related outcomes, and attribution evidence'}
+                        </dd>
                       </div>
                     </dl>
                   ) : (

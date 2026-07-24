@@ -215,12 +215,12 @@ describe('research database integrity', () => {
       rating_confidence: 'medium',
     })
     expect(audit).toEqual({
-      run_count: 3,
-      standardized_mean: 6.6,
-      standard_deviation: 0.17,
-      minimum: 6.3,
-      maximum: 6.7,
-      previous_rating: 6.6,
+      run_count: 5,
+      standardized_mean: 6.22,
+      standard_deviation: 0.07,
+      minimum: 6.1,
+      maximum: 6.3,
+      previous_rating: 6.7,
       revised_rating: 6.7,
       status: 'stable',
     })
@@ -996,8 +996,8 @@ describe('research database integrity', () => {
         }>
       ).map((row) => [row.key, row.value]),
     )
-    expect(metadata.knowledge_cutoff).toBe('2026-07-23')
-    expect(metadata.editorial_reviewed_through).toBe('2026-07-23')
+    expect(metadata.knowledge_cutoff).toBe('2026-07-24')
+    expect(metadata.editorial_reviewed_through).toBe('2026-07-24')
     expect(metadata.source_roster_version).toBe('source-roster-v0.11')
     expect(metadata.source_rubric_version).toBe('source-v0.2')
     expect(Number(metadata.latest_world_bank_period)).toBeGreaterThanOrEqual(2024)

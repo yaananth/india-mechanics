@@ -34,6 +34,12 @@ const vdemSeries = {
   'participatory-democracy': 'participatory-democracy-index',
 } as const
 
+const modelledWorldBankIndicators = new Set([
+  'basic-sanitation',
+  'rural-basic-sanitation',
+  'rural-open-defecation',
+])
+
 async function fetchWorldBank(
   indicatorId: string,
   sourceCode: string,
@@ -62,8 +68,13 @@ async function fetchWorldBank(
       jurisdictionId: 'india',
       period: Number(row.date),
       value: Number(row.value),
-      status: 'observed',
+      status: modelledWorldBankIndicators.has(indicatorId)
+        ? 'modelled'
+        : 'observed',
       sourceId: 'world-bank-api',
+      note: modelledWorldBankIndicators.has(indicatorId)
+        ? 'WHO/UNICEF Joint Monitoring Programme modelled estimate delivered through the World Bank API.'
+        : undefined,
     }))
 }
 

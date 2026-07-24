@@ -1,6 +1,6 @@
 export const researchMetadata = {
-  knowledgeCutoff: '2026-07-23',
-  editorialReviewedThrough: '2026-07-23',
+  knowledgeCutoff: '2026-07-24',
+  editorialReviewedThrough: '2026-07-24',
   politicalStatusChecked: '2026-07-23',
   timelineStarts: '1945-01-01',
   methodologyVersion:
