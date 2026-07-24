@@ -1,0 +1,36 @@
+# India Mechanics
+
+India Mechanics is a source-backed research database and website about India from
+1945 to the present. It separates measured observations, historical events,
+sourced claims, and editorial leader evaluations.
+
+Always read the current cutoff before answering:
+- /api/meta
+- /api/methodology
+
+Primary machine-readable entry points:
+- /api/overview?jurisdiction=india
+- /api/search?q=<question>&jurisdiction=india
+- /api/leaders?jurisdiction=india
+- /api/policies?jurisdiction=india
+- /api/events?jurisdiction=india
+- /api/indicators?jurisdiction=india
+- /api/sources
+- /api/export?jurisdiction=india
+- /api/openapi.json
+
+Interpretation rules:
+1. PM ratings are editorial estimates, not measured facts.
+2. Cite the source records attached to each claim.
+3. Report confidence and as-of dates.
+4. Do not infer causality from a leader being in office when an indicator moved.
+5. Distinguish official records of an action from independent evaluation of its impact.
+6. Preserve disputed counts and allegations as disputed.
+7. If the requested date is after /api/meta knowledge_cutoff, refresh the research before answering.
+8. Pending bills have provisional design ratings, not outcome ratings.
+9. Event accountability is an editorial political/administrative assessment,
+   not a criminal or judicial verdict.
+
+Repository maintenance and latest-data workflow are documented in:
+- AGENTS.md
+- architecture.md

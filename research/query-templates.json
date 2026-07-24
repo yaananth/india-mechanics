@@ -1,0 +1,96 @@
+{
+  "version": "query-templates-v0.4",
+  "templates": [
+    {
+      "id": "official-policy",
+      "lane": "policy",
+      "queries": [
+        "site:indiacode.nic.in {policy} official act rules",
+        "site:sansad.in {policy} bill committee debate",
+        "site:prsindia.org {policy} bill analysis",
+        "site:{ministryDomain} {policy} notification annual report",
+        "site:sci.gov.in {policy} judgment order",
+        "site:sansad.in {policy} implementation outcome question",
+        "{policy} implementation outcomes independent analysis"
+      ]
+    },
+    {
+      "id": "breaking-national",
+      "lane": "breaking-news",
+      "queries": [
+        "site:reuters.com India {topic} after:{fromDate}",
+        "site:ptinews.com {topic} after:{fromDate}",
+        "site:thehindu.com {topic} after:{fromDate}",
+        "site:indianexpress.com {topic} after:{fromDate}",
+        "site:{officialDomain} {topic} after:{fromDate}"
+      ]
+    },
+    {
+      "id": "violence-protest",
+      "lane": "sensitive-event",
+      "queries": [
+        "site:mha.gov.in {topic} official report",
+        "site:sci.gov.in {topic} judgment order",
+        "site:nhrc.nic.in {topic}",
+        "site:reuters.com India {topic}",
+        "site:thehindu.com {topic}",
+        "site:indianexpress.com {topic}",
+        "{topic} local newspaper field report"
+      ]
+    },
+    {
+      "id": "state-policy",
+      "lane": "state",
+      "queries": [
+        "site:{stateGazetteDomain} {topic}",
+        "site:{stateLegislatureDomain} {topic}",
+        "site:{stateStatisticsDomain} {topic}",
+        "site:{stateHighCourtDomain} {topic}",
+        "{state} {topic} reputable regional newspaper"
+      ]
+    },
+    {
+      "id": "heard-claim",
+      "lane": "heard-claim",
+      "queries": [
+        "\"{claim}\"",
+        "site:{officialDomain} {coreFact}",
+        "site:sansad.in {coreFact}",
+        "site:un.org OR site:worldbank.org {coreFact}",
+        "site:reuters.com OR site:apnews.com OR site:thehindu.com OR site:indianexpress.com {coreFact}",
+        "{coreFact} context analysis"
+      ]
+    },
+    {
+      "id": "infrastructure-program",
+      "lane": "infrastructure",
+      "queries": [
+        "site:pib.gov.in OR site:morth.gov.in {program} status statistics",
+        "site:cag.gov.in {program} audit",
+        "site:worldbank.org OR site:ncaer.org {program} impact evaluation",
+        "{program} maintenance safety debt land acquisition independent analysis"
+      ]
+    },
+    {
+      "id": "measured-outcome",
+      "lane": "measured-outcome",
+      "queries": [
+        "site:mospi.gov.in {outcome} survey",
+        "site:worldbank.org India {outcome} methodology",
+        "site:niti.gov.in India {outcome}",
+        "site:undp.org India {outcome}",
+        "{outcome} India measurement dispute methodology"
+      ]
+    },
+    {
+      "id": "trade-agreement",
+      "lane": "trade-agreement",
+      "queries": [
+        "site:commerce.gov.in {agreement} text status statistics",
+        "site:{partnerGovernmentDomain} {agreement} entry into force",
+        "site:oec.world India {partner} bilateral trade",
+        "{agreement} preference utilisation adjustment costs independent analysis"
+      ]
+    }
+  ]
+}

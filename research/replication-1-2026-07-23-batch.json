@@ -1,0 +1,149 @@
+{
+  "batchId": "replication-1-modi-premiership-2026-07-23",
+  "rosterVersion": "source-roster-v0.2",
+  "lane": "leader-assessment",
+  "throughDate": "2026-07-23",
+  "reviewer": "Codex live replication 1",
+  "candidates": [
+    {
+      "id": "world-bank-wdi-growth-india",
+      "url": "https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG?locations=IN",
+      "sourceRegistryId": null,
+      "sourceClass": "official-statistics",
+      "independenceGroup": "world-bank-wdi",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-poverty-equity-brief-2025",
+      "url": "https://documents1.worldbank.org/curated/en/099722104222534584/pdf/IDU-25f34333-d3a3-44ae-8268-86830e3bc5a5.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official-analysis",
+      "independenceGroup": "world-bank-poverty",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-india-country-economic-memorandum-2024",
+      "url": "https://thedocs.worldbank.org/en/doc/400139d320ead96a0ec624d3608d9b56-0310012025/original/India-Country-Economic-Memorandum-2024-0227c.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "independent-analysis",
+      "independenceGroup": "world-bank-cem",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-vaccination-update-2022-05-05",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1823111",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "government-of-india-health",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "who-covid-excess-mortality-dataset",
+      "url": "https://www.who.int/data/sets/global-excess-deaths-associated-with-covid-19-modelled-estimates",
+      "sourceRegistryId": null,
+      "sourceClass": "official-modelled-estimate",
+      "independenceGroup": "who",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "v-dem-democracy-report-2026",
+      "url": "https://www.v-dem.net/documents/75/V-Dem_Institute_Democracy_Report_2026_lowres.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "academic-index",
+      "independenceGroup": "v-dem",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pti-adr-electoral-bonds-chronology",
+      "url": "https://adrindia.org/content/chronology-events-electoral-bonds-case",
+      "sourceRegistryId": "pti",
+      "sourceClass": "independent-national",
+      "independenceGroup": "pti",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": false,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 3,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+:root {
+  --ink: #171914;
+  --ink-soft: #343830;
+  --muted: #656a61;
+  --faint: #8c9188;
+  --line: #dde1da;
+  --line-strong: #c9cec6;
+  --canvas: #ffffff;
+  --surface: #f5f7f4;
+  --surface-strong: #edf1ec;
+  --saffron: #c66a12;
+  --green: #287a57;
+  --blue: #2368a2;
+  --brick: #9f433a;
+  --rose: #9b4f67;
+  --violet: #6558a6;
+  --olive: #4d7c0f;
+  --shadow: 0 14px 42px rgba(28, 33, 27, 0.09);
+  --sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --serif: Iowan Old Style, Palatino Linotype, "Book Antiqua", Georgia, serif;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  color: var(--ink);
+  background: var(--canvas);
+  font-family: var(--sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--canvas);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--canvas);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  letter-spacing: 0;
+}
+
+button,
+select {
+  color: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  border: 0;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+dl,
+dd {
+  margin: 0;
+}
+
+h1,
+h2 {
+  font-family: var(--serif);
+  font-weight: 600;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+code,
+kbd {
+  font-family: var(--mono);
+}
+
+::selection {
+  color: var(--ink);
+  background: #f3d9b9;
+}
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: 8px;
+  left: 8px;
+  padding: 10px 14px;
+  color: white;
+  background: var(--ink);
+  transform: translateY(-140%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}

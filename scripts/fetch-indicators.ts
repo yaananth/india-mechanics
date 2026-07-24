@@ -1,0 +1,165 @@
+import { mkdir, writeFile } from 'node:fs/promises'
+import { fileURLToPath } from 'node:url'
+import { parse } from 'csv-parse/sync'
+import { indicatorDefinitions } from '../server/seed-data/catalog.ts'
+import type { IndicatorObservationSeed } from '../server/types.ts'
+
+const asOfArgument = process.argv.find((argument) => argument.startsWith('--as-of='))
+const asOfDate =
+  asOfArgument?.slice('--as-of='.length) ??
+  process.env.RESEARCH_AS_OF_DATE ??
+  new Date().toISOString().slice(0, 10)
+const asOfYear = Number(asOfDate.slice(0, 4))
+const WORLD_BANK_CUTOFF = asOfYear
+const VDEM_CUTOFF = asOfYear
+
+const outputUrl = new URL(
+  '../server/seed-data/generated-indicators.json',
+  import.meta.url,
+)
+
+type WorldBankRow = {
+  date: string
+  value: number | null
+}
+
+type WorldBankResponse = [
+  { lastupdated?: string },
+  WorldBankRow[],
+]
+
+const vdemSeries = {
+  'electoral-democracy': 'electoral-democracy-index',
+  'liberal-democracy': 'liberal-democracy-index',
+  'participatory-democracy': 'participatory-democracy-index',
+} as const
+
+async function fetchWorldBank(
+  indicatorId: string,
+  sourceCode: string,
+): Promise<IndicatorObservationSeed[]> {
+  const url =
+    `https://api.worldbank.org/v2/country/IND/indicator/${sourceCode}` +
+    '?format=json&per_page=100'
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error(`World Bank request failed for ${sourceCode}: ${response.status}`)
+  }
+  const payload = (await response.json()) as WorldBankResponse
+  if (!Array.isArray(payload) || !Array.isArray(payload[1])) {
+    throw new Error(`Unexpected World Bank payload for ${sourceCode}`)
+  }
+
+  return payload[1]
+    .filter(
+      (row) =>
+        row.value !== null &&
+        Number(row.date) >= 1945 &&
+        Number(row.date) <= WORLD_BANK_CUTOFF,
+    )
+    .map((row) => ({
+      indicatorId,
+      jurisdictionId: 'india',
+      period: Number(row.date),
+      value: Number(row.value),
+      status: 'observed',
+      sourceId: 'world-bank-api',
+    }))
+}
+
+async function fetchVdem(
+  indicatorId: keyof typeof vdemSeries,
+): Promise<IndicatorObservationSeed[]> {
+  const slug = vdemSeries[indicatorId]
+  const response = await fetch(`https://ourworldindata.org/grapher/${slug}.csv`)
+  if (!response.ok) {
+    throw new Error(`V-Dem mirror request failed for ${slug}: ${response.status}`)
+  }
+  const rows = parse(await response.text(), {
+    columns: true,
+    skip_empty_lines: true,
+  }) as Array<Record<string, string>>
+
+  return rows
+    .filter(
+      (row) =>
+        row.Code === 'IND' &&
+        Number(row.Year) >= 1945 &&
+        Number(row.Year) <= VDEM_CUTOFF,
+    )
+    .map((row) => {
+      const valueKey = Object.keys(row).find(
+        (key) => !['Entity', 'Code', 'Year', 'World region'].includes(key),
+      )
+      if (!valueKey || Number.isNaN(Number(row[valueKey]))) {
+        throw new Error(`No numeric V-Dem value found for ${slug} in ${row.Year}`)
+      }
+      return {
+        indicatorId,
+        jurisdictionId: 'india',
+        period: Number(row.Year),
+        value: Number(row[valueKey]),
+        status: 'modelled',
+        sourceId: 'owid-vdem',
+        note: 'V-Dem point estimate retrieved through the Our World in Data mirror.',
+      } satisfies IndicatorObservationSeed
+    })
+}
+
+async function main() {
+  const worldBankDefinitions = indicatorDefinitions.filter(
+    (definition) =>
+      definition.sourceCode &&
+      definition.sourceId === 'world-bank-api',
+  )
+
+  const worldBankResults = await Promise.all(
+    worldBankDefinitions.map((definition) =>
+      fetchWorldBank(definition.id, definition.sourceCode as string),
+    ),
+  )
+  const vdemResults = await Promise.all(
+    (Object.keys(vdemSeries) as Array<keyof typeof vdemSeries>).map(fetchVdem),
+  )
+  const observations = [...worldBankResults.flat(), ...vdemResults.flat()].sort(
+    (left, right) =>
+      left.indicatorId.localeCompare(right.indicatorId) ||
+      left.period - right.period,
+  )
+  const worldBankPeriods = worldBankResults.flat().map((row) => row.period)
+  const vdemPeriods = vdemResults.flat().map((row) => row.period)
+  const latestWorldBankPeriod = Math.max(...worldBankPeriods)
+  const latestVdemPeriod = Math.max(...vdemPeriods)
+  const recommendedProgressYear = Math.min(
+    asOfYear - 1,
+    Math.max(latestWorldBankPeriod, latestVdemPeriod),
+  )
+
+  await mkdir(fileURLToPath(new URL('../server/seed-data/', import.meta.url)), {
+    recursive: true,
+  })
+  await writeFile(
+    fileURLToPath(outputUrl),
+    `${JSON.stringify(
+      {
+        generatedAt: new Date().toISOString(),
+        asOfDate,
+        recommendedProgressYear,
+        cutoffs: {
+          worldBank: latestWorldBankPeriod,
+          vdem: latestVdemPeriod,
+        },
+        observations,
+      },
+      null,
+      2,
+    )}\n`,
+    'utf8',
+  )
+
+  console.log(
+    `Wrote ${observations.length} observations to ${fileURLToPath(outputUrl)}`,
+  )
+}
+
+await main()

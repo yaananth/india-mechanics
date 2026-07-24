@@ -1,0 +1,103 @@
+{
+  "batchId": "fcra-2026-review-2026-07-23",
+  "rosterVersion": "source-roster-v0.5",
+  "jurisdictionId": "india",
+  "lane": "policy",
+  "topic": "Foreign Contribution Regulation Amendment Bill 2026",
+  "fromDate": "2026-03-25",
+  "throughDate": "2026-07-23",
+  "reviewer": "India Mechanics editorial pass",
+  "queries": [
+    "site:sansad.in Foreign Contribution Regulation Amendment Bill 2026",
+    "site:prsindia.org Foreign Contribution Regulation Amendment Bill 2026",
+    "site:mha.gov.in FCRA 2026",
+    "site:fcraonline.nic.in FCRA Amendment Rules 2026",
+    "site:amnesty.org India FCRA rules 2026 civil society"
+  ],
+  "candidates": [
+    {
+      "id": "fcra-2026-sansad",
+      "url": "https://sansad.in/ls/legislation/bills",
+      "publisher": "Lok Sabha Secretariat",
+      "sourceRegistryId": "sansad",
+      "sourceClass": "official",
+      "independenceGroup": "parliament",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "fcra-2026-prs",
+      "url": "https://prsindia.org/billtrack/the-foreign-contribution-regulation-amendment-bill-2026",
+      "publisher": "PRS Legislative Research",
+      "sourceRegistryId": "prs",
+      "sourceClass": "independent-national",
+      "independenceGroup": "prs",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "fcra-2026-rules",
+      "url": "https://fcraonline.nic.in/home/PDF_Doc/fc_gaz_23062026.pdf",
+      "publisher": "Ministry of Home Affairs",
+      "sourceRegistryId": "mha",
+      "sourceClass": "official",
+      "independenceGroup": "ministry-of-home-affairs",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "fcra-2026-amnesty",
+      "url": "https://www.amnesty.org/en/latest/research/2026/07/india-fcra-tighten-control-civil-society-undermine-freedom-of-association/",
+      "publisher": "Amnesty International",
+      "sourceRegistryId": null,
+      "sourceClass": "rights-analysis",
+      "independenceGroup": "amnesty",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

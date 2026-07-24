@@ -1,0 +1,119 @@
+{
+  "batchId": "modi-poverty-review-2026-07-24",
+  "rosterVersion": "source-roster-v0.11",
+  "jurisdictionId": "india",
+  "lane": "measured-outcome",
+  "topic": "Monetary and multidimensional poverty during the Modi period",
+  "fromDate": "2011-07-01",
+  "throughDate": "2026-07-24",
+  "reviewer": "India Mechanics editorial pass with independent poverty sub-agent",
+  "queries": [
+    "site:worldbank.org India long-term poverty trend 2023-24",
+    "site:reproducibility.worldbank.org India poverty 2023-24",
+    "site:mospi.gov.in HCES 2023-24",
+    "site:niti.gov.in national multidimensional poverty 2023",
+    "site:imf.org India pandemic poverty food subsidy"
+  ],
+  "candidates": [
+    {
+      "id": "world-bank-poverty-trend-2026",
+      "url": "https://documents.worldbank.org/curated/en/099042126035038379/pdf/P512371-d096273a-9b40-4085-a83c-5520c14aa17a.pdf",
+      "sourceRegistryId": "world-bank",
+      "sourceClass": "multilateral",
+      "independenceGroup": "world-bank",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-poverty-repro-2026",
+      "url": "https://reproducibility.worldbank.org/catalog/541",
+      "sourceRegistryId": "world-bank",
+      "sourceClass": "multilateral",
+      "independenceGroup": "world-bank",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "mospi-hces-2023-24",
+      "url": "https://www.mospi.gov.in/sites/default/files/publication_reports/Final_Report_HCES_2023-24L.pdf",
+      "sourceRegistryId": "mospi",
+      "sourceClass": "official",
+      "independenceGroup": "mospi",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "niti-mpi-2023",
+      "url": "https://www.niti.gov.in/sites/default/files/2023-08/India-National-Multidimentional-Poverty-Index-2023.pdf",
+      "sourceRegistryId": "niti",
+      "sourceClass": "official-analysis",
+      "independenceGroup": "niti",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "imf-pandemic-poverty-2023",
+      "url": "https://www.imf.org/-/media/files/publications/wp/2023/english/wpiea2023147-print-pdf.pdf",
+      "sourceRegistryId": "imf",
+      "sourceClass": "multilateral",
+      "independenceGroup": "imf",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

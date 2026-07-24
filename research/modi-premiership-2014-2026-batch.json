@@ -1,0 +1,312 @@
+{
+  "batchId": "modi-premiership-review-2026-07-23",
+  "rosterVersion": "source-roster-v0.2",
+  "jurisdictionId": "india",
+  "lane": "leader-assessment",
+  "topic": "Narendra Modi national premiership, 2014-2026",
+  "fromDate": "2014-05-26",
+  "throughDate": "2026-07-23",
+  "reviewer": "India Mechanics independent evidence pass",
+  "queries": [
+    "India GDP growth poverty employment reforms 2014 2026 official statistics",
+    "India digital payments financial inclusion 2026 official statistics",
+    "India democracy parliamentary scrutiny electoral bonds 2026 primary records",
+    "India COVID excess mortality rights and social conflict 2014 2026"
+  ],
+  "candidates": [
+    {
+      "id": "world-bank-gdp-growth-india",
+      "url": "https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG?locations=IN",
+      "publisher": "World Bank",
+      "sourceRegistryId": null,
+      "sourceClass": "multilateral-statistics",
+      "independenceGroup": "world-bank-wdi",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "mospi-gdp-2025-26",
+      "url": "https://www.mospi.gov.in/uploads/latestReleases/latest_release_1780655857536_5ac01869-ca4a-422d-b7a7-57b81da60932_Press_Note_on_GDP_Estimates_for_Q4_2025-26_and_PE_FY_2025-26_F.pdf",
+      "publisher": "Ministry of Statistics and Programme Implementation",
+      "sourceRegistryId": "mospi",
+      "sourceClass": "official",
+      "independenceGroup": "mospi-national-accounts",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "imf-india-article-iv-2025",
+      "url": "https://www.imf.org/en/publications/cr/issues/2025/11/25/india-2025-article-iv-consultation-press-release-staff-report-and-statement-by-the-572056",
+      "publisher": "International Monetary Fund",
+      "sourceRegistryId": null,
+      "sourceClass": "multilateral-analysis",
+      "independenceGroup": "imf",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-poverty-equity-india-2025",
+      "url": "https://documents1.worldbank.org/curated/en/099722104222534584/pdf/IDU-25f34333-d3a3-44ae-8268-86830e3bc5a5.pdf",
+      "publisher": "World Bank",
+      "sourceRegistryId": null,
+      "sourceClass": "multilateral-statistics",
+      "independenceGroup": "world-bank-poverty",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-india-cem-2024",
+      "url": "https://thedocs.worldbank.org/en/doc/400139d320ead96a0ec624d3608d9b56-0310012025/original/India-Country-Economic-Memorandum-2024-0227c.pdf",
+      "publisher": "World Bank",
+      "sourceRegistryId": null,
+      "sourceClass": "multilateral-analysis",
+      "independenceGroup": "world-bank-cem",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "mospi-plfs-2025",
+      "url": "https://www.mospi.gov.in/uploads/publications_reports/publications_reports1780040415321_0624fb13-fb47-40bc-b470-7c7e9635c3ef_PLFS_2025_F_REV_29052026.pdf",
+      "publisher": "Ministry of Statistics and Programme Implementation",
+      "sourceRegistryId": "mospi",
+      "sourceClass": "official",
+      "independenceGroup": "mospi-plfs",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ilo-india-employment-report-2024",
+      "url": "https://www.ilo.org/sites/default/files/2024-08/India%20Employment%20-%20web_8%20April.pdf",
+      "publisher": "International Labour Organization and Institute for Human Development",
+      "sourceRegistryId": null,
+      "sourceClass": "multilateral-academic",
+      "independenceGroup": "ilo-ihd",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "npci-upi-statistics-2026",
+      "url": "https://www.npci.org.in/product/upi/product-statistics",
+      "publisher": "National Payments Corporation of India",
+      "sourceRegistryId": null,
+      "sourceClass": "official-operational",
+      "independenceGroup": "npci",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pmjdy-progress-2026",
+      "url": "https://pmjdy.gov.in/account",
+      "publisher": "Department of Financial Services, Government of India",
+      "sourceRegistryId": null,
+      "sourceClass": "official-operational",
+      "independenceGroup": "pmjdy",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "vdem-democracy-report-2026",
+      "url": "https://www.v-dem.net/documents/75/V-Dem_Institute_Democracy_Report_2026_lowres.pdf",
+      "publisher": "V-Dem Institute, University of Gothenburg",
+      "sourceRegistryId": null,
+      "sourceClass": "academic-comparative",
+      "independenceGroup": "vdem",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "supreme-court-electoral-bonds-2024",
+      "url": "https://api.sci.gov.in/supremecourt/2017/27935/27935_2017_1_1501_50573_Judgement_15-Feb-2024.pdf",
+      "publisher": "Supreme Court of India",
+      "sourceRegistryId": "courts",
+      "sourceClass": "official",
+      "independenceGroup": "supreme-court",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "prs-17th-lok-sabha-2024",
+      "url": "https://prsindia.org/files/parliament/vital_stats/Functioning-17th_Lok_Sabha.pdf",
+      "publisher": "PRS Legislative Research",
+      "sourceRegistryId": "prs",
+      "sourceClass": "independent-national",
+      "independenceGroup": "prs",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "who-covid-excess-mortality",
+      "url": "https://cdn.who.int/media/docs/default-source/world-health-data-platform/covid-19-excessmortality/covid-methods-paper-revision.pdf",
+      "publisher": "World Health Organization",
+      "sourceRegistryId": null,
+      "sourceClass": "multilateral-methodology",
+      "independenceGroup": "who",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "hrw-world-report-india-2026",
+      "url": "https://www.hrw.org/world-report/2026/country-chapters/india",
+      "publisher": "Human Rights Watch",
+      "sourceRegistryId": null,
+      "sourceClass": "rights-field-analysis",
+      "independenceGroup": "hrw",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": false,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 3,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

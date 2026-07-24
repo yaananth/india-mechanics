@@ -1,0 +1,124 @@
+{
+  "batchId": "pakistan-flood-aid-claim-review-2026-07-24",
+  "rosterVersion": "source-roster-v0.11",
+  "jurisdictionId": "india",
+  "lane": "heard-claim",
+  "topic": "Claim that the Congress-led UPA gave Pakistan US$25 million after 26/11",
+  "fromDate": "2008-11-26",
+  "throughDate": "2026-07-24",
+  "reviewer": "India Mechanics editorial fact-check",
+  "queries": [
+    "\"Even after the 26/11 attacks, the Congress government provided $25 million in aid to Pakistan\"",
+    "site:mea.gov.in India 25 million Pakistan flood assistance 2010",
+    "site:digitallibrary.un.org India contribution Pakistan emergency response fund 2010",
+    "India Pakistan flood aid 25 million 2010 independent reporting",
+    "India Pakistan flood aid diplomacy 2010 analysis"
+  ],
+  "candidates": [
+    {
+      "id": "mea-pakistan-flood-aid-2010",
+      "url": "https://www.mea.gov.in/speeches-statements?dtl%2F713%2FSuo_Motu_Statement_by_EAM_in_Parliament_on_Indias_offer_of_assistance_of_US_25_million_to_Pakistan_for_flood_relief=",
+      "publisher": "Ministry of External Affairs, Government of India",
+      "sourceRegistryId": "mea",
+      "sourceClass": "official",
+      "independenceGroup": "government-of-india",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "mea-pakistan-flood-aid-unga-2010",
+      "url": "https://www.mea.gov.in/outoging-visit-detail.htm?723%2FStatement+by+EAM+at+65th+session+of+UNGA=",
+      "publisher": "Ministry of External Affairs, Government of India",
+      "sourceRegistryId": "mea",
+      "sourceClass": "official",
+      "independenceGroup": "government-of-india",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "un-ocha-india-pakistan-erf-2010",
+      "url": "https://digitallibrary.un.org/record/4048505/files/1406588-EN.pdf",
+      "publisher": "United Nations Office for the Coordination of Humanitarian Affairs",
+      "sourceRegistryId": "un-ocha",
+      "sourceClass": "multilateral-official",
+      "independenceGroup": "united-nations",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "guardian-pakistan-flood-aid-2010",
+      "url": "https://www.theguardian.com/world/2010/aug/20/pakistan-welcomes-flood-aid-india",
+      "publisher": "The Guardian",
+      "sourceRegistryId": "guardian",
+      "sourceClass": "independent-national",
+      "independenceGroup": "guardian",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "brookings-pakistan-flood-aid-2010",
+      "url": "https://www.brookings.edu/wp-content/uploads/2012/04/20100901_pakistan_floods.pdf",
+      "publisher": "Brookings Institution",
+      "sourceRegistryId": "brookings",
+      "sourceClass": "independent-analysis",
+      "independenceGroup": "brookings",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

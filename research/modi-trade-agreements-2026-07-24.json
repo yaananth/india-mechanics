@@ -1,0 +1,181 @@
+{
+  "batchId": "modi-trade-agreements-review-2026-07-24",
+  "rosterVersion": "source-roster-v0.11",
+  "jurisdictionId": "india",
+  "lane": "trade-agreement",
+  "topic": "Major Modi-era trade agreements and current legal status",
+  "fromDate": "2021-01-01",
+  "throughDate": "2026-07-24",
+  "reviewer": "India Mechanics editorial pass with independent trade sub-agent",
+  "queries": [
+    "site:commerce.gov.in India FTA achievements 2026",
+    "site:dfat.gov.au Australia India ECTA",
+    "site:efta.int India TEPA enters into force",
+    "site:gov.uk UK India trade deal enters into force",
+    "site:pib.gov.in India Oman CEPA enters into force",
+    "site:mfat.govt.nz New Zealand India FTA",
+    "site:ec.europa.eu India EU FTA concluded"
+  ],
+  "candidates": [
+    {
+      "id": "commerce-fta-achievements-2026",
+      "url": "https://www.commerce.gov.in/files/2026-03/FTAs%20achievement%20v6%205%20pm.pdf",
+      "sourceRegistryId": "department-commerce",
+      "sourceClass": "official",
+      "independenceGroup": "india-commerce",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "commerce-annual-2025-26",
+      "url": "https://www.commerce.gov.in/files/2026-04/Annual_0.pdf",
+      "sourceRegistryId": "department-commerce",
+      "sourceClass": "official",
+      "independenceGroup": "india-commerce",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "dfat-india-ecta",
+      "url": "https://www.dfat.gov.au/trade/agreements/in-force/australia-india-ecta",
+      "sourceRegistryId": "australia-dfat",
+      "sourceClass": "partner-official",
+      "independenceGroup": "australia",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "efta-india-tepa-2025",
+      "url": "https://www.efta.int/media-resources/news/efta-india-trade-and-economic-partnership-agreement-enters-force-joint",
+      "sourceRegistryId": "efta",
+      "sourceClass": "partner-official",
+      "independenceGroup": "efta",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "uk-india-ceta-2026",
+      "url": "https://www.gov.uk/government/collections/uk-india-trade-deal",
+      "sourceRegistryId": "uk-government",
+      "sourceClass": "partner-official",
+      "independenceGroup": "uk",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-india-oman-cepa-2026",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2267513",
+      "sourceRegistryId": "pib",
+      "sourceClass": "official",
+      "independenceGroup": "india-commerce",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "nz-india-fta-2026",
+      "url": "https://www.mfat.govt.nz/en/trade/free-trade-agreements/free-trade-agreements-concluded-but-not-in-force/new-zealand-india-free-trade-agreement",
+      "sourceRegistryId": "nz-mfat",
+      "sourceClass": "partner-official",
+      "independenceGroup": "new-zealand",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "eu-india-fta-2026",
+      "url": "https://policy.trade.ec.europa.eu/eu-trade-relationships-country-and-region/countries-and-regions/india/eu-india-agreements_en",
+      "sourceRegistryId": "eu-commission",
+      "sourceClass": "partner-official",
+      "independenceGroup": "european-union",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "name": "india-mechanics",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c green,blue \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "tsx watch server/index.ts",
+    "dev:web": "vite",
+    "db:seed": "tsx server/seed.ts",
+    "data:refresh": "tsx scripts/fetch-indicators.ts && npm run research:audit && npm run db:seed",
+    "bills:refresh": "tsx scripts/fetch-bill-register.ts && npm run research:audit && npm run db:seed",
+    "refresh:latest": "npm run data:refresh && npm run bills:refresh && npm test && npm run build",
+    "sources:check": "tsx scripts/check-sources.ts",
+    "research:validate": "tsx scripts/validate-research-batch.ts",
+    "policy:audit": "tsx scripts/audit-policy-funnel.ts",
+    "claims:audit": "tsx scripts/audit-heard-claims.ts",
+    "research:audit": "npm run policy:audit && npm run claims:audit",
+    "rating:audit": "tsx scripts/compare-leader-rating-runs.ts",
+    "build": "tsc -b && vite build",
+    "build:sites": "npm run build && tsx scripts/generate-sites-snapshot.ts && vite build --config vite.sites.config.ts",
+    "lint": "oxlint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "start": "tsx server/index.ts",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "csv-parse": "^7.0.1",
+    "express": "^5.2.1",
+    "lucide-react": "^1.24.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "recharts": "^3.9.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@types/supertest": "^7.2.1",
+    "@vitejs/plugin-react": "^6.0.3",
+    "concurrently": "^9.2.4",
+    "oxlint": "^1.71.0",
+    "supertest": "^7.2.2",
+    "tsx": "^4.23.1",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.1",
+    "vitest": "^4.1.10"
+  }
+}

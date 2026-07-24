@@ -1,0 +1,80 @@
+{
+  "batchId": "union-budget-2026-27-review-2026-07-23",
+  "rosterVersion": "source-roster-v0.5",
+  "jurisdictionId": "india",
+  "lane": "budget",
+  "topic": "Union Budget 2026-27",
+  "fromDate": "2026-02-01",
+  "throughDate": "2026-07-23",
+  "reviewer": "India Mechanics editorial pass",
+  "queries": [
+    "site:indiabudget.gov.in Union Budget 2026-27 Budget at a Glance",
+    "site:indiabudget.gov.in Union Budget 2026-27 budget speech",
+    "site:prsindia.org Union Budget Analysis 2026-27"
+  ],
+  "candidates": [
+    {
+      "id": "budget-2026-27-at-glance",
+      "url": "https://www.indiabudget.gov.in/doc/budget_at_glance/bag1.pdf",
+      "publisher": "Ministry of Finance, Government of India",
+      "sourceRegistryId": "india-budget",
+      "sourceClass": "official",
+      "independenceGroup": "ministry-of-finance",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "budget-2026-27-speech",
+      "url": "https://www.indiabudget.gov.in/doc/budget_speech.pdf",
+      "publisher": "Ministry of Finance, Government of India",
+      "sourceRegistryId": "india-budget",
+      "sourceClass": "official",
+      "independenceGroup": "ministry-of-finance",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "budget-2026-27-prs",
+      "url": "https://prsindia.org/files/budget/budget_parliament/2026/Union_Budget_Analysis-2026-27.pdf",
+      "publisher": "PRS Legislative Research",
+      "sourceRegistryId": "prs",
+      "sourceClass": "independent-national",
+      "independenceGroup": "prs",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "batchId": "modi-rating-source-consolidation-2026-07-23",
+  "rosterVersion": "source-roster-v0.5",
+  "jurisdictionId": "india",
+  "lane": "leader-rating",
+  "topic": "Narendra Modi term evaluation source consolidation",
+  "fromDate": "2014-05-26",
+  "throughDate": "2026-07-23",
+  "reviewer": "India Mechanics five-run replication review",
+  "queries": [
+    "site:imf.org India 2025 Article IV report",
+    "site:worldbank.org India Poverty and Equity Brief 2025",
+    "site:ilo.org India Employment Report 2024",
+    "site:freedomhouse.org India Freedom in the World 2026",
+    "site:hrw.org World Report 2026 India",
+    "site:api.sci.gov.in electoral bonds judgment February 2024",
+    "site:npci.org.in UPI product statistics"
+  ],
+  "candidates": [
+    {
+      "id": "imf-india-article-iv-2025",
+      "url": "https://www.imf.org/-/media/files/publications/cr/2025/english/1indea2025003-source-pdf.pdf",
+      "publisher": "International Monetary Fund",
+      "sourceRegistryId": "imf",
+      "sourceClass": "multilateral",
+      "independenceGroup": "imf",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-poverty-equity-2025",
+      "url": "https://documents1.worldbank.org/curated/en/099722104222534584/pdf/IDU-25f34333-d3a3-44ae-8268-86830e3bc5a5.pdf",
+      "publisher": "World Bank",
+      "sourceRegistryId": "world-bank",
+      "sourceClass": "multilateral",
+      "independenceGroup": "world-bank",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ilo-india-employment-2024",
+      "url": "https://www.ilo.org/publications/india-employment-report-2024-youth-employment-education-and-skills",
+      "publisher": "International Labour Organization",
+      "sourceRegistryId": "ilo",
+      "sourceClass": "multilateral",
+      "independenceGroup": "ilo",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "freedom-house-india-2026",
+      "url": "https://freedomhouse.org/country/india/freedom-world/2026",
+      "publisher": "Freedom House",
+      "sourceRegistryId": "freedom-house",
+      "sourceClass": "independent-national",
+      "independenceGroup": "freedom-house",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "hrw-india-2026",
+      "url": "https://www.hrw.org/world-report/2026/country-chapters/india",
+      "publisher": "Human Rights Watch",
+      "sourceRegistryId": "human-rights-watch",
+      "sourceClass": "rights-analysis",
+      "independenceGroup": "human-rights-watch",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "supreme-electoral-bonds-2024",
+      "url": "https://api.sci.gov.in/supremecourt/2017/27935/27935_2017_1_1501_50573_Judgement_15-Feb-2024.pdf",
+      "publisher": "Supreme Court of India",
+      "sourceRegistryId": "courts",
+      "sourceClass": "official",
+      "independenceGroup": "supreme-court",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "npci-upi-statistics",
+      "url": "https://www.npci.org.in/what-we-do/upi/product-statistics",
+      "publisher": "National Payments Corporation of India",
+      "sourceRegistryId": "npci",
+      "sourceClass": "official",
+      "independenceGroup": "npci",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

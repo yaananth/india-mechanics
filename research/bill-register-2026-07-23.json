@@ -1,0 +1,37 @@
+{
+  "batchId": "sansad-government-bill-register-2026-07-23",
+  "rosterVersion": "source-roster-v0.5",
+  "jurisdictionId": "india",
+  "lane": "policy-register",
+  "topic": "Official Government Bills register",
+  "fromDate": "1952-05-16",
+  "throughDate": "2026-07-23",
+  "reviewer": "India Mechanics deterministic register sync",
+  "queries": [
+    "site:sansad.in/ls/legislation/bills government bills",
+    "sansad.in api_rs legislation getBills Government"
+  ],
+  "candidates": [
+    {
+      "id": "sansad-government-bills-api",
+      "url": "https://sansad.in/api_rs/legislation/getBills?billType=Government&page=1&size=100&locale=en&sortOn=billIntroducedDate&sortBy=desc",
+      "publisher": "Parliament of India, Sansad",
+      "sourceRegistryId": "sansad",
+      "sourceClass": "official",
+      "independenceGroup": "parliament",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

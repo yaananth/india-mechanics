@@ -1,0 +1,119 @@
+{
+  "batchId": "modi-roads-review-2026-07-24",
+  "rosterVersion": "source-roster-v0.11",
+  "jurisdictionId": "india",
+  "lane": "infrastructure",
+  "topic": "Modi-era national highways, Bharatmala, and rural-road outcomes",
+  "fromDate": "2014-05-26",
+  "throughDate": "2026-07-24",
+  "reviewer": "India Mechanics editorial pass with independent roads sub-agent",
+  "queries": [
+    "site:pib.gov.in Ministry Road Transport Year End Review 2025 National Highways",
+    "site:cag.gov.in Bharatmala performance audit",
+    "site:pib.gov.in PMGSY July 2026 completed road length",
+    "site:worldbank.org PMGSY impact evaluation",
+    "site:ncaer.org PMGSY evaluation July 2026"
+  ],
+  "candidates": [
+    {
+      "id": "morth-year-end-2025",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2209837",
+      "sourceRegistryId": "pib",
+      "sourceClass": "official",
+      "independenceGroup": "morth",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "cag-bharatmala-2023",
+      "url": "https://cag.gov.in/uploads/download_audit_report/2023/Report-No.-19-of-203--Bharatmala-English-064d5db7bc63c20.06754442.pdf",
+      "sourceRegistryId": "cag",
+      "sourceClass": "official-audit",
+      "independenceGroup": "cag",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pmgsy-status-2026",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2287313",
+      "sourceRegistryId": "pib",
+      "sourceClass": "official",
+      "independenceGroup": "rural-development",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-pmgsy-impact-2021",
+      "url": "https://openknowledge.worldbank.org/bitstreams/8e21abab-d9a1-5a4f-812c-cce37defab35/download",
+      "sourceRegistryId": "world-bank",
+      "sourceClass": "multilateral",
+      "independenceGroup": "world-bank",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ncaer-pmgsy-2026",
+      "url": "https://ncaer.org/wp-content/uploads/2026/07/NCAER-PMGSY-Report-July-2026.pdf",
+      "sourceRegistryId": "ncaer",
+      "sourceClass": "independent-national",
+      "independenceGroup": "ncaer",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

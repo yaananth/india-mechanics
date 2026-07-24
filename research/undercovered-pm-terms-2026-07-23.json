@@ -1,0 +1,323 @@
+{
+  "batchId": "undercovered-prime-minister-terms-2026-07-23",
+  "rosterVersion": "source-roster-v0.8",
+  "jurisdictionId": "india",
+  "lane": "policy-and-history",
+  "topic": "Landmark actions for rated Prime Minister terms with thin event or policy coverage",
+  "fromDate": "1964-06-09",
+  "throughDate": "2026-07-23",
+  "reviewer": "India Mechanics editorial pass",
+  "queries": [
+    "site:indiacode.nic.in Food Corporations Act 1964",
+    "site:sansad.in Food Corporations Bill 1964",
+    "site:worldbank.org India foodgrain marketing FCI costs",
+    "site:sansad.in Constitution Forty-fourth Amendment Bill 1977",
+    "site:indiacode.nic.in Constitution Forty-fourth Amendment Act 1978",
+    "site:trai.gov.in history TRAI Act 1997",
+    "site:worldbank.org India telecommunications sector reform TRAI",
+    "site:pmgsy.nic.in PMGSY launched 25 December 2000",
+    "site:worldbank.org PMGSY economic social impacts",
+    "site:cag.gov.in PMGSY performance audit 2016",
+    "site:rbi.org.in May 1991 gold mobilisation SBI UBS",
+    "site:imf.org India 1991 balance of payments crisis",
+    "site:idsa.in Gujral Doctrine India neighbours",
+    "site:pmindia.gov.in Charan Singh former Prime Minister",
+    "site:indiankanoon.org Charan Singh Lok Sabha dissolved August 1979"
+  ],
+  "candidates": [
+    {
+      "id": "food-corporations-act-1964",
+      "url": "https://upload.indiacode.nic.in/view-casepdf?id=AC_CEN_39_65_00001_196437_1517807322282&type=act",
+      "publisher": "India Code, Legislative Department",
+      "sourceRegistryId": "india-code",
+      "sourceClass": "official",
+      "independenceGroup": "legislative-department",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-foodgrain-policy-1999",
+      "url": "https://documents1.worldbank.org/curated/en/575711468750268959/pdf/multi-page.pdf",
+      "publisher": "World Bank",
+      "sourceRegistryId": "world-bank",
+      "sourceClass": "multilateral-analysis",
+      "independenceGroup": "world-bank",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "india-constitution",
+      "url": "https://www.indiacode.nic.in/bitstream/123456789/19150/1/constitution_of_india.pdf",
+      "publisher": "India Code, Legislative Department",
+      "sourceRegistryId": "india-code",
+      "sourceClass": "official",
+      "independenceGroup": "legislative-department",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "constitution-44th-bill-1978",
+      "url": "https://sansad.in/getFile/BillsTexts/LSBillTexts/Asintroduced/88_1978_LS_E.pdf?source=legislation",
+      "publisher": "Parliament of India",
+      "sourceRegistryId": "sansad",
+      "sourceClass": "official",
+      "independenceGroup": "parliament",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "trai-history",
+      "url": "https://www.trai.gov.in/about-us/history",
+      "publisher": "Telecom Regulatory Authority of India",
+      "sourceRegistryId": "trai",
+      "sourceClass": "official",
+      "independenceGroup": "trai",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-telecom-reform-2008",
+      "url": "https://documents1.worldbank.org/curated/en/232071468254358902/pdf/462880PPAR0P0510Box334099B01PUBLIC1.pdf",
+      "publisher": "World Bank Independent Evaluation Group",
+      "sourceRegistryId": "world-bank",
+      "sourceClass": "multilateral-analysis",
+      "independenceGroup": "world-bank-ieg",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pmgsy-official",
+      "url": "https://www.pmgsy.nic.in/hi/node/4310",
+      "publisher": "National Rural Infrastructure Development Agency",
+      "sourceRegistryId": "rural-development",
+      "sourceClass": "official",
+      "independenceGroup": "ministry-of-rural-development",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-pmgsy-impact-2021",
+      "url": "https://documents1.worldbank.org/curated/en/099555012012152503/pdf/P1535360224abf0e409925072d177110d8a.pdf",
+      "publisher": "World Bank",
+      "sourceRegistryId": "world-bank",
+      "sourceClass": "multilateral-analysis",
+      "independenceGroup": "world-bank",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "cag-pmgsy-audit-2016",
+      "url": "https://cag.gov.in/uploads/download_audit_report/2016/Union_Civil_Rural%20Development_Report_23_2016_Performance_Audit.pdf",
+      "publisher": "Comptroller and Auditor General of India",
+      "sourceRegistryId": "cag",
+      "sourceClass": "official-oversight",
+      "independenceGroup": "comptroller-auditor-general",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "idsa-gujral-doctrine",
+      "url": "https://idsa.in/system/files/jds/jds_11_4_2017_foreign-policy-and-sea-power-india-maritime-role-flux.pdf",
+      "publisher": "Manohar Parrikar Institute for Defence Studies and Analyses",
+      "sourceRegistryId": "mp-idsa",
+      "sourceClass": "independent-national",
+      "independenceGroup": "mp-idsa",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pm-india-former",
+      "url": "https://www.pmindia.gov.in/en/former-prime-ministers/",
+      "publisher": "Prime Minister's Office, Government of India",
+      "sourceRegistryId": "pm-india",
+      "sourceClass": "official",
+      "independenceGroup": "prime-ministers-office",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "charan-singh-dissolution-court-record",
+      "url": "https://indiankanoon.org/doc/1867345/",
+      "publisher": "Indian Kanoon reproduction of Allahabad High Court record",
+      "sourceRegistryId": "indian-kanoon",
+      "sourceClass": "court-record-republication",
+      "independenceGroup": "judiciary-record",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "rbi-history-gold-1991",
+      "url": "https://rbidocs.rbi.org.in/rdocs/content/PDFs/Chapter12_04122018.pdf",
+      "publisher": "Reserve Bank of India",
+      "sourceRegistryId": "rbi",
+      "sourceClass": "official-history",
+      "independenceGroup": "reserve-bank-of-india",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "imf-india-crisis-2000",
+      "url": "https://www.imf.org/external/pubs/ft/wp/2000/wp00157.pdf",
+      "publisher": "International Monetary Fund",
+      "sourceRegistryId": "imf",
+      "sourceClass": "multilateral-analysis",
+      "independenceGroup": "imf",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

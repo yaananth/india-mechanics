@@ -1,0 +1,254 @@
+{
+  "batchId": "caa-policy-review-2026-07-24",
+  "rosterVersion": "source-roster-v0.11",
+  "jurisdictionId": "india",
+  "lane": "policy",
+  "topic": "Citizenship Amendment Act 2019 and implementation rules through July 23 2026",
+  "fromDate": "2019-12-09",
+  "throughDate": "2026-07-24",
+  "reviewer": "India Mechanics editorial pass with independent research sub-agent",
+  "queries": [
+    "site:indiacode.nic.in Citizenship Amendment Act 2019 official act commencement",
+    "site:mha.gov.in Citizenship Amendment Rules 2024 official gazette",
+    "site:indiancitizenshiponline.nic.in Citizenship Amendment Rules 2026 passport",
+    "site:sansad.in Citizenship Amendment Bill 2019 status",
+    "site:prsindia.org Citizenship Amendment Bill 2019 analysis",
+    "site:api.sci.gov.in Citizenship Amendment Act 2026 office report",
+    "site:scobserver.in Citizenship Amendment Act pending 2026",
+    "site:pib.gov.in CAA citizenship certificates 2024",
+    "site:hrw.org India Citizenship Amendment Act 2024"
+  ],
+  "candidates": [
+    {
+      "id": "citizenship-amendment-act",
+      "url": "https://www.indiacode.nic.in/bitstream/123456789/15231/1/a2019-47.pdf",
+      "publisher": "India Code, Legislative Department",
+      "sourceRegistryId": "india-code",
+      "sourceClass": "official",
+      "independenceGroup": "legislative-department",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "caa-commencement-2020",
+      "url": "https://www.indiacode.nic.in/ViewFileUploaded?file=the_citizenship_%28amendment%29_act_2019_enforcement_notification%28bilingual%29.pdf&path=AC_CEN_5_40_00001_195557_1517807319455%2Fnotificationindividualfile%2F",
+      "publisher": "India Code, Legislative Department",
+      "sourceRegistryId": "india-code",
+      "sourceClass": "official",
+      "independenceGroup": "legislative-department",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "caa-rules-2024",
+      "url": "https://www.mha.gov.in/en/divisionofmha/foreigners-division/acts-rules-and-regulations-pertaining-foreigners-division",
+      "publisher": "Ministry of Home Affairs",
+      "sourceRegistryId": "mha",
+      "sourceClass": "official",
+      "independenceGroup": "ministry-of-home-affairs",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "caa-rules-passport-2026",
+      "url": "https://indiancitizenshiponline.nic.in/Documents/UserGuide/E_gazette_19052026.pdf",
+      "publisher": "Ministry of Home Affairs",
+      "sourceRegistryId": "mha",
+      "sourceClass": "official",
+      "independenceGroup": "ministry-of-home-affairs",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "caa-prs-2019",
+      "url": "https://prsindia.org/billtrack/the-citizenship-amendment-bill-2019",
+      "publisher": "PRS Legislative Research",
+      "sourceRegistryId": "prs",
+      "sourceClass": "independent-national",
+      "independenceGroup": "prs",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "caa-supreme-court-office-report-2026",
+      "url": "https://api.sci.gov.in/officereport/2019/44931/44931_2019_2026-05-05.pdf",
+      "publisher": "Supreme Court of India",
+      "sourceRegistryId": "courts",
+      "sourceClass": "official",
+      "independenceGroup": "supreme-court",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "caa-supreme-court-observer",
+      "url": "https://www.scobserver.in/cases/constitutionality-of-the-citizenship-amendment-act-2019-caa/",
+      "publisher": "Supreme Court Observer",
+      "sourceRegistryId": "supreme-court-observer",
+      "sourceClass": "independent-national",
+      "independenceGroup": "supreme-court-observer",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "caa-pib-first-certificates-2024",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2020671",
+      "publisher": "Press Information Bureau, Ministry of Home Affairs",
+      "sourceRegistryId": "pib",
+      "sourceClass": "official",
+      "independenceGroup": "ministry-of-home-affairs",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "caa-pib-ahmedabad-2024",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2046432",
+      "publisher": "Press Information Bureau, Ministry of Home Affairs",
+      "sourceRegistryId": "pib",
+      "sourceClass": "official",
+      "independenceGroup": "ministry-of-home-affairs",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "caa-hrw-2024",
+      "url": "https://www.hrw.org/news/2024/03/15/india-activates-discriminatory-citizenship-law",
+      "publisher": "Human Rights Watch",
+      "sourceRegistryId": "human-rights-watch",
+      "sourceClass": "rights-analysis",
+      "independenceGroup": "human-rights-watch",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "caa-exemption-order-2025",
+      "url": "https://www.mha.gov.in/sites/default/files/2025-09/ImmigrationandForeignersExemptionOrder2025_16092025.pdf",
+      "publisher": "Ministry of Home Affairs",
+      "sourceRegistryId": "mha",
+      "sourceClass": "official",
+      "independenceGroup": "ministry-of-home-affairs",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

@@ -1,0 +1,1066 @@
+import { DatabaseSync } from 'node:sqlite'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { applySchema } from '../server/schema.ts'
+import { ensureDatabase } from '../server/seed.ts'
+
+let db: DatabaseSync
+
+beforeAll(() => {
+  db = new DatabaseSync(ensureDatabase(), { readOnly: true })
+})
+
+afterAll(() => {
+  db.close()
+})
+
+describe('research database integrity', () => {
+  it('publishes a timeline from 1945 with conflict and protest coverage', () => {
+    const summary = db
+      .prepare(
+        `SELECT COUNT(*) AS count, MIN(event_date) AS first_date
+         FROM events`,
+      )
+      .get() as { count: number; first_date: string }
+    expect(summary.count).toBe(67)
+    expect(summary.first_date).toBe('1945-11-05')
+
+    const categories = db
+      .prepare(
+        `SELECT category, COUNT(*) AS count
+         FROM events
+         WHERE category IN ('protest', 'communal-violence', 'disaster', 'insurgency')
+         GROUP BY category`,
+      )
+      .all() as unknown as Array<{ category: string; count: number }>
+    expect(categories.find((row) => row.category === 'protest')?.count).toBeGreaterThan(4)
+    expect(
+      categories.find((row) => row.category === 'communal-violence')?.count,
+    ).toBeGreaterThan(5)
+  })
+
+  it('provides accountability and responsible actors for every event', () => {
+    const missingAssessments = db
+      .prepare(
+        `SELECT e.id
+         FROM events e
+         LEFT JOIN event_assessments a ON a.event_id = e.id
+         WHERE a.event_id IS NULL`,
+      )
+      .all()
+    const eventsWithoutActors = db
+      .prepare(
+        `SELECT e.id
+         FROM events e
+         LEFT JOIN event_responsibilities r ON r.event_id = e.id
+         GROUP BY e.id
+         HAVING COUNT(r.id) = 0`,
+      )
+      .all()
+    const counts = db
+      .prepare(
+        `SELECT
+           (SELECT COUNT(*) FROM event_assessments) AS assessments,
+           (SELECT COUNT(*) FROM event_responsibilities) AS responsibilities`,
+      )
+      .get() as { assessments: number; responsibilities: number }
+    expect(missingAssessments).toEqual([])
+    expect(eventsWithoutActors).toEqual([])
+    expect(counts.assessments).toBe(67)
+    expect(counts.responsibilities).toBeGreaterThanOrEqual(150)
+  })
+
+  it('orders the refreshed timeline newest first and includes both NEET crises', () => {
+    const rows = db
+      .prepare(
+        `SELECT id, event_date
+         FROM events
+         ORDER BY event_date DESC, id`,
+      )
+      .all() as unknown as Array<{ id: string; event_date: string }>
+    expect(rows[0]).toMatchObject({
+      id: 'sikkim-tunnel-disaster-2026',
+      event_date: '2026-07-20',
+    })
+    expect(rows.at(-1)).toMatchObject({
+      id: 'ina-trials-1945',
+      event_date: '1945-11-05',
+    })
+    expect(rows.map((row) => row.id)).toEqual(
+      expect.arrayContaining([
+        'neet-ug-2024-controversy',
+        'neet-ug-2026-crisis',
+      ]),
+    )
+  })
+
+  it('distinguishes PM, state, non-state, foreign, and corporate responsibility', () => {
+    const emergency = db
+      .prepare(
+        `SELECT choice_assessment, choice_score, union_role
+         FROM event_assessments WHERE event_id = 'emergency-1975'`,
+      )
+      .get() as {
+      choice_assessment: string
+      choice_score: number
+      union_role: string
+    }
+    const kargilActors = db
+      .prepare(
+        `SELECT actor_type, responsibility_kind
+         FROM event_responsibilities WHERE event_id = 'kargil-1999'`,
+      )
+      .all() as unknown as Array<{
+      actor_type: string
+      responsibility_kind: string
+    }>
+    const bhopalPrimary = db
+      .prepare(
+        `SELECT actor_type, responsibility_level
+         FROM event_responsibilities
+         WHERE event_id = 'bhopal-1984'
+         ORDER BY responsibility_level DESC, id
+         LIMIT 1`,
+      )
+      .get() as {
+      actor_type: string
+      responsibility_level: number
+    }
+    expect(emergency.choice_assessment).toBe('wrong')
+    expect(emergency.choice_score).toBe(1)
+    expect(emergency.union_role).toContain('Prime Minister Indira Gandhi')
+    expect(kargilActors).toContainEqual({
+      actor_type: 'foreign-state',
+      responsibility_kind: 'direct-action',
+    })
+    expect(kargilActors).toContainEqual({
+      actor_type: 'union-government',
+      responsibility_kind: 'positive-leadership',
+    })
+    expect(bhopalPrimary).toEqual({
+      actor_type: 'corporate',
+      responsibility_level: 5,
+    })
+  })
+
+  it('requires at least one source for every event and claim', () => {
+    const unsourcedEvents = db
+      .prepare(
+        `SELECT e.id
+         FROM events e
+         LEFT JOIN event_sources es ON es.event_id = e.id
+         GROUP BY e.id
+         HAVING COUNT(es.source_id) = 0`,
+      )
+      .all()
+    const unsourcedClaims = db
+      .prepare(
+        `SELECT c.id
+         FROM claims c
+         LEFT JOIN claim_sources cs ON cs.claim_id = c.id
+         GROUP BY c.id
+         HAVING COUNT(cs.source_id) = 0`,
+      )
+      .all()
+    expect(unsourcedEvents).toEqual([])
+    expect(unsourcedClaims).toEqual([])
+  })
+
+  it('keeps published leader estimates aligned with the disclosed weights', () => {
+    const rows = db
+      .prepare(
+        `SELECT t.id, t.rating_score,
+                SUM(s.score * d.weight) AS weighted_score
+         FROM leader_terms t
+         JOIN leader_term_scores s ON s.term_id = t.id
+         JOIN evaluation_dimensions d ON d.id = s.dimension_id
+         WHERE t.rating_score IS NOT NULL
+         GROUP BY t.id`,
+      )
+      .all() as unknown as Array<{
+      id: string
+      rating_score: number
+      weighted_score: number
+    }>
+    expect(rows.length).toBeGreaterThan(10)
+    for (const row of rows) {
+      expect(
+        Math.abs(row.rating_score - row.weighted_score),
+        `${row.id} rating differs from component formula`,
+      ).toBeLessThanOrEqual(0.151)
+    }
+  })
+
+  it('records the five-run Modi rating replication and published revision', () => {
+    const term = db
+      .prepare(
+        `SELECT rating_score, rating_confidence
+         FROM leader_terms WHERE id = 'modi-2014'`,
+      )
+      .get()
+    const audit = db
+      .prepare(
+        `SELECT run_count, standardized_mean, standard_deviation,
+                minimum, maximum, previous_rating, revised_rating, status
+         FROM leader_rating_audits
+         WHERE term_id = 'modi-2014'`,
+      )
+      .get()
+    expect(term).toEqual({
+      rating_score: 6.3,
+      rating_confidence: 'medium',
+    })
+    expect(audit).toEqual({
+      run_count: 5,
+      standardized_mean: 6.22,
+      standard_deviation: 0.07,
+      minimum: 6.1,
+      maximum: 6.3,
+      previous_rating: 6.2,
+      revised_rating: 6.3,
+      status: 'stable',
+    })
+  })
+
+  it('reproduces the disclosed BJP and Congress term-rating comparison', () => {
+    const summary = db
+      .prepare(
+        `SELECT pa.short_name AS party,
+                COUNT(*) AS terms,
+                ROUND(AVG(lt.rating_score), 2) AS simple_average,
+                ROUND(
+                  SUM(
+                    lt.rating_score *
+                    (julianday(COALESCE(lt.end_date, '2026-07-24')) -
+                     julianday(lt.start_date))
+                  ) /
+                  SUM(
+                    julianday(COALESCE(lt.end_date, '2026-07-24')) -
+                    julianday(lt.start_date)
+                  ),
+                  2
+                ) AS day_weighted_average,
+                ROUND(
+                  SUM(
+                    julianday(COALESCE(lt.end_date, '2026-07-24')) -
+                    julianday(lt.start_date)
+                  ) / 365.2425,
+                  1
+                ) AS rated_years
+         FROM leader_terms lt
+         JOIN parties pa ON pa.id = lt.party_id
+         WHERE lt.rating_score IS NOT NULL
+           AND pa.short_name IN ('BJP', 'INC')
+         GROUP BY pa.short_name
+         ORDER BY pa.short_name`,
+      )
+      .all()
+    expect(summary).toEqual([
+      {
+        party: 'BJP',
+        terms: 2,
+        simple_average: 6.75,
+        day_weighted_average: 6.6,
+        rated_years: 18.3,
+      },
+      {
+        party: 'INC',
+        terms: 7,
+        simple_average: 6.73,
+        day_weighted_average: 6.84,
+        rated_years: 54.3,
+      },
+    ])
+
+    const sections = db
+      .prepare(
+        `SELECT section, COUNT(*) AS count
+         FROM answer_claims
+         WHERE answer_id = 'bjp-vs-congress'
+         GROUP BY section
+         ORDER BY section`,
+      )
+      .all()
+    expect(sections).toEqual([
+      { section: 'achievement', count: 1 },
+      { section: 'concern', count: 2 },
+      { section: 'context', count: 3 },
+    ])
+  })
+
+  it('keeps policy estimates aligned with the disclosed five-part formula', () => {
+    const rows = db
+      .prepare(
+        `SELECT p.id, p.rating_score,
+                SUM(s.score * d.weight) /
+                  SUM(CASE WHEN s.score IS NULL THEN 0 ELSE d.weight END)
+                  AS weighted_score
+         FROM policies p
+         JOIN policy_scores s ON s.policy_id = p.id
+         JOIN policy_evaluation_dimensions d ON d.id = s.dimension_id
+         GROUP BY p.id`,
+      )
+      .all() as unknown as Array<{
+      id: string
+      rating_score: number
+      weighted_score: number
+    }>
+    expect(rows.length).toBeGreaterThanOrEqual(30)
+    for (const row of rows) {
+      expect(
+        Math.abs(row.rating_score - row.weighted_score),
+        `${row.id} policy rating differs from component formula`,
+      ).toBeLessThanOrEqual(0.051)
+    }
+  })
+
+  it('gives every rated PM term claims and at least one concrete evidence record', () => {
+    const undercovered = db
+      .prepare(
+        `SELECT lt.id,
+                COUNT(DISTINCT c.id) AS claims,
+                COUNT(DISTINCT et.event_id) AS events,
+                COUNT(DISTINCT p.id) AS policies,
+                COUNT(DISTINCT b.id) AS budgets
+         FROM leader_terms lt
+         LEFT JOIN claims c ON c.leader_term_id = lt.id
+         LEFT JOIN event_terms et ON et.term_id = lt.id
+         LEFT JOIN policies p ON p.leader_term_id = lt.id
+         LEFT JOIN budgets b ON b.leader_term_id = lt.id
+         WHERE lt.rating_score IS NOT NULL
+         GROUP BY lt.id
+         HAVING COUNT(DISTINCT c.id) = 0
+            OR (
+              COUNT(DISTINCT et.event_id) = 0
+              AND COUNT(DISTINCT p.id) = 0
+              AND COUNT(DISTINCT b.id) = 0
+            )`,
+      )
+      .all()
+    expect(undercovered).toEqual([])
+  })
+
+  it('publishes balanced landmark policies for previously thin PM terms', () => {
+    const policyIds = [
+      'food-corporations-1964',
+      'constitution-44th-1978',
+      'trai-act-1997',
+      'pmgsy-2000',
+    ]
+    const placeholders = policyIds.map(() => '?').join(', ')
+    const incomplete = db
+      .prepare(
+        `SELECT p.id
+         FROM policies p
+         LEFT JOIN claims benefit
+           ON benefit.policy_id = p.id AND benefit.stance = 'achievement'
+         LEFT JOIN claims concern
+           ON concern.policy_id = p.id AND concern.stance = 'concern'
+         LEFT JOIN policy_sources source ON source.policy_id = p.id
+         LEFT JOIN policy_scores score ON score.policy_id = p.id
+         WHERE p.id IN (${placeholders})
+         GROUP BY p.id
+         HAVING COUNT(DISTINCT benefit.id) = 0
+            OR COUNT(DISTINCT concern.id) = 0
+            OR COUNT(DISTINCT source.source_id) < 2
+            OR COUNT(DISTINCT score.dimension_id) != 5`,
+      )
+      .all(...policyIds)
+    expect(incomplete).toEqual([])
+  })
+
+  it('fact-checks and rates the 2010 Pakistan flood-relief decision without inflating the PM score', () => {
+    const policy = db
+      .prepare(
+        `SELECT rating_score, rating_confidence, status
+         FROM policies
+         WHERE id = 'pakistan-flood-relief-2010'`,
+      )
+      .get()
+    const factCheck = db
+      .prepare(
+        `SELECT stance, confidence, event_id, policy_id, leader_term_id
+         FROM claims
+         WHERE id = 'pakistan-flood-aid-fact-check'`,
+      )
+      .get()
+    const leader = db
+      .prepare(
+        `SELECT t.rating_score, s.score, s.rationale
+         FROM leader_terms t
+         JOIN leader_term_scores s ON s.term_id = t.id
+         WHERE t.id = 'manmohan-2004' AND s.dimension_id = 'crisis'`,
+      )
+      .get() as { rating_score: number; score: number; rationale: string }
+
+    expect(policy).toEqual({
+      rating_score: 7.2,
+      rating_confidence: 'medium',
+      status: 'executive-action',
+    })
+    expect(factCheck).toEqual({
+      stance: 'mixed',
+      confidence: 'high',
+      event_id: 'pakistan-flood-aid-2010',
+      policy_id: 'pakistan-flood-relief-2010',
+      leader_term_id: 'manmohan-2004',
+    })
+    expect(leader.rating_score).toBe(7.3)
+    expect(leader.score).toBe(6)
+    expect(leader.rationale).toContain('UN-routed Pakistan flood relief')
+  })
+
+  it('publishes sourced budgets with allocations and balanced assessments', () => {
+    const summary = db
+      .prepare(
+        `SELECT COUNT(*) AS count, MIN(fiscal_year) AS first_year,
+                MAX(fiscal_year) AS latest_year,
+                COUNT(DISTINCT leader_term_id) AS term_count
+         FROM budgets`,
+      )
+      .get() as {
+      count: number
+      first_year: string
+      latest_year: string
+      term_count: number
+    }
+    const incomplete = db
+      .prepare(
+        `SELECT b.id
+         FROM budgets b
+         LEFT JOIN budget_sources src ON src.budget_id = b.id
+         LEFT JOIN budget_allocations allocation ON allocation.budget_id = b.id
+         LEFT JOIN budget_points strength
+           ON strength.budget_id = b.id AND strength.point_type = 'strength'
+         LEFT JOIN budget_points risk
+           ON risk.budget_id = b.id AND risk.point_type = 'risk'
+         GROUP BY b.id
+         HAVING COUNT(DISTINCT src.source_id) = 0
+            OR COUNT(DISTINCT allocation.id) = 0
+            OR COUNT(DISTINCT strength.id) = 0
+            OR COUNT(DISTINCT risk.id) = 0`,
+      )
+      .all()
+    expect(summary).toEqual({
+      count: 17,
+      first_year: '1947-48',
+      latest_year: '2026-27',
+      term_count: 13,
+    })
+    expect(incomplete).toEqual([])
+  })
+
+  it('keeps budget estimates aligned with the disclosed five-part formula', () => {
+    const rows = db
+      .prepare(
+        `SELECT b.id, b.rating_score,
+                SUM(s.score * d.weight) AS weighted_score,
+                COUNT(s.dimension_id) AS component_count
+         FROM budgets b
+         JOIN budget_scores s ON s.budget_id = b.id
+         JOIN budget_evaluation_dimensions d ON d.id = s.dimension_id
+         GROUP BY b.id`,
+      )
+      .all() as unknown as Array<{
+      id: string
+      rating_score: number
+      weighted_score: number
+      component_count: number
+    }>
+    expect(rows).toHaveLength(17)
+    for (const row of rows) {
+      expect(row.component_count).toBe(5)
+      expect(
+        Math.abs(row.rating_score - row.weighted_score),
+        `${row.id} budget rating differs from component formula`,
+      ).toBeLessThanOrEqual(0.051)
+    }
+  })
+
+  it('marks the current budget as a provisional proposal assessment', () => {
+    const current = db
+      .prepare(
+        `SELECT fiscal_year, status, rating_basis, rating_confidence,
+                total_expenditure_crore, capital_expenditure_crore,
+                fiscal_deficit_pct_gdp
+         FROM budgets WHERE id = 'budget-2026-27-capex-consolidation'`,
+      )
+      .get()
+    expect(current).toEqual({
+      fiscal_year: '2026-27',
+      status: 'current',
+      rating_basis: 'proposal',
+      rating_confidence: 'low',
+      total_expenditure_crore: 5347315,
+      capital_expenditure_crore: 1221821,
+      fiscal_deficit_pct_gdp: 4.3,
+    })
+  })
+
+  it('publishes FCRA 2026 as a pending low-confidence design assessment', () => {
+    const policy = db
+      .prepare(
+        `SELECT status, rating_score, rating_confidence
+         FROM policies WHERE id = 'fcra-amendment-bill-2026'`,
+      )
+      .get() as {
+      status: string
+      rating_score: number
+      rating_confidence: string
+    }
+    expect(policy).toEqual({
+      status: 'pending',
+      rating_score: 4.6,
+      rating_confidence: 'low',
+    })
+    const effectiveness = db
+      .prepare(
+        `SELECT score
+         FROM policy_scores
+         WHERE policy_id = 'fcra-amendment-bill-2026'
+           AND dimension_id = 'effectiveness'`,
+      )
+      .get()
+    expect(effectiveness).toEqual({ score: null })
+  })
+
+  it('keeps the 2026 FCRA Rules separate from the pending Bill', () => {
+    const rules = db
+      .prepare(
+        `SELECT status, rating_basis, effective_date, rating_score
+         FROM policies
+         WHERE id = 'fcra-amendment-rules-2026'`,
+      )
+      .get()
+    const spendingClaim = db
+      .prepare(
+        `SELECT policy_id
+         FROM claims
+         WHERE id = 'fcra-2026-spending-threshold'`,
+      )
+      .get()
+    expect(rules).toEqual({
+      status: 'enacted',
+      rating_basis: 'design',
+      effective_date: '2026-06-22',
+      rating_score: 5,
+    })
+    expect(spendingClaim).toEqual({
+      policy_id: 'fcra-amendment-rules-2026',
+    })
+  })
+
+  it('publishes the structural tax-reform family with balanced evidence', () => {
+    const taxPolicyIds = [
+      'income-tax-act-1961',
+      'modvat-1986',
+      'tax-rationalisation-1991',
+      'service-tax-1994',
+      'state-vat-2005',
+      'gst-2017',
+      'corporate-tax-cut-2019',
+      'personal-tax-regime-2020',
+      'faceless-tax-administration-2020',
+      'income-tax-act-2025',
+      'gst-rate-reset-2025',
+    ]
+    const placeholders = taxPolicyIds.map(() => '?').join(', ')
+    const policies = db
+      .prepare(
+        `SELECT id, rating_score
+         FROM policies
+         WHERE id IN (${placeholders})`,
+      )
+      .all(...taxPolicyIds) as unknown as Array<{
+      id: string
+      rating_score: number
+    }>
+    const incomplete = db
+      .prepare(
+        `SELECT p.id
+         FROM policies p
+         LEFT JOIN claims benefit
+           ON benefit.policy_id = p.id AND benefit.stance = 'achievement'
+         LEFT JOIN claims cost
+           ON cost.policy_id = p.id AND cost.stance = 'concern'
+         LEFT JOIN policy_scores score ON score.policy_id = p.id
+         WHERE p.id IN (${placeholders})
+         GROUP BY p.id
+         HAVING COUNT(DISTINCT benefit.id) = 0
+            OR COUNT(DISTINCT cost.id) = 0
+            OR COUNT(DISTINCT score.dimension_id) != 5`,
+      )
+      .all(...taxPolicyIds)
+    expect(policies).toHaveLength(11)
+    expect(incomplete).toEqual([])
+  })
+
+  it('keeps roads, poverty outcomes, and trade agreements methodologically separate', () => {
+    const tradeCount = db
+      .prepare(
+        `SELECT COUNT(*) AS count
+         FROM policies WHERE policy_type = 'trade-agreement'`,
+      )
+      .get() as { count: number }
+    const prematureEffectiveness = db
+      .prepare(
+        `SELECT p.id
+         FROM policies p
+         JOIN policy_scores s ON s.policy_id = p.id
+         WHERE p.id IN (
+           'india-uk-ceta-2025',
+           'india-oman-cepa-2025',
+           'india-new-zealand-fta-2026',
+           'india-eu-fta-2026'
+         )
+           AND s.dimension_id = 'effectiveness'
+           AND s.score IS NOT NULL`,
+      )
+      .all()
+    const contextualIndicators = db
+      .prepare(
+        `SELECT id, score_role, dimension_weight
+         FROM indicator_definitions
+         WHERE id IN (
+           'national-highway-length',
+           'extreme-poverty-3-2021-ppp',
+           'lmic-poverty-4-20-2021-ppp'
+         )
+         ORDER BY id`,
+      )
+      .all()
+    const eventLinks = db
+      .prepare(
+        `SELECT event_id, indicator_id
+         FROM event_indicators
+         WHERE event_id IN (
+           'national-highway-milestone-2026',
+           'world-bank-poverty-update-2026'
+         )
+         ORDER BY event_id, indicator_id`,
+      )
+      .all()
+
+    expect(tradeCount.count).toBe(7)
+    expect(prematureEffectiveness).toEqual([])
+    expect(contextualIndicators).toEqual([
+      {
+        id: 'extreme-poverty-3-2021-ppp',
+        score_role: 'context',
+        dimension_weight: 0,
+      },
+      {
+        id: 'lmic-poverty-4-20-2021-ppp',
+        score_role: 'context',
+        dimension_weight: 0,
+      },
+      {
+        id: 'national-highway-length',
+        score_role: 'context',
+        dimension_weight: 0,
+      },
+    ])
+    expect(eventLinks).toEqual(
+      expect.arrayContaining([
+        {
+          event_id: 'national-highway-milestone-2026',
+          indicator_id: 'national-highway-length',
+        },
+        {
+          event_id: 'world-bank-poverty-update-2026',
+          indicator_id: 'extreme-poverty-3-2021-ppp',
+        },
+        {
+          event_id: 'world-bank-poverty-update-2026',
+          indicator_id: 'lmic-poverty-4-20-2021-ppp',
+        },
+      ]),
+    )
+  })
+
+  it('keeps the Income-tax Act 2025 as a current design-only assessment', () => {
+    const policy = db
+      .prepare(
+        `SELECT status, rating_basis, introduced_date, enacted_date,
+                effective_date, rating_confidence
+         FROM policies
+         WHERE id = 'income-tax-act-2025'`,
+      )
+      .get()
+    const effectiveness = db
+      .prepare(
+        `SELECT score
+         FROM policy_scores
+         WHERE policy_id = 'income-tax-act-2025'
+           AND dimension_id = 'effectiveness'`,
+      )
+      .get()
+    expect(policy).toEqual({
+      status: 'enacted',
+      rating_basis: 'design',
+      introduced_date: '2025-08-11',
+      enacted_date: '2025-08-21',
+      effective_date: '2026-04-01',
+      rating_confidence: 'low',
+    })
+    expect(effectiveness).toEqual({ score: null })
+  })
+
+  it('keeps the 2025 GST rate reset provisional until outcomes mature', () => {
+    const policy = db
+      .prepare(
+        `SELECT status, rating_basis, effective_date, rating_confidence
+         FROM policies
+         WHERE id = 'gst-rate-reset-2025'`,
+      )
+      .get()
+    const effectiveness = db
+      .prepare(
+        `SELECT score
+         FROM policy_scores
+         WHERE policy_id = 'gst-rate-reset-2025'
+           AND dimension_id = 'effectiveness'`,
+      )
+      .get()
+    expect(policy).toEqual({
+      status: 'executive-action',
+      rating_basis: 'design',
+      effective_date: '2025-09-22',
+      rating_confidence: 'low',
+    })
+    expect(effectiveness).toEqual({ score: null })
+  })
+
+  it('uses verified tax chronology and independent evidence', () => {
+    const chronology = db
+      .prepare(
+        `SELECT id, introduced_date, enacted_date, effective_date
+         FROM policies
+         WHERE id IN ('modvat-1986', 'state-vat-2005')
+         ORDER BY id`,
+      )
+      .all()
+    const independentLinks = db
+      .prepare(
+        `SELECT DISTINCT source_id
+         FROM claim_sources
+         WHERE claim_id IN (
+           'gst-small-firm-complexity',
+           'corporate-tax-2019-uneven-uptake'
+         )
+         ORDER BY source_id`,
+      )
+      .all()
+    const retiredSource = db
+      .prepare(`SELECT id FROM sources WHERE id = 'dea-tax-history'`)
+      .get()
+
+    expect(chronology).toEqual([
+      {
+        id: 'modvat-1986',
+        introduced_date: '1986-02-28',
+        enacted_date: '1986-05-13',
+        effective_date: '1986-03-01',
+      },
+      {
+        id: 'state-vat-2005',
+        introduced_date: '2005-01-17',
+        enacted_date: null,
+        effective_date: '2005-04-01',
+      },
+    ])
+    expect(independentLinks).toEqual(
+      expect.arrayContaining([
+        { source_id: 'cag-gst-audit-2024' },
+        { source_id: 'nipfp-corporate-tax-2023' },
+        { source_id: 'world-bank-gst-implementation' },
+      ]),
+    )
+    expect(retiredSource).toBeUndefined()
+  })
+
+  it('publishes the official government-bill register with PM-term mapping', () => {
+    const summary = db
+      .prepare(
+        `SELECT COUNT(*) AS count, MIN(introduced_date) AS first_date,
+                MAX(introduced_date) AS latest_date,
+                SUM(CASE WHEN review_status = 'reviewed' THEN 1 ELSE 0 END)
+                  AS reviewed
+         FROM policy_register`,
+      )
+      .get()
+    const incomplete = db
+      .prepare(
+        `SELECT id
+         FROM policy_register
+         WHERE leader_term_id IS NULL
+            OR source_id != 'sansad-government-bills-api'
+            OR introduced_date < '1947-08-15'`,
+      )
+      .all()
+    expect(summary).toEqual({
+      count: 4407,
+      first_date: '1952-05-16',
+      latest_date: '2026-07-20',
+      reviewed: 34,
+    })
+    expect(incomplete).toEqual([])
+  })
+
+  it('links reviewed parliamentary records without scoring discovered bills', () => {
+    const fcraBill = db
+      .prepare(
+        `SELECT linked_policy_id, review_status
+         FROM policy_register
+         WHERE title = 'THE FOREIGN CONTRIBUTION (REGULATION) AMENDMENT BILL, 2026'`,
+      )
+      .get()
+    const latest = db
+      .prepare(
+        `SELECT linked_policy_id, review_status
+         FROM policy_register
+         ORDER BY introduced_date DESC, title
+         LIMIT 1`,
+      )
+      .get()
+    expect(fcraBill).toEqual({
+      linked_policy_id: 'fcra-amendment-bill-2026',
+      review_status: 'reviewed',
+    })
+    expect(latest).toEqual({
+      linked_policy_id: null,
+      review_status: 'discovered',
+    })
+  })
+
+  it('keeps the CAA law, timeline event, and policy register connected', () => {
+    const bridge = db
+      .prepare(
+        `SELECT c.event_id, c.policy_id, r.review_status
+         FROM claims c
+         JOIN policy_register r ON r.linked_policy_id = c.policy_id
+         WHERE c.event_id = 'caa-protests-delhi-2019'
+           AND c.policy_id = 'citizenship-amendment-act-2019'
+         LIMIT 1`,
+      )
+      .get()
+    expect(bridge).toEqual({
+      event_id: 'caa-protests-delhi-2019',
+      policy_id: 'citizenship-amendment-act-2019',
+      review_status: 'reviewed',
+    })
+  })
+
+  it('records explicit, current knowledge cutoffs', () => {
+    const metadata = Object.fromEntries(
+      (
+        db.prepare(`SELECT key, value FROM metadata`).all() as unknown as Array<{
+          key: string
+          value: string
+        }>
+      ).map((row) => [row.key, row.value]),
+    )
+    expect(metadata.knowledge_cutoff).toBe('2026-07-23')
+    expect(metadata.editorial_reviewed_through).toBe('2026-07-23')
+    expect(metadata.source_roster_version).toBe('source-roster-v0.11')
+    expect(metadata.source_rubric_version).toBe('source-v0.2')
+    expect(Number(metadata.latest_world_bank_period)).toBeGreaterThanOrEqual(2024)
+    expect(Number(metadata.latest_vdem_period)).toBeGreaterThanOrEqual(2024)
+  })
+
+  it('uses valid HTTPS source URLs and bounded reliability ratings', () => {
+    const invalid = db
+      .prepare(
+        `SELECT id, url, reliability
+         FROM sources
+         WHERE url NOT LIKE 'https://%' OR reliability < 1 OR reliability > 5`,
+      )
+      .all()
+    expect(invalid).toEqual([])
+  })
+
+  it('gives every indicator a plain-language meaning and concrete example', () => {
+    const incomplete = db
+      .prepare(
+        `SELECT id FROM indicator_definitions
+         WHERE TRIM(plain_language) = '' OR TRIM(example) = ''`,
+      )
+      .all()
+    const count = db
+      .prepare(`SELECT COUNT(*) AS count FROM indicator_definitions`)
+      .get() as { count: number }
+    expect(count.count).toBe(20)
+    expect(incomplete).toEqual([])
+  })
+
+  it('keeps the exchange rate contextual and outside the progress score', () => {
+    const exchange = db
+      .prepare(
+        `SELECT direction, score_role, dimension_weight
+         FROM indicator_definitions
+         WHERE id = 'official-exchange-rate'`,
+      )
+      .get()
+    const scoredEconomicIndicators = db
+      .prepare(
+        `SELECT COUNT(*) AS count
+         FROM indicator_definitions
+         WHERE dimension_id = 'economic-opportunity'
+           AND score_role = 'scored'`,
+      )
+      .get() as { count: number }
+    expect(exchange).toEqual({
+      direction: 'neutral',
+      score_role: 'context',
+      dimension_weight: 0,
+    })
+    expect(scoredEconomicIndicators.count).toBe(2)
+  })
+
+  it('records review governance and the ingestion batch that published the corpus', () => {
+    const unpublishedClaims = db
+      .prepare(
+        `SELECT id FROM claims
+         WHERE review_status != 'published'
+            OR reviewer IS NULL
+            OR reviewed_at IS NULL
+            OR knowledge_cutoff IS NULL`,
+      )
+      .all()
+    const batches = db
+      .prepare(
+        `SELECT source_roster_version, review_status
+         FROM ingestion_batches`,
+      )
+      .all() as unknown as Array<{
+      source_roster_version: string
+      review_status: string
+    }>
+    expect(unpublishedClaims).toEqual([])
+    expect(batches).toContainEqual({
+      source_roster_version: 'source-roster-v0.11',
+      review_status: 'published',
+    })
+    expect(
+      db
+        .prepare(
+          `SELECT review_status
+           FROM ingestion_batches
+           WHERE id = 'india-structural-tax-reforms-review-2026-07-23'`,
+        )
+        .get(),
+    ).toEqual({ review_status: 'published' })
+    expect(
+      db
+        .prepare(
+          `SELECT candidates_found, review_status
+           FROM ingestion_batches
+           WHERE id = 'undercovered-prime-minister-terms-2026-07-23'`,
+        )
+        .get(),
+    ).toEqual({
+      candidates_found: 14,
+      review_status: 'published',
+    })
+    expect(
+      db
+        .prepare(
+          `SELECT candidates_found, review_status
+           FROM ingestion_batches
+           WHERE id = 'bjp-congress-comparison-2026-07-23'`,
+        )
+        .get(),
+    ).toEqual({
+      candidates_found: 8,
+      review_status: 'published',
+    })
+    expect(
+      db
+        .prepare(
+          `SELECT candidates_found, review_status
+           FROM ingestion_batches
+           WHERE id = 'caa-policy-review-2026-07-24'`,
+        )
+        .get(),
+    ).toEqual({
+      candidates_found: 11,
+      review_status: 'published',
+    })
+    expect(
+      db
+        .prepare(
+          `SELECT candidates_found, review_status
+           FROM ingestion_batches
+           WHERE id = 'pakistan-flood-aid-claim-review-2026-07-24'`,
+        )
+        .get(),
+    ).toEqual({
+      candidates_found: 5,
+      review_status: 'published',
+    })
+    for (const [id, candidates] of [
+      ['modi-roads-review-2026-07-24', 5],
+      ['modi-poverty-review-2026-07-24', 5],
+      ['modi-trade-agreements-review-2026-07-24', 8],
+    ] as const) {
+      expect(
+        db
+          .prepare(
+            `SELECT candidates_found, review_status
+             FROM ingestion_batches WHERE id = ?`,
+          )
+          .get(id),
+      ).toEqual({
+        candidates_found: candidates,
+        review_status: 'published',
+      })
+    }
+  })
+})
+
+describe('state and Chief Minister extensibility', () => {
+  it('accepts a state jurisdiction and head-of-government office without schema changes', () => {
+    const stateDb = new DatabaseSync(':memory:')
+    applySchema(stateDb)
+    stateDb
+      .prepare(
+        `INSERT INTO jurisdictions
+          (id, name, short_name, level, parent_id, iso_code, valid_from, status)
+         VALUES
+          ('india', 'Republic of India', 'India', 'country', NULL, 'IND', '1947-08-15', 'published'),
+          ('karnataka', 'State of Karnataka', 'Karnataka', 'state', 'india', 'IN-KA', '1956-11-01', 'researching')`,
+      )
+      .run()
+    stateDb
+      .prepare(
+        `INSERT INTO offices (id, jurisdiction_id, name, short_name, role)
+         VALUES ('karnataka-chief-minister', 'karnataka', 'Chief Minister of Karnataka', 'Chief Minister', 'head-of-government')`,
+      )
+      .run()
+    stateDb
+      .prepare(
+        `INSERT INTO people (id, name, sort_name)
+         VALUES ('example-cm', 'Example Chief Minister', 'Chief Minister, Example')`,
+      )
+      .run()
+    stateDb
+      .prepare(
+        `INSERT INTO leader_terms
+          (id, office_id, person_id, start_date, rating_summary, assessment_as_of)
+         VALUES
+          ('example-cm-term', 'karnataka-chief-minister', 'example-cm', '2025-01-01',
+           'Fixture proving the jurisdiction-neutral model.', '2026-07-23')`,
+      )
+      .run()
+    const row = stateDb
+      .prepare(
+        `SELECT j.level, o.short_name
+         FROM leader_terms t
+         JOIN offices o ON o.id = t.office_id
+         JOIN jurisdictions j ON j.id = o.jurisdiction_id
+         WHERE t.id = 'example-cm-term'`,
+      )
+      .get() as { level: string; short_name: string }
+    expect(row).toEqual({ level: 'state', short_name: 'Chief Minister' })
+    stateDb.close()
+  })
+})

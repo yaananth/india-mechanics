@@ -1,0 +1,61 @@
+{
+  "version": "policy-funnel-v0.1",
+  "reviewedThrough": "2026-07-23",
+  "queryTemplateVersion": "query-templates-v0.4",
+  "records": [
+    {
+      "eventId": "independence-partition-1947",
+      "disposition": "timeline-only",
+      "reason": "Founding transition and mass-displacement event, not a single Prime Minister policy assessment."
+    },
+    {
+      "eventId": "constitution-1950",
+      "disposition": "timeline-only",
+      "reason": "Founding constitutional settlement predating the policy-rating framework."
+    },
+    {
+      "eventId": "first-election-1951",
+      "disposition": "timeline-only",
+      "reason": "Constitutional electoral milestone rather than a discrete policy proposal."
+    },
+    {
+      "eventId": "states-reorganisation-1956",
+      "disposition": "candidate",
+      "reason": "Requires a separate federal-reorganisation policy review before publication."
+    },
+    {
+      "eventId": "emergency-1975",
+      "disposition": "timeline-only",
+      "reason": "Emergency proclamation and governance period; related constitutional amendments are assessed separately."
+    },
+    {
+      "eventId": "rti-2005",
+      "disposition": "linked-policy",
+      "policyId": "rti-2005",
+      "reason": "The enacted law has a reviewed retrospective policy assessment."
+    },
+    {
+      "eventId": "mgnrega-2005",
+      "disposition": "linked-policy",
+      "policyId": "mgnrega-2005",
+      "reason": "The enacted law has a reviewed retrospective policy assessment."
+    },
+    {
+      "eventId": "aadhaar-2010",
+      "disposition": "linked-policy",
+      "policyId": "aadhaar-2016",
+      "reason": "The implementation milestone links to the later statutory policy assessment."
+    },
+    {
+      "eventId": "article370-2019",
+      "disposition": "candidate",
+      "reason": "Requires a distinct constitutional-policy assessment with federal, rights, security, and post-judgment outcome evidence."
+    },
+    {
+      "eventId": "caa-protests-delhi-2019",
+      "disposition": "linked-policy",
+      "policyId": "citizenship-amendment-act-2019",
+      "reason": "The enacted law and its implementation have a reviewed policy assessment."
+    }
+  ]
+}

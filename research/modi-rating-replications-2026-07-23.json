@@ -1,0 +1,180 @@
+{
+  "subject": "Narendra Modi as Prime Minister of India, 2014-present",
+  "asOfDate": "2026-07-24",
+  "promptHash": "sha256:60951df18bdb3970896eccaba4f1c9f8e5ff30ade58a70975cbcf9ee51c27cbc",
+  "previousWebsite": {
+    "rating": 6.7,
+    "componentScores": {
+      "outcomes": 7.4,
+      "reforms": 8.0,
+      "inclusion": 7.0,
+      "crisis": 6.2,
+      "institutions": 4.5,
+      "integrity": 5.8
+    }
+  },
+  "website": {
+    "rating": 6.3,
+    "componentScores": {
+      "outcomes": 7.7,
+      "reforms": 7.2,
+      "inclusion": 6.2,
+      "crisis": 5.8,
+      "institutions": 3.8,
+      "integrity": 5.8
+    },
+    "sourceUrls": [
+      "https://www.pmindia.gov.in/en/pms-profile/",
+      "https://www.eci.gov.in/general-election-to-loksabha-2024-statistical-reports",
+      "https://data.worldbank.org/country/india",
+      "https://www.niti.gov.in/sites/default/files/2023-08/India-National-Multidimentional-Poverty-Index-2023.pdf",
+      "https://www.v-dem.net/data/the-v-dem-dataset/",
+      "https://www.indiacode.nic.in/bitstream/123456789/2160/1/A2016-18.pdf",
+      "https://www.mospi.gov.in/sites/default/files/press_release/Press%20Release%20on%20National%20Accounts%20Statistics%20Publication%20-%202025.pdf",
+      "https://cbic-gst.gov.in/pdf/01062019-GST-An-Update.pdf",
+      "https://www.rbi.org.in/Scripts/AnnualReportPublications.aspx?Id=1209",
+      "https://ourworldindata.org/grapher/electoral-democracy-index.csv",
+      "https://www.indiacode.nic.in/bitstream/123456789/15231/1/a2019-47.pdf",
+      "https://www.mha.gov.in/en/documents/annual-reports",
+      "https://api.sci.gov.in/supremecourt/2023/19206/19206_2023_1_13_45619_Order_01-Aug-2023.pdf",
+      "https://www.rbi.org.in/SCRIPTs/AnnualPublications.aspx?head=Handbook+of+Statistics+on+Indian+Economy",
+      "https://documents1.worldbank.org/curated/en/099722104222534584/pdf/IDU-25f34333-d3a3-44ae-8268-86830e3bc5a5.pdf",
+      "https://www.imf.org/-/media/files/publications/cr/2025/english/1indea2025003-source-pdf.pdf",
+      "https://www.ilo.org/publications/india-employment-report-2024-youth-employment-education-and-skills",
+      "https://freedomhouse.org/country/india/freedom-world/2026",
+      "https://www.hrw.org/world-report/2026/country-chapters/india",
+      "https://api.sci.gov.in/supremecourt/2017/27935/27935_2017_1_1501_50573_Judgement_15-Feb-2024.pdf",
+      "https://www.npci.org.in/what-we-do/upi/product-statistics",
+      "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2209837",
+      "https://documents.worldbank.org/curated/en/099042126035038379/pdf/P512371-d096273a-9b40-4085-a83c-5520c14aa17a.pdf",
+      "https://www.commerce.gov.in/files/2026-03/FTAs%20achievement%20v6%205%20pm.pdf"
+    ]
+  },
+  "evidenceRefresh": {
+    "date": "2026-07-24",
+    "previousRating": 6.2,
+    "revisedRating": 6.3,
+    "reason": "Road expansion, monetary poverty, and trade-agreement evidence were made explicit. Outcomes and inclusion increased within the original 6.1-6.3 replication range; reforms remained unchanged to avoid double-counting."
+  },
+  "runs": [
+    {
+      "id": "replication-1",
+      "genericRating": 6.2,
+      "standardizedRating": 6.1,
+      "componentScores": {
+        "outcomes": 7.3,
+        "reforms": 7.2,
+        "inclusion": 5.6,
+        "crisis": 5.8,
+        "institutions": 4.1,
+        "integrity": 5.5
+      },
+      "confidence": "medium",
+      "sourceUrls": [
+        "https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG?locations=IN",
+        "https://documents1.worldbank.org/curated/en/099722104222534584/pdf/IDU-25f34333-d3a3-44ae-8268-86830e3bc5a5.pdf",
+        "https://thedocs.worldbank.org/en/doc/400139d320ead96a0ec624d3608d9b56-0310012025/original/India-Country-Economic-Memorandum-2024-0227c.pdf",
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1823111",
+        "https://www.who.int/data/sets/global-excess-deaths-associated-with-covid-19-modelled-estimates",
+        "https://www.v-dem.net/documents/75/V-Dem_Institute_Democracy_Report_2026_lowres.pdf",
+        "https://adrindia.org/content/chronology-events-electoral-bonds-case"
+      ]
+    },
+    {
+      "id": "replication-2",
+      "genericRating": 6.4,
+      "standardizedRating": 6.3,
+      "componentScores": {
+        "outcomes": 7.5,
+        "reforms": 7.3,
+        "inclusion": 6.1,
+        "crisis": 5.6,
+        "institutions": 3.8,
+        "integrity": 5.9
+      },
+      "confidence": "medium",
+      "sourceUrls": [
+        "https://www.imf.org/-/media/files/publications/cr/2025/english/1indea2025003-source-pdf.pdf",
+        "https://documents.worldbank.org/en/publication/documents-reports/documentdetail/099722104222534584",
+        "https://www.worldbank.org/en/news/factsheet/2025/06/05/june-2025-update-to-global-poverty-lines",
+        "https://www.mospi.gov.in/sites/default/files/press_release/Press_note_AR_PLFS_2023_24_22092024.pdf",
+        "https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/mar/doc202636812701.pdf",
+        "https://api.sci.gov.in/supremecourt/2017/27935/27935_2017_1_1501_50573_Judgement_15-Feb-2024.pdf",
+        "https://freedomhouse.org/country/india/freedom-world/2026",
+        "https://www.hrw.org/news/2025/03/27/india-ethnic-clashes-restart-manipur",
+        "https://indianexpress.com/article/india/investigate-charges-of-collusion-against-manipur-police-sc-tells-probe-monitor-8888665/"
+      ]
+    },
+    {
+      "id": "replication-3",
+      "genericRating": 6.2,
+      "standardizedRating": 6.2,
+      "componentScores": {
+        "outcomes": 7.4,
+        "reforms": 7.2,
+        "inclusion": 5.6,
+        "crisis": 5.7,
+        "institutions": 3.8,
+        "integrity": 6.0
+      },
+      "confidence": "medium",
+      "sourceUrls": [
+        "https://thedocs.worldbank.org/en/doc/5d1783db09a0e09d15bbcea8ef0cec0b-0500052021/related/mpo-ind.pdf",
+        "https://www.rbi.org.in/commonman/Upload/English/Content/PDFs/English12052026.pdf",
+        "https://www.worldbank.org/en/news/press-release/2026/06/18/world-bank-group-provides-new-financing-in-support-of-india-s-reform-program-to-boost-growth-and-jobs",
+        "https://www.worldbank.org/ext/en/country/india",
+        "https://www.v-dem.net/documents/75/V-Dem_Institute_Democracy_Report_2026_lowres.pdf",
+        "https://freedomhouse.org/country/india/freedom-world/2026",
+        "https://apnews.com/article/india-election-funding-modi-8de67ea52eebfad104095b4db056e90e",
+        "https://www.hrw.org/world-report/2025/country-chapters/india"
+      ]
+    },
+    {
+      "id": "replication-4",
+      "genericRating": 6.3,
+      "standardizedRating": 6.2,
+      "componentScores": {
+        "outcomes": 7.4,
+        "reforms": 7.2,
+        "inclusion": 6.2,
+        "crisis": 5.7,
+        "institutions": 3.7,
+        "integrity": 5.9
+      },
+      "confidence": "medium",
+      "sourceUrls": [
+        "https://www.worldbank.org/en/country/india/overview",
+        "https://www.imf.org/-/media/files/publications/weo/2026/update/july/english/text.pdf",
+        "https://www.imf.org/-/media/files/publications/cr/2025/english/1indea2025003-source-pdf.pdf",
+        "https://www.ilo.org/publications/india-employment-report-2024-youth-employment-education-and-skills",
+        "https://www.v-dem.net/documents/75/V-Dem_Institute_Democracy_Report_2026_lowres.pdf",
+        "https://www.hrw.org/world-report/2026/country-chapters/india",
+        "https://apnews.com/article/india-election-funding-modi-8de67ea52eebfad104095b4db056e90e"
+      ]
+    },
+    {
+      "id": "replication-5",
+      "genericRating": 6.3,
+      "standardizedRating": 6.3,
+      "componentScores": {
+        "outcomes": 7.6,
+        "reforms": 7.2,
+        "inclusion": 5.9,
+        "crisis": 6.0,
+        "institutions": 3.8,
+        "integrity": 5.9
+      },
+      "confidence": "medium",
+      "sourceUrls": [
+        "https://documents1.worldbank.org/curated/en/099722104222534584/pdf/IDU-25f34333-d3a3-44ae-8268-86830e3bc5a5.pdf",
+        "https://thedocs.worldbank.org/en/doc/5d1783db09a0e09d15bbcea8ef0cec0b-0500052021/related/mpo-ind.pdf",
+        "https://www.imf.org/-/media/files/publications/weo/2026/update/july/english/text.pdf",
+        "https://www.npci.org.in/what-we-do/upi/product-statistics",
+        "https://www.ilo.org/publications/india-employment-report-2024-youth-employment-education-and-skills",
+        "https://api.sci.gov.in/supremecourt/2017/13811/13811_2017_1_1501_50447_Judgement_15-Feb-2024.pdf",
+        "https://www.v-dem.net/documents/61/v-dem-dr__2026_lowres_v2.pdf",
+        "https://freedomhouse.org/country/india/freedom-world/2026"
+      ]
+    }
+  ]
+}

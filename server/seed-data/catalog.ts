@@ -1,0 +1,9072 @@
+import type {
+  ClaimSeed,
+  Confidence,
+  CuratedAnswerSeed,
+  EventAssessmentSeed,
+  EventSeed,
+  IndicatorDefinitionSeed,
+  JurisdictionSeed,
+  LeaderScoreSeed,
+  LeaderTermSeed,
+  OfficeSeed,
+  PartySeed,
+  PersonSeed,
+  PolicyScoreSeed,
+  PolicySeed,
+  SourceSeed,
+} from '../types.ts'
+
+const accessedDate = '2026-07-23'
+const caaReviewedDate = '2026-07-24'
+const heardClaimReviewedDate = '2026-07-24'
+
+export const sources: SourceSeed[] = [
+  {
+    id: 'pm-india-current',
+    title: 'Know the PM',
+    publisher: 'Prime Minister’s Office, Government of India',
+    url: 'https://www.pmindia.gov.in/en/pms-profile/',
+    sourceType: 'official-record',
+    reliability: 5,
+    ratingReason:
+      'Authoritative primary source for the identity, oath dates, and official biography of the sitting Prime Minister.',
+    bestFor: 'Current office-holder and official term facts.',
+    limitations:
+      'Government-authored performance language is not an independent assessment of outcomes.',
+    accessedDate,
+  },
+  {
+    id: 'pm-india-former',
+    title: 'Former Prime Ministers',
+    publisher: 'Prime Minister’s Office, Government of India',
+    url: 'https://www.pmindia.gov.in/en/former-prime-ministers/',
+    sourceType: 'official-record',
+    reliability: 5,
+    ratingReason:
+      'Authoritative primary source for former Prime Minister names and tenure dates.',
+    bestFor: 'Leader chronology and official biographies.',
+    limitations:
+      'Biographies are commemorative and should not control contested performance judgments.',
+    accessedDate,
+  },
+  {
+    id: 'sansad-government-bills-api',
+    title: 'Government Bills Register',
+    publisher: 'Parliament of India, Sansad',
+    url: 'https://sansad.in/api_rs/legislation/getBills?billType=Government&page=1&size=100&locale=en&sortOn=billIntroducedDate&sortBy=desc',
+    sourceType: 'official-parliamentary-register',
+    reliability: 5,
+    ratingReason:
+      'Direct official parliamentary metadata for government Bills, passage, assent, Acts, committees, and document files.',
+    bestFor:
+      'Comprehensive bill discovery and legislative-status chronology.',
+    limitations:
+      'Some older records have missing status or document fields; discovery does not establish policy quality or outcomes.',
+    accessedDate,
+  },
+  {
+    id: 'world-bank-india',
+    title: 'India Data Profile',
+    publisher: 'World Bank',
+    url: 'https://data.worldbank.org/country/india',
+    sourceType: 'multilateral-statistics',
+    reliability: 4,
+    ratingReason:
+      'Standardized international series with metadata, revision history, and broad comparability.',
+    bestFor: 'Long-run economic, health, infrastructure, labor, and environment indicators.',
+    limitations:
+      'Series combine national submissions and modeled estimates; definitions and revisions can change.',
+    accessedDate,
+  },
+  {
+    id: 'world-bank-api',
+    title: 'World Bank Indicators API',
+    publisher: 'World Bank',
+    url: 'https://api.worldbank.org/v2/country/IND?format=json',
+    sourceType: 'statistical-data-service',
+    reliability: 5,
+    ratingReason:
+      'Direct World Bank indicator records with consistent country, year, unit, and revision metadata.',
+    bestFor: 'Annual indicator observations and cross-year comparisons.',
+    limitations:
+      'Reliability still depends on the methodology of each underlying indicator.',
+    accessedDate,
+  },
+  {
+    id: 'world-bank-exchange-rate',
+    title: 'Official exchange rate (LCU per US$, period average) - India',
+    publisher: 'World Bank',
+    url: 'https://data.worldbank.org/indicator/PA.NUS.FCRF?locations=IN',
+    sourceType: 'multilateral-statistics',
+    reliability: 5,
+    ratingReason:
+      'Direct World Development Indicators series sourced from official national and central-bank records.',
+    bestFor: 'Annual period-average Indian rupees per US dollar.',
+    limitations:
+      'An exchange rate is a relative market price and is not by itself a measure of domestic output or welfare.',
+    accessedDate,
+  },
+  {
+    id: 'world-bank-constant-prices',
+    title: 'What is the difference between current and constant price series?',
+    publisher: 'World Bank Data Help Desk',
+    url: 'https://datahelpdesk.worldbank.org/knowledgebase/articles/114942-what-is-the-difference-between-current-and-constan',
+    sourceType: 'statistical-methodology',
+    reliability: 5,
+    ratingReason:
+      'Direct World Bank methodology explanation for removing inflation from GDP comparisons.',
+    bestFor: 'Explaining why real GDP can rise while a currency depreciates.',
+    limitations:
+      'A general methodology note; it does not assign causes or political responsibility for India.',
+    accessedDate,
+  },
+  {
+    id: 'world-bank-poverty-equity-2025',
+    title: 'Poverty and Equity Brief: India',
+    publisher: 'World Bank',
+    url: 'https://documents1.worldbank.org/curated/en/099722104222534584/pdf/IDU-25f34333-d3a3-44ae-8268-86830e3bc5a5.pdf',
+    sourceType: 'multilateral-analysis',
+    reliability: 4,
+    ratingReason:
+      'Transparent multilateral synthesis of poverty, inequality, employment, and regional evidence with stated survey caveats.',
+    bestFor: 'Poverty change, job quality, inequality, and geographic concentration.',
+    limitations:
+      'Survey and PPP revisions constrain exact before-and-after causal attribution.',
+    publishedDate: '2025-04-22',
+    accessedDate,
+  },
+  {
+    id: 'imf-india-article-iv-2025',
+    title: 'India: 2025 Article IV Consultation',
+    publisher: 'International Monetary Fund',
+    url: 'https://www.imf.org/-/media/files/publications/cr/2025/english/1indea2025003-source-pdf.pdf',
+    sourceType: 'multilateral-analysis',
+    reliability: 4,
+    ratingReason:
+      'Detailed IMF staff report with disclosed macroeconomic, fiscal, financial, and labour analysis.',
+    bestFor: 'Growth, fiscal consolidation, banking resilience, job quality, IBC delays, and risks.',
+    limitations:
+      'Forecasts are conditional and the report does not isolate the Prime Minister’s causal contribution.',
+    publishedDate: '2025-11-21',
+    accessedDate,
+  },
+  {
+    id: 'ilo-india-employment-2024',
+    title: 'India Employment Report 2024: Youth Employment, Education and Skills',
+    publisher: 'International Labour Organization and Institute for Human Development',
+    url: 'https://www.ilo.org/publications/india-employment-report-2024-youth-employment-education-and-skills',
+    sourceType: 'multilateral-academic-analysis',
+    reliability: 4,
+    ratingReason:
+      'Named research report with documented labour datasets and transparent methodology.',
+    bestFor: 'Youth unemployment, informality, job quality, education, and skills mismatch.',
+    limitations:
+      'The report predates the latest 2025-26 labour observations and uses multiple source series.',
+    publishedDate: '2024-03-26',
+    accessedDate,
+  },
+  {
+    id: 'freedom-house-india-2026',
+    title: 'Freedom in the World 2026: India',
+    publisher: 'Freedom House',
+    url: 'https://freedomhouse.org/country/india/freedom-world/2026',
+    sourceType: 'independent-institutional-analysis',
+    reliability: 4,
+    ratingReason:
+      'Structured, named political-rights and civil-liberties assessment with published methodology.',
+    bestFor: 'Independent institutional, electoral, media, civil-liberty, and minority-rights trends.',
+    limitations:
+      'Several components are expert-coded normative judgments and individual allegations need corroboration.',
+    publishedDate: '2026-03-12',
+    accessedDate,
+  },
+  {
+    id: 'hrw-india-2026',
+    title: 'World Report 2026: India',
+    publisher: 'Human Rights Watch',
+    url: 'https://www.hrw.org/world-report/2026/country-chapters/india',
+    sourceType: 'rights-field-analysis',
+    reliability: 4,
+    ratingReason:
+      'Named rights-monitoring synthesis drawing on field reporting, court records, and documented cases.',
+    bestFor: 'Civil-society pressure, minority protection, conflict response, detention, and speech restrictions.',
+    limitations:
+      'An advocacy source; disputed allegations and event counts require official and independent corroboration.',
+    publishedDate: '2026-01-14',
+    accessedDate,
+  },
+  {
+    id: 'supreme-electoral-bonds-2024',
+    title: 'Association for Democratic Reforms v. Union of India, 2024 INSC 113',
+    publisher: 'Supreme Court of India',
+    url: 'https://api.sci.gov.in/supremecourt/2017/27935/27935_2017_1_1501_50573_Judgement_15-Feb-2024.pdf',
+    sourceType: 'court-judgment',
+    reliability: 5,
+    ratingReason:
+      'Controlling constitutional judgment on the electoral-bond scheme.',
+    bestFor: 'The legal holding on anonymous political finance, voter information, and corporate contributions.',
+    limitations:
+      'The judgment establishes constitutionality, not a complete empirical measure of political corruption.',
+    publishedDate: '2024-02-15',
+    accessedDate,
+  },
+  {
+    id: 'npci-upi-statistics',
+    title: 'UPI Product Statistics',
+    publisher: 'National Payments Corporation of India',
+    url: 'https://www.npci.org.in/what-we-do/upi/product-statistics',
+    sourceType: 'official-operational-statistics',
+    reliability: 5,
+    ratingReason:
+      'Direct operating statistics from the entity running the UPI payment network.',
+    bestFor: 'UPI transaction volume, value, participating institutions, and system scale.',
+    limitations:
+      'Payment-system activity does not by itself establish welfare, productivity, or distributional impact.',
+    accessedDate,
+  },
+  {
+    id: 'mospi-national-accounts',
+    title: 'National Accounts Statistics 2025',
+    publisher: 'Ministry of Statistics and Programme Implementation',
+    url: 'https://www.mospi.gov.in/sites/default/files/press_release/Press%20Release%20on%20National%20Accounts%20Statistics%20Publication%20-%202025.pdf',
+    sourceType: 'official-statistics',
+    reliability: 5,
+    ratingReason:
+      'India’s official national accounts publication with stated estimate vintages.',
+    bestFor: 'GDP, GVA, and official macroeconomic aggregates.',
+    limitations:
+      'National accounts are revised and do not by themselves measure distribution or lived welfare.',
+    publishedDate: '2025-05-16',
+    accessedDate,
+  },
+  {
+    id: 'rbi-handbook',
+    title: 'Handbook of Statistics on the Indian Economy',
+    publisher: 'Reserve Bank of India',
+    url: 'https://www.rbi.org.in/SCRIPTs/AnnualPublications.aspx?head=Handbook+of+Statistics+on+Indian+Economy',
+    sourceType: 'official-statistics',
+    reliability: 5,
+    ratingReason:
+      'Primary central-bank statistical compendium with long time series and table definitions.',
+    bestFor: 'Monetary, fiscal, banking, trade, and historical macroeconomic series.',
+    limitations:
+      'Some tables reproduce data owned by other agencies and can be revised.',
+    accessedDate,
+  },
+  {
+    id: 'census-history',
+    title: 'Census of India Data Tables',
+    publisher: 'Office of the Registrar General & Census Commissioner, India',
+    url: 'https://censusindia.gov.in/census.website/data/census-tables',
+    sourceType: 'official-statistics',
+    reliability: 5,
+    ratingReason:
+      'Primary census authority publishing the post-independence census tables.',
+    bestFor: 'Population, literacy, and decennial census history.',
+    limitations:
+      'The delayed 2021 census creates a major current-data gap.',
+    accessedDate,
+  },
+  {
+    id: 'india-constitution',
+    title: 'The Constitution of India',
+    publisher: 'India Code, Legislative Department',
+    url: 'https://www.indiacode.nic.in/bitstream/123456789/19150/1/constitution_of_india.pdf',
+    sourceType: 'law',
+    reliability: 5,
+    ratingReason:
+      'Authoritative legal text published through the Government of India’s statutory repository.',
+    bestFor: 'Constitutional provisions, amendments, and institutional design.',
+    limitations:
+      'The text establishes law; it does not show how institutions operate in practice.',
+    accessedDate,
+  },
+  {
+    id: 'constitution-44th-bill-1978',
+    title: 'Constitution (Forty-fifth Amendment) Bill, 1978',
+    publisher: 'Parliament of India',
+    url: 'https://sansad.in/getFile/BillsTexts/LSBillTexts/Asintroduced/88_1978_LS_E.pdf?source=legislation',
+    sourceType: 'official-bill-text',
+    reliability: 5,
+    ratingReason:
+      'Official introduced text of the Bill that Parliament amended and enacted as the Constitution (Forty-fourth Amendment) Act, 1978.',
+    bestFor:
+      'The May 15, 1978 introduction, original democratic-repair design, and legislative lineage.',
+    limitations:
+      'The introduced Bill is not the final constitutional text; enacted provisions and commencement dates must be checked against the current Constitution.',
+    publishedDate: '1978-05-15',
+    accessedDate,
+  },
+  {
+    id: 'india-independence-act',
+    title: 'Indian Independence Act 1947',
+    publisher: 'The National Archives / legislation.gov.uk',
+    url: 'https://www.legislation.gov.uk/ukpga/Geo6/10-11/30/enacted',
+    sourceType: 'law',
+    reliability: 5,
+    ratingReason: 'Primary enacted legal text for the 1947 transfer of power.',
+    bestFor: 'Legal chronology of independence and partition.',
+    limitations:
+      'The Act does not capture the human experience or full political context of partition.',
+    publishedDate: '1947-07-18',
+    accessedDate,
+  },
+  {
+    id: 'india-budget-1991',
+    title: 'Budget Speech 1991–92',
+    publisher: 'Ministry of Finance, Government of India',
+    url: 'https://www.indiabudget.gov.in/budget_archive/bspeech/bs199192.pdf',
+    sourceType: 'official-record',
+    reliability: 5,
+    ratingReason:
+      'Primary contemporaneous policy statement setting out the 1991 stabilization and reform agenda.',
+    bestFor: 'What the 1991 government proposed and why.',
+    limitations:
+      'A budget speech is evidence of policy intent, not independent proof of later impact.',
+    publishedDate: '1991-07-24',
+    accessedDate,
+  },
+  {
+    id: 'rbi-history-gold-1991',
+    title: 'Reserve Bank of India History, Volume IV: External Payments Crisis',
+    publisher: 'Reserve Bank of India',
+    url: 'https://rbidocs.rbi.org.in/rdocs/content/PDFs/Chapter12_04122018.pdf',
+    sourceType: 'official-institutional-history',
+    reliability: 5,
+    ratingReason:
+      'RBI’s official history records the April approval and May 1991 SBI gold transaction, quantities, financing terms, and later repurchase.',
+    bestFor:
+      'Separating the Chandra Shekhar-era 20-tonne transaction from the later July 1991 RBI pledge under the Rao government.',
+    limitations:
+      'Institutional history establishes chronology and transaction design, not the complete political responsibility for the underlying crisis.',
+    accessedDate,
+  },
+  {
+    id: 'imf-india-crisis-2000',
+    title: 'What Caused the 1991 Currency Crisis in India?',
+    publisher: 'International Monetary Fund',
+    url: 'https://www.imf.org/external/pubs/ft/wp/2000/wp00157.pdf',
+    sourceType: 'multilateral-economic-analysis',
+    reliability: 4,
+    ratingReason:
+      'Named empirical analysis of fiscal deficits, external vulnerability, reserves, confidence, and the 1991 currency crisis.',
+    bestFor:
+      'The structural causes and limits of emergency financing during the balance-of-payments crisis.',
+    limitations:
+      'A retrospective macroeconomic model; it does not assign a complete political responsibility score to one short-lived government.',
+    publishedDate: '2000-11-01',
+    accessedDate,
+  },
+  {
+    id: 'food-corporations-act-1964',
+    title: 'The Food Corporations Act, 1964',
+    publisher: 'India Code, Legislative Department',
+    url: 'https://upload.indiacode.nic.in/view-casepdf?id=AC_CEN_39_65_00001_196437_1517807322282&type=act',
+    sourceType: 'law',
+    reliability: 5,
+    ratingReason:
+      'Authoritative enacted text establishing the Food Corporation of India and state food corporations.',
+    bestFor:
+      'The institution’s legal purpose, functions, governance, borrowing, procurement, storage, and distribution powers.',
+    limitations:
+      'The Act establishes the institution; it does not independently prove later food-security, farmer-income, efficiency, or distribution outcomes.',
+    publishedDate: '1964-12-10',
+    accessedDate,
+  },
+  {
+    id: 'world-bank-foodgrain-policy-1999',
+    title: 'India Foodgrain Marketing Policies: Reforming to Meet Food Security Needs',
+    publisher: 'World Bank',
+    url: 'https://documents1.worldbank.org/curated/en/575711468750268959/pdf/multi-page.pdf',
+    sourceType: 'multilateral-policy-analysis',
+    reliability: 4,
+    ratingReason:
+      'Named analytical review of procurement, buffer stocks, distribution, food subsidy, market incentives, and FCI operating costs.',
+    bestFor:
+      'Independent evidence on the achievements, concentration, efficiency costs, quality incentives, and reform needs of the foodgrain system.',
+    limitations:
+      'Published in 1999 and cannot by itself establish the performance of later National Food Security Act arrangements.',
+    publishedDate: '1999-08-17',
+    accessedDate,
+  },
+  {
+    id: 'trai-history',
+    title: 'History of the Telecom Regulatory Authority of India',
+    publisher: 'Telecom Regulatory Authority of India',
+    url: 'https://www.trai.gov.in/about-us/history',
+    sourceType: 'official-regulatory-record',
+    reliability: 5,
+    ratingReason:
+      'Direct regulator record for TRAI’s statutory creation, commencement, original mandate, and later institutional changes.',
+    bestFor:
+      'The February 20, 1997 establishment date, regulatory rationale, tariff role, and institutional chronology.',
+    limitations:
+      'The regulator’s institutional history is not an independent estimate of competition, investment, consumer welfare, or regulatory quality.',
+    accessedDate,
+  },
+  {
+    id: 'world-bank-telecom-reform-2008',
+    title: 'India Telecommunications Sector Reform: Project Performance Assessment',
+    publisher: 'World Bank Independent Evaluation Group',
+    url: 'https://documents1.worldbank.org/curated/en/232071468254358902/pdf/462880PPAR0P0510Box334099B01PUBLIC1.pdf',
+    sourceType: 'multilateral-performance-evaluation',
+    reliability: 4,
+    ratingReason:
+      'Independent evaluation of India’s telecom policy, regulatory capacity, competition, private investment, and implementation sequence.',
+    bestFor:
+      'Separating TRAI’s institutional contribution from the 1999 policy, licensing reform, technology change, and later amendments.',
+    limitations:
+      'Evaluates a broader reform programme and World Bank project, so sector growth cannot be attributed to the 1997 Act alone.',
+    publishedDate: '2008-10-23',
+    accessedDate,
+  },
+  {
+    id: 'pmgsy-official',
+    title: 'Pradhan Mantri Gram Sadak Yojana: Programme Introduction',
+    publisher: 'National Rural Infrastructure Development Agency',
+    url: 'https://www.pmgsy.nic.in/hi/node/4310',
+    sourceType: 'official-programme-record',
+    reliability: 5,
+    ratingReason:
+      'Direct programme record for the December 25, 2000 launch, central funding design, eligibility, and all-weather connectivity objective.',
+    bestFor:
+      'Launch chronology, intended beneficiaries, programme design, and official delivery framework.',
+    limitations:
+      'Government programme material does not independently establish road quality, maintenance, access, poverty, employment, or education outcomes.',
+    publishedDate: '2000-12-25',
+    accessedDate,
+  },
+  {
+    id: 'world-bank-pmgsy-impact-2021',
+    title: 'The Economic and Social Impacts of PMGSY',
+    publisher: 'World Bank',
+    url: 'https://documents1.worldbank.org/curated/en/099555012012152503/pdf/P1535360224abf0e409925072d177110d8a.pdf',
+    sourceType: 'multilateral-impact-evaluation',
+    reliability: 4,
+    ratingReason:
+      'Named impact synthesis using project and evaluation evidence on travel, markets, work, schooling, health access, and rural welfare.',
+    bestFor:
+      'Observed accessibility, non-farm employment, market transport, and human-capital effects associated with PMGSY roads.',
+    limitations:
+      'Effects vary across states and terrains, and World Bank financing and evaluation cover a subset of the national programme.',
+    publishedDate: '2021-12-01',
+    accessedDate,
+  },
+  {
+    id: 'cag-pmgsy-audit-2016',
+    title: 'Performance Audit of Pradhan Mantri Gram Sadak Yojana',
+    publisher: 'Comptroller and Auditor General of India',
+    url: 'https://cag.gov.in/uploads/download_audit_report/2016/Union_Civil_Rural%20Development_Report_23_2016_Performance_Audit.pdf',
+    sourceType: 'official-performance-audit',
+    reliability: 5,
+    ratingReason:
+      'Constitutional audit evidence on target completion, planning, contracting, quality, fund management, maintenance, and monitoring.',
+    bestFor:
+      'Observed national implementation weaknesses and the gap between sanctioned connectivity and durable road delivery.',
+    limitations:
+      'The audit period predates later programme phases and emphasizes compliance failures rather than the complete welfare effect.',
+    publishedDate: '2016-08-12',
+    accessedDate,
+  },
+  {
+    id: 'idsa-gujral-doctrine',
+    title: 'Foreign Policy and Sea Power: India’s Maritime Role in Flux',
+    publisher: 'Manohar Parrikar Institute for Defence Studies and Analyses',
+    url: 'https://idsa.in/system/files/jds/jds_11_4_2017_foreign-policy-and-sea-power-india-maritime-role-flux.pdf',
+    sourceType: 'independent-institutional-analysis',
+    reliability: 4,
+    ratingReason:
+      'Named strategic analysis locating the Gujral Doctrine in the evolution of India’s cooperative regional policy.',
+    bestFor:
+      'The doctrine’s non-reciprocity principle, intended reduction of neighbour threat perceptions, later influence, and strategic limits.',
+    limitations:
+      'Retrospective strategic interpretation; it does not provide a controlled measure of bilateral trust or conflict reduction.',
+    publishedDate: '2017-10-01',
+    accessedDate,
+  },
+  {
+    id: 'charan-singh-dissolution-court-record',
+    title: 'Madan Murari Verma v. Choudhuri Charan Singh',
+    publisher: 'Indian Kanoon reproduction of Allahabad High Court record',
+    url: 'https://indiankanoon.org/doc/1867345/',
+    sourceType: 'court-record-republication',
+    reliability: 4,
+    ratingReason:
+      'Stable reproduction of a contemporaneous court record noting the August 22, 1979 dissolution of the Lok Sabha.',
+    bestFor:
+      'Legal chronology of the dissolution following the fall of the Charan Singh minority government.',
+    limitations:
+      'A secondary court-text repository; political motives and responsibility require corroborating historical sources.',
+    accessedDate,
+  },
+  {
+    id: 'income-tax-act-1961',
+    title: 'The Income-tax Act, 1961',
+    publisher: 'India Code, Legislative Department',
+    url: 'https://www.indiacode.nic.in/bitstream/123456789/2435/1/a1961-43.pdf',
+    sourceType: 'law',
+    reliability: 5,
+    ratingReason:
+      'Authoritative enacted text of the direct-tax code that applied from April 1962 through March 2026.',
+    bestFor:
+      'The legal framework, commencement, charging provisions, administration, appeals, and enforcement powers.',
+    limitations:
+      'The consolidated text shows the law after many amendments; it does not independently measure compliance, equity, or economic impact.',
+    publishedDate: '1961-09-13',
+    accessedDate,
+  },
+  {
+    id: 'budget-speech-1994-95',
+    title: 'Budget Speech 1994–95',
+    publisher: 'Ministry of Finance, Government of India',
+    url: 'https://www.indiabudget.gov.in/doc/bspeech/bs199495.pdf',
+    sourceType: 'official-budget-record',
+    reliability: 5,
+    ratingReason:
+      'Primary contemporaneous record introducing service tax and continuing direct, customs, excise, and MODVAT rationalisation.',
+    bestFor:
+      'The exact 1994 tax proposals, rates, intended purpose, and stated revenue effects.',
+    limitations:
+      'A budget speech establishes policy intent and design, not the later net economic or distributional outcome.',
+    publishedDate: '1994-02-28',
+    accessedDate,
+  },
+  {
+    id: 'nipfp-tax-reform-2005',
+    title: 'Trends and Issues in Tax Policy and Reform in India',
+    publisher: 'National Institute of Public Finance and Policy',
+    url: 'https://www.nipfp.org.in/media/documents/wp05_nipfp_037.pdf',
+    sourceType: 'independent-public-finance-analysis',
+    reliability: 4,
+    ratingReason:
+      'Named public-finance analysis of India’s direct, customs, excise, service-tax, VAT, and administrative reforms with explicit evidence limits.',
+    bestFor:
+      'Long-run outcomes, compliance costs, remaining distortions, and the sequencing from MODVAT and service tax toward VAT and GST.',
+    limitations:
+      'Published in 2005; later GST and digital-administration outcomes require newer evidence.',
+    accessedDate,
+  },
+  {
+    id: 'rbi-state-vat-2005',
+    title: 'State Finances: A Study of Budgets of 2004–05',
+    publisher: 'Reserve Bank of India',
+    url: 'https://www.rbi.org.in/upload/publications/pdfs/60061.pdf',
+    sourceType: 'official-fiscal-analysis',
+    reliability: 4,
+    ratingReason:
+      'Detailed RBI study documenting the design, federal trade-offs, expected effects, and implementation conditions for state VAT.',
+    bestFor:
+      'The April 2005 rollout plan, input-credit design, rate harmonisation, revenue expectations, and federal concerns.',
+    limitations:
+      'Published at rollout, so many stated benefits were expectations rather than measured nationwide outcomes.',
+    publishedDate: '2005-06-01',
+    accessedDate,
+  },
+  {
+    id: 'cag-state-vat-study',
+    title: 'Implementation of Value Added Tax in India: Lessons from Transition',
+    publisher: 'Comptroller and Auditor General of India',
+    url: 'https://cag.gov.in/uploads/StudyReports/SR-StudyReports-05de75c18e2e379-28804851.pdf',
+    sourceType: 'official-performance-audit',
+    reliability: 5,
+    ratingReason:
+      'Cross-state audit synthesis based on reviews of the transition from sales tax to VAT in twenty-three states.',
+    bestFor:
+      'Observed registration, return, input-credit, refund, IT-system, and implementation weaknesses after rollout.',
+    limitations:
+      'Audit findings focus on control and compliance failures and are not a complete welfare or growth evaluation.',
+    accessedDate,
+  },
+  {
+    id: 'cag-service-tax-audit-2019',
+    title: 'Compliance Audit of Central Excise and Service Tax, Report No. 4 of 2019',
+    publisher: 'Comptroller and Auditor General of India',
+    url: 'https://cag.gov.in/uploads/media/Report-No-4-of-2019-Compliance-Audit-of-Union-Government-Department-of-Revenue-Indirect-Taxes-Central-Excise-and-Service-Tax-20201205174703-20201231122843.pdf',
+    sourceType: 'official-performance-audit',
+    reliability: 4,
+    ratingReason:
+      'Independent constitutional audit evidence on legacy service-tax assessments, arrears, verification, recovery, and transition administration.',
+    bestFor:
+      'Observed service-tax compliance and control weaknesses rather than the government’s original policy rationale.',
+    limitations:
+      'The audit covers sampled compliance failures near the GST transition and is not a complete welfare evaluation of service tax.',
+    publishedDate: '2019-07-30',
+    accessedDate,
+  },
+  {
+    id: 'pib-corporate-tax-2019',
+    title: 'Corporate tax rates reduced to 22% and 15%',
+    publisher: 'Ministry of Finance via Press Information Bureau',
+    url: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=1585641',
+    sourceType: 'official-policy-announcement',
+    reliability: 5,
+    ratingReason:
+      'Controlling official announcement of the September 2019 corporate-tax options and effective rates.',
+    bestFor:
+      'The rate cut, eligibility conditions, manufacturing concession, MAT treatment, and commencement date.',
+    limitations:
+      'Government projections about investment and jobs are policy rationale, not independent outcome evidence.',
+    publishedDate: '2019-09-20',
+    accessedDate,
+  },
+  {
+    id: 'pib-corporate-tax-revenue-impact-2020',
+    title: 'Growth trajectory of direct-tax collection and recent reforms',
+    publisher: 'Ministry of Finance via Press Information Bureau',
+    url: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=1630018',
+    sourceType: 'official-fiscal-statistics',
+    reliability: 5,
+    ratingReason:
+      'Official quantified estimate of revenue foregone from the 2019 corporate-tax and 2020 personal-tax reforms.',
+    bestFor:
+      'The government’s estimated Rs 1.45 lakh crore corporate-tax revenue effect and direct-tax collection context.',
+    limitations:
+      'The counterfactual revenue estimate is government-produced and does not isolate later investment caused by the reform.',
+    publishedDate: '2020-06-07',
+    accessedDate,
+  },
+  {
+    id: 'economic-survey-2023-industry',
+    title: 'Economic Survey 2022–23: Industry',
+    publisher: 'Ministry of Finance, Government of India',
+    url: 'https://www.indiabudget.gov.in/budget2023-24/economicsurvey/doc/eschapter/echap09.pdf',
+    sourceType: 'official-economic-analysis',
+    reliability: 4,
+    ratingReason:
+      'Named official economic analysis placing the 2019 tax cut within the investment, deleveraging, slowdown, and pandemic sequence.',
+    bestFor:
+      'Why post-cut investment evidence is difficult to interpret and how the government describes the transmission channel.',
+    limitations:
+      'Government-authored interpretation and the pandemic prevent a clean causal estimate of the tax cut’s additional effect.',
+    publishedDate: '2023-01-31',
+    accessedDate,
+  },
+  {
+    id: 'nipfp-corporate-tax-2023',
+    title:
+      'Recent Reforms in India’s Corporate Income Tax Regime: Rationale, Impacts and Improvements',
+    publisher: 'National Institute of Public Finance and Policy',
+    url: 'https://www.nipfp.org.in/media/medialibrary/2023/04/WP_393_2023.pdf',
+    sourceType: 'independent-public-finance-analysis',
+    reliability: 4,
+    ratingReason:
+      'Empirical and user-cost analysis of the optional lower corporate-tax regimes using official company-tax data.',
+    bestFor:
+      'Adoption differences by firm size and evidence that lower-rate options can remain unattractive for some younger or smaller companies.',
+    limitations:
+      'A working paper rather than a final economy-wide causal estimate of investment, employment, or revenue effects.',
+    publishedDate: '2023-04-24',
+    accessedDate,
+  },
+  {
+    id: 'pib-new-tax-regime-uptake-2024',
+    title: 'Record 7.28 crore income-tax returns filed for AY 2024–25',
+    publisher: 'Central Board of Direct Taxes via Press Information Bureau',
+    url: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=2040669',
+    sourceType: 'official-operational-statistics',
+    reliability: 5,
+    ratingReason:
+      'Direct CBDT filing statistics reporting old- and new-regime selections for a completed filing window.',
+    bestFor:
+      'Observed uptake of the personal new tax regime and overall return-filing volume.',
+    limitations:
+      'Choosing a regime shows revealed taxpayer preference under current rules, not economy-wide welfare or fairness.',
+    publishedDate: '2024-08-02',
+    accessedDate,
+  },
+  {
+    id: 'pib-personal-tax-relief-2025',
+    title: 'No income tax on annual income up to Rs 12 lakh under the new regime',
+    publisher: 'Ministry of Finance via Press Information Bureau',
+    url: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=2098406',
+    sourceType: 'official-policy-announcement',
+    reliability: 5,
+    ratingReason:
+      'Primary official description of the 2025 rebate, revised slabs, standard deduction, and estimated revenue effect.',
+    bestFor:
+      'The current shape of the personal new tax regime from financial year 2025–26.',
+    limitations:
+      'Projected consumption and investment benefits are government expectations, not observed causal outcomes.',
+    publishedDate: '2025-02-01',
+    accessedDate,
+  },
+  {
+    id: 'pib-faceless-tax-2020',
+    title: 'Transparent Taxation platform launch',
+    publisher: 'Prime Minister’s Office via Press Information Bureau',
+    url: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=1645472',
+    sourceType: 'official-policy-announcement',
+    reliability: 5,
+    ratingReason:
+      'Primary official launch record for faceless assessment, the Taxpayers’ Charter, and the announced faceless-appeal timetable.',
+    bestFor:
+      'Launch date, intended anti-discretion design, random allocation, and digital workflow.',
+    limitations:
+      'The launch statement does not independently establish fairness, error rates, expertise, or reduced litigation.',
+    publishedDate: '2020-08-13',
+    accessedDate,
+  },
+  {
+    id: 'finance-committee-direct-taxes-2025',
+    title: 'Standing Committee on Finance: Demands for Grants 2025–26, Department of Revenue',
+    publisher: 'Standing Committee on Finance, Lok Sabha',
+    url: 'https://sansad.in/getFile/lsscommittee/Finance/18_Finance_9.pdf?source=loksabhadocs',
+    sourceType: 'parliamentary-oversight-report',
+    reliability: 5,
+    ratingReason:
+      'Official multiparty committee record with department evidence, filing statistics, and explicit findings on faceless assessment and tax litigation.',
+    bestFor:
+      'Taxpayer-base growth, operational evidence, specialist-allocation problems, rectification, appeals, and committee recommendations.',
+    limitations:
+      'Some quantitative statements reproduce departmental submissions; committee conclusions are oversight judgments, not experiments.',
+    publishedDate: '2025-03-19',
+    accessedDate,
+  },
+  {
+    id: 'income-tax-act-2025-passed',
+    title: 'Income-tax Bill, 2025 as passed by both Houses',
+    publisher: 'Parliament of India',
+    url: 'https://sansad.in/getFile/BillsTexts/LSBillTexts/PassedBothHouses/Income828202553007PM.pdf?source=legislation',
+    sourceType: 'law',
+    reliability: 5,
+    ratingReason:
+      'Official final parliamentary text assented to as Act 30 of 2025.',
+    bestFor:
+      'The replacement code, commencement, continuity provisions, taxpayer obligations, powers, remedies, and schedules.',
+    limitations:
+      'The text establishes legal design; four months of operation is insufficient for a credible outcome assessment.',
+    publishedDate: '2025-08-21',
+    accessedDate,
+  },
+  {
+    id: 'income-tax-act-2025-guide',
+    title: 'Objective and scope of the Income-tax Act, 2025',
+    publisher: 'Income Tax Department',
+    url: 'https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/objective-and-scope-new-act',
+    sourceType: 'official-taxpayer-guidance',
+    reliability: 5,
+    ratingReason:
+      'Current official implementation guidance explaining commencement, repeal, continuity, and the new tax-year terminology.',
+    bestFor:
+      'The April 1, 2026 effective date, dual transition, unchanged tax-policy scope, and practical taxpayer examples.',
+    limitations:
+      'Administrative guidance presents the department’s interpretation and does not evaluate rights or implementation quality independently.',
+    publishedDate: '2026-07-22',
+    accessedDate,
+  },
+  {
+    id: 'income-tax-rules-2026',
+    title: 'Income-tax Rules, 2026',
+    publisher: 'Central Board of Direct Taxes',
+    url: 'https://www.incometax.gov.in/iec/foportal/sites/default/files/2026-03/En-Notified-IT-Rules-2026-20-03-2026.pdf?mobile-app=1',
+    sourceType: 'rules',
+    reliability: 5,
+    ratingReason:
+      'Official notified rules implementing Act 30 of 2025 from April 1, 2026.',
+    bestFor:
+      'Forms, procedures, declarations, administration, and operational commencement of the replacement code.',
+    limitations:
+      'New rules establish process but do not yet show whether compliance becomes simpler in practice.',
+    publishedDate: '2026-03-20',
+    accessedDate,
+  },
+  {
+    id: 'prs-income-tax-bill-2025',
+    title: 'The Income-tax Bill, 2025',
+    publisher: 'PRS Legislative Research',
+    url: 'https://prsindia.org/billtrack/the-income-tax-bill-2025',
+    sourceType: 'independent-legislative-analysis',
+    reliability: 4,
+    ratingReason:
+      'Clause-linked independent analysis of the replacement code and issues carried over from the 1961 framework.',
+    bestFor:
+      'Plain-language comparison and scrutiny of delegated powers, digital search access, and retained enforcement provisions.',
+    limitations:
+      'The page began with the withdrawn February Bill; final enacted-text details must be checked against Parliament and current rules.',
+    accessedDate,
+  },
+  {
+    id: 'eci-2024',
+    title: 'General Election to Lok Sabha 2024: Statistical Reports',
+    publisher: 'Election Commission of India',
+    url: 'https://www.eci.gov.in/general-election-to-loksabha-2024-statistical-reports',
+    sourceType: 'official-election-results',
+    reliability: 5,
+    ratingReason: 'Authoritative final constituency-level election results.',
+    bestFor: 'Seat outcomes and electoral chronology.',
+    limitations:
+      'Results show votes and seats, not a comprehensive approval rating or policy mandate.',
+    publishedDate: '2024-06-04',
+    accessedDate,
+  },
+  {
+    id: 'niti-mpi-2023',
+    title: 'National Multidimensional Poverty Index: A Progress Review 2023',
+    publisher: 'NITI Aayog',
+    url: 'https://www.niti.gov.in/sites/default/files/2023-08/India-National-Multidimentional-Poverty-Index-2023.pdf',
+    sourceType: 'official-analysis',
+    reliability: 4,
+    ratingReason:
+      'Transparent official MPI framework based mainly on NFHS survey rounds and published indicator weights.',
+    bestFor: 'Multidimensional poverty levels and state comparisons for the covered survey years.',
+    limitations:
+      'Later-year values can be extrapolations; MPI is not interchangeable with consumption poverty.',
+    publishedDate: '2023-07-30',
+    accessedDate,
+  },
+  {
+    id: 'undp-hdr-2025',
+    title: 'Human Development Report 2025',
+    publisher: 'United Nations Development Programme',
+    url: 'https://hdr.undp.org/content/human-development-report-2025',
+    sourceType: 'multilateral-analysis',
+    reliability: 4,
+    ratingReason:
+      'Established methodology with downloadable component data and documented revisions.',
+    bestFor: 'HDI and cross-country human-development context.',
+    limitations:
+      'Composite indices compress dimensions and often lag the current year.',
+    publishedDate: '2025-05-06',
+    accessedDate,
+  },
+  {
+    id: 'vdem-v16',
+    title: 'V-Dem Country-Year Dataset v16',
+    publisher: 'Varieties of Democracy Institute, University of Gothenburg',
+    url: 'https://www.v-dem.net/data/the-v-dem-dataset/',
+    sourceType: 'academic-dataset',
+    reliability: 4,
+    ratingReason:
+      'Large expert-coded dataset with published methodology, uncertainty estimates, and coder cautions.',
+    bestFor: 'Long-run institutional, democratic, civil-liberty, and participation trends.',
+    limitations:
+      'Many variables are expert judgments rather than direct counts; point estimates have uncertainty.',
+    publishedDate: '2026-03-16',
+    accessedDate,
+  },
+  {
+    id: 'owid-vdem',
+    title: 'V-Dem Electoral and Liberal Democracy Data',
+    publisher: 'Our World in Data',
+    url: 'https://ourworldindata.org/grapher/electoral-democracy-index.csv',
+    sourceType: 'data-republisher',
+    reliability: 4,
+    ratingReason:
+      'Accessible reproduction of selected V-Dem series with metadata linking to the original dataset.',
+    bestFor: 'Cross-checking selected V-Dem time series.',
+    limitations:
+      'A secondary delivery layer; V-Dem methodology and cautions remain controlling.',
+    accessedDate,
+  },
+  {
+    id: 'cbic-gst',
+    title: 'GST – An Update',
+    publisher: 'Central Board of Indirect Taxes and Customs',
+    url: 'https://cbic-gst.gov.in/pdf/01062019-GST-An-Update.pdf',
+    sourceType: 'official-record',
+    reliability: 5,
+    ratingReason: 'Primary record for the legal and administrative GST rollout chronology.',
+    bestFor: 'Implementation dates and official design.',
+    limitations:
+      'Not an independent evaluation of compliance costs, revenue effects, or federal trade-offs.',
+    publishedDate: '2019-06-01',
+    accessedDate,
+  },
+  {
+    id: 'world-bank-gst-implementation',
+    title: 'Implementation of India’s Goods and Services Tax: Design and International Comparison',
+    publisher: 'World Bank',
+    url: 'https://documents1.worldbank.org/curated/en/918831542619297197/pdf/GST-final-IDU.pdf',
+    sourceType: 'multilateral-policy-analysis',
+    reliability: 4,
+    ratingReason:
+      'Transparent comparative analysis of India’s initial GST rates, thresholds, reporting burden, trade effects, and design trade-offs.',
+    bestFor:
+      'Independent evidence on common-market gains, multiple-rate complexity, small-firm burden, refunds, and international comparison.',
+    limitations:
+      'Published during early implementation; later digital, rate, revenue, and compliance changes require newer evidence.',
+    publishedDate: '2018-03-01',
+    accessedDate,
+  },
+  {
+    id: 'cag-gst-audit-2024',
+    title: 'GST Audit Report No. 7 of 2024',
+    publisher: 'Comptroller and Auditor General of India',
+    url: 'https://cag.gov.in/uploads/media/GST-Audit-Report-No-7-of-2024-English-066b4b6cd25e4b3-28435253-1-067401d8a1d8af2-47978828.pdf',
+    sourceType: 'official-performance-audit',
+    reliability: 5,
+    ratingReason:
+      'National audit evidence on return systems, input-tax-credit verification, compliance controls, and implementation gaps.',
+    bestFor:
+      'Observed GST administration and system-control weaknesses beyond government rollout descriptions.',
+    limitations:
+      'Audit findings focus on control failures and do not by themselves estimate GST’s complete growth, welfare, or federal effect.',
+    publishedDate: '2024-08-01',
+    accessedDate,
+  },
+  {
+    id: 'gst-council-56-2025',
+    title: 'Recommendations of the 56th GST Council meeting',
+    publisher: 'Goods and Services Tax Council',
+    url: 'https://gstcouncil.gov.in/sites/default/files/2025-09/press_release_press_information_bureau_0.pdf',
+    sourceType: 'official-council-record',
+    reliability: 5,
+    ratingReason:
+      'Controlling official record of the September 2025 Council recommendations, affected categories, and rate-rationalisation design.',
+    bestFor:
+      'The principal 5% and 18% slabs, special 40% treatment, exemptions, sector changes, and implementation recommendation.',
+    limitations:
+      'Council recommendations and expected benefits do not establish later revenue, inflation, compliance, or equity outcomes.',
+    publishedDate: '2025-09-03',
+    accessedDate,
+  },
+  {
+    id: 'gst-rate-faq-2025',
+    title: 'FAQs on the decisions of the 56th GST Council',
+    publisher: 'Ministry of Finance via Press Information Bureau',
+    url: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=2163560',
+    sourceType: 'official-taxpayer-guidance',
+    reliability: 5,
+    ratingReason:
+      'Official implementation guidance stating effective dates, transition treatment, input-credit handling, and initially deferred categories.',
+    bestFor:
+      'The September 22, 2025 commencement for most changes and practical transition rules.',
+    limitations:
+      'An explanatory FAQ; it does not independently measure pass-through to prices, revenue neutrality, or distribution.',
+    publishedDate: '2025-09-03',
+    accessedDate,
+  },
+  {
+    id: 'rti-act',
+    title: 'The Right to Information Act, 2005',
+    publisher: 'India Code, Legislative Department',
+    url: 'https://www.indiacode.nic.in/bitstream/123456789/2065/1/aa2005.pdf',
+    sourceType: 'law',
+    reliability: 5,
+    ratingReason: 'Authoritative enacted text.',
+    bestFor: 'The legal rights and institutional duties created by the RTI Act.',
+    limitations: 'Does not measure implementation quality or later institutional changes.',
+    publishedDate: '2005-06-15',
+    accessedDate,
+  },
+  {
+    id: 'mgnrega-act',
+    title: 'The National Rural Employment Guarantee Act, 2005',
+    publisher: 'India Code, Legislative Department',
+    url: 'https://www.indiacode.nic.in/bitstream/123456789/2014/1/a2005-42.pdf',
+    sourceType: 'law',
+    reliability: 5,
+    ratingReason: 'Authoritative enacted text for the rural employment guarantee.',
+    bestFor: 'Programme entitlement and legal design.',
+    limitations: 'Does not by itself establish implementation reach, payment delays, or impact.',
+    publishedDate: '2005-09-05',
+    accessedDate,
+  },
+  {
+    id: 'aadhaar-act',
+    title: 'The Aadhaar Act, 2016',
+    publisher: 'India Code, Legislative Department',
+    url: 'https://www.indiacode.nic.in/bitstream/123456789/2160/1/A2016-18.pdf',
+    sourceType: 'law',
+    reliability: 5,
+    ratingReason: 'Authoritative legal text governing Aadhaar.',
+    bestFor: 'Legal scope, authentication framework, and statutory chronology.',
+    limitations:
+      'Does not resolve debates about exclusion, privacy, or the causal impact of digital delivery.',
+    publishedDate: '2016-03-25',
+    accessedDate,
+  },
+  {
+    id: 'rbi-demonetisation',
+    title: 'Annual Report 2016–17',
+    publisher: 'Reserve Bank of India',
+    url: 'https://www.rbi.org.in/Scripts/AnnualReportPublications.aspx?Id=1209',
+    sourceType: 'official-analysis',
+    reliability: 5,
+    ratingReason:
+      'Primary central-bank accounting of currency withdrawal, remonetisation, and returned notes.',
+    bestFor: 'Currency-system facts and implementation chronology.',
+    limitations:
+      'Does not alone settle wider causal claims about informal employment, tax compliance, or long-run digitisation.',
+    publishedDate: '2017-08-30',
+    accessedDate,
+  },
+  {
+    id: 'isro-chandrayaan3',
+    title: 'Chandrayaan-3',
+    publisher: 'Indian Space Research Organisation',
+    url: 'https://www.isro.gov.in/Chandrayaan3_New.html',
+    sourceType: 'official-record',
+    reliability: 5,
+    ratingReason: 'Primary mission record from the operating space agency.',
+    bestFor: 'Mission dates, objectives, and landing confirmation.',
+    limitations: 'Not an independent assessment of broader science-policy effectiveness.',
+    publishedDate: '2023-08-23',
+    accessedDate,
+  },
+  {
+    id: 'mha-covid-lockdown',
+    title: 'Order under the Disaster Management Act: National Lockdown Guidelines',
+    publisher: 'Ministry of Home Affairs, Government of India',
+    url: 'https://www.mha.gov.in/sites/default/files/Guidelines.pdf',
+    sourceType: 'official-order',
+    reliability: 5,
+    ratingReason: 'Primary legal-administrative record of the national lockdown.',
+    bestFor: 'The scope and timing of the 2020 lockdown order.',
+    limitations:
+      'Does not independently measure epidemiological benefits, migrant hardship, or economic cost.',
+    publishedDate: '2020-03-24',
+    accessedDate,
+  },
+  {
+    id: 'prs-farm-laws',
+    title: 'The Farm Acts, 2020',
+    publisher: 'PRS Legislative Research',
+    url: 'https://prsindia.org/billtrack/the-farmers-produce-trade-and-commerce-promotion-and-facilitation-bill-2020',
+    sourceType: 'independent-legislative-analysis',
+    reliability: 4,
+    ratingReason:
+      'Nonpartisan legislative summaries link to bill text and explain provisions in plain language.',
+    bestFor: 'Legislative comparison and implementation questions.',
+    limitations:
+      'A secondary summary; contested economic consequences require additional evidence.',
+    publishedDate: '2020-09-17',
+    accessedDate,
+  },
+  {
+    id: 'supreme-court-article370',
+    title: 'In Re: Article 370 of the Constitution',
+    publisher: 'Supreme Court of India',
+    url: 'https://www.sci.gov.in/',
+    sourceType: 'judgment',
+    reliability: 5,
+    ratingReason: 'Primary judicial authority for the December 2023 constitutional ruling.',
+    bestFor: 'What the Court held and the legal reasoning.',
+    limitations:
+      'The court record does not by itself measure social, security, or economic outcomes.',
+    publishedDate: '2023-12-11',
+    accessedDate,
+  },
+  {
+    id: 'dae-pokhran',
+    title: 'Pokhran-II Nuclear Tests',
+    publisher: 'Department of Atomic Energy, Government of India',
+    url: 'https://dae.gov.in/',
+    sourceType: 'official-record',
+    reliability: 5,
+    ratingReason: 'Primary government source for the nuclear-test programme.',
+    bestFor: 'Official chronology and programme claims.',
+    limitations:
+      'Security and environmental consequences require independent corroboration.',
+    publishedDate: '1998-05-11',
+    accessedDate,
+  },
+  {
+    id: 'britannica-modern-india',
+    title: 'India: The Republic of India',
+    publisher: 'Encyclopaedia Britannica',
+    url: 'https://www.britannica.com/place/India/The-Republic-of-India',
+    sourceType: 'reference-secondary',
+    reliability: 3,
+    ratingReason:
+      'Edited reference overview useful for orientation and cross-checking historical chronology.',
+    bestFor: 'High-level historical context and links between events.',
+    limitations:
+      'Condensed secondary interpretation; not sufficient alone for contested claims.',
+    accessedDate,
+  },
+  {
+    id: 'sciences-po-communal-1',
+    title: 'Communal Riots in India 1947–1986',
+    publisher: 'Sciences Po, Online Encyclopedia of Mass Violence',
+    url: 'https://www.sciencespo.fr/mass-violence-war-massacre-resistance/fr/document/hindu-muslim-communal-riots-india-i-1947-1986.html',
+    sourceType: 'academic-synthesis',
+    reliability: 4,
+    ratingReason:
+      'Specialist academic synthesis with an explicit chronology and bibliography.',
+    bestFor:
+      'Cross-checking major episodes of communal violence and locating further primary material.',
+    limitations:
+      'A secondary synthesis; casualty estimates and responsibility claims can remain contested.',
+    publishedDate: '2009-01-01',
+    accessedDate,
+  },
+  {
+    id: 'sciences-po-communal-2',
+    title: 'Communal Riots in India 1986–2011',
+    publisher: 'Sciences Po, Online Encyclopedia of Mass Violence',
+    url: 'https://www.sciencespo.fr/mass-violence-war-massacre-resistance/en/document/hindu-muslim-communal-riots-india-ii-1986-2011.html',
+    sourceType: 'academic-synthesis',
+    reliability: 4,
+    ratingReason:
+      'Specialist academic synthesis with an explicit chronology and bibliography.',
+    bestFor:
+      'Context for Bhagalpur, Mumbai, Gujarat, and other major episodes of communal violence.',
+    limitations:
+      'A secondary synthesis; should be paired with commissions, courts, and official records.',
+    publishedDate: '2012-06-20',
+    accessedDate,
+  },
+  {
+    id: 'sciences-po-calcutta-1946',
+    title: 'The Calcutta Riots of 1946',
+    publisher: 'Sciences Po, Online Encyclopedia of Mass Violence',
+    url: 'https://www.sciencespo.fr/mass-violence-war-massacre-resistance/fr/document/calcutta-riots-1946.html',
+    sourceType: 'academic-synthesis',
+    reliability: 4,
+    ratingReason:
+      'Focused academic reconstruction with source discussion and explicit uncertainty about counts.',
+    bestFor:
+      'Context, chronology, and evidentiary cautions for the Great Calcutta Killings.',
+    limitations:
+      'A retrospective secondary account; exact casualty and perpetrator distributions remain uncertain.',
+    publishedDate: '2007-06-11',
+    accessedDate,
+  },
+  {
+    id: 'nanavati-commission',
+    title: 'Justice G. T. Nanavati Commission of Inquiry Report',
+    publisher: 'Ministry of Home Affairs, Government of India',
+    url: 'https://www.mha.gov.in/sites/default/files/Nanavati-I_eng_0.pdf',
+    sourceType: 'commission-report',
+    reliability: 5,
+    ratingReason:
+      'Official commission record based on testimony, documents, and an inquiry mandate.',
+    bestFor:
+      'The official evidentiary record and findings concerning the 1984 anti-Sikh violence.',
+    limitations:
+      'Commission findings were debated and arrived decades after the violence.',
+    publishedDate: '2005-02-09',
+    accessedDate,
+  },
+  {
+    id: 'mha-annual-reports',
+    title: 'Ministry of Home Affairs Annual Reports',
+    publisher: 'Ministry of Home Affairs, Government of India',
+    url: 'https://www.mha.gov.in/en/documents/annual-reports',
+    sourceType: 'official-record',
+    reliability: 5,
+    ratingReason:
+      'Primary Union-government record for internal-security events, official counts, and policy responses.',
+    bestFor:
+      'Official chronology, administrative response, and government-reported incident statistics.',
+    limitations:
+      'Government reporting is not an independent account of state responsibility or undercounting.',
+    accessedDate,
+  },
+  {
+    id: 'nhrc-gujarat-2002',
+    title: 'Proceedings of the NHRC on Gujarat Communal Violence',
+    publisher: 'National Human Rights Commission of India',
+    url: 'https://nhrc.nic.in/assets/uploads/publication/GUJARAT.pdf',
+    sourceType: 'official-human-rights-record',
+    reliability: 5,
+    ratingReason:
+      'Primary statutory human-rights body record documenting proceedings and official concerns.',
+    bestFor:
+      'State-response, relief, investigation, and rights-accountability questions after the 2002 violence.',
+    limitations:
+      'Proceedings do not replace the full body of trial judgments, inquiries, and independent research.',
+    publishedDate: '2002-05-31',
+    accessedDate,
+  },
+  {
+    id: 'justice-verma-2013',
+    title: 'Justice Verma Committee Report Summary',
+    publisher: 'PRS Legislative Research',
+    url: 'https://prsindia.org/policy/report-summaries/justice-verma-committee-report-summary',
+    sourceType: 'independent-legislative-analysis',
+    reliability: 4,
+    ratingReason:
+      'Independent, structured summary of the committee’s published recommendations.',
+    bestFor:
+      'The institutional response to the 2012 Delhi gang rape and nationwide protests.',
+    limitations:
+      'A secondary summary; consult the full committee report and enacted law for exact language.',
+    publishedDate: '2013-01-23',
+    accessedDate,
+  },
+  {
+    id: 'citizenship-amendment-act',
+    title: 'The Citizenship (Amendment) Act, 2019',
+    publisher: 'India Code, Legislative Department',
+    url: 'https://www.indiacode.nic.in/bitstream/123456789/15231/1/a2019-47.pdf',
+    sourceType: 'law',
+    reliability: 5,
+    ratingReason: 'Authoritative enacted legal text.',
+    bestFor: 'What the Citizenship Amendment Act changed in statute.',
+    limitations:
+      'Does not establish the policy’s constitutional validity, implementation effects, or the experience of protesters.',
+    publishedDate: '2019-12-12',
+    accessedDate: caaReviewedDate,
+  },
+  {
+    id: 'caa-commencement-2020',
+    title: 'Citizenship (Amendment) Act commencement notification',
+    publisher: 'India Code, Legislative Department',
+    url: 'https://www.indiacode.nic.in/ViewFileUploaded?file=the_citizenship_%28amendment%29_act_2019_enforcement_notification%28bilingual%29.pdf&path=AC_CEN_5_40_00001_195557_1517807319455%2Fnotificationindividualfile%2F',
+    sourceType: 'official-notification',
+    reliability: 5,
+    ratingReason:
+      'Controlling commencement notification issued under section 1(2) of the Act.',
+    bestFor: 'The January 10, 2020 date on which the 2019 Act came into force.',
+    limitations:
+      'Establishes commencement only; it does not show whether an application process was operational.',
+    publishedDate: '2020-01-10',
+    accessedDate: caaReviewedDate,
+  },
+  {
+    id: 'caa-rules-2024',
+    title: 'MHA citizenship acts and rules index: CAA Rules 2024',
+    publisher: 'Ministry of Home Affairs, Government of India',
+    url: 'https://www.mha.gov.in/en/divisionofmha/foreigners-division/acts-rules-and-regulations-pertaining-foreigners-division',
+    sourceType: 'official-rules-index',
+    reliability: 5,
+    ratingReason:
+      'Official MHA publication index that identifies and links the controlling Gazette PDF for the 2024 Rules.',
+    bestFor:
+      'Locating the official Rules governing documents, forms, committees, oath, scrutiny, and certificates.',
+    limitations:
+      'The index links the legal text; it does not establish fairness, processing time, or national outcomes.',
+    publishedDate: '2024-03-11',
+    accessedDate: caaReviewedDate,
+  },
+  {
+    id: 'caa-rules-passport-2026',
+    title: 'Citizenship (Amendment) Rules, 2026: Schedule IC update',
+    publisher: 'Ministry of Home Affairs, Government of India',
+    url: 'https://indiancitizenshiponline.nic.in/Documents/UserGuide/E_gazette_19052026.pdf',
+    sourceType: 'official-rules',
+    reliability: 5,
+    ratingReason:
+      'Controlling Gazette amendment to the current CAA application declaration.',
+    bestFor:
+      'The May 2026 passport-status declaration and post-approval surrender requirement.',
+    limitations:
+      'A narrow procedural amendment; it does not measure application access or policy outcomes.',
+    publishedDate: '2026-05-18',
+    accessedDate: caaReviewedDate,
+  },
+  {
+    id: 'caa-prs-2019',
+    title: 'The Citizenship (Amendment) Bill, 2019',
+    publisher: 'PRS Legislative Research',
+    url: 'https://prsindia.org/billtrack/the-citizenship-amendment-bill-2019',
+    sourceType: 'independent-legislative-analysis',
+    reliability: 4,
+    ratingReason:
+      'Structured, nonpartisan comparison of the bill, its stated rationale, and constitutional design questions.',
+    bestFor:
+      'Eligibility, northeastern exceptions, OCI changes, and under-inclusion or equal-treatment issues.',
+    limitations:
+      'Predates implementation and does not decide the Act’s constitutional validity.',
+    publishedDate: '2019-12-11',
+    accessedDate: caaReviewedDate,
+  },
+  {
+    id: 'caa-supreme-court-office-report-2026',
+    title: 'Office report in the CAA constitutional challenge batch',
+    publisher: 'Supreme Court of India',
+    url: 'https://api.sci.gov.in/officereport/2019/44931/44931_2019_2026-05-05.pdf',
+    sourceType: 'court-record',
+    reliability: 5,
+    ratingReason:
+      'Primary Supreme Court case record for the live challenge and hearing posture.',
+    bestFor:
+      'Procedural status, tagged petitions, pleadings, and scheduled final-hearing context.',
+    limitations:
+      'An office report is not a merits judgment and does not resolve constitutionality.',
+    publishedDate: '2026-05-05',
+    accessedDate: caaReviewedDate,
+  },
+  {
+    id: 'caa-supreme-court-observer',
+    title: 'Citizenship Amendment Act case tracker',
+    publisher: 'Supreme Court Observer',
+    url: 'https://www.scobserver.in/cases/constitutionality-of-the-citizenship-amendment-act-2019-caa/',
+    sourceType: 'independent-legal-reporting',
+    reliability: 4,
+    ratingReason:
+      'Named, regularly updated legal tracker that links the pleadings and procedural history.',
+    bestFor:
+      'Current pending status and plain-language chronology of the constitutional challenge.',
+    limitations:
+      'Independent secondary reporting; the Supreme Court docket and orders control.',
+    accessedDate: caaReviewedDate,
+  },
+  {
+    id: 'caa-pib-first-certificates-2024',
+    title: 'First citizenship certificates issued under the 2024 CAA Rules',
+    publisher: 'Press Information Bureau, Ministry of Home Affairs',
+    url: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=2020671',
+    sourceType: 'official-implementation-record',
+    reliability: 5,
+    ratingReason:
+      'Direct government record of the first Delhi approvals and operating procedure.',
+    bestFor:
+      'The May 15, 2024 grant of 14 certificates and the committee workflow.',
+    limitations:
+      'A selected official batch, not a national applications, approvals, refusals, or timing dataset.',
+    publishedDate: '2024-05-15',
+    accessedDate: caaReviewedDate,
+  },
+  {
+    id: 'caa-pib-ahmedabad-2024',
+    title: 'Citizenship certificates distributed under CAA in Ahmedabad',
+    publisher: 'Press Information Bureau, Ministry of Home Affairs',
+    url: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=2046432',
+    sourceType: 'official-implementation-record',
+    reliability: 5,
+    ratingReason:
+      'Direct government record of a later, separately identified certificate batch.',
+    bestFor: 'The August 18, 2024 distribution of 188 certificates in Ahmedabad.',
+    limitations:
+      'Official speeches on policy success are advocacy; the release is not a national outcome table.',
+    publishedDate: '2024-08-18',
+    accessedDate: caaReviewedDate,
+  },
+  {
+    id: 'caa-hrw-2024',
+    title: 'India activates discriminatory citizenship law',
+    publisher: 'Human Rights Watch',
+    url: 'https://www.hrw.org/news/2024/03/15/india-activates-discriminatory-citizenship-law',
+    sourceType: 'rights-analysis',
+    reliability: 4,
+    ratingReason:
+      'Named rights analysis focused on equality, exclusion, and risks after the Rules were notified.',
+    bestFor:
+      'Independent scrutiny of religion-based eligibility and excluded persecuted communities.',
+    limitations:
+      'An advocacy source; the enacted text controls and Indian courts decide constitutionality.',
+    publishedDate: '2024-03-15',
+    accessedDate: caaReviewedDate,
+  },
+  {
+    id: 'caa-exemption-order-2025',
+    title: 'Immigration and Foreigners (Exemption) Order, 2025',
+    publisher: 'Ministry of Home Affairs, Government of India',
+    url: 'https://www.mha.gov.in/sites/default/files/2025-09/ImmigrationandForeignersExemptionOrder2025_16092025.pdf',
+    sourceType: 'official-order',
+    reliability: 5,
+    ratingReason:
+      'Controlling text for the separate 2025 passport and immigration exemption.',
+    bestFor:
+      'Distinguishing the later-arrival immigration exemption from the CAA’s unchanged statutory citizenship cutoff.',
+    limitations:
+      'Does not amend section 6B or the December 31, 2014 cutoff in the Citizenship (Amendment) Act.',
+    publishedDate: '2025-09-01',
+    accessedDate: caaReviewedDate,
+  },
+  {
+    id: 'mea-pakistan-flood-aid-2010',
+    title: 'Statement in Parliament on US$25 million Pakistan flood assistance',
+    publisher: 'Ministry of External Affairs, Government of India',
+    url: 'https://www.mea.gov.in/speeches-statements?dtl%2F713%2FSuo_Motu_Statement_by_EAM_in_Parliament_on_Indias_offer_of_assistance_of_US_25_million_to_Pakistan_for_flood_relief=',
+    sourceType: 'official-parliamentary-statement',
+    reliability: 5,
+    ratingReason:
+      'Primary statement by the External Affairs Minister announcing the amount, purpose, and delivery route.',
+    bestFor:
+      'The August 31, 2010 increase from an initial US$5 million offer to US$25 million for Pakistan flood relief.',
+    limitations:
+      'Government framing does not independently establish recipient-level impact or diplomatic benefit.',
+    publishedDate: '2010-08-31',
+    accessedDate: heardClaimReviewedDate,
+  },
+  {
+    id: 'mea-pakistan-flood-aid-unga-2010',
+    title: 'Statement at the UN General Assembly on Pakistan flood relief',
+    publisher: 'Ministry of External Affairs, Government of India',
+    url: 'https://www.mea.gov.in/outoging-visit-detail.htm?723%2FStatement+by+EAM+at+65th+session+of+UNGA=',
+    sourceType: 'official-foreign-policy-statement',
+    reliability: 5,
+    ratingReason:
+      'Primary contemporaneous statement that the US$25 million pledge was being channelled through the United Nations.',
+    bestFor:
+      'The humanitarian purpose, regional-solidarity rationale, and multilateral delivery channel.',
+    limitations:
+      'A speech reports government intent and status; independent financial records are needed for confirmed transfers.',
+    publishedDate: '2010-09-29',
+    accessedDate: heardClaimReviewedDate,
+  },
+  {
+    id: 'un-ocha-india-pakistan-erf-2010',
+    title: 'OCHA record of India’s contribution to the Pakistan Emergency Response Fund',
+    publisher: 'United Nations Office for the Coordination of Humanitarian Affairs',
+    url: 'https://digitallibrary.un.org/record/4048505/files/1406588-EN.pdf',
+    sourceType: 'multilateral-financial-record',
+    reliability: 5,
+    ratingReason:
+      'Direct United Nations humanitarian-finance record identifying India’s US$20 million contribution to the Pakistan Emergency Response Fund.',
+    bestFor:
+      'Independent confirmation that most of the announced assistance entered a UN-managed humanitarian fund.',
+    limitations:
+      'Does not isolate the recipient-level effect of India’s contribution or fully trace the initial US$5 million component.',
+    accessedDate: heardClaimReviewedDate,
+  },
+  {
+    id: 'guardian-pakistan-flood-aid-2010',
+    title: 'Pakistan welcomes flood aid from India',
+    publisher: 'The Guardian',
+    url: 'https://www.theguardian.com/world/2010/aug/20/pakistan-welcomes-flood-aid-india',
+    sourceType: 'independent-news',
+    reliability: 4,
+    ratingReason:
+      'Contemporaneous reporting with attributed statements from both governments and explicit post-26/11 diplomatic context.',
+    bestFor:
+      'Acceptance of the initial offer, civilian urgency, bilateral tension, and the distinction between humanitarian aid and security policy.',
+    limitations:
+      'Covers the initial US$5 million offer before the later increase to US$25 million.',
+    publishedDate: '2010-08-20',
+    accessedDate: heardClaimReviewedDate,
+  },
+  {
+    id: 'brookings-pakistan-flood-aid-2010',
+    title: 'Pakistan flood response briefing',
+    publisher: 'Brookings Institution',
+    url: 'https://www.brookings.edu/wp-content/uploads/2012/04/20100901_pakistan_floods.pdf',
+    sourceType: 'independent-policy-transcript',
+    reliability: 4,
+    ratingReason:
+      'Named expert and official briefing transcript assessing the scale of the disaster and India’s US$25 million contribution.',
+    bestFor:
+      'Independent contemporaneous assessment that the contribution was credible and helpful to the flood response.',
+    limitations:
+      'A discussion transcript, not a recipient audit or India-specific impact evaluation.',
+    publishedDate: '2010-09-01',
+    accessedDate: heardClaimReviewedDate,
+  },
+  {
+    id: 'supreme-court-manipur-2023',
+    title: 'Supreme Court proceedings on violence in Manipur',
+    publisher: 'Supreme Court of India',
+    url: 'https://api.sci.gov.in/supremecourt/2023/19206/19206_2023_1_13_45619_Order_01-Aug-2023.pdf',
+    sourceType: 'judgment',
+    reliability: 5,
+    ratingReason:
+      'Primary judicial record documenting the Court’s assessment and remedial directions.',
+    bestFor:
+      'Officially established failures of investigation, protection, and constitutional response.',
+    limitations:
+      'A judicial intervention during an evolving conflict is not a complete historical account.',
+    publishedDate: '2023-08-07',
+    accessedDate,
+  },
+  {
+    id: 'fcra-2010-act',
+    title: 'Foreign Contribution (Regulation) Act, 2010',
+    publisher: 'India Code, Legislative Department',
+    url: 'https://www.indiacode.nic.in/bitstream/123456789/2098/1/A201042.pdf',
+    sourceType: 'law',
+    reliability: 5,
+    ratingReason: 'Authoritative enacted legal text.',
+    bestFor: 'The statutory scope, offences, registration, renewal, and utilisation rules.',
+    limitations:
+      'The Act establishes legal powers and duties; it does not independently prove effectiveness or proportionality.',
+    publishedDate: '2010-09-26',
+    accessedDate,
+  },
+  {
+    id: 'fcra-2020-act',
+    title: 'Foreign Contribution (Regulation) Amendment Act, 2020',
+    publisher: 'FCRA Online, Ministry of Home Affairs',
+    url: 'https://fcraonline.nic.in/home/PDF_Doc/fc_amend_07102020_1.pdf',
+    sourceType: 'law',
+    reliability: 5,
+    ratingReason: 'Official text of Act 33 of 2020.',
+    bestFor: 'The exact 2020 amendments to transfers, banking, identification, and administration.',
+    limitations: 'Does not measure downstream effects on compliance, fraud, or civil society.',
+    publishedDate: '2020-09-28',
+    accessedDate,
+  },
+  {
+    id: 'fcra-2020-prs',
+    title: 'Foreign Contribution (Regulation) Amendment Bill, 2020',
+    publisher: 'PRS Legislative Research',
+    url: 'https://prsindia.org/billtrack/the-foreign-contribution-regulation-amendment-bill-2020',
+    sourceType: 'independent-legislative-analysis',
+    reliability: 4,
+    ratingReason:
+      'Structured, nonpartisan comparison of the bill with the 2010 Act and its key issues.',
+    bestFor: 'Plain-language provision and trade-off analysis.',
+    limitations: 'Secondary analysis; the enacted text controls exact legal meaning.',
+    publishedDate: '2020-09-20',
+    accessedDate,
+  },
+  {
+    id: 'fcra-2026-sansad',
+    title: 'Foreign Contribution (Regulation) Amendment Bill, 2026',
+    publisher: 'Lok Sabha Secretariat, Parliament of India',
+    url: 'https://sansad.in/ls/legislation/bills',
+    sourceType: 'official-parliament-record',
+    reliability: 5,
+    ratingReason:
+      'Official parliamentary bill inventory recording introduction and legislative status.',
+    bestFor: 'Introduction date, house, bill status, and original bill record.',
+    limitations:
+      'The dynamic page can be difficult to archive; the Gazette and passed text would control if enacted.',
+    publishedDate: '2026-03-25',
+    accessedDate,
+  },
+  {
+    id: 'fcra-2026-prs',
+    title: 'Foreign Contribution (Regulation) Amendment Bill, 2026: Legislative Brief',
+    publisher: 'PRS Legislative Research',
+    url: 'https://prsindia.org/billtrack/the-foreign-contribution-regulation-amendment-bill-2026',
+    sourceType: 'independent-legislative-analysis',
+    reliability: 4,
+    ratingReason:
+      'Detailed provision-by-provision brief with official links, data, examples, and legal issues.',
+    bestFor:
+      'Asset-vesting design, penalty changes, renewal issues, differential treatment, and appeal gaps.',
+    limitations:
+      'Analysis is not a judicial ruling and the pending bill may change before enactment.',
+    publishedDate: '2026-03-25',
+    accessedDate,
+  },
+  {
+    id: 'fcra-2026-rules',
+    title: 'Foreign Contribution (Regulation) Amendment Rules, 2026',
+    publisher: 'FCRA Online, Ministry of Home Affairs',
+    url: 'https://fcraonline.nic.in/home/PDF_Doc/fc_gaz_23062026.pdf',
+    sourceType: 'official-notification',
+    reliability: 5,
+    ratingReason: 'Official Gazette notification S.O. 3272(E).',
+    bestFor:
+      'The June 22, 2026 activity, geography, registration, and minimum-spending rule changes.',
+    limitations:
+      'The rules are separate from the pending March 2026 bill and must not be conflated with it.',
+    publishedDate: '2026-06-22',
+    accessedDate,
+  },
+  {
+    id: 'mha-fcra-division',
+    title: 'Foreigners-II Division: FCRA',
+    publisher: 'Ministry of Home Affairs, Government of India',
+    url: 'https://www.mha.gov.in/en/commoncontent/foreigners-ii-division',
+    sourceType: 'official-record',
+    reliability: 5,
+    ratingReason: 'Primary statement of the regulator’s role and national-interest rationale.',
+    bestFor: 'Government purpose, responsible division, and official portal linkage.',
+    limitations: 'The regulator’s stated rationale is not an independent impact evaluation.',
+    accessedDate,
+  },
+  {
+    id: 'noel-harper-2022',
+    title: 'Noel Harper v. Union of India',
+    publisher: 'Supreme Court of India, mirrored by Indian Kanoon',
+    url: 'https://indiankanoon.org/doc/63476467/',
+    sourceType: 'judgment-mirror',
+    reliability: 4,
+    ratingReason:
+      'Full reproduced Supreme Court judgment with case metadata and citations.',
+    bestFor: 'The 2022 constitutional ruling on major 2020 FCRA amendments.',
+    limitations:
+      'Indian Kanoon is not the official court host; verify against the signed court copy for litigation use.',
+    publishedDate: '2022-04-08',
+    accessedDate,
+  },
+  {
+    id: 'icj-fcra-2020',
+    title: 'FCRA Amendment 2020 will undermine the work of civil society',
+    publisher: 'International Commission of Jurists',
+    url: 'https://www.icj.org/wp-content/uploads/2020/09/India-FCRA-Amendment-Statement-20202-ENG.pdf',
+    sourceType: 'advocacy-legal-analysis',
+    reliability: 3,
+    ratingReason:
+      'Named legal advocacy analysis identifying rights and implementation risks.',
+    bestFor: 'A rights-based counterargument to the 2020 amendment.',
+    limitations:
+      'Advocacy source with a clear position; use alongside law, judgment, and independent data.',
+    publishedDate: '2020-09-23',
+    accessedDate,
+  },
+  {
+    id: 'amnesty-fcra-2026',
+    title: 'New foreign funding rules tighten control over civil society',
+    publisher: 'Amnesty International',
+    url: 'https://www.amnesty.org/en/latest/research/2026/07/india-fcra-tighten-control-civil-society-undermine-freedom-of-association/',
+    sourceType: 'advocacy-analysis',
+    reliability: 3,
+    ratingReason:
+      'Detailed, current rights-based critique that cites the rules and international-law standards.',
+    bestFor: 'Civil-society and freedom-of-association concerns about the June 2026 rules.',
+    limitations:
+      'Advocacy perspective; specific legal and numerical claims require primary-source verification.',
+    publishedDate: '2026-07-17',
+    accessedDate,
+  },
+  {
+    id: 'ibc-2016-act',
+    title: 'Insolvency and Bankruptcy Code, 2016',
+    publisher: 'India Code, Legislative Department',
+    url: 'https://www.indiacode.nic.in/bitstream/123456789/15479/1/the_insolvency_and_bankruptcy_code%2C_2016.pdf',
+    sourceType: 'law',
+    reliability: 5,
+    ratingReason: 'Authoritative enacted legal text.',
+    bestFor: 'The unified insolvency framework and statutory process.',
+    limitations: 'Does not measure case duration, recovery, or tribunal capacity.',
+    publishedDate: '2016-05-28',
+    accessedDate,
+  },
+  {
+    id: 'ibbi-annual-2025',
+    title: 'Insolvency and Bankruptcy Board of India Annual Report 2024–25',
+    publisher: 'Insolvency and Bankruptcy Board of India',
+    url: 'https://ibbi.gov.in/uploads/publication/df25773d8b9c63e69b0e880a84ba8cf0.pdf',
+    sourceType: 'official-analysis',
+    reliability: 4,
+    ratingReason:
+      'Official regulator report with process and outcome data plus stated concerns.',
+    bestFor: 'IBC implementation, resolution, recovery, delay, and capacity trends.',
+    limitations: 'Regulator-authored analysis should be paired with independent or parliamentary review.',
+    publishedDate: '2025-09-30',
+    accessedDate,
+  },
+  {
+    id: 'idra-1951-act',
+    title: 'Industries (Development and Regulation) Act, 1951',
+    publisher: 'India Code, Legislative Department',
+    url: 'https://www.indiacode.nic.in/bitstream/123456789/21521/1/the_industries_%28development_and_regulation%29_act%2C_1951._65_of_1951_dt._31.10.1951.pdf',
+    sourceType: 'law',
+    reliability: 5,
+    ratingReason: 'Authoritative enacted legal text for industrial licensing and regulation.',
+    bestFor: 'The legal structure of the early industrial licensing system.',
+    limitations: 'Does not independently assess the growth or efficiency effects of licensing.',
+    publishedDate: '1951-10-31',
+    accessedDate,
+  },
+  {
+    id: 'supreme-neet-2024',
+    title: 'NEET (UG) 2024 Judgment, W.P.(C) 335/2024',
+    publisher: 'Supreme Court of India',
+    url: 'https://api.sci.gov.in/supremecourt/2024/22797/22797_2024_1_21_53928_Judgement_23-Jul-2024.pdf',
+    sourceType: 'judgment',
+    reliability: 5,
+    ratingReason:
+      'Primary judgment recording the established leak locations and the Court’s decision on a nationwide retest.',
+    bestFor: 'The judicial findings, evidentiary limit, and July 23, 2024 disposition.',
+    limitations:
+      'The judgment addresses the record before the Court and does not replace later criminal investigations.',
+    publishedDate: '2024-07-23',
+    accessedDate,
+  },
+  {
+    id: 'nta-neet-notices',
+    title: 'NEET (UG) Public Notices',
+    publisher: 'National Testing Agency',
+    url: 'https://neet.nta.nic.in/document-category/public-notices/',
+    sourceType: 'official-record',
+    reliability: 5,
+    ratingReason:
+      'Primary exam-authority notices for results, cancellations, re-examinations, answer keys, and candidate instructions.',
+    bestFor: 'Official NEET exam chronology and administrative action.',
+    limitations:
+      'NTA is the institution under scrutiny and does not independently establish accountability.',
+    accessedDate,
+  },
+  {
+    id: 'ap-neet-protests-2026',
+    title: 'India protest movement holds capital sit-in as police crack down',
+    publisher: 'Associated Press',
+    url: 'https://apnews.com/article/india-cockroach-party-youth-movement-protest-modi-d226d142657cd297c3d4232716a8a626',
+    sourceType: 'independent-news',
+    reliability: 4,
+    ratingReason:
+      'On-the-ground international reporting with named events, participants, and government response.',
+    bestFor: 'The scale, demands, police response, and broadening of the July 2026 youth protests.',
+    limitations:
+      'A developing-news account; casualty, injury, and criminal claims can change.',
+    publishedDate: '2026-07-23',
+    accessedDate,
+  },
+  {
+    id: 'indian-express-neet-2026',
+    title: 'NEET-UG 2026 paper leak: Supreme Court stresses accountability',
+    publisher: 'Indian Express',
+    url: 'https://indianexpress.com/article/india/supreme-court-accountability-in-neet-paper-leak-case-traumatic-for-students-10714215/',
+    sourceType: 'independent-news',
+    reliability: 4,
+    ratingReason:
+      'Detailed court and government reporting tied to the NEET-UG 2026 proceedings.',
+    bestFor: 'Court scrutiny, NTA and Union positions, and accountability questions.',
+    limitations:
+      'News reporting rather than the signed court order; later hearings may alter the position.',
+    publishedDate: '2026-05-29',
+    accessedDate,
+  },
+  {
+    id: 'ap-mahakumbh-2025',
+    title: 'Police confirm deaths in Maha Kumbh crowd crush',
+    publisher: 'Associated Press',
+    url: 'https://apnews.com/article/da4a3423bf2fd1c06f7c730e65dc1350',
+    sourceType: 'independent-news',
+    reliability: 4,
+    ratingReason:
+      'Contemporaneous reporting based on police statements and reporting from Prayagraj.',
+    bestFor: 'Immediate casualty, crowd, and response chronology.',
+    limitations:
+      'Later reporting and court proceedings identified uncertainty around the final death count.',
+    publishedDate: '2025-01-29',
+    accessedDate,
+  },
+  {
+    id: 'indian-express-mahakumbh-inquiry',
+    title: 'Maha Kumbh stampede: judicial and police probes',
+    publisher: 'Indian Express',
+    url: 'https://indianexpress.com/article/india/mahakumbh-stampede-live-updates-9804809/',
+    sourceType: 'independent-news',
+    reliability: 4,
+    ratingReason:
+      'Detailed contemporaneous reporting on confirmed deaths, state actions, inquiry, and crowd-management changes.',
+    bestFor: 'Uttar Pradesh government response and inquiry chronology.',
+    limitations:
+      'Live coverage contains evolving figures; the final inquiry should control definitive findings.',
+    publishedDate: '2025-01-29',
+    accessedDate,
+  },
+  {
+    id: 'mea-operation-sindoor-2025',
+    title: 'Special Briefing on Operation Sindoor, May 7–10, 2025',
+    publisher: 'Ministry of External Affairs, Government of India',
+    url: 'https://www.mea.gov.in/media-briefings?dtl%2F39479%2FTranscript_of_Special_briefing_on_OPERATION_SINDOOR_May_08_2025=',
+    sourceType: 'official-record',
+    reliability: 5,
+    ratingReason:
+      'Primary Government of India briefing on objectives, actions, and official chronology.',
+    bestFor: 'India’s stated rationale and official account of Operation Sindoor.',
+    limitations:
+      'A belligerent government’s account does not independently establish contested damage or attribution claims.',
+    publishedDate: '2025-05-08',
+    accessedDate,
+  },
+  {
+    id: 'ap-pahalgam-2025',
+    title: 'Pahalgam attack kills tourists in Kashmir',
+    publisher: 'Associated Press',
+    url: 'https://apnews.com/article/kashmir-pahalgam-militant-attack-india-explainer-440b6e3b2886fe18aa2521e823d0754c',
+    sourceType: 'independent-news',
+    reliability: 4,
+    ratingReason:
+      'Independent contemporaneous reporting from Kashmir with casualty, security, and regional context.',
+    bestFor: 'The attack chronology, victims, and immediate India–Pakistan escalation.',
+    limitations:
+      'Attribution and sponsor claims require criminal, intelligence, or judicial evidence.',
+    publishedDate: '2025-04-23',
+    accessedDate,
+  },
+  {
+    id: 'mea-operation-sindoor-ceasefire',
+    title: 'Special Briefing on Operation Sindoor, May 10, 2025',
+    publisher: 'Ministry of External Affairs, Government of India',
+    url: 'https://www.mea.gov.in/media-briefings?dtl%2F39486%2FTranscript_of_Special_briefing_on_OPERATION_SINDOOR_May_10_2025=',
+    sourceType: 'official-record',
+    reliability: 5,
+    ratingReason: 'Primary official record for the May 10 escalation and cessation chronology.',
+    bestFor: 'India’s account of the final day of the four-day crisis.',
+    limitations: 'Contested cross-border military claims require independent corroboration.',
+    publishedDate: '2025-05-10',
+    accessedDate,
+  },
+  {
+    id: 'ap-india-pakistan-ceasefire-2025',
+    title: 'India and Pakistan stop firing after four-day crisis',
+    publisher: 'Associated Press',
+    url: 'https://apnews.com/article/india-pakistan-ceasefire-war-kashmir-214bde245a63339617dd644e061fbbd2',
+    sourceType: 'independent-news',
+    reliability: 4,
+    ratingReason:
+      'Independent reporting across the ceasefire, civilian effects, and competing official claims.',
+    bestFor: 'Cross-border chronology and what remained contested after May 10, 2025.',
+    limitations:
+      'Military damage and mediation claims remained disputed by the parties.',
+    publishedDate: '2025-05-12',
+    accessedDate,
+  },
+  {
+    id: 'aaib-ai171',
+    title: 'Preliminary and Interim Investigation: Air India Flight AI171',
+    publisher: 'Aircraft Accident Investigation Bureau',
+    url: 'https://aaib.gov.in/',
+    sourceType: 'official-investigation',
+    reliability: 5,
+    ratingReason:
+      'Primary aviation-accident investigator publishing the preliminary report and interim status.',
+    bestFor: 'Established flight facts, investigation scope, and what remains unresolved.',
+    limitations:
+      'The final probable cause remained under investigation at the July 2026 cutoff.',
+    publishedDate: '2025-07-12',
+    accessedDate,
+  },
+  {
+    id: 'moca-ai171-committee',
+    title: 'High-Level Committee on the Air India AI171 Crash',
+    publisher: 'Ministry of Civil Aviation',
+    url: 'https://www.civilaviation.gov.in/node/6091',
+    sourceType: 'official-record',
+    reliability: 5,
+    ratingReason:
+      'Primary ministry record constituting a multidisciplinary safety and systems committee.',
+    bestFor: 'Government response, oversight review, and committee mandate.',
+    limitations: 'Committee creation does not establish accident causation or fault.',
+    publishedDate: '2025-06-13',
+    accessedDate,
+  },
+  {
+    id: 'ap-sikkim-tunnel-2026',
+    title: 'Death toll in India hydropower tunnel disaster rises to 25',
+    publisher: 'Associated Press',
+    url: 'https://apnews.com/article/india-tunnel-accident-workers-rescue-toxic-gas-8ebecdbfb05aa749ce325190b8ad0346',
+    sourceType: 'independent-news',
+    reliability: 4,
+    ratingReason:
+      'Current on-site reporting using state, rescue, and project information.',
+    bestFor: 'The July 2026 explosion, rescue outcome, preliminary gas explanation, and inquiry status.',
+    limitations:
+      'The investigation is developing and final safety responsibility has not been established.',
+    publishedDate: '2026-07-23',
+    accessedDate,
+  },
+]
+
+export const jurisdictions: JurisdictionSeed[] = [
+  {
+    id: 'india',
+    name: 'Republic of India',
+    shortName: 'India',
+    level: 'country',
+    isoCode: 'IND',
+    validFrom: '1947-08-15',
+    status: 'published',
+  },
+]
+
+export const offices: OfficeSeed[] = [
+  {
+    id: 'india-prime-minister',
+    jurisdictionId: 'india',
+    name: 'Prime Minister of India',
+    shortName: 'Prime Minister',
+    role: 'head-of-government',
+  },
+]
+
+export const parties: PartySeed[] = [
+  { id: 'inc', name: 'Indian National Congress', shortName: 'INC', color: '#2f6fbd' },
+  { id: 'bjp', name: 'Bharatiya Janata Party', shortName: 'BJP', color: '#d97706' },
+  { id: 'janata', name: 'Janata Party', shortName: 'Janata', color: '#4d7c0f' },
+  { id: 'janata-secular', name: 'Janata Party (Secular)', shortName: 'JP(S)', color: '#6b7280' },
+  { id: 'janata-dal', name: 'Janata Dal', shortName: 'JD', color: '#15803d' },
+  { id: 'samajwadi-janata', name: 'Samajwadi Janata Party', shortName: 'SJP', color: '#a16207' },
+  { id: 'janata-dal-secular', name: 'Janata Dal (Secular)', shortName: 'JD(S)', color: '#166534' },
+]
+
+export const people: PersonSeed[] = [
+  { id: 'jawaharlal-nehru', name: 'Jawaharlal Nehru', sortName: 'Nehru, Jawaharlal', birthDate: '1889-11-14', deathDate: '1964-05-27' },
+  { id: 'gulzarilal-nanda', name: 'Gulzarilal Nanda', sortName: 'Nanda, Gulzarilal', birthDate: '1898-07-04', deathDate: '1998-01-15' },
+  { id: 'lal-bahadur-shastri', name: 'Lal Bahadur Shastri', sortName: 'Shastri, Lal Bahadur', birthDate: '1904-10-02', deathDate: '1966-01-11' },
+  { id: 'indira-gandhi', name: 'Indira Gandhi', sortName: 'Gandhi, Indira', birthDate: '1917-11-19', deathDate: '1984-10-31' },
+  { id: 'morarji-desai', name: 'Morarji Desai', sortName: 'Desai, Morarji', birthDate: '1896-02-29', deathDate: '1995-04-10' },
+  { id: 'charan-singh', name: 'Charan Singh', sortName: 'Singh, Charan', birthDate: '1902-12-23', deathDate: '1987-05-29' },
+  { id: 'rajiv-gandhi', name: 'Rajiv Gandhi', sortName: 'Gandhi, Rajiv', birthDate: '1944-08-20', deathDate: '1991-05-21' },
+  { id: 'vp-singh', name: 'V. P. Singh', sortName: 'Singh, V. P.', birthDate: '1931-06-25', deathDate: '2008-11-27' },
+  { id: 'chandra-shekhar', name: 'Chandra Shekhar', sortName: 'Shekhar, Chandra', birthDate: '1927-07-01', deathDate: '2007-07-08' },
+  { id: 'pv-narasimha-rao', name: 'P. V. Narasimha Rao', sortName: 'Rao, P. V. Narasimha', birthDate: '1921-06-28', deathDate: '2004-12-23' },
+  { id: 'atal-bihari-vajpayee', name: 'Atal Bihari Vajpayee', sortName: 'Vajpayee, Atal Bihari', birthDate: '1924-12-25', deathDate: '2018-08-16' },
+  { id: 'hd-deve-gowda', name: 'H. D. Deve Gowda', sortName: 'Deve Gowda, H. D.', birthDate: '1933-05-18' },
+  { id: 'ik-gujral', name: 'I. K. Gujral', sortName: 'Gujral, I. K.', birthDate: '1919-12-04', deathDate: '2012-11-30' },
+  { id: 'manmohan-singh', name: 'Manmohan Singh', sortName: 'Singh, Manmohan', birthDate: '1932-09-26', deathDate: '2024-12-26' },
+  { id: 'narendra-modi', name: 'Narendra Modi', sortName: 'Modi, Narendra', birthDate: '1950-09-17' },
+]
+
+const ratingAsOf = '2026-07-23'
+
+export const leaderTerms: LeaderTermSeed[] = [
+  {
+    id: 'nehru-1947',
+    officeId: 'india-prime-minister',
+    personId: 'jawaharlal-nehru',
+    partyId: 'inc',
+    startDate: '1947-08-15',
+    endDate: '1964-05-27',
+    mandateLabel: 'Founding governments, 1947–1964',
+    ratingScore: 7.3,
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'Strong on democratic institution-building, science, and state capacity; marked down for the 1962 security failure and a development model that later required substantial reform.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former', 'india-constitution', 'britannica-modern-india'],
+  },
+  {
+    id: 'nanda-1964',
+    officeId: 'india-prime-minister',
+    personId: 'gulzarilal-nanda',
+    partyId: 'inc',
+    startDate: '1964-05-27',
+    endDate: '1964-06-09',
+    isActing: true,
+    mandateLabel: 'Acting',
+    ratingSummary:
+      'Not rated: a thirteen-day caretaker term is too short for a defensible performance estimate.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former'],
+  },
+  {
+    id: 'shastri-1964',
+    officeId: 'india-prime-minister',
+    personId: 'lal-bahadur-shastri',
+    partyId: 'inc',
+    startDate: '1964-06-09',
+    endDate: '1966-01-11',
+    mandateLabel: '1964–1966',
+    ratingScore: 7.2,
+    ratingConfidence: 'low',
+    ratingSummary:
+      'Credited for calm crisis leadership and agricultural emphasis, with low confidence because the tenure lasted only nineteen months.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former', 'britannica-modern-india'],
+  },
+  {
+    id: 'nanda-1966',
+    officeId: 'india-prime-minister',
+    personId: 'gulzarilal-nanda',
+    partyId: 'inc',
+    startDate: '1966-01-11',
+    endDate: '1966-01-24',
+    isActing: true,
+    mandateLabel: 'Acting',
+    ratingSummary:
+      'Not rated: a thirteen-day caretaker term is too short for a defensible performance estimate.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former'],
+  },
+  {
+    id: 'indira-1966',
+    officeId: 'india-prime-minister',
+    personId: 'indira-gandhi',
+    partyId: 'inc',
+    startDate: '1966-01-24',
+    endDate: '1977-03-24',
+    mandateLabel: '1966–1977',
+    ratingScore: 6.4,
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'Major agricultural, banking, and geopolitical achievements are offset heavily by the Emergency and severe damage to civil liberties and institutional restraints.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former', 'india-constitution', 'britannica-modern-india'],
+  },
+  {
+    id: 'desai-1977',
+    officeId: 'india-prime-minister',
+    personId: 'morarji-desai',
+    partyId: 'janata',
+    startDate: '1977-03-24',
+    endDate: '1979-07-28',
+    mandateLabel: 'Janata government',
+    ratingScore: 5.8,
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'Important democratic repair after the Emergency, but limited policy durability and coalition instability.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former', 'india-constitution', 'britannica-modern-india'],
+  },
+  {
+    id: 'charan-singh-1979',
+    officeId: 'india-prime-minister',
+    personId: 'charan-singh',
+    partyId: 'janata-secular',
+    startDate: '1979-07-28',
+    endDate: '1980-01-14',
+    mandateLabel: 'Minority government',
+    ratingScore: 4.9,
+    ratingConfidence: 'low',
+    ratingSummary:
+      'A strong agrarian political voice, but the government never faced Parliament and had too little time to establish a durable record.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former', 'britannica-modern-india'],
+  },
+  {
+    id: 'indira-1980',
+    officeId: 'india-prime-minister',
+    personId: 'indira-gandhi',
+    partyId: 'inc',
+    startDate: '1980-01-14',
+    endDate: '1984-10-31',
+    mandateLabel: '1980 mandate',
+    ratingScore: 5.6,
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'Restored governmental stability, but escalating centralisation and the Punjab crisis ended in deep institutional and human costs.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former', 'britannica-modern-india'],
+  },
+  {
+    id: 'rajiv-1984',
+    officeId: 'india-prime-minister',
+    personId: 'rajiv-gandhi',
+    partyId: 'inc',
+    startDate: '1984-10-31',
+    endDate: '1989-12-02',
+    mandateLabel: '1984 mandate',
+    ratingScore: 5.9,
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'Advanced technology, telecom, and administrative modernisation, but reform momentum weakened amid conflict and corruption allegations.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former', 'britannica-modern-india'],
+  },
+  {
+    id: 'vp-singh-1989',
+    officeId: 'india-prime-minister',
+    personId: 'vp-singh',
+    partyId: 'janata-dal',
+    startDate: '1989-12-02',
+    endDate: '1990-11-10',
+    mandateLabel: 'National Front government',
+    ratingScore: 5.8,
+    ratingConfidence: 'low',
+    ratingSummary:
+      'Expanded representation through Mandal implementation and foregrounded corruption, but social conflict and coalition collapse limited governance.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former', 'britannica-modern-india'],
+  },
+  {
+    id: 'chandra-shekhar-1990',
+    officeId: 'india-prime-minister',
+    personId: 'chandra-shekhar',
+    partyId: 'samajwadi-janata',
+    startDate: '1990-11-10',
+    endDate: '1991-06-21',
+    mandateLabel: 'Minority government',
+    ratingScore: 4.7,
+    ratingConfidence: 'low',
+    ratingSummary:
+      'Managed an acute political and external-payments crisis with very weak parliamentary support; too short-lived for durable reform.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former', 'rbi-handbook', 'britannica-modern-india'],
+  },
+  {
+    id: 'rao-1991',
+    officeId: 'india-prime-minister',
+    personId: 'pv-narasimha-rao',
+    partyId: 'inc',
+    startDate: '1991-06-21',
+    endDate: '1996-05-16',
+    mandateLabel: '1991 minority government',
+    ratingScore: 7.4,
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'Exceptional economic reform and strategic adaptation under crisis conditions, reduced by the Babri Masjid failure and integrity concerns.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former', 'india-budget-1991', 'rbi-handbook', 'britannica-modern-india'],
+  },
+  {
+    id: 'vajpayee-1996',
+    officeId: 'india-prime-minister',
+    personId: 'atal-bihari-vajpayee',
+    partyId: 'bjp',
+    startDate: '1996-05-16',
+    endDate: '1996-06-01',
+    mandateLabel: 'Thirteen-day government',
+    ratingSummary:
+      'Not rated: the government resigned before a confidence vote and did not have time for a performance record.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former'],
+  },
+  {
+    id: 'deve-gowda-1996',
+    officeId: 'india-prime-minister',
+    personId: 'hd-deve-gowda',
+    partyId: 'janata-dal-secular',
+    startDate: '1996-06-01',
+    endDate: '1997-04-21',
+    mandateLabel: 'United Front government',
+    ratingScore: 5.6,
+    ratingConfidence: 'low',
+    ratingSummary:
+      'Maintained reform continuity and federal coalition governance, but had limited time and political authority.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former', 'britannica-modern-india'],
+  },
+  {
+    id: 'gujral-1997',
+    officeId: 'india-prime-minister',
+    personId: 'ik-gujral',
+    partyId: 'janata-dal',
+    startDate: '1997-04-21',
+    endDate: '1998-03-19',
+    mandateLabel: 'United Front government',
+    ratingScore: 5.9,
+    ratingConfidence: 'low',
+    ratingSummary:
+      'A constructive regional foreign-policy doctrine and coalition restraint, with little time for domestic policy durability.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former', 'britannica-modern-india'],
+  },
+  {
+    id: 'vajpayee-1998',
+    officeId: 'india-prime-minister',
+    personId: 'atal-bihari-vajpayee',
+    partyId: 'bjp',
+    startDate: '1998-03-19',
+    endDate: '2004-05-22',
+    mandateLabel: 'NDA governments, 1998–2004',
+    ratingScore: 7.2,
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'Strong infrastructure, telecom, coalition management, and strategic policy; marked down for communal violence and uneven inclusion.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['pm-india-former', 'dae-pokhran', 'britannica-modern-india'],
+  },
+  {
+    id: 'manmohan-2004',
+    officeId: 'india-prime-minister',
+    personId: 'manmohan-singh',
+    partyId: 'inc',
+    startDate: '2004-05-22',
+    endDate: '2014-05-26',
+    mandateLabel: 'UPA governments, 2004–2014',
+    ratingScore: 7.3,
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'High growth and durable rights-based welfare and transparency reforms, offset by second-term governance drift, inflation, and corruption scandals.',
+    assessmentAsOf: heardClaimReviewedDate,
+    sourceIds: [
+      'pm-india-former',
+      'rti-act',
+      'mgnrega-act',
+      'world-bank-india',
+      'mea-pakistan-flood-aid-2010',
+      'un-ocha-india-pakistan-erf-2010',
+    ],
+  },
+  {
+    id: 'modi-2014',
+    officeId: 'india-prime-minister',
+    personId: 'narendra-modi',
+    partyId: 'bjp',
+    startDate: '2014-05-26',
+    mandateLabel: 'NDA governments, 2014–present',
+    ratingScore: 6.3,
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'Large poverty and basic-service gains, major road expansion, digital systems, and a broader trade-agreement strategy; reduced by job quality, uneven inclusion, crisis response, political-finance transparency, safety and execution gaps, and institutional decline.',
+    assessmentAsOf: '2026-07-24',
+    sourceIds: [
+      'pm-india-current',
+      'eci-2024',
+      'world-bank-india',
+      'world-bank-poverty-equity-2025',
+      'niti-mpi-2023',
+      'imf-india-article-iv-2025',
+      'ilo-india-employment-2024',
+      'vdem-v16',
+      'freedom-house-india-2026',
+      'hrw-india-2026',
+      'supreme-electoral-bonds-2024',
+      'npci-upi-statistics',
+      'morth-year-end-2025',
+      'world-bank-poverty-trend-2026',
+      'commerce-fta-achievements-2026',
+    ],
+  },
+]
+
+export const evaluationDimensions = [
+  {
+    id: 'outcomes',
+    name: 'Observed outcomes',
+    weight: 0.25,
+    description:
+      'Direction and durability of economic, human-development, and basic-service outcomes during and shortly after the term.',
+  },
+  {
+    id: 'reforms',
+    name: 'Durable reforms',
+    weight: 0.2,
+    description:
+      'Institutional or policy changes that survived the administration and improved state capacity.',
+  },
+  {
+    id: 'inclusion',
+    name: 'Inclusion',
+    weight: 0.15,
+    description:
+      'Distributional reach across income, caste, gender, geography, and access to public goods.',
+  },
+  {
+    id: 'crisis',
+    name: 'Crisis and security',
+    weight: 0.15,
+    description:
+      'Performance under wars, economic shocks, disasters, public-health emergencies, and internal conflict.',
+  },
+  {
+    id: 'institutions',
+    name: 'Institutions and liberties',
+    weight: 0.15,
+    description:
+      'Respect for elections, federalism, courts, media, civil liberties, opposition, and checks on executive power.',
+  },
+  {
+    id: 'integrity',
+    name: 'Integrity and execution',
+    weight: 0.1,
+    description:
+      'Administrative competence, corruption exposure, transparency, and follow-through.',
+  },
+] as const
+
+const componentScores: Record<string, number[]> = {
+  'nehru-1947': [7.5, 8.0, 6.5, 5.5, 8.5, 7.5],
+  'shastri-1964': [6.8, 6.8, 7.0, 8.0, 7.5, 7.5],
+  'indira-1966': [7.5, 7.2, 6.5, 7.0, 2.5, 5.5],
+  'desai-1977': [5.0, 5.0, 5.5, 5.5, 7.8, 6.5],
+  'charan-singh-1979': [4.5, 4.5, 5.8, 4.5, 5.5, 5.5],
+  'indira-1980': [6.5, 6.2, 5.8, 4.8, 4.5, 4.8],
+  'rajiv-1984': [6.5, 6.8, 5.7, 5.0, 6.2, 4.8],
+  'vp-singh-1989': [5.5, 5.8, 7.0, 4.8, 6.2, 6.0],
+  'chandra-shekhar-1990': [4.2, 4.4, 5.0, 4.8, 5.5, 5.0],
+  'rao-1991': [8.2, 9.2, 6.5, 6.5, 6.2, 5.7],
+  'deve-gowda-1996': [5.5, 5.5, 6.0, 5.0, 6.2, 5.8],
+  'gujral-1997': [5.4, 6.0, 5.5, 6.8, 6.0, 5.8],
+  'vajpayee-1998': [7.5, 8.0, 6.5, 6.8, 6.2, 6.5],
+  'manmohan-2004': [8.0, 7.5, 8.0, 6.0, 7.0, 5.5],
+  'modi-2014': [7.7, 7.2, 6.2, 5.8, 3.8, 5.8],
+}
+
+const scoreRationales: Record<string, string[]> = {
+  'nehru-1947': [
+    'Long-run gains began from an extremely low base, with mixed near-term economic efficiency.',
+    'Built durable parliamentary, scientific, planning, and higher-education capacity.',
+    'Universal franchise and public institutions expanded, while poverty remained overwhelming.',
+    'Handled integration and early conflicts, but the 1962 China war was a major failure.',
+    'Peaceful elections and opposition space remained unusually robust for a new state.',
+    'Personal integrity was high; administrative systems were often slow and centralised.',
+  ],
+  'shastri-1964': [
+    'Agricultural and defence direction improved, but the observation window is short.',
+    'Policy emphasis helped prepare the Green Revolution and dairy expansion.',
+    'Food security and farmer incentives were central concerns.',
+    'Widely credited for steady leadership during the 1965 war.',
+    'Maintained constitutional continuity without major institutional rupture.',
+    'Austere public reputation and clear execution, with limited time for evidence.',
+  ],
+  'indira-1966': [
+    'Agricultural output and strategic position improved substantially.',
+    'Bank nationalisation and central programmes had lasting, contested effects.',
+    'Poverty-focused politics expanded reach but did not prevent severe inequality.',
+    '1971 was a major strategic success; later internal crisis management deteriorated.',
+    'The 1975–77 Emergency is an exceptional negative institutional event.',
+    'High central control improved execution in some areas but weakened accountability.',
+  ],
+  'desai-1977': [
+    'Economic and administrative outcomes were modest.',
+    'Reversed several Emergency-era abuses but left limited durable policy reform.',
+    'No major inclusion breakthrough.',
+    'Avoided major national crisis, while coalition conflict consumed capacity.',
+    'Restoration of electoral and civil-liberty norms is the central achievement.',
+    'Government remained comparatively clean but politically fragmented.',
+  ],
+  'charan-singh-1979': [
+    'No time for measurable national outcomes.',
+    'Agrarian policy ideas were influential but not converted into durable national reform.',
+    'Represented farmer interests strongly.',
+    'Minority-government fragility prevented effective crisis leadership.',
+    'Constitutional transition remained orderly.',
+    'No parliamentary confidence vote and minimal execution record.',
+  ],
+  'indira-1980': [
+    'Some recovery and state continuity, with serious internal-security costs.',
+    'Few reforms matched the durability of the first tenure’s changes.',
+    'Distributional gains were uneven.',
+    'Punjab policy and Operation Blue Star had grave consequences.',
+    'Centralisation and weakened checks remained material concerns.',
+    'Execution was forceful but accountability and conflict management were weak.',
+  ],
+  'rajiv-1984': [
+    'Growth and technology adoption accelerated from the mid-1980s.',
+    'Telecom, computing, and administrative modernisation had lasting value.',
+    'Some decentralisation efforts advanced; inclusion outcomes were mixed.',
+    'Sri Lanka and domestic conflict management produced substantial costs.',
+    'Institutional performance was mixed, including controversial legal responses.',
+    'Early modernisation energy faded amid Bofors allegations and political drift.',
+  ],
+  'vp-singh-1989': [
+    'Term was too short for broad outcome gains.',
+    'Mandal implementation had lasting institutional consequences.',
+    'Expanded representation for Other Backward Classes.',
+    'Social unrest and coalition instability were poorly contained.',
+    'Anti-corruption emphasis was positive, with limited governing stability.',
+    'Personal anti-corruption standing was stronger than execution capacity.',
+  ],
+  'chandra-shekhar-1990': [
+    'The balance-of-payments crisis worsened during a very constrained term.',
+    'No durable reform programme before the government fell.',
+    'Limited distributive action.',
+    'Operated under severe economic and political crisis.',
+    'Constitutional continuity was maintained.',
+    'Weak parliamentary support sharply limited execution.',
+  ],
+  'rao-1991': [
+    'Stabilisation and subsequent growth represented a major economic turning point.',
+    'Liberalisation, trade, industrial, exchange-rate, and foreign-policy changes endured.',
+    'Benefits broadened over time but immediate adjustment was uneven.',
+    'Managed an external-payments crisis; the Babri Masjid failure was severe.',
+    'Democratic continuity held, but communal and accountability failures reduce the score.',
+    'Technocratic execution was strong; corruption allegations weaken integrity.',
+  ],
+  'deve-gowda-1996': [
+    'Growth and reform continuity held without a decisive new outcome break.',
+    'Federal coalition practice and infrastructure attention had some durability.',
+    'Rural orientation was visible but evidence is limited.',
+    'No major crisis success or failure in a short term.',
+    'Coalition and federal accommodation were constructive.',
+    'Execution was constrained by dependence on outside support.',
+  ],
+  'gujral-1997': [
+    'Short tenure limits outcome attribution.',
+    'The Gujral Doctrine had durable regional-policy influence.',
+    'Limited national inclusion record.',
+    'Regional diplomacy was the principal strength.',
+    'Maintained coalition restraint and constitutional norms.',
+    'Government lacked time and parliamentary durability.',
+  ],
+  'vajpayee-1998': [
+    'Infrastructure, telecom, and macroeconomic direction improved over the full tenure.',
+    'Highways, telecom competition, privatisation, and fiscal reforms had lasting effects.',
+    'Rural roads expanded, but gains were uneven and the 2002 violence is a major negative.',
+    'Kargil management and later Pakistan diplomacy showed strategic range.',
+    'Coalition democracy was managed well; communal protection failures lower the score.',
+    'Generally stable execution with some disinvestment and defence-procurement concerns.',
+  ],
+  'manmohan-2004': [
+    'High growth, poverty reduction, and service expansion were substantial over the decade.',
+    'RTI, MGNREGA, Aadhaar’s launch, and the nuclear agreement were durable changes.',
+    'Rights-based welfare and rural spending materially expanded the social floor.',
+    'Global financial-crisis response and UN-routed Pakistan flood relief were strengths; 26/11 preparedness failures, later inflation, and other security shocks hurt.',
+    'RTI strengthened accountability, while second-term executive drift weakened it.',
+    'Major corruption scandals and perceived policy paralysis reduce the integrity score.',
+  ],
+  'modi-2014': [
+    'Monetary and multidimensional poverty fell substantially while roads, basic services, formalisation, and aggregate output expanded; survey changes and job quality limit attribution.',
+    'GST, insolvency reform, digital public infrastructure, highway investment, and a broader trade-agreement strategy endure, but IBC, Bharatmala, safety, and execution gaps lower the score.',
+    'Poverty and service access improved materially; job quality, nutrition, gender, regional, earnings, and minority-inclusion gaps remain substantial.',
+    'Vaccination and security capacity are strengths; the lockdown, pandemic mortality uncertainty, Manipur, and conflict response produce a mixed record.',
+    'V-Dem and Freedom House show material deterioration, while the electoral-bonds judgment exposed a major political-finance transparency failure.',
+    'Central execution is strong; demonetisation, electoral bonds, transparency gaps, and concentration of power reduce the score.',
+  ],
+}
+
+export const leaderScores: LeaderScoreSeed[] = Object.entries(componentScores).flatMap(
+  ([termId, scores]) =>
+    scores.map((score, index) => ({
+      termId,
+      dimensionId: evaluationDimensions[index].id,
+      score,
+      rationale: scoreRationales[termId][index],
+    })),
+)
+
+export const leaderRatingAudits = [
+  {
+    id: 'modi-rating-evidence-refresh-2026-07-24',
+    termId: 'modi-2014',
+    runCount: 5,
+    genericMean: 6.28,
+    standardizedMean: 6.22,
+    standardDeviation: 0.07,
+    minimum: 6.1,
+    maximum: 6.3,
+    previousRating: 6.2,
+    revisedRating: 6.3,
+    promptHash:
+      'sha256:60951df18bdb3970896eccaba4f1c9f8e5ff30ade58a70975cbcf9ee51c27cbc',
+    status: 'stable',
+    reviewedAt: '2026-07-24',
+    consensusSources: [
+      'worldbank.org',
+      'v-dem.net',
+      'freedomhouse.org',
+      'hrw.org',
+      'imf.org',
+      'morth.gov.in',
+      'commerce.gov.in',
+    ],
+    notes:
+      'Five blinded live-search replications produced a 6.1-6.3 standardized range. A July 2026 evidence refresh made roads, poverty, and trade agreements explicit, raising outcomes and inclusion while leaving the revised rating within that range.',
+  },
+] satisfies import('../types.ts').LeaderRatingAuditSeed[]
+
+export const policyEvaluationDimensions = [
+  {
+    id: 'problem-design',
+    name: 'Problem fit and design',
+    weight: 0.2,
+    description: 'Whether the policy targets a real problem with coherent, proportionate tools.',
+  },
+  {
+    id: 'effectiveness',
+    name: 'Evidence of effectiveness',
+    weight: 0.3,
+    description: 'Observed evidence that the policy achieved its stated outcomes.',
+  },
+  {
+    id: 'implementation',
+    name: 'Implementation quality',
+    weight: 0.2,
+    description: 'Administrative feasibility, consultation, sequencing, and execution.',
+  },
+  {
+    id: 'rights-inclusion',
+    name: 'Rights and inclusion',
+    weight: 0.15,
+    description: 'Distributional effects, due process, civil liberties, and access.',
+  },
+  {
+    id: 'durability-side-effects',
+    name: 'Durability and side effects',
+    weight: 0.15,
+    description: 'Long-run institutional value, reversibility, and unintended consequences.',
+  },
+] as const
+
+const policyComponentValues: Record<string, Array<number | null>> = {
+  'idra-1951': [7, 6, 6, 5, 6],
+  'income-tax-act-1961': [8, 7, 6, 5.5, 8],
+  'food-corporations-1964': [8, 8, 7, 7, 8],
+  'bank-nationalisation-1969': [7, 7, 6, 6, 6],
+  'constitution-42nd-1976': [4, 3, 4, 1, 2],
+  'constitution-44th-1978': [9, 9, 8, 9, 9],
+  'modvat-1986': [8, 7, 6.5, 6, 8],
+  'mandal-1990': [7, 7, 5, 8, 6],
+  'economic-reforms-1991': [9, 9, 8, 7, 9],
+  'tax-rationalisation-1991': [9, 8, 8, 6.5, 9],
+  'service-tax-1994': [8, 7.5, 7, 6, 8],
+  'trai-act-1997': [8.5, 8, 6.5, 7, 8],
+  'pmgsy-2000': [9, 8.5, 7, 8.5, 8],
+  'rti-2005': [9, 8, 7, 9, 8],
+  'mgnrega-2005': [8, 8, 7, 8, 8],
+  'state-vat-2005': [8.5, 7.5, 6.5, 6.5, 8.5],
+  'fcra-2010': [7, 6, 6, 5, 6],
+  'pakistan-flood-relief-2010': [8.5, 6, 7, 9, 6.5],
+  'aadhaar-2016': [8, 8, 6.5, 4.5, 7],
+  'ibc-2016': [8, 7.5, 6, 7, 7],
+  'demonetisation-2016': [5, 2.5, 3, 3, 3],
+  'gst-2017': [8, 8, 6, 6, 8],
+  'corporate-tax-cut-2019': [7.5, 6, 7.5, 5, 6],
+  'citizenship-amendment-act-2019': [6.5, 5, 4, 3, 5],
+  'farm-laws-2020': [7, 5, 2, 4, 3],
+  'personal-tax-regime-2020': [8, 7, 7, 6.5, 7.5],
+  'faceless-tax-administration-2020': [8, 6, 6.5, 7, 7.5],
+  'fcra-amendment-2020': [7, 6, 5, 4, 5],
+  'citizenship-amendment-rules-2024': [7, 5, 6.5, 4.5, 5.5],
+  'income-tax-act-2025': [8, null, 6.5, 5.5, 7],
+  'gst-rate-reset-2025': [8, null, 6.5, 6.5, 6],
+  'fcra-amendment-bill-2026': [6.5, null, 4, 3.5, 4],
+  'fcra-amendment-rules-2026': [6, null, 5, 4, 4.5],
+}
+
+const policyRationales: Record<string, string[]> = {
+  'idra-1951': [
+    'Addressed capital scarcity and industrial coordination, but concentrated discretion.',
+    'Helped build industrial capacity; licensing later constrained competition and entry.',
+    'Created a durable state apparatus, often slow and permission-heavy.',
+    'Public-purpose ambitions were broad, while consumer and entrepreneur choice narrowed.',
+    'Its institutions endured but required major liberalisation in 1991.',
+  ],
+  'income-tax-act-1961': [
+    'Consolidated the national law for taxing personal and business income in a newly developing republic.',
+    'Provided a durable revenue and administration framework, though changes in collections cannot be attributed to the code alone.',
+    'Created nationwide assessment and appeal machinery, but repeated amendment produced exceptional complexity and litigation.',
+    'Progressive rates supported ability-to-pay taxation, while broad powers, exemptions, and a narrow filing base weakened inclusion and predictability.',
+    'Survived for sixty-four years and supported later reform, but ultimately required full legislative replacement.',
+  ],
+  'food-corporations-1964': [
+    'Targeted chronic food shortages, fragmented procurement, weak storage, and the absence of a national buffer-stock institution.',
+    'FCI became a durable procurement, movement, storage, and distribution backbone, while food-security gains also depended on farm technology, states, trade, and later welfare law.',
+    'Created national operating capacity at scale, but inventory, quality, carrying-cost, and market-distortion problems accumulated.',
+    'Price support and public distribution protected many farmers and consumers, while procurement remained concentrated by crop, region, and access to state purchasing.',
+    'The institution endured for six decades and remains central, though recurring reform proposals show persistent side effects.',
+  ],
+  'bank-nationalisation-1969': [
+    'Targeted limited rural access and concentrated private banking power.',
+    'Branch and priority-sector reach expanded, with mixed efficiency and credit-quality effects.',
+    'Execution was rapid and enabled directed credit at national scale.',
+    'Broadened formal access, while political allocation created new inequities.',
+    'The public-bank system endured but accumulated governance and bad-loan costs.',
+  ],
+  'constitution-42nd-1976': [
+    'Combined some social-constitutional aims with extraordinary centralisation during the Emergency.',
+    'Its centralising provisions did not create a defensible public-outcome record.',
+    'Implemented through a Parliament operating under suspended liberties.',
+    'Severely damaged checks, civil liberties, federal balance, and judicial restraint.',
+    'Many provisions were later reversed or limited, showing weak legitimacy.',
+  ],
+  'constitution-44th-1978': [
+    'Directly addressed Emergency-era concentration of power and weak safeguards around liberty, elections, and national emergency declarations.',
+    'Restored important constitutional protections and made future nationwide emergency abuse procedurally harder.',
+    'Passed through a divided Parliament and commenced in stages, producing durable repair while leaving some disputed provisions and implementation gaps.',
+    'Strengthened life and liberty protections, judicial remedies, electoral continuity, and parliamentary control over emergency power.',
+    'Its core safeguards survived later governments, although it did not reverse every centralising or rights-reducing change of the Emergency period.',
+  ],
+  'modvat-1986': [
+    'Directly targeted tax-on-tax in manufacturing by crediting excise paid on inputs.',
+    'Reduced cascading and established the credit chain later expanded through CENVAT and GST, though initial coverage was partial.',
+    'A phased rollout reduced transition risk, but exclusions and product rules preserved classification and compliance complexity.',
+    'Lower embedded tax could benefit producers, exporters, and consumers, while formal manufacturers were better placed than small informal firms to use credits.',
+    'Its core input-credit principle endured through later indirect-tax systems even though MODVAT itself was superseded.',
+  ],
+  'mandal-1990': [
+    'Addressed durable under-representation of Other Backward Classes.',
+    'Representation expanded, though broad welfare and mobility effects are harder to isolate.',
+    'Abrupt rollout and weak communication contributed to severe conflict.',
+    'Substantially widened access for historically excluded groups.',
+    'Reshaped politics and public employment, while category and creamy-layer debates remain.',
+  ],
+  'economic-reforms-1991': [
+    'Directly addressed a balance-of-payments crisis and structural productivity constraints.',
+    'Stabilisation, trade opening, and de-licensing had large durable growth effects.',
+    'Sequencing under crisis was unusually effective despite political fragility.',
+    'Benefits expanded over time but adjustment and opportunity were uneven.',
+    'The regime change survived every later government.',
+  ],
+  'tax-rationalisation-1991': [
+    'Addressed confiscatory rates, a narrow base, customs protection, cascading excise, exemptions, and weak compliance together.',
+    'Lower and fewer rates, broader bases, and tariff reduction became durable parts of India’s post-1991 revenue system.',
+    'Sequencing across several budgets and the Chelliah recommendations was coherent, though administrative capacity and litigation improved more slowly.',
+    'Moderate rates reduced arbitrary burdens and some evasion incentives, but gains and adjustment costs were uneven across consumers, workers, and firms.',
+    'The lower-rate, broader-base direction survived later governments and prepared the path to VAT and GST.',
+  ],
+  'service-tax-1994': [
+    'Corrected the growing mismatch between a service-led economy and an indirect-tax base focused on goods.',
+    'Broadened revenue collection from three services to a large service base and created experience later absorbed into GST.',
+    'The modest start was administratively prudent, but expansion through a long positive list generated classification disputes and compliance complexity.',
+    'Taxing services improved neutrality between goods and services, while indirect-tax incidence and compliance costs could burden consumers and small providers.',
+    'The reform was durable as a concept and institutional bridge, although the separate levy was subsumed into GST in 2017.',
+  ],
+  'trai-act-1997': [
+    'Addressed the conflict created when the Union government was simultaneously telecom operator, licensor, policymaker, and tariff setter.',
+    'Independent regulation supported a more competitive investment environment, while later growth also depended on the 1999 policy, licensing changes, technology, and amendments.',
+    'Created a specialist regulator quickly, but early jurisdictional conflict and limited enforcement powers required the 2000 amendment and TDSAT.',
+    'Consumer protection and tariff scrutiny improved, while quality, rural access, disputes, and the digital divide remained material.',
+    'TRAI became a durable sector institution whose authority continues to evolve with convergence, spectrum, competition, and platform regulation.',
+  ],
+  'pmgsy-2000': [
+    'Targeted the large productivity and service-access penalty imposed by villages lacking all-weather road connectivity.',
+    'Impact evidence links completed roads to better travel, market access, non-farm work, and human-capital access, with effects varying across terrain and states.',
+    'A national planning, engineering, funding, and quality framework scaled rapidly, but target delays, contracting, maintenance, and monitoring gaps were substantial.',
+    'The programme prioritised remote, hill, tribal, and poorer habitations and improved access, while land, safety, and uneven state capacity created local burdens.',
+    'PMGSY survived governments and expanded through later phases, but durable value depends on maintenance and climate-resilient road quality.',
+  ],
+  'rti-2005': [
+    'Targeted information asymmetry and weak day-to-day accountability.',
+    'Millions of requests and public disclosures created a durable accountability channel.',
+    'A decentralised implementation model worked, with delays and vacancies.',
+    'Empowered ordinary citizens, journalists, and activists across social groups.',
+    'Institutional value is high, though later dilution and non-compliance remain risks.',
+  ],
+  'mgnrega-2005': [
+    'Targeted rural underemployment and income insecurity with a legal guarantee.',
+    'Large-scale employment and wage support are well established, with variable asset quality.',
+    'National scale is a strength; delayed payments and rationing weaken delivery.',
+    'Women and poorer rural households gained an accessible social-protection floor.',
+    'The programme survived governments and shocks, including the pandemic.',
+  ],
+  'state-vat-2005': [
+    'Targeted cascading state sales taxes and wide rate variation through invoice-based input credits.',
+    'Improved the tax trail and state revenue systems and provided the principal state-side bridge to GST.',
+    'Federal coordination and compensation enabled rollout, but audit found uneven registration, refunds, IT systems, and input-credit controls.',
+    'Greater neutrality benefited formal supply chains, while consumption-tax incidence and state-by-state compliance remained uneven.',
+    'Most goods moved into GST in 2017, but the state VAT architecture and residual taxation of excluded goods remain consequential.',
+  ],
+  'fcra-2010': [
+    'Foreign-funding transparency and national-security risks are legitimate regulatory problems.',
+    'Registration and reporting improved traceability, but proof of reduced illegal influence is incomplete.',
+    'A single national framework replaced the 1976 regime with renewable certificates.',
+    'Broad public-interest discretion and compliance burdens create association-rights concerns.',
+    'The framework endured and became the base for progressively tighter amendments.',
+  ],
+  'pakistan-flood-relief-2010': [
+    'Responded to a catastrophic civilian disaster with a limited, targeted humanitarian commitment rather than an open-ended bilateral transfer.',
+    'United Nations records confirm a US$20 million Indian contribution to the Pakistan Emergency Response Fund, but recipient-level outcomes attributable to India cannot be isolated.',
+    'The offer was expanded promptly and channelled through the United Nations, reducing diversion and bilateral-control risks despite initial political hesitation.',
+    'The decision distinguished Pakistani civilians in urgent need from the state and non-state actors implicated in India’s security conflict.',
+    'The contribution supported a regional humanitarian norm but did not create a durable diplomatic or counterterrorism breakthrough.',
+  ],
+  'aadhaar-2016': [
+    'Targeted identity gaps, duplicate beneficiaries, and authentication at national scale.',
+    'Digital authentication and direct delivery expanded substantially, with disputed savings attribution.',
+    'Scale and interoperability are exceptional; exclusion and correction workflows remain uneven.',
+    'Privacy, mandatory-use, and authentication-failure risks reduce the rights score.',
+    'Aadhaar became durable public infrastructure with continuing legal guardrails.',
+  ],
+  'ibc-2016': [
+    'Targeted fragmented insolvency law and weak creditor recovery.',
+    'Creditor discipline and resolutions improved, but recovery and time outcomes vary.',
+    'Tribunal capacity and litigation routinely exceed intended timelines.',
+    'A rules-based process is fairer than indefinite promoter control, with worker/operational trade-offs.',
+    'The unified framework is durable but still being repaired through amendments.',
+  ],
+  'demonetisation-2016': [
+    'Targeted illicit cash, counterfeit currency, formalisation, and tax compliance with one shock.',
+    'Nearly all withdrawn currency returned; broad net benefits remain weakly demonstrated.',
+    'Four hours of notice and remonetisation constraints imposed exceptional disruption.',
+    'Cash-dependent workers and small firms bore disproportionate transition costs.',
+    'Digital payments rose, but causal attribution and the policy precedent remain contested.',
+  ],
+  'gst-2017': [
+    'Targeted fragmented indirect taxes and interstate trade barriers.',
+    'Created a national tax base and stronger formal reporting, with revenue and compliance gains over time.',
+    'Complex rates, portal problems, and early refund delays hurt implementation.',
+    'Common-market gains coexist with higher compliance burden for small firms.',
+    'The federal GST Council and shared tax architecture are durable.',
+  ],
+  'corporate-tax-cut-2019': [
+    'Addressed a high headline company-tax rate and sought to improve investment competitiveness with a cleaner no-exemption option.',
+    'Reduced the tax burden for eligible profitable companies, but additional investment and employment caused by the cut remain difficult to isolate.',
+    'Simple optional rates and removal of MAT for adopters were administratively clear, with retroactive-year timing and transition choices to manage.',
+    'Benefits accrued first to profitable companies, while the certain revenue cost reduced fiscal room for broadly shared spending or relief.',
+    'The lower-rate architecture endured, but its fiscal cost and exposure to international tax coordination limit the score.',
+  ],
+  'citizenship-amendment-act-2019': [
+    'Targets a real problem of long-term legal insecurity and religious persecution, but uses a narrow religion-country-date classification rather than a general persecution test.',
+    'Citizenship has been granted under the route, including at least 202 people in two directly documented official batches, but no complete national applications, approvals, refusals, or processing-time dataset is published.',
+    'The Act commenced in January 2020, yet the application Rules arrived only in March 2024; that four-year delay materially postponed the promised relief.',
+    'The accelerated route excludes persecuted Muslims and groups from other neighbouring countries, producing serious equal-treatment and under-inclusion concerns.',
+    'The law remains in force and creates durable citizenship once granted, while pending constitutional litigation, regional tensions, and social conflict weaken certainty.',
+  ],
+  'farm-laws-2020': [
+    'Targeted market access, contract farming, and private investment constraints.',
+    'The laws were repealed before durable national outcome evidence could emerge.',
+    'Limited consultation and compressed parliamentary process destroyed implementation legitimacy.',
+    'Farmers faced asymmetric bargaining and dispute-resolution concerns.',
+    'Repeal after sustained protest demonstrates low durability and weak coalition-building.',
+  ],
+  'personal-tax-regime-2020': [
+    'Targeted high rates, deduction complexity, and filing friction with lower slabs in exchange for fewer exemptions.',
+    'Large observed uptake shows practical value to many filers, while economy-wide consumption, savings, and compliance effects remain only partly observable.',
+    'Digital filing and simpler calculations help, but running old and new regimes together and repeatedly changing slabs preserves comparison work.',
+    'Rebates deliver substantial relief to taxable middle-income households, while non-filers and households relying on removed deductions benefit less or not at all.',
+    'The regime became the default and was expanded through 2025, suggesting durability despite continuing annual redesign.',
+  ],
+  'faceless-tax-administration-2020': [
+    'Targeted discretion, geographic dependence, physical interface, and corruption risk in assessment and first appeals.',
+    'Electronic allocation and communication improved reach and transparency, but reduced litigation and error outcomes are not conclusively established.',
+    'National digital workflow scaled quickly; specialist mismatch, rectification, hearing, and case-routing problems remain.',
+    'Removing face-to-face pressure can strengthen equal treatment, while digital access and effective opportunity to be heard require safeguards.',
+    'The model continues under the 2025 Act, but durable legitimacy depends on expertise, correction, and appeal performance.',
+  ],
+  'fcra-amendment-2020': [
+    'Targeted diversion, layered sub-grants, traceability, and compliance oversight.',
+    'Centralised banking improves auditability; evidence of net fraud reduction is incomplete.',
+    'SBI-only receipt, transfer prohibition, and lower administration cap raise operating costs.',
+    'Smaller NGOs and local partners face disproportionate capacity and association burdens.',
+    'The Supreme Court largely upheld the law, but constitutionality is not proof of optimal policy.',
+  ],
+  'citizenship-amendment-rules-2024': [
+    'Converts section 6B into an operational application route with forms, document alternatives, verification, oath, scrutiny, and certificates.',
+    'The process has produced documented grants, but effectiveness cannot be measured nationally without application, refusal, pendency, and processing-time totals.',
+    'A digital portal and district and empowered committees created a functioning workflow; a May 2026 update clarified passport-status disclosure and surrender after approval.',
+    'Alternative documents can help long-settled applicants, while community eligibility, fit-and-proper scrutiny, and the parent Act’s exclusions preserve access and equality concerns.',
+    'The rules are operating and have already been updated, but their durability remains tied to pending constitutional litigation and transparent administration.',
+  ],
+  'income-tax-act-2025': [
+    'Replaced a heavily amended sixty-four-year-old code with reorganised language, schedules, and a single tax-year concept.',
+    'Not yet observable because the Act has applied only from April 2026 and earlier tax years remain governed by the 1961 Act.',
+    'Rules, forms, payments, and continuity provisions launched on schedule, but taxpayers and administrators must temporarily operate two legal systems.',
+    'Clearer drafting can improve access, while broad search powers over virtual digital space and retained enforcement discretion require strong safeguards.',
+    'A clean replacement code can be durable, but early amendments and extensive delegated rules show that simplicity must be maintained in practice.',
+  ],
+  'gst-rate-reset-2025': [
+    'Targeted excessive slab complexity, classification anomalies, and high rates on selected household, health, agriculture, and production items.',
+    'Not yet observable because most revised rates have applied only since September 2025.',
+    'Council coordination and official transition guidance enabled rapid rollout, while businesses still had to update prices, systems, classifications, and credits.',
+    'Many reductions cover essentials and mass-use goods, but item-by-item incidence and the distribution of revenue replacement remain uncertain.',
+    'Fewer principal slabs improve durability, while future Council revisions and revenue pressure can recreate complexity.',
+  ],
+  'fcra-amendment-bill-2026': [
+    'Addresses a legitimate unmanaged-asset gap when an FCRA certificate ends.',
+    'Not yet observable because the Bill remains pending.',
+    'A Designated Authority clarifies custody, but renewal and asset processes remain administratively heavy.',
+    'Vesting without a prior hearing or appeal raises due-process concerns.',
+    'Penalty reduction is positive; potentially permanent asset vesting creates serious side effects.',
+  ],
+  'fcra-amendment-rules-2026': [
+    'Creates a more explicit activity test and updated process for renewal decisions.',
+    'Not yet observable because the Rules are newly in force.',
+    'Digital forms and a stated threshold are clear, but the spending test is rigid for small organisations.',
+    'A minimum-use threshold can disadvantage small, specialised, or reserve-funded organisations.',
+    'The rules are operationally durable but remain amendable and may create arbitrary renewal churn.',
+  ],
+}
+
+const policyRating = (policyId: string) => {
+  const values = policyComponentValues[policyId]
+  const availableWeight = values.reduce<number>(
+    (sum, value, index) =>
+      value === null ? sum : sum + policyEvaluationDimensions[index].weight,
+    0,
+  )
+  const weighted = values.reduce<number>(
+    (sum, value, index) =>
+      value === null
+        ? sum
+        : sum + value * policyEvaluationDimensions[index].weight,
+    0,
+  )
+  return Math.round((weighted / availableWeight) * 10) / 10
+}
+
+export const policies: PolicySeed[] = [
+  {
+    id: 'idra-1951',
+    jurisdictionId: 'india',
+    leaderTermId: 'nehru-1947',
+    title: 'Industries (Development and Regulation) Act, 1951',
+    shortTitle: 'Industrial licensing, 1951',
+    policyType: 'industrial-policy',
+    introducedDate: '1951-01-01',
+    enactedDate: '1951-10-31',
+    effectiveDate: '1952-05-08',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary: 'Created Union licensing and regulation powers over major industries.',
+    intendedGoal: 'Coordinate scarce capital, build strategic industry, and direct national development.',
+    ratingScore: policyRating('idra-1951'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'Useful state-building for a capital-scarce economy, but the licensing system later suppressed entry, competition, and responsiveness.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['idra-1951-act', 'rbi-handbook', 'india-budget-1991'],
+  },
+  {
+    id: 'income-tax-act-1961',
+    jurisdictionId: 'india',
+    leaderTermId: 'nehru-1947',
+    title: 'Income-tax Act, 1961',
+    shortTitle: '1961 Income-tax code',
+    policyType: 'tax-reform',
+    introducedDate: '1961-04-24',
+    enactedDate: '1961-09-13',
+    effectiveDate: '1962-04-01',
+    status: 'repealed',
+    coverageStatus: 'reviewed',
+    summary:
+      'Consolidated India’s direct-tax law for personal, business, and other income; it governed tax years beginning before April 2026.',
+    intendedGoal:
+      'Create a coherent nationwide income-tax code, administration, assessment process, remedies, and enforcement framework.',
+    ratingScore: policyRating('income-tax-act-1961'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'An exceptionally durable fiscal institution that enabled progressive direct taxation, but accumulated complexity, discretion, and litigation over six decades.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'income-tax-act-1961',
+      'income-tax-act-2025-guide',
+      'finance-committee-direct-taxes-2025',
+    ],
+  },
+  {
+    id: 'food-corporations-1964',
+    jurisdictionId: 'india',
+    leaderTermId: 'shastri-1964',
+    title: 'Food Corporations Act and national foodgrain system, 1964–65',
+    shortTitle: 'Food Corporation of India',
+    policyType: 'food-security',
+    introducedDate: '1964-11-17',
+    enactedDate: '1964-12-10',
+    effectiveDate: '1965-01-14',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary:
+      'Created the Food Corporation of India to procure, store, move, and distribute foodgrains and support national price and buffer-stock policy.',
+    intendedGoal:
+      'Build national capacity for food security, remunerative procurement, buffer stocks, price stability, and public distribution.',
+    ratingScore: policyRating('food-corporations-1964'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A foundational and durable food-security institution with large state-capacity value, offset by high costs, regional concentration, inventory problems, and market distortions.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'food-corporations-act-1964',
+      'world-bank-foodgrain-policy-1999',
+      'sansad-government-bills-api',
+      'rbi-handbook',
+    ],
+  },
+  {
+    id: 'bank-nationalisation-1969',
+    jurisdictionId: 'india',
+    leaderTermId: 'indira-1966',
+    title: 'Nationalisation of major commercial banks',
+    shortTitle: 'Bank nationalisation',
+    policyType: 'financial-policy',
+    introducedDate: '1969-07-19',
+    enactedDate: '1969-08-09',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary: 'Transferred fourteen major banks into public ownership.',
+    intendedGoal: 'Expand rural banking, priority-sector credit, and public control of finance.',
+    ratingScore: policyRating('bank-nationalisation-1969'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A meaningful inclusion and branch-expansion reform with lasting governance, efficiency, and political-credit costs.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['rbi-handbook', 'britannica-modern-india'],
+  },
+  {
+    id: 'constitution-42nd-1976',
+    jurisdictionId: 'india',
+    leaderTermId: 'indira-1966',
+    title: 'Constitution (Forty-second Amendment) Act, 1976',
+    shortTitle: '42nd Amendment',
+    policyType: 'constitutional',
+    introducedDate: '1976-09-01',
+    enactedDate: '1976-12-18',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary: 'Expanded central and parliamentary power during the Emergency and altered many constitutional provisions.',
+    intendedGoal: 'Strengthen central authority and social-directive provisions.',
+    ratingScore: policyRating('constitution-42nd-1976'),
+    ratingConfidence: 'high',
+    ratingSummary:
+      'Some durable textual changes survive, but the amendment package is primarily a severe institutional and civil-liberty failure.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['india-constitution', 'britannica-modern-india'],
+  },
+  {
+    id: 'constitution-44th-1978',
+    jurisdictionId: 'india',
+    leaderTermId: 'desai-1977',
+    title: 'Constitution (Forty-fourth Amendment) Act, 1978',
+    shortTitle: '44th Amendment',
+    policyType: 'constitutional',
+    introducedDate: '1978-05-15',
+    enactedDate: '1979-04-30',
+    effectiveDate: '1979-06-20',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary:
+      'Reversed major Emergency-era constitutional changes, strengthened safeguards for liberty and elections, and tightened national-emergency procedure.',
+    intendedGoal:
+      'Repair constitutional checks after the Emergency and make suspension of democratic and personal-liberty protections harder.',
+    ratingScore: policyRating('constitution-44th-1978'),
+    ratingConfidence: 'high',
+    ratingSummary:
+      'One of India’s strongest democratic-repair measures, with durable emergency and liberty safeguards despite incomplete reversal of every Emergency-era change.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'india-constitution',
+      'constitution-44th-bill-1978',
+      'britannica-modern-india',
+    ],
+  },
+  {
+    id: 'modvat-1986',
+    jurisdictionId: 'india',
+    leaderTermId: 'rajiv-1984',
+    title: 'Modified Value Added Tax scheme, 1986',
+    shortTitle: 'MODVAT',
+    policyType: 'tax-reform',
+    introducedDate: '1986-02-28',
+    enactedDate: '1986-05-13',
+    effectiveDate: '1986-03-01',
+    status: 'repealed',
+    coverageStatus: 'reviewed',
+    summary:
+      'Allowed manufacturers to credit specified excise and countervailing duties paid on inputs against duty on final products.',
+    intendedGoal:
+      'Reduce cascading tax on manufactured goods, improve transparency, lower embedded costs, and support exporters.',
+    ratingScore: policyRating('modvat-1986'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A strong foundational input-credit reform whose partial coverage and rule complexity were gradually repaired through CENVAT and GST.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'budget-speech-1986-87',
+      'budget-speech-1994-95',
+      'nipfp-tax-reform-2005',
+    ],
+  },
+  {
+    id: 'mandal-1990',
+    jurisdictionId: 'india',
+    leaderTermId: 'vp-singh-1989',
+    title: 'Implementation of the Mandal Commission recommendations',
+    shortTitle: 'Mandal reservations',
+    policyType: 'affirmative-action',
+    introducedDate: '1990-08-07',
+    status: 'executive-action',
+    coverageStatus: 'reviewed',
+    summary: 'Implemented reservations for Other Backward Classes in central government employment.',
+    intendedGoal: 'Correct persistent under-representation and widen public-sector access.',
+    ratingScore: policyRating('mandal-1990'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A major inclusion gain with durable representation effects, weakened by abrupt rollout and continuing category-design disputes.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['britannica-modern-india'],
+  },
+  {
+    id: 'economic-reforms-1991',
+    jurisdictionId: 'india',
+    leaderTermId: 'rao-1991',
+    title: '1991 stabilisation and economic liberalisation programme',
+    shortTitle: '1991 economic reforms',
+    policyType: 'economic-reform',
+    introducedDate: '1991-07-24',
+    status: 'executive-action',
+    coverageStatus: 'reviewed',
+    summary: 'Reduced industrial licensing and trade barriers while stabilising an external-payments crisis.',
+    intendedGoal: 'Restore macro stability and raise productivity, investment, and competitiveness.',
+    ratingScore: policyRating('economic-reforms-1991'),
+    ratingConfidence: 'high',
+    ratingSummary:
+      'One of independent India’s most durable and consequential reforms, with uneven distribution and incomplete social adjustment.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['india-budget-1991', 'rbi-handbook', 'world-bank-india'],
+  },
+  {
+    id: 'tax-rationalisation-1991',
+    jurisdictionId: 'india',
+    leaderTermId: 'rao-1991',
+    title: 'Post-1991 direct, customs, and excise tax rationalisation',
+    shortTitle: '1991 tax rationalisation',
+    policyType: 'tax-reform',
+    introducedDate: '1991-07-24',
+    enactedDate: '1991-09-27',
+    status: 'executive-action',
+    coverageStatus: 'reviewed',
+    summary:
+      'Lowered and consolidated rates, widened bases, reduced customs protection, simplified excise, and shifted policy toward moderate rates with stronger compliance.',
+    intendedGoal:
+      'Reduce evasion and distortion while improving competitiveness, revenue buoyancy, transparency, and voluntary compliance.',
+    ratingScore: policyRating('tax-rationalisation-1991'),
+    ratingConfidence: 'high',
+    ratingSummary:
+      'A durable change in tax philosophy and structure, with large efficiency gains but uneven adjustment and persistent administrative weakness.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'india-budget-1991',
+      'budget-speech-1994-95',
+      'nipfp-tax-reform-2005',
+      'rbi-handbook',
+    ],
+  },
+  {
+    id: 'service-tax-1994',
+    jurisdictionId: 'india',
+    leaderTermId: 'rao-1991',
+    title: 'Introduction and expansion of service tax, 1994',
+    shortTitle: 'Service tax',
+    policyType: 'tax-reform',
+    introducedDate: '1994-02-28',
+    enactedDate: '1994-05-13',
+    effectiveDate: '1994-07-01',
+    status: 'repealed',
+    coverageStatus: 'reviewed',
+    summary:
+      'Introduced a 5% levy on telephone, non-life insurance, and stock-broker services, later expanding across the service economy before GST.',
+    intendedGoal:
+      'Broaden the indirect-tax base, improve neutrality between goods and services, and raise revenue from a growing part of the economy.',
+    ratingScore: policyRating('service-tax-1994'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A necessary broadening of the tax base and a key bridge to GST, weakened by list-based complexity and indirect-tax incidence.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'budget-speech-1994-95',
+      'nipfp-tax-reform-2005',
+      'cag-service-tax-audit-2019',
+    ],
+  },
+  {
+    id: 'trai-act-1997',
+    jurisdictionId: 'india',
+    leaderTermId: 'deve-gowda-1996',
+    title: 'Telecom Regulatory Authority of India Act, 1997',
+    shortTitle: 'TRAI Act',
+    policyType: 'telecom-regulation',
+    introducedDate: '1997-03-15',
+    enactedDate: '1997-03-28',
+    effectiveDate: '1997-02-20',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary:
+      'Created an independent telecom regulator for tariffs, interconnection, service conditions, recommendations, and consumer interests.',
+    intendedGoal:
+      'Separate sector regulation from the government operator and support fair competition, investment, consumer protection, and orderly private entry.',
+    ratingScore: policyRating('trai-act-1997'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A necessary and durable regulator that helped enable competition, reduced by early jurisdictional weakness and dependence on later policy and statutory repair.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'trai-history',
+      'world-bank-telecom-reform-2008',
+      'sansad-government-bills-api',
+    ],
+  },
+  {
+    id: 'pmgsy-2000',
+    jurisdictionId: 'india',
+    leaderTermId: 'vajpayee-1998',
+    title: 'Pradhan Mantri Gram Sadak Yojana, 2000',
+    shortTitle: 'PMGSY rural roads',
+    policyType: 'rural-infrastructure',
+    introducedDate: '2000-12-25',
+    effectiveDate: '2000-12-25',
+    status: 'executive-action',
+    coverageStatus: 'reviewed',
+    summary:
+      'Created a centrally funded, technically standardised programme to connect eligible unconnected rural habitations with all-weather roads.',
+    intendedGoal:
+      'Reduce rural isolation and improve access to markets, jobs, schools, health care, and public services.',
+    ratingScore: policyRating('pmgsy-2000'),
+    ratingConfidence: 'high',
+    ratingSummary:
+      'A highly valuable and durable rural-connectivity programme with demonstrated access benefits, weakened by delayed targets, quality variation, and maintenance gaps.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'pmgsy-official',
+      'world-bank-pmgsy-impact-2021',
+      'cag-pmgsy-audit-2016',
+    ],
+  },
+  {
+    id: 'rti-2005',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    title: 'Right to Information Act, 2005',
+    shortTitle: 'Right to Information',
+    policyType: 'transparency',
+    introducedDate: '2004-12-23',
+    enactedDate: '2005-06-15',
+    effectiveDate: '2005-10-12',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary: 'Created a statutory right to request public records, subject to exemptions.',
+    intendedGoal: 'Reduce secrecy and make public authorities answerable to citizens.',
+    ratingScore: policyRating('rti-2005'),
+    ratingConfidence: 'high',
+    ratingSummary:
+      'A highly valuable accountability reform whose impact is constrained by delays, vacancies, and later institutional weakening.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['rti-act'],
+  },
+  {
+    id: 'mgnrega-2005',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    title: 'National Rural Employment Guarantee Act, 2005',
+    shortTitle: 'MGNREGA',
+    policyType: 'social-protection',
+    introducedDate: '2004-12-21',
+    enactedDate: '2005-09-05',
+    effectiveDate: '2006-02-02',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary: 'Established a demand-driven legal guarantee of rural wage employment.',
+    intendedGoal: 'Provide income security, bargaining power, and local public assets.',
+    ratingScore: policyRating('mgnrega-2005'),
+    ratingConfidence: 'high',
+    ratingSummary:
+      'A durable and inclusive social floor with proven scale, weakened by delayed payments, rationing, and uneven asset quality.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['mgnrega-act', 'world-bank-india'],
+  },
+  {
+    id: 'state-vat-2005',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    title: 'Coordinated state Value Added Tax rollout, 2005',
+    shortTitle: 'State VAT',
+    policyType: 'tax-reform',
+    introducedDate: '2005-01-17',
+    effectiveDate: '2005-04-01',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary:
+      'States replaced much of their sales-tax system with invoice-based VAT and input credits under a coordinated framework; residual VAT remains on GST-excluded goods.',
+    intendedGoal:
+      'Reduce tax-on-tax, harmonise state sales taxes, strengthen the tax trail, and improve state revenue systems.',
+    ratingScore: policyRating('state-vat-2005'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A major shared Union-state reform and essential bridge to GST, with meaningful efficiency gains and uneven state implementation.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'rbi-state-vat-2005',
+      'cag-state-vat-study',
+      'nipfp-tax-reform-2005',
+    ],
+  },
+  {
+    id: 'fcra-2010',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    title: 'Foreign Contribution (Regulation) Act, 2010',
+    shortTitle: 'FCRA 2010',
+    policyType: 'civil-society-regulation',
+    introducedDate: '2006-12-18',
+    enactedDate: '2010-09-26',
+    effectiveDate: '2011-05-01',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary: 'Replaced the 1976 regime with renewable registration, reporting, and prior-permission controls.',
+    intendedGoal: 'Prevent diversion or use of foreign contribution against the national interest.',
+    ratingScore: policyRating('fcra-2010'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A legitimate transparency framework with broad discretion and incomplete evidence that its burdens are proportionate to illegal-funding risks.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['fcra-2010-act', 'mha-fcra-division', 'fcra-2026-prs'],
+  },
+  {
+    id: 'pakistan-flood-relief-2010',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    title: 'Humanitarian flood assistance to Pakistan, 2010',
+    shortTitle: 'Pakistan flood relief',
+    policyType: 'foreign-policy-humanitarian-aid',
+    introducedDate: '2010-08-13',
+    effectiveDate: '2010-08-31',
+    status: 'executive-action',
+    coverageStatus: 'reviewed',
+    summary:
+      'Raised an initial US$5 million offer to US$25 million for Pakistan flood relief and channelled the commitment through United Nations humanitarian mechanisms.',
+    intendedGoal:
+      'Support civilians affected by a catastrophic neighbouring-country disaster while separating humanitarian responsibility from unresolved security conflict.',
+    ratingScore: policyRating('pakistan-flood-relief-2010'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A proportionate and well-routed humanitarian decision despite severe bilateral tension, limited by modest scale, incomplete recipient-level impact evidence, and little durable diplomatic effect.',
+    assessmentAsOf: heardClaimReviewedDate,
+    sourceIds: [
+      'mea-pakistan-flood-aid-2010',
+      'mea-pakistan-flood-aid-unga-2010',
+      'un-ocha-india-pakistan-erf-2010',
+      'guardian-pakistan-flood-aid-2010',
+      'brookings-pakistan-flood-aid-2010',
+    ],
+  },
+  {
+    id: 'aadhaar-2016',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Aadhaar (Targeted Delivery of Financial and Other Subsidies) Act, 2016',
+    shortTitle: 'Aadhaar Act',
+    policyType: 'digital-public-infrastructure',
+    introducedDate: '2016-03-03',
+    enactedDate: '2016-03-25',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary: 'Placed India’s biometric identity and authentication system on a statutory footing.',
+    intendedGoal: 'Improve identity verification and targeted benefit delivery.',
+    ratingScore: policyRating('aadhaar-2016'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'Transformative public infrastructure with large delivery value, offset by privacy, exclusion, and mandatory-use risks.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['aadhaar-act', 'world-bank-india'],
+  },
+  {
+    id: 'ibc-2016',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Insolvency and Bankruptcy Code, 2016',
+    shortTitle: 'Insolvency and Bankruptcy Code',
+    policyType: 'financial-reform',
+    introducedDate: '2015-12-21',
+    enactedDate: '2016-05-28',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary: 'Unified corporate insolvency and creditor resolution under a time-bound framework.',
+    intendedGoal: 'Improve recovery, credit discipline, business exit, and capital allocation.',
+    ratingScore: policyRating('ibc-2016'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A major structural reform with clear discipline benefits, still limited by tribunal delay, litigation, and uneven recovery.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['ibc-2016-act', 'ibbi-annual-2025'],
+  },
+  {
+    id: 'demonetisation-2016',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Withdrawal of ₹500 and ₹1,000 banknotes, 2016',
+    shortTitle: 'Demonetisation',
+    policyType: 'monetary-executive-action',
+    introducedDate: '2016-11-08',
+    effectiveDate: '2016-11-09',
+    status: 'executive-action',
+    coverageStatus: 'reviewed',
+    summary: 'Invalidated most currency in circulation and began rapid remonetisation.',
+    intendedGoal: 'Attack illicit cash, counterfeit notes, informality, and weak tax compliance.',
+    ratingScore: policyRating('demonetisation-2016'),
+    ratingConfidence: 'high',
+    ratingSummary:
+      'A highly disruptive intervention whose central illicit-cash rationale is weakly supported by observed outcomes.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['rbi-demonetisation', 'world-bank-india'],
+  },
+  {
+    id: 'gst-2017',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Goods and Services Tax rollout, 2017',
+    shortTitle: 'GST',
+    policyType: 'tax-reform',
+    introducedDate: '2014-12-19',
+    enactedDate: '2016-09-08',
+    effectiveDate: '2017-07-01',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary: 'Replaced many Union and state indirect taxes with a shared destination-based system.',
+    intendedGoal: 'Create a common market, improve compliance, and reduce cascading taxes.',
+    ratingScore: policyRating('gst-2017'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A durable common-market reform with strong long-run value and significant early complexity and small-firm costs.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'cbic-gst',
+      'world-bank-gst-implementation',
+      'cag-gst-audit-2024',
+      'rbi-handbook',
+    ],
+  },
+  {
+    id: 'corporate-tax-cut-2019',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Corporate income-tax rate reduction, 2019',
+    shortTitle: '2019 corporate-tax cut',
+    policyType: 'tax-reform',
+    introducedDate: '2019-09-20',
+    enactedDate: '2019-12-11',
+    effectiveDate: '2019-04-01',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary:
+      'Offered domestic companies a 22% base rate without specified incentives and new eligible manufacturers a 15% rate, with no MAT for adopters.',
+    intendedGoal:
+      'Improve investment competitiveness, attract manufacturing, simplify company taxation, and support growth and employment.',
+    ratingScore: policyRating('corporate-tax-cut-2019'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A clear competitiveness reform with a large certain fiscal cost and still-uncertain evidence of how much additional investment it caused.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'pib-corporate-tax-2019',
+      'pib-corporate-tax-revenue-impact-2020',
+      'economic-survey-2023-industry',
+      'nipfp-corporate-tax-2023',
+    ],
+  },
+  {
+    id: 'citizenship-amendment-act-2019',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Citizenship (Amendment) Act, 2019',
+    shortTitle: 'CAA 2019',
+    policyType: 'citizenship-policy',
+    introducedDate: '2019-12-09',
+    enactedDate: '2019-12-12',
+    effectiveDate: '2020-01-10',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary:
+      'Created an accelerated citizenship route for specified Hindu, Sikh, Buddhist, Jain, Parsi, and Christian migrants from Afghanistan, Bangladesh, and Pakistan who entered India by December 31, 2014.',
+    intendedGoal:
+      'Resolve long-term legal insecurity for specified religious minorities who fled persecution or fear of persecution in three neighbouring countries.',
+    ratingScore: policyRating('citizenship-amendment-act-2019'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A real humanitarian route that has produced citizenship grants, reduced by selective eligibility, a four-year operational delay, incomplete national outcome data, and unresolved constitutional and social-cohesion costs.',
+    assessmentAsOf: caaReviewedDate,
+    sourceIds: [
+      'citizenship-amendment-act',
+      'caa-commencement-2020',
+      'caa-rules-2024',
+      'caa-prs-2019',
+      'caa-pib-first-certificates-2024',
+      'caa-pib-ahmedabad-2024',
+      'caa-supreme-court-office-report-2026',
+      'caa-supreme-court-observer',
+      'caa-hrw-2024',
+      'caa-exemption-order-2025',
+    ],
+  },
+  {
+    id: 'farm-laws-2020',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Central farm laws, 2020',
+    shortTitle: 'Farm laws',
+    policyType: 'agricultural-reform',
+    introducedDate: '2020-09-14',
+    enactedDate: '2020-09-27',
+    effectiveDate: '2020-09-27',
+    status: 'repealed',
+    coverageStatus: 'reviewed',
+    summary: 'Changed agricultural marketing, contract farming, and stocking rules before repeal in 2021.',
+    intendedGoal: 'Expand market choice, private investment, and supply-chain efficiency.',
+    ratingScore: policyRating('farm-laws-2020'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'Reform problems were real, but weak consultation, rushed passage, bargaining concerns, and repeal made the package unsuccessful.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['prs-farm-laws'],
+  },
+  {
+    id: 'personal-tax-regime-2020',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'New personal income-tax regime, 2020–26',
+    shortTitle: 'New personal tax regime',
+    policyType: 'tax-reform',
+    introducedDate: '2020-02-01',
+    enactedDate: '2020-03-27',
+    effectiveDate: '2020-04-01',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary:
+      'Introduced lower personal tax slabs in exchange for fewer deductions, became the default from AY 2024–25, and expanded rebates and relief through 2025.',
+    intendedGoal:
+      'Simplify personal taxation, reduce rates, lessen deduction planning, support compliance, and leave more disposable income with taxpayers.',
+    ratingScore: policyRating('personal-tax-regime-2020'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A popular and increasingly generous simplification for filers, balanced by parallel-regime complexity, fiscal cost, and limited reach beyond the taxable population.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'pib-new-tax-regime-uptake-2024',
+      'pib-personal-tax-relief-2025',
+      'finance-committee-direct-taxes-2025',
+      'income-tax-act-2025-guide',
+    ],
+  },
+  {
+    id: 'faceless-tax-administration-2020',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Faceless income-tax assessment and appeals',
+    shortTitle: 'Faceless tax administration',
+    policyType: 'tax-administration',
+    introducedDate: '2020-08-13',
+    effectiveDate: '2020-08-13',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary:
+      'Moved assessment allocation, notices, submissions, hearings, and many first appeals into a national electronic workflow without routine physical interface.',
+    intendedGoal:
+      'Reduce discretion and coercion, standardise treatment, improve transparency, and make tax proceedings accessible across India.',
+    ratingScore: policyRating('faceless-tax-administration-2020'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'A valuable anti-discretion and access reform whose specialist matching, correction, hearing, and litigation problems still need repair.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'pib-faceless-tax-2020',
+      'finance-committee-direct-taxes-2025',
+      'income-tax-act-2025-guide',
+    ],
+  },
+  {
+    id: 'fcra-amendment-2020',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Foreign Contribution (Regulation) Amendment Act, 2020',
+    shortTitle: 'FCRA Amendment 2020',
+    policyType: 'civil-society-regulation',
+    introducedDate: '2020-09-20',
+    enactedDate: '2020-09-28',
+    effectiveDate: '2020-09-29',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary: 'Centralised receipt accounts, prohibited transfers, tightened identity checks, and reduced the administrative-spending cap.',
+    intendedGoal: 'Increase traceability, prevent diversion, and strengthen compliance.',
+    ratingScore: policyRating('fcra-amendment-2020'),
+    ratingConfidence: 'medium',
+    ratingSummary:
+      'Improved formal traceability and survived constitutional review, but imposed broad and unequal burdens on smaller civil-society organisations.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: ['fcra-2020-act', 'fcra-2020-prs', 'noel-harper-2022', 'icj-fcra-2020'],
+  },
+  {
+    id: 'citizenship-amendment-rules-2024',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Citizenship (Amendment) Rules, 2024',
+    shortTitle: 'CAA Rules 2024',
+    policyType: 'citizenship-policy',
+    introducedDate: '2024-03-11',
+    enactedDate: '2024-03-11',
+    effectiveDate: '2024-03-11',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    summary:
+      'Created the online application, document, district verification, oath, empowered-committee scrutiny, and certificate process for section 6B; a May 2026 amendment added passport-status disclosure and surrender after approval.',
+    intendedGoal:
+      'Turn the 2019 statutory route into a usable, standardized, and digitally processed citizenship system.',
+    ratingScore: policyRating('citizenship-amendment-rules-2024'),
+    ratingConfidence: 'low',
+    ratingSummary:
+      'A functioning and comparatively clear administrative route, with documented grants and useful document alternatives, but no comprehensive national outcome table and unresolved access, discretion, and constitutional risks.',
+    assessmentAsOf: caaReviewedDate,
+    sourceIds: [
+      'caa-rules-2024',
+      'caa-rules-passport-2026',
+      'caa-pib-first-certificates-2024',
+      'caa-pib-ahmedabad-2024',
+      'caa-supreme-court-office-report-2026',
+      'caa-supreme-court-observer',
+      'caa-prs-2019',
+      'caa-hrw-2024',
+    ],
+  },
+  {
+    id: 'income-tax-act-2025',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Income-tax Act, 2025',
+    shortTitle: '2025 Income-tax code',
+    policyType: 'tax-reform',
+    introducedDate: '2025-08-11',
+    enactedDate: '2025-08-21',
+    effectiveDate: '2026-04-01',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    ratingBasis: 'design',
+    summary:
+      'Replaced the 1961 code for tax years beginning on or after April 1, 2026, reorganising language and forms while largely preserving substantive tax policy.',
+    intendedGoal:
+      'Make direct-tax law shorter, clearer, easier to navigate, and less prone to interpretation disputes without disrupting continuity.',
+    ratingScore: policyRating('income-tax-act-2025'),
+    ratingConfidence: 'low',
+    ratingSummary:
+      'A credible simplification and transition design now in force, but it is too new for an effectiveness score and retains material enforcement and digital-search concerns.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'income-tax-act-2025-passed',
+      'income-tax-act-2025-guide',
+      'income-tax-rules-2026',
+      'prs-income-tax-bill-2025',
+    ],
+  },
+  {
+    id: 'gst-rate-reset-2025',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'GST rate rationalisation, 2025',
+    shortTitle: '2025 GST rate reset',
+    policyType: 'tax-reform',
+    introducedDate: '2025-09-03',
+    effectiveDate: '2025-09-22',
+    status: 'executive-action',
+    coverageStatus: 'reviewed',
+    ratingBasis: 'design',
+    summary:
+      'Reorganised most GST rates around principal 5% and 18% slabs, retained special 40% treatment for selected supplies, and changed rates or exemptions across many sectors.',
+    intendedGoal:
+      'Reduce slab complexity and anomalies, lower selected household and production costs, and make the GST structure easier to administer.',
+    ratingScore: policyRating('gst-rate-reset-2025'),
+    ratingConfidence: 'low',
+    ratingSummary:
+      'A meaningful simplification with plausible distributional benefits, but less than one year of evidence cannot establish its net revenue, price, compliance, or equity effects.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'gst-council-56-2025',
+      'gst-rate-faq-2025',
+      'prs-budget-analysis-2026-27',
+    ],
+  },
+  {
+    id: 'fcra-amendment-bill-2026',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Foreign Contribution (Regulation) Amendment Bill, 2026',
+    shortTitle: 'FCRA Amendment Bill 2026',
+    policyType: 'civil-society-regulation',
+    introducedDate: '2026-03-25',
+    status: 'pending',
+    coverageStatus: 'reviewed',
+    ratingBasis: 'design',
+    summary: 'Would create a Designated Authority to manage or dispose foreign-funded assets after an FCRA certificate ends.',
+    intendedGoal: 'Close asset-management gaps for cancelled, surrendered, expired, or non-renewed FCRA certificates.',
+    ratingScore: policyRating('fcra-amendment-bill-2026'),
+    ratingConfidence: 'low',
+    ratingSummary:
+      'Provisional 4.6/10: clearer asset custody and a lower maximum prison term are positives, but no-hearing asset vesting, appeal gaps, and potentially permanent vesting make the current design disproportionate.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'fcra-2026-sansad',
+      'fcra-2026-prs',
+      'mha-fcra-division',
+    ],
+  },
+  {
+    id: 'fcra-amendment-rules-2026',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Foreign Contribution (Regulation) Amendment Rules, 2026',
+    shortTitle: 'FCRA Rules 2026',
+    policyType: 'civil-society-regulation',
+    introducedDate: '2026-06-22',
+    enactedDate: '2026-06-22',
+    effectiveDate: '2026-06-22',
+    status: 'enacted',
+    coverageStatus: 'reviewed',
+    ratingBasis: 'design',
+    summary:
+      'Updated FCRA forms and renewal criteria, including a minimum foreign-contribution use test for reasonable activity.',
+    intendedGoal:
+      'Standardise renewal assessment, reporting, and evidence that a registered organisation is carrying out FCRA-funded activity.',
+    ratingScore: policyRating('fcra-amendment-rules-2026'),
+    ratingConfidence: 'low',
+    ratingSummary:
+      'Provisional design estimate: clearer renewal criteria and digital process, offset by a rigid spending threshold that may disadvantage small or specialised organisations.',
+    assessmentAsOf: ratingAsOf,
+    sourceIds: [
+      'fcra-2026-rules',
+      'mha-fcra-division',
+      'fcra-2026-prs',
+      'amnesty-fcra-2026',
+    ],
+  },
+]
+
+export const policyScores: PolicyScoreSeed[] = Object.entries(
+  policyComponentValues,
+).flatMap(([policyId, scores]) =>
+  scores.map((score, index) => ({
+    policyId,
+    dimensionId: policyEvaluationDimensions[index].id,
+    score,
+    rationale: policyRationales[policyId][index],
+  })),
+)
+
+export const events: EventSeed[] = [
+  {
+    id: 'independence-partition-1947',
+    jurisdictionId: 'india',
+    date: '1947-08-15',
+    title: 'Independence and Partition',
+    summary:
+      'British India ended and the independent dominions of India and Pakistan were created amid mass displacement and communal violence.',
+    significance:
+      'The founding political event of modern India and a lasting source of demographic, security, and constitutional consequences.',
+    category: 'politics',
+    confidence: 'high',
+    sourceIds: ['india-independence-act', 'britannica-modern-india'],
+    leaderTermIds: ['nehru-1947'],
+  },
+  {
+    id: 'constitution-1950',
+    jurisdictionId: 'india',
+    date: '1950-01-26',
+    title: 'Constitution comes into force',
+    summary:
+      'India became a republic under a parliamentary federal constitution with universal adult franchise and enforceable fundamental rights.',
+    significance:
+      'Created the durable legal framework for elections, federalism, courts, rights, and executive power.',
+    category: 'institutions',
+    confidence: 'high',
+    sourceIds: ['india-constitution'],
+    leaderTermIds: ['nehru-1947'],
+  },
+  {
+    id: 'first-election-1951',
+    jurisdictionId: 'india',
+    date: '1951-10-25',
+    endDate: '1952-02-21',
+    title: 'First general election',
+    summary:
+      'India conducted its first national election under universal adult franchise across a vast, low-literacy electorate.',
+    significance:
+      'Established competitive mass democracy as a functioning national institution.',
+    category: 'elections',
+    confidence: 'high',
+    sourceIds: ['india-constitution', 'britannica-modern-india'],
+    leaderTermIds: ['nehru-1947'],
+  },
+  {
+    id: 'states-reorganisation-1956',
+    jurisdictionId: 'india',
+    date: '1956-11-01',
+    title: 'States reorganised largely on linguistic lines',
+    summary:
+      'The States Reorganisation Act redrew internal boundaries and transformed the federal map.',
+    significance:
+      'Reduced some linguistic conflict while making state identity central to Indian federalism.',
+    category: 'federalism',
+    confidence: 'high',
+    sourceIds: ['india-constitution', 'britannica-modern-india'],
+    leaderTermIds: ['nehru-1947'],
+  },
+  {
+    id: 'china-war-1962',
+    jurisdictionId: 'india',
+    date: '1962-10-20',
+    endDate: '1962-11-21',
+    title: 'Sino-Indian War',
+    summary:
+      'India suffered a major military defeat in a short border war with China.',
+    significance:
+      'Reshaped defence planning, foreign policy, and public judgment of the Nehru government.',
+    category: 'security',
+    confidence: 'high',
+    sourceIds: ['britannica-modern-india'],
+    leaderTermIds: ['nehru-1947'],
+  },
+  {
+    id: 'india-pakistan-war-1965',
+    jurisdictionId: 'india',
+    date: '1965-08-05',
+    endDate: '1965-09-23',
+    title: 'India–Pakistan War',
+    summary:
+      'A major conventional war was fought across the international border and in Kashmir.',
+    significance:
+      'Tested the young state’s military capacity and shaped Shastri’s political legacy.',
+    category: 'security',
+    confidence: 'high',
+    sourceIds: ['britannica-modern-india'],
+    leaderTermIds: ['shastri-1964'],
+  },
+  {
+    id: 'green-revolution-1966',
+    jurisdictionId: 'india',
+    date: '1966-06-01',
+    title: 'Green Revolution accelerates',
+    summary:
+      'High-yield seeds, irrigation, fertilizer, procurement, and agricultural research expanded rapidly.',
+    significance:
+      'Improved food security while creating regional, groundwater, and input-intensity trade-offs.',
+    category: 'agriculture',
+    confidence: 'medium',
+    sourceIds: ['rbi-handbook', 'britannica-modern-india'],
+    leaderTermIds: ['indira-1966'],
+  },
+  {
+    id: 'bank-nationalisation-1969',
+    jurisdictionId: 'india',
+    date: '1969-07-19',
+    title: 'Fourteen major banks nationalised',
+    summary:
+      'The Union government took control of fourteen large commercial banks.',
+    significance:
+      'Expanded directed and rural banking but also deepened political control over credit allocation.',
+    category: 'economy',
+    confidence: 'high',
+    sourceIds: ['rbi-handbook', 'britannica-modern-india'],
+    leaderTermIds: ['indira-1966'],
+  },
+  {
+    id: 'bangladesh-war-1971',
+    jurisdictionId: 'india',
+    date: '1971-12-03',
+    endDate: '1971-12-16',
+    title: 'War and the creation of Bangladesh',
+    summary:
+      'India intervened in the Bangladesh Liberation War and Pakistani forces in the east surrendered.',
+    significance:
+      'A major strategic victory that transformed South Asian geopolitics.',
+    category: 'security',
+    confidence: 'high',
+    sourceIds: ['britannica-modern-india'],
+    leaderTermIds: ['indira-1966'],
+  },
+  {
+    id: 'emergency-1975',
+    jurisdictionId: 'india',
+    date: '1975-06-25',
+    endDate: '1977-03-21',
+    title: 'The Emergency',
+    summary:
+      'Civil liberties were suspended, opposition leaders detained, and press freedom sharply curtailed under emergency rule.',
+    significance:
+      'The most severe nationwide interruption of democratic liberties in independent India.',
+    category: 'institutions',
+    confidence: 'high',
+    sourceIds: ['india-constitution', 'britannica-modern-india'],
+    leaderTermIds: ['indira-1966'],
+  },
+  {
+    id: 'janata-transition-1977',
+    jurisdictionId: 'india',
+    date: '1977-03-24',
+    title: 'First non-Congress Union government',
+    summary:
+      'The Janata Party formed the first Union government led by a party other than Congress.',
+    significance:
+      'Demonstrated electoral removal of a dominant incumbent after the Emergency.',
+    category: 'elections',
+    confidence: 'high',
+    sourceIds: ['pm-india-former', 'britannica-modern-india'],
+    leaderTermIds: ['desai-1977'],
+  },
+  {
+    id: 'charan-singh-government-collapse-1979',
+    jurisdictionId: 'india',
+    date: '1979-08-20',
+    endDate: '1979-08-22',
+    title: 'Charan Singh resigns before a confidence vote',
+    summary:
+      'Congress withdrew outside support before the minority government faced the Lok Sabha; Charan Singh resigned and the House was dissolved two days later.',
+    significance:
+      'A sharp example of minority-government fragility and the constitutional importance of testing legislative confidence promptly.',
+    category: 'governance',
+    confidence: 'high',
+    sourceIds: [
+      'pm-india-former',
+      'charan-singh-dissolution-court-record',
+      'britannica-modern-india',
+    ],
+    leaderTermIds: ['charan-singh-1979'],
+  },
+  {
+    id: 'operation-blue-star-1984',
+    jurisdictionId: 'india',
+    date: '1984-06-01',
+    endDate: '1984-06-10',
+    title: 'Operation Blue Star',
+    summary:
+      'The Indian Army entered the Golden Temple complex to remove armed militants.',
+    significance:
+      'Deepened the Punjab conflict and preceded Indira Gandhi’s assassination and anti-Sikh violence.',
+    category: 'security',
+    confidence: 'high',
+    sourceIds: ['britannica-modern-india'],
+    leaderTermIds: ['indira-1980'],
+  },
+  {
+    id: 'bhopal-1984',
+    jurisdictionId: 'india',
+    date: '1984-12-02',
+    title: 'Bhopal gas disaster',
+    summary:
+      'A toxic gas leak from the Union Carbide plant killed and injured large numbers of people.',
+    significance:
+      'Exposed severe industrial-safety, corporate-accountability, public-health, and compensation failures.',
+    category: 'disaster',
+    confidence: 'high',
+    sourceIds: ['britannica-modern-india'],
+    leaderTermIds: ['rajiv-1984'],
+  },
+  {
+    id: 'mandal-1990',
+    jurisdictionId: 'india',
+    date: '1990-08-07',
+    title: 'Mandal recommendations implemented',
+    summary:
+      'The Union government announced reservations for Other Backward Classes in central government employment.',
+    significance:
+      'Expanded representation and permanently reshaped party competition, while triggering intense protests.',
+    category: 'social-policy',
+    confidence: 'high',
+    sourceIds: ['britannica-modern-india'],
+    leaderTermIds: ['vp-singh-1989'],
+  },
+  {
+    id: 'gold-mobilisation-1991',
+    jurisdictionId: 'india',
+    date: '1991-05-01',
+    title: 'May 1991 emergency gold transaction',
+    summary:
+      'During May, SBI used 19.65 tonnes of confiscated gold in a sale with repurchase option to raise about US$200 million from the Union Bank of Switzerland.',
+    significance:
+      'Bought short-term foreign exchange during the payments crisis and must be distinguished from the separate July 1991 RBI gold pledge under the Rao government.',
+    category: 'economy',
+    confidence: 'high',
+    sourceIds: ['rbi-history-gold-1991', 'imf-india-crisis-2000'],
+    leaderTermIds: ['chandra-shekhar-1990'],
+  },
+  {
+    id: 'liberalisation-1991',
+    jurisdictionId: 'india',
+    date: '1991-07-24',
+    title: 'Economic liberalisation programme',
+    summary:
+      'The government launched stabilisation and structural reforms during a balance-of-payments crisis.',
+    significance:
+      'Reduced industrial licensing and trade barriers and changed India’s long-run growth model.',
+    category: 'economy',
+    confidence: 'high',
+    sourceIds: ['india-budget-1991', 'rbi-handbook'],
+    leaderTermIds: ['rao-1991'],
+  },
+  {
+    id: 'babri-demolition-1992',
+    jurisdictionId: 'india',
+    date: '1992-12-06',
+    title: 'Babri Masjid demolished',
+    summary:
+      'A Hindu nationalist mobilisation demolished the Babri Masjid in Ayodhya, followed by widespread communal violence.',
+    significance:
+      'A defining failure of public order and a long-term transformation in religion and electoral politics.',
+    category: 'society',
+    confidence: 'high',
+    sourceIds: ['britannica-modern-india'],
+    leaderTermIds: ['rao-1991'],
+  },
+  {
+    id: 'gujral-doctrine-premiership-1997',
+    jurisdictionId: 'india',
+    date: '1997-04-21',
+    title: 'Gujral Doctrine carried into the premiership',
+    summary:
+      'On becoming Prime Minister, I. K. Gujral carried forward a neighbourhood policy of non-reciprocal accommodation toward India’s smaller South Asian neighbours.',
+    significance:
+      'Reframed regional leadership around reassurance and cooperation, while conflict with Pakistan and structural asymmetry limited what diplomacy alone could achieve.',
+    category: 'foreign-policy',
+    confidence: 'medium',
+    sourceIds: ['pm-india-former', 'idsa-gujral-doctrine'],
+    leaderTermIds: ['gujral-1997'],
+  },
+  {
+    id: 'pokhran-1998',
+    jurisdictionId: 'india',
+    date: '1998-05-11',
+    endDate: '1998-05-13',
+    title: 'Pokhran-II nuclear tests',
+    summary:
+      'India conducted a series of nuclear tests and declared itself a nuclear-weapon state.',
+    significance:
+      'Changed India’s strategic posture and triggered international sanctions before later rapprochement.',
+    category: 'security',
+    confidence: 'high',
+    sourceIds: ['dae-pokhran', 'britannica-modern-india'],
+    leaderTermIds: ['vajpayee-1998'],
+  },
+  {
+    id: 'kargil-1999',
+    jurisdictionId: 'india',
+    date: '1999-05-03',
+    endDate: '1999-07-26',
+    title: 'Kargil War',
+    summary:
+      'Indian forces fought to reverse Pakistani intrusions across the Line of Control in the Kargil sector.',
+    significance:
+      'A limited war between nuclear-armed neighbours that strengthened Vajpayee’s security standing.',
+    category: 'security',
+    confidence: 'high',
+    sourceIds: ['britannica-modern-india'],
+    leaderTermIds: ['vajpayee-1998'],
+  },
+  {
+    id: 'rti-2005',
+    jurisdictionId: 'india',
+    date: '2005-06-15',
+    title: 'Right to Information Act enacted',
+    summary:
+      'Citizens received a statutory right to request records from public authorities, subject to exemptions.',
+    significance:
+      'Created one of India’s most important day-to-day accountability mechanisms.',
+    category: 'institutions',
+    confidence: 'high',
+    sourceIds: ['rti-act'],
+    leaderTermIds: ['manmohan-2004'],
+  },
+  {
+    id: 'mgnrega-2005',
+    jurisdictionId: 'india',
+    date: '2005-09-05',
+    title: 'Rural employment guarantee enacted',
+    summary:
+      'The law created a demand-driven guarantee of wage employment for rural households.',
+    significance:
+      'Established a durable nationwide social-protection floor with large implementation variation.',
+    category: 'social-policy',
+    confidence: 'high',
+    sourceIds: ['mgnrega-act'],
+    leaderTermIds: ['manmohan-2004'],
+  },
+  {
+    id: 'mumbai-attacks-2008',
+    jurisdictionId: 'india',
+    date: '2008-11-26',
+    endDate: '2008-11-29',
+    title: 'Mumbai terrorist attacks',
+    summary:
+      'Coordinated attacks across Mumbai killed more than 160 people.',
+    significance:
+      'Prompted major changes in coastal security, intelligence coordination, and India–Pakistan relations.',
+    category: 'security',
+    confidence: 'high',
+    sourceIds: ['britannica-modern-india'],
+    leaderTermIds: ['manmohan-2004'],
+  },
+  {
+    id: 'pakistan-flood-aid-2010',
+    jurisdictionId: 'india',
+    date: '2010-08-31',
+    title: 'India commits US$25 million for Pakistan flood relief',
+    summary:
+      'The Manmohan Singh government raised an initial US$5 million humanitarian offer to US$25 million after catastrophic floods in Pakistan, with the assistance channelled through United Nations relief mechanisms.',
+    significance:
+      'A post-26/11 test of whether India could maintain counterterrorism pressure while distinguishing Pakistani civilians and humanitarian relief from the bilateral security conflict.',
+    category: 'foreign-policy',
+    confidence: 'high',
+    sourceIds: [
+      'mea-pakistan-flood-aid-2010',
+      'mea-pakistan-flood-aid-unga-2010',
+      'un-ocha-india-pakistan-erf-2010',
+      'guardian-pakistan-flood-aid-2010',
+      'brookings-pakistan-flood-aid-2010',
+    ],
+    leaderTermIds: ['manmohan-2004'],
+  },
+  {
+    id: 'aadhaar-2010',
+    jurisdictionId: 'india',
+    date: '2010-09-29',
+    title: 'First Aadhaar number issued',
+    summary:
+      'India began issuing biometric digital identity numbers, later placed on a statutory footing.',
+    significance:
+      'Became a foundational layer for digital authentication and benefit delivery, alongside exclusion and privacy debates.',
+    category: 'technology',
+    confidence: 'high',
+    sourceIds: ['aadhaar-act'],
+    leaderTermIds: ['manmohan-2004'],
+  },
+  {
+    id: 'modi-government-2014',
+    jurisdictionId: 'india',
+    date: '2014-05-26',
+    title: 'Narendra Modi sworn in as Prime Minister',
+    summary:
+      'The BJP-led National Democratic Alliance formed a majority government after the 2014 election.',
+    significance:
+      'Began a sustained period of centralised executive leadership and BJP dominance at the Union level.',
+    category: 'elections',
+    confidence: 'high',
+    sourceIds: ['pm-india-current', 'pm-india-former'],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'demonetisation-2016',
+    jurisdictionId: 'india',
+    date: '2016-11-08',
+    title: 'High-denomination banknotes withdrawn',
+    summary:
+      'The government invalidated existing ₹500 and ₹1,000 notes and began a rapid remonetisation.',
+    significance:
+      'A vast monetary shock with disputed effects on informality, tax compliance, digitisation, and illicit wealth.',
+    category: 'economy',
+    confidence: 'high',
+    sourceIds: ['rbi-demonetisation'],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'gst-2017',
+    jurisdictionId: 'india',
+    date: '2017-07-01',
+    title: 'Goods and Services Tax launched',
+    summary:
+      'A nationwide destination-based indirect tax replaced many Union and state levies.',
+    significance:
+      'Deepened the common market and tax formalisation while introducing major compliance and federal coordination costs.',
+    category: 'economy',
+    confidence: 'high',
+    sourceIds: ['cbic-gst'],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'article370-2019',
+    jurisdictionId: 'india',
+    date: '2019-08-05',
+    title: 'Jammu and Kashmir’s special status removed',
+    summary:
+      'The Union government ended the operative effect of Article 370 and reorganised the former state into two Union territories.',
+    significance:
+      'A major constitutional and federal change with contested security, rights, and representation consequences.',
+    category: 'federalism',
+    confidence: 'high',
+    sourceIds: ['india-constitution', 'supreme-court-article370'],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'covid-lockdown-2020',
+    jurisdictionId: 'india',
+    date: '2020-03-24',
+    title: 'National COVID-19 lockdown announced',
+    summary:
+      'A nationwide lockdown began with four hours’ notice to slow the spread of COVID-19.',
+    significance:
+      'A sweeping public-health intervention with large consequences for migrants, employment, education, and the economy.',
+    category: 'public-health',
+    confidence: 'high',
+    sourceIds: ['mha-covid-lockdown', 'world-bank-india'],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'farm-laws-2020',
+    jurisdictionId: 'india',
+    date: '2020-09-27',
+    endDate: '2021-12-01',
+    title: 'Farm laws enacted, protested, and repealed',
+    summary:
+      'Three agricultural-market laws were enacted after limited parliamentary deliberation, faced a sustained protest movement, and were repealed in 2021.',
+    significance:
+      'Illustrated both reform ambition and the costs of weak consultation and federal trust.',
+    category: 'agriculture',
+    confidence: 'high',
+    sourceIds: ['prs-farm-laws'],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'chandrayaan3-2023',
+    jurisdictionId: 'india',
+    date: '2023-08-23',
+    title: 'Chandrayaan-3 lands near the lunar south pole',
+    summary:
+      'ISRO successfully soft-landed the Vikram lander and deployed the Pragyan rover.',
+    significance:
+      'A high-visibility demonstration of scientific capacity and cost-conscious space engineering.',
+    category: 'science',
+    confidence: 'high',
+    sourceIds: ['isro-chandrayaan3'],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'election-2024',
+    jurisdictionId: 'india',
+    date: '2024-06-04',
+    endDate: '2024-06-09',
+    title: 'NDA returns for a third term',
+    summary:
+      'The BJP lost its single-party majority, while the NDA coalition retained a parliamentary majority and Narendra Modi began a third term.',
+    significance:
+      'Returned coalition constraints to Union governance after a decade of BJP single-party majorities.',
+    category: 'elections',
+    confidence: 'high',
+    sourceIds: ['eci-2024', 'pm-india-current'],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'ina-trials-1945',
+    jurisdictionId: 'india',
+    date: '1945-11-05',
+    endDate: '1946-05-01',
+    title: 'Indian National Army trials',
+    summary:
+      'British authorities tried officers of the Indian National Army at the Red Fort, prompting widespread political mobilisation and public sympathy.',
+    significance:
+      'The trials accelerated anti-colonial unity and weakened the legitimacy of continued British rule.',
+    category: 'protest',
+    confidence: 'medium',
+    sourceIds: ['britannica-modern-india'],
+  },
+  {
+    id: 'royal-indian-navy-revolt-1946',
+    jurisdictionId: 'india',
+    date: '1946-02-18',
+    endDate: '1946-02-23',
+    title: 'Royal Indian Navy revolt',
+    summary:
+      'Indian naval ratings mutinied in Bombay and the revolt spread to ships and shore establishments, accompanied by civilian strikes and clashes.',
+    significance:
+      'A major late-colonial military and labour uprising that demonstrated rapidly eroding imperial authority.',
+    category: 'protest',
+    confidence: 'medium',
+    sourceIds: ['britannica-modern-india'],
+  },
+  {
+    id: 'direct-action-day-1946',
+    jurisdictionId: 'india',
+    date: '1946-08-16',
+    endDate: '1946-08-19',
+    title: 'Direct Action Day and the Great Calcutta Killings',
+    summary:
+      'Political mobilisation in Calcutta escalated into mass communal violence, followed by further violence elsewhere in 1946.',
+    significance:
+      'The killings hardened communal division and foreshadowed the catastrophic violence of Partition.',
+    category: 'communal-violence',
+    confidence: 'medium',
+    sourceIds: ['britannica-modern-india', 'sciences-po-calcutta-1946'],
+  },
+  {
+    id: 'naxalbari-1967',
+    jurisdictionId: 'india',
+    date: '1967-05-25',
+    title: 'Naxalbari uprising',
+    summary:
+      'A peasant uprising in northern West Bengal became the symbolic origin of India’s Maoist insurgency.',
+    significance:
+      'Opened a long-running conflict over land, state violence, tribal rights, and development in central and eastern India.',
+    category: 'insurgency',
+    confidence: 'medium',
+    sourceIds: ['britannica-modern-india'],
+    leaderTermIds: ['indira-1966'],
+  },
+  {
+    id: 'railway-strike-jp-movement-1974',
+    jurisdictionId: 'india',
+    date: '1974-05-08',
+    endDate: '1974-05-27',
+    title: 'Railway strike and mass anti-government mobilisation',
+    summary:
+      'A nationwide railway strike occurred amid inflation, labour unrest, student protest, and the expanding Jayaprakash Narayan movement.',
+    significance:
+      'The confrontation exposed economic stress and political alienation that preceded the Emergency.',
+    category: 'protest',
+    confidence: 'medium',
+    sourceIds: ['britannica-modern-india'],
+    leaderTermIds: ['indira-1966'],
+  },
+  {
+    id: 'nellie-massacre-1983',
+    jurisdictionId: 'india',
+    date: '1983-02-18',
+    title: 'Nellie massacre',
+    summary:
+      'Large numbers of mostly Bengali-speaking Muslim villagers were killed in central Assam during the Assam agitation.',
+    significance:
+      'One of independent India’s deadliest episodes of communal mass violence and a lasting failure of prevention and accountability.',
+    category: 'communal-violence',
+    confidence: 'medium',
+    sourceIds: ['sciences-po-communal-1', 'mha-annual-reports'],
+    leaderTermIds: ['indira-1980'],
+  },
+  {
+    id: 'anti-sikh-violence-1984',
+    jurisdictionId: 'india',
+    date: '1984-10-31',
+    endDate: '1984-11-03',
+    title: 'Anti-Sikh mass violence',
+    summary:
+      'After Indira Gandhi’s assassination, organised attacks killed Sikhs in Delhi and other cities while authorities failed to provide timely protection.',
+    significance:
+      'A profound state-protection and accountability failure whose investigations and prosecutions continued for decades.',
+    category: 'communal-violence',
+    confidence: 'high',
+    sourceIds: ['nanavati-commission', 'sciences-po-communal-1'],
+    leaderTermIds: ['rajiv-1984'],
+  },
+  {
+    id: 'bhagalpur-riots-1989',
+    jurisdictionId: 'india',
+    date: '1989-10-24',
+    endDate: '1989-12-01',
+    title: 'Bhagalpur communal violence',
+    summary:
+      'Sustained Hindu–Muslim violence in and around Bhagalpur, Bihar, caused large-scale deaths and displacement.',
+    significance:
+      'Exposed major policing and accountability failures during a period of escalating communal mobilisation.',
+    category: 'communal-violence',
+    confidence: 'medium',
+    sourceIds: ['mha-annual-reports', 'sciences-po-communal-2'],
+    leaderTermIds: ['rajiv-1984'],
+  },
+  {
+    id: 'mumbai-riots-blasts-1992',
+    jurisdictionId: 'india',
+    date: '1992-12-06',
+    endDate: '1993-03-12',
+    title: 'Mumbai riots and serial bombings',
+    summary:
+      'Communal riots after the Babri Masjid demolition were followed in March 1993 by coordinated bombings across Mumbai.',
+    significance:
+      'A linked cycle of communal violence, organised crime, terrorism, and policing failure with lasting urban-security consequences.',
+    category: 'communal-violence',
+    confidence: 'high',
+    sourceIds: ['sciences-po-communal-2', 'mha-annual-reports'],
+    leaderTermIds: ['rao-1991'],
+  },
+  {
+    id: 'gujarat-violence-2002',
+    jurisdictionId: 'india',
+    date: '2002-02-27',
+    endDate: '2002-05-01',
+    title: 'Gujarat communal violence',
+    summary:
+      'The burning of a train coach at Godhra was followed by large-scale anti-Muslim violence and retaliatory attacks across Gujarat.',
+    significance:
+      'A defining test of state protection, political responsibility, criminal justice, and India’s secular constitutional commitments.',
+    category: 'communal-violence',
+    confidence: 'high',
+    sourceIds: ['nhrc-gujarat-2002', 'sciences-po-communal-2'],
+    leaderTermIds: ['vajpayee-1998'],
+  },
+  {
+    id: 'anti-corruption-movement-2011',
+    jurisdictionId: 'india',
+    date: '2011-04-05',
+    endDate: '2012-01-01',
+    title: 'India Against Corruption movement',
+    summary:
+      'Mass demonstrations demanded a stronger anti-corruption ombudsman amid major scandal allegations.',
+    significance:
+      'Changed public debate, weakened the UPA government, and helped create the political space for the Aam Aadmi Party.',
+    category: 'protest',
+    confidence: 'high',
+    sourceIds: ['britannica-modern-india'],
+    leaderTermIds: ['manmohan-2004'],
+  },
+  {
+    id: 'delhi-gang-rape-protests-2012',
+    jurisdictionId: 'india',
+    date: '2012-12-16',
+    endDate: '2013-01-23',
+    title: 'Delhi gang rape and nationwide protests',
+    summary:
+      'The gang rape and later death of a young woman in Delhi triggered nationwide demonstrations over women’s safety and criminal justice.',
+    significance:
+      'Produced a major expert review and legal reform while exposing persistent failures in policing, gender equality, and public safety.',
+    category: 'protest',
+    confidence: 'high',
+    sourceIds: ['justice-verma-2013'],
+    leaderTermIds: ['manmohan-2004'],
+  },
+  {
+    id: 'caa-protests-delhi-2019',
+    jurisdictionId: 'india',
+    date: '2019-12-12',
+    endDate: '2020-02-29',
+    title: 'Citizenship Amendment Act protests and Delhi violence',
+    summary:
+      'Nationwide protests opposed the Citizenship Amendment Act and proposed citizenship-register policies; communal violence later killed people in northeast Delhi.',
+    significance:
+      'A major conflict over citizenship, secularism, policing, protest rights, and the treatment of minorities.',
+    category: 'protest',
+    confidence: 'high',
+    sourceIds: [
+      'citizenship-amendment-act',
+      'caa-prs-2019',
+      'caa-hrw-2024',
+      'mha-annual-reports',
+    ],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'manipur-violence-2023',
+    jurisdictionId: 'india',
+    date: '2023-05-03',
+    title: 'Ethnic violence in Manipur',
+    summary:
+      'Violence between Meitei and Kuki-Zo communities caused deaths, displacement, sexual violence, and prolonged segregation.',
+    significance:
+      'Exposed severe failures of state protection, policing, investigation, and political conflict resolution.',
+    category: 'communal-violence',
+    confidence: 'high',
+    sourceIds: ['supreme-court-manipur-2023', 'mha-annual-reports'],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'neet-ug-2024-controversy',
+    jurisdictionId: 'india',
+    date: '2024-06-04',
+    endDate: '2024-07-23',
+    title: 'NEET-UG 2024 leak, grace-mark controversy, and protests',
+    summary:
+      'Unusual scores, grace marks, and confirmed leaks in Hazaribagh and Patna triggered nationwide student protests, litigation, arrests, and a limited re-test.',
+    significance:
+      'Exposed severe weaknesses in high-stakes national exam security, transparency, redress, and public trust.',
+    category: 'education',
+    confidence: 'high',
+    sourceIds: ['supreme-neet-2024', 'nta-neet-notices'],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'mahakumbh-crowd-crush-2025',
+    jurisdictionId: 'india',
+    date: '2025-01-29',
+    title: 'Maha Kumbh crowd crush in Prayagraj',
+    summary:
+      'A crowd crush during the Mauni Amavasya bathing period killed at least 30 people according to police, with later scrutiny of crowd control and casualty reporting.',
+    significance:
+      'Raised national questions about mega-event capacity, crowd modelling, route control, emergency access, and transparent casualty accounting.',
+    category: 'disaster',
+    confidence: 'medium',
+    sourceIds: ['ap-mahakumbh-2025', 'indian-express-mahakumbh-inquiry'],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'pahalgam-attack-2025',
+    jurisdictionId: 'india',
+    date: '2025-04-22',
+    title: 'Pahalgam terrorist attack',
+    summary:
+      'Gunmen killed 26 civilians, mostly tourists, near Pahalgam in Jammu and Kashmir, triggering a major security review and India–Pakistan crisis.',
+    significance:
+      'The attack shattered claims of normalised tourism security and directly preceded Operation Sindoor and the sharpest bilateral military escalation in years.',
+    category: 'security',
+    confidence: 'high',
+    sourceIds: ['ap-pahalgam-2025', 'mea-operation-sindoor-2025'],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'operation-sindoor-2025',
+    jurisdictionId: 'india',
+    date: '2025-05-07',
+    endDate: '2025-05-10',
+    title: 'Operation Sindoor and India–Pakistan military crisis',
+    summary:
+      'India struck targets in Pakistan and Pakistan-administered Kashmir after the Pahalgam attack; four days of missiles, drones, artillery, and military exchanges ended in a cessation of firing.',
+    significance:
+      'The crisis tested deterrence, escalation control, civilian protection, military claims, diplomacy, and crisis communication between nuclear-armed states.',
+    category: 'security',
+    confidence: 'medium',
+    sourceIds: [
+      'mea-operation-sindoor-2025',
+      'mea-operation-sindoor-ceasefire',
+      'ap-india-pakistan-ceasefire-2025',
+    ],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'air-india-ai171-2025',
+    jurisdictionId: 'india',
+    date: '2025-06-12',
+    title: 'Air India Flight AI171 crashes in Ahmedabad',
+    summary:
+      'A Boeing 787 operating Air India Flight AI171 crashed shortly after takeoff from Ahmedabad, killing almost everyone aboard and people on the ground.',
+    significance:
+      'India’s deadliest aviation disaster in decades triggered a continuing technical investigation and broader review of airline, regulator, airport, and emergency systems.',
+    category: 'disaster',
+    confidence: 'high',
+    sourceIds: ['aaib-ai171', 'moca-ai171-committee'],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'neet-ug-2026-crisis',
+    jurisdictionId: 'india',
+    date: '2026-05-12',
+    title: 'NEET-UG 2026 paper leak, re-exam, and youth protests',
+    summary:
+      'NTA cancelled the May 3 NEET-UG after finding extensive question overlap with leaked material, held a June 21 re-exam, and faced court scrutiny and expanding student-led protests.',
+    significance:
+      'The second major NEET integrity crisis in three years intensified demands for exam reform, institutional accountability, fair testing, and restraint in policing youth protest.',
+    category: 'education',
+    confidence: 'medium',
+    sourceIds: [
+      'nta-neet-notices',
+      'indian-express-neet-2026',
+      'ap-neet-protests-2026',
+    ],
+    leaderTermIds: ['modi-2014'],
+  },
+  {
+    id: 'sikkim-tunnel-disaster-2026',
+    jurisdictionId: 'india',
+    date: '2026-07-20',
+    title: 'Sikkim hydropower tunnel explosion',
+    summary:
+      'An explosion and suspected toxic-gas event inside a hydropower tunnel in Sikkim killed 25 workers; rescue operations and a multi-agency investigation followed.',
+    significance:
+      'The developing disaster raises urgent questions about underground gas detection, worker safety, contractor oversight, emergency access, and hydropower-project governance.',
+    category: 'disaster',
+    confidence: 'medium',
+    sourceIds: ['ap-sikkim-tunnel-2026'],
+    leaderTermIds: ['modi-2014'],
+  },
+]
+
+const eventResponsibility = (
+  actorName: string,
+  actorType: EventAssessmentSeed['responsibilities'][number]['actorType'],
+  responsibilityKind: EventAssessmentSeed['responsibilities'][number]['responsibilityKind'],
+  level: 1 | 2 | 3 | 4 | 5,
+  assessment: string,
+  confidence: Confidence = 'medium',
+) => ({
+  actorName,
+  actorType,
+  responsibilityKind,
+  level,
+  assessment,
+  confidence,
+})
+
+export const eventAssessments: EventAssessmentSeed[] = [
+  {
+    eventId: 'ina-trials-1945',
+    choiceAssessment: 'mostly-wrong',
+    choiceScore: 3,
+    choiceReason:
+      'The colonial government had a legal theory for prosecution, but the trials were politically repressive and accelerated the legitimacy crisis of British rule.',
+    unionRole:
+      'No independent Union government existed. The British Indian government chose prosecution and managed the political response.',
+    stateLocalRole:
+      'Provincial police and administrations managed demonstrations, sometimes coercively.',
+    positiveOutcomes:
+      'The trials produced unusual cross-party nationalist solidarity and public debate about colonial military loyalty.',
+    lessons:
+      'Legally framed punishment can be politically illegitimate when the governing authority itself lacks democratic consent.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'British Indian government',
+        'colonial-government',
+        'policy-decision',
+        5,
+        'Initiated and conducted the prosecutions under colonial law.',
+        'high',
+      ),
+      eventResponsibility(
+        'Provincial police administrations',
+        'local-administration',
+        'implementation',
+        3,
+        'Managed protests and public order around the trials.',
+      ),
+    ],
+  },
+  {
+    eventId: 'royal-indian-navy-revolt-1946',
+    choiceAssessment: 'mostly-wrong',
+    choiceScore: 3.5,
+    choiceReason:
+      'Grievances over conditions and racial treatment were serious; the violent and coercive dimensions of the revolt were risky, while the colonial response relied heavily on force rather than reform.',
+    unionRole:
+      'The British Indian government retained command authority and chose suppression and negotiated surrender.',
+    stateLocalRole:
+      'Bombay authorities and police were responsible for civilian-order responses and clashes.',
+    positiveOutcomes:
+      'The revolt exposed military discontent and the declining feasibility of continued colonial rule.',
+    lessons:
+      'Military grievance, labor unrest, and civilian protest require political settlement before coercion escalates.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'British Indian government and naval command',
+        'colonial-government',
+        'failure-to-respond',
+        4,
+        'Failed to resolve entrenched service and racial grievances before revolt.',
+      ),
+      eventResponsibility(
+        'Mutinous naval ratings',
+        'non-state-group',
+        'direct-action',
+        4,
+        'Initiated the revolt and seized ships and establishments.',
+      ),
+      eventResponsibility(
+        'Bombay police and local administration',
+        'local-administration',
+        'implementation',
+        3,
+        'Managed civilian unrest and armed clashes.',
+      ),
+    ],
+  },
+  {
+    eventId: 'direct-action-day-1946',
+    choiceAssessment: 'wrong',
+    choiceScore: 1.5,
+    choiceReason:
+      'Mass political mobilisation was pursued despite foreseeable communal danger, and the provincial administration failed catastrophically to prevent and stop violence.',
+    unionRole:
+      'No independent Union government existed; the departing British central authority failed to ensure a safe political transition.',
+    stateLocalRole:
+      'The Bengal provincial government and Calcutta police bore major responsibility for preparedness and response failures.',
+    positiveOutcomes:
+      'There was no positive outcome from the killings themselves; the episode remains a warning about inflammatory mobilisation and administrative partiality.',
+    lessons:
+      'Communal mobilisation requires neutral policing, clear political restraint, and rapid protection of vulnerable communities.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Communal mobs and organisers',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Carried out killings, arson, and retaliatory violence.',
+        'high',
+      ),
+      eventResponsibility(
+        'Muslim League political leadership',
+        'non-state-group',
+        'policy-decision',
+        4,
+        'Called Direct Action amid a highly combustible political environment.',
+      ),
+      eventResponsibility(
+        'Bengal provincial government and Calcutta police',
+        'state-government',
+        'failure-to-prevent',
+        5,
+        'Failed to prepare for and rapidly contain foreseeable mass violence.',
+      ),
+      eventResponsibility(
+        'British colonial authorities',
+        'colonial-government',
+        'failure-to-respond',
+        3,
+        'Retained sovereign responsibility during a failing transfer process.',
+      ),
+    ],
+  },
+  {
+    eventId: 'independence-partition-1947',
+    choiceAssessment: 'mixed',
+    choiceScore: 5,
+    choiceReason:
+      'Independence was an essential democratic achievement, but the rushed partition timetable, boundary process, and security preparation produced catastrophic human costs.',
+    unionRole:
+      'Interim Indian leaders accepted partition under severe constraints and shared responsibility for inadequate protection and refugee preparation.',
+    stateLocalRole:
+      'Provincial administrations and police often collapsed, acted partially, or lacked capacity during mass violence and displacement.',
+    positiveOutcomes:
+      'India achieved sovereign self-government and created the possibility of a democratic constitutional state.',
+    lessons:
+      'Political settlements involving borders and population movement require time, transparent boundaries, security planning, and humanitarian capacity.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'British government and Mountbatten administration',
+        'colonial-government',
+        'policy-decision',
+        5,
+        'Set the accelerated transfer and partition timetable and boundary process.',
+        'high',
+      ),
+      eventResponsibility(
+        'Congress and Muslim League leadership',
+        'non-state-group',
+        'shared-context',
+        3,
+        'Accepted and shaped the final political settlement under deep conflict.',
+      ),
+      eventResponsibility(
+        'Communal militias and mobs',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Committed mass killings, sexual violence, expulsions, and destruction.',
+        'high',
+      ),
+      eventResponsibility(
+        'Provincial administrations and police',
+        'local-administration',
+        'failure-to-prevent',
+        4,
+        'Frequently failed to protect civilians and maintain neutral order.',
+      ),
+    ],
+  },
+  {
+    eventId: 'constitution-1950',
+    choiceAssessment: 'right',
+    choiceScore: 9.5,
+    choiceReason:
+      'Adopting a democratic, rights-based, federal parliamentary constitution with universal franchise was a foundational and highly defensible choice.',
+    unionRole:
+      'The Constituent Assembly and national leadership created the constitutional settlement and committed the Union to elections and rights.',
+    stateLocalRole:
+      'States assumed responsibility for implementing federal, administrative, and rights obligations.',
+    positiveOutcomes:
+      'The Constitution established durable elections, courts, federalism, rights, and peaceful transfer mechanisms.',
+    lessons:
+      'Strong constitutional text must be paired with independent institutions and daily enforcement.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Constituent Assembly',
+        'institution',
+        'positive-leadership',
+        5,
+        'Drafted, debated, and adopted the constitutional framework.',
+        'high',
+      ),
+      eventResponsibility(
+        'Union and state institutions',
+        'institution',
+        'implementation',
+        4,
+        'Became responsible for translating constitutional guarantees into practice.',
+      ),
+    ],
+  },
+  {
+    eventId: 'first-election-1951',
+    choiceAssessment: 'right',
+    choiceScore: 9.5,
+    choiceReason:
+      'Conducting a competitive election under universal adult franchise despite poverty and low literacy was a bold and successful democratic choice.',
+    unionRole:
+      'The Union government accepted independent electoral administration and the possibility of opposition victory.',
+    stateLocalRole:
+      'State and district administrations carried out registration, polling, security, and counting at unprecedented scale.',
+    positiveOutcomes:
+      'The election normalised mass democratic participation and peaceful legitimacy.',
+    lessons:
+      'Administrative difficulty is not a valid reason to postpone equal political rights.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Election Commission of India',
+        'institution',
+        'positive-leadership',
+        5,
+        'Designed and administered the first general election.',
+        'high',
+      ),
+      eventResponsibility(
+        'Union and state governments',
+        'institution',
+        'implementation',
+        4,
+        'Supplied logistics and accepted the electoral framework.',
+      ),
+      eventResponsibility(
+        'Indian electorate',
+        'public-electorate',
+        'positive-leadership',
+        5,
+        'Participated at mass scale and established democratic legitimacy.',
+      ),
+    ],
+  },
+  {
+    eventId: 'states-reorganisation-1956',
+    choiceAssessment: 'mostly-right',
+    choiceScore: 8,
+    choiceReason:
+      'Linguistic reorganisation accommodated democratic identity and reduced some conflict, though boundary choices created new minorities and future disputes.',
+    unionRole:
+      'The Union created the commission, legislated boundaries, and managed the federal transition.',
+    stateLocalRole:
+      'Regional movements and state administrations shaped demands and implemented new boundaries.',
+    positiveOutcomes:
+      'The reform made the federation more legitimate and adaptable without dissolving national unity.',
+    lessons:
+      'Federal boundaries should respond to identity while protecting internal minorities and fiscal viability.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Union government and Parliament',
+        'union-government',
+        'policy-decision',
+        5,
+        'Designed and enacted the reorganisation settlement.',
+        'high',
+      ),
+      eventResponsibility(
+        'States Reorganisation Commission',
+        'institution',
+        'positive-leadership',
+        4,
+        'Provided a structured evidentiary process for competing claims.',
+      ),
+      eventResponsibility(
+        'Regional political movements',
+        'non-state-group',
+        'shared-context',
+        3,
+        'Created democratic pressure and, in some cases, escalatory conflict.',
+      ),
+    ],
+  },
+  {
+    eventId: 'china-war-1962',
+    choiceAssessment: 'wrong',
+    choiceScore: 3,
+    choiceReason:
+      'China bears primary responsibility for launching major hostilities, while India’s strategic assumptions, forward policy, intelligence, logistics, and military preparedness were grave failures.',
+    unionRole:
+      'Prime Minister Nehru, the defence ministry, and senior command bore major political and strategic responsibility for inadequate preparation and unrealistic assumptions.',
+    stateLocalRole:
+      'Border administrations had limited influence over national strategy and military readiness.',
+    positiveOutcomes:
+      'The defeat triggered major defence, intelligence, logistics, and military-modernisation reforms.',
+    lessons:
+      'Diplomatic confidence cannot substitute for intelligence, logistics, command clarity, and credible deterrence.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Government of the People’s Republic of China and PLA',
+        'foreign-state',
+        'direct-action',
+        5,
+        'Launched the large-scale military offensive.',
+        'high',
+      ),
+      eventResponsibility(
+        'Nehru government and defence leadership',
+        'union-government',
+        'policy-decision',
+        4,
+        'Adopted strategy without adequate military capability and preparation.',
+        'high',
+      ),
+      eventResponsibility(
+        'Senior military and intelligence institutions',
+        'institution',
+        'failure-to-prevent',
+        3,
+        'Failed to convert warning and terrain realities into an effective posture.',
+      ),
+    ],
+  },
+  {
+    eventId: 'india-pakistan-war-1965',
+    choiceAssessment: 'mostly-right',
+    choiceScore: 7,
+    choiceReason:
+      'Pakistan’s infiltration and escalation were central causes; India’s military response was broadly defensible, although escalation carried substantial human and strategic risk.',
+    unionRole:
+      'Prime Minister Shastri and Union defence leadership authorised the response and later accepted a negotiated ceasefire.',
+    stateLocalRole:
+      'Border states carried heavy civilian, logistical, and displacement burdens but did not control war strategy.',
+    positiveOutcomes:
+      'The response demonstrated military resilience and was followed by renewed defence and food-security focus.',
+    lessons:
+      'Limited conflict between nuclear-capable rivals requires clear objectives and rapid diplomatic exit paths.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Government of Pakistan and armed forces',
+        'foreign-state',
+        'direct-action',
+        5,
+        'Initiated infiltration and major escalation.',
+        'high',
+      ),
+      eventResponsibility(
+        'Shastri government and Indian armed forces',
+        'union-government',
+        'positive-leadership',
+        4,
+        'Mounted a broadly defensible response and accepted ceasefire.',
+      ),
+    ],
+  },
+  {
+    eventId: 'green-revolution-1966',
+    choiceAssessment: 'mostly-right',
+    choiceScore: 8,
+    choiceReason:
+      'Rapid agricultural modernisation addressed severe food insecurity, but regional concentration, chemical intensity, and groundwater depletion were underpriced.',
+    unionRole:
+      'The Union designed procurement, input, research, credit, and price incentives under Shastri and Indira Gandhi.',
+    stateLocalRole:
+      'Punjab, Haryana, western Uttar Pradesh, irrigation agencies, and extension systems drove implementation and captured disproportionate early gains.',
+    positiveOutcomes:
+      'Foodgrain output, food security, farmer incomes in adopting regions, and national strategic autonomy improved.',
+    lessons:
+      'Productivity policy must account for water, soil, crop diversity, regional equity, and long-term input dependence.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Union agriculture and food-policy leadership',
+        'union-government',
+        'policy-decision',
+        5,
+        'Created the national incentive, procurement, and research framework.',
+      ),
+      eventResponsibility(
+        'Participating state governments and agricultural institutions',
+        'state-government',
+        'implementation',
+        4,
+        'Delivered irrigation, extension, procurement, and local adoption.',
+      ),
+      eventResponsibility(
+        'Agricultural scientists and farmers',
+        'institution',
+        'positive-leadership',
+        4,
+        'Adapted and deployed the productivity package.',
+      ),
+    ],
+  },
+  {
+    eventId: 'naxalbari-1967',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The uprising was an armed political conflict rooted in land inequality and revolutionary strategy; both insurgent violence and coercive state response require separate accountability.',
+    unionRole:
+      'The Union later shaped counterinsurgency policy but did not directly control the initial local uprising.',
+    stateLocalRole:
+      'West Bengal authorities bore direct responsibility for land administration, policing, and the initial response.',
+    positiveOutcomes:
+      'The conflict forced sustained attention to land inequality, tribal dispossession, and rural state capacity.',
+    lessons:
+      'Unresolved land and justice failures can fuel insurgency, but political grievance does not justify violence against civilians or coercive abuse.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Naxalite organisers and armed cadres',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Initiated armed revolutionary action and later insurgent violence.',
+      ),
+      eventResponsibility(
+        'West Bengal government and police',
+        'state-government',
+        'failure-to-respond',
+        4,
+        'Combined unresolved agrarian governance with coercive suppression.',
+      ),
+      eventResponsibility(
+        'Land and rural governance structures',
+        'structural',
+        'shared-context',
+        4,
+        'Persistent inequality and weak legal redress created enabling conditions.',
+      ),
+    ],
+  },
+  {
+    eventId: 'bank-nationalisation-1969',
+    choiceAssessment: 'mixed',
+    choiceScore: 6.5,
+    choiceReason:
+      'Nationalisation broadened banking access and directed credit but also entrenched political allocation, weak governance, and future bad-loan risks.',
+    unionRole:
+      'Prime Minister Indira Gandhi and the Union made and executed the ownership decision.',
+    stateLocalRole:
+      'States influenced branch expansion and priority implementation but did not control ownership policy.',
+    positiveOutcomes:
+      'Rural branch coverage, deposits, and priority-sector access expanded significantly.',
+    lessons:
+      'Public-purpose banking requires professional governance, transparent credit decisions, and hard accountability for losses.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Indira Gandhi government',
+        'union-government',
+        'policy-decision',
+        5,
+        'Designed and enacted the nationalisation decision.',
+        'high',
+      ),
+      eventResponsibility(
+        'Public banking institutions',
+        'institution',
+        'implementation',
+        4,
+        'Expanded access but later carried governance and asset-quality costs.',
+      ),
+    ],
+  },
+  {
+    eventId: 'bangladesh-war-1971',
+    choiceAssessment: 'mostly-right',
+    choiceScore: 8.5,
+    choiceReason:
+      'Pakistan’s military repression and the refugee crisis drove the conflict; India’s intervention had a strong humanitarian and strategic case, despite the inherent risks of war.',
+    unionRole:
+      'Prime Minister Indira Gandhi and Union military leadership made the intervention decision and managed diplomacy and war aims.',
+    stateLocalRole:
+      'Eastern states absorbed refugees and provided critical humanitarian and logistical capacity.',
+    positiveOutcomes:
+      'Bangladesh achieved independence, the refugee crisis was resolved, and mass repression ended.',
+    lessons:
+      'Military intervention is most defensible when objectives are limited, humanitarian evidence is strong, and a viable political end state exists.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Pakistan military government and armed forces',
+        'foreign-state',
+        'direct-action',
+        5,
+        'Conducted repression and created the refugee and security crisis.',
+        'high',
+      ),
+      eventResponsibility(
+        'Indira Gandhi government and Indian armed forces',
+        'union-government',
+        'positive-leadership',
+        5,
+        'Made and executed the intervention and limited war aims.',
+        'high',
+      ),
+      eventResponsibility(
+        'Mukti Bahini and Bengali political movement',
+        'non-state-group',
+        'direct-action',
+        4,
+        'Led the liberation struggle and shaped the viable political end state.',
+      ),
+    ],
+  },
+  {
+    eventId: 'railway-strike-jp-movement-1974',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The protest wave reflected real inflation, labor, corruption, and legitimacy grievances, while maximalist mobilisation and coercive government response deepened polarisation.',
+    unionRole:
+      'The Indira Gandhi government bore material responsibility for economic stress, mistrust, and repressive handling of dissent.',
+    stateLocalRole:
+      'State police and administrations implemented arrests, restrictions, and crowd-control responses.',
+    positiveOutcomes:
+      'The movements expanded anti-corruption and democratic accountability demands and mobilised opposition cooperation.',
+    lessons:
+      'Governments should address substantive grievances early; opposition movements should preserve constitutional and nonviolent boundaries.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Indira Gandhi government',
+        'union-government',
+        'failure-to-respond',
+        4,
+        'Failed to restore trust and relied heavily on coercive responses.',
+      ),
+      eventResponsibility(
+        'Railway unions and JP movement leadership',
+        'non-state-group',
+        'direct-action',
+        4,
+        'Organised mass disruption and political mobilisation around real grievances.',
+      ),
+      eventResponsibility(
+        'State and railway police',
+        'local-administration',
+        'implementation',
+        3,
+        'Carried out arrests and public-order enforcement.',
+      ),
+    ],
+  },
+  {
+    eventId: 'emergency-1975',
+    choiceAssessment: 'wrong',
+    choiceScore: 1,
+    choiceReason:
+      'Suspending liberties, jailing opponents, censoring the press, and enabling coercive programmes was an indefensible abuse of executive power.',
+    unionRole:
+      'Prime Minister Indira Gandhi and the Union executive bear primary political responsibility for declaring and directing the Emergency.',
+    stateLocalRole:
+      'State governments, police, and local administrations implemented detentions, censorship, demolitions, and coercive sterilisation.',
+    positiveOutcomes:
+      'The Emergency itself does not justify a positive score; its defeat strengthened public commitment to elections and later constitutional safeguards.',
+    lessons:
+      'Emergency powers need strict judicial review, legislative limits, media freedom, and personal accountability.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Prime Minister Indira Gandhi and Union executive',
+        'union-government',
+        'policy-decision',
+        5,
+        'Declared and directed the national suspension of democratic liberties.',
+        'high',
+      ),
+      eventResponsibility(
+        'Union and state bureaucracy and police',
+        'institution',
+        'implementation',
+        5,
+        'Implemented detention, censorship, demolition, and coercive programmes.',
+        'high',
+      ),
+      eventResponsibility(
+        'Parliamentary and judicial institutions',
+        'institution',
+        'failure-to-prevent',
+        4,
+        'Failed for critical periods to restrain executive overreach.',
+      ),
+    ],
+  },
+  {
+    eventId: 'janata-transition-1977',
+    choiceAssessment: 'right',
+    choiceScore: 9,
+    choiceReason:
+      'Holding an election and respecting the incumbent’s defeat restored democratic legitimacy after the Emergency.',
+    unionRole:
+      'The Union conducted the election and transferred power; the Janata government began constitutional repair.',
+    stateLocalRole:
+      'Election machinery and state administrations enabled competitive polling and transition.',
+    positiveOutcomes:
+      'The first non-Congress Union government demonstrated that dominant incumbents could be removed peacefully.',
+    lessons:
+      'Democratic recovery depends on real elections, acceptance of defeat, and institutional repair rather than revenge.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Indian electorate',
+        'public-electorate',
+        'positive-leadership',
+        5,
+        'Used elections to hold the Emergency government accountable.',
+      ),
+      eventResponsibility(
+        'Election Commission and constitutional institutions',
+        'institution',
+        'positive-leadership',
+        4,
+        'Enabled a credible election and transfer of power.',
+      ),
+      eventResponsibility(
+        'Janata government',
+        'union-government',
+        'positive-leadership',
+        4,
+        'Began restoration of civil liberties and constitutional safeguards.',
+      ),
+    ],
+  },
+  {
+    eventId: 'charan-singh-government-collapse-1979',
+    choiceAssessment: 'mostly-wrong',
+    choiceScore: 3,
+    choiceReason:
+      'Forming a minority government on unstable outside support and proceeding to dissolution without a floor test produced weak parliamentary accountability, even though a fresh election was a constitutional exit.',
+    unionRole:
+      'Prime Minister Charan Singh resigned before the confidence vote and advised dissolution; the President accepted that advice and retained the government in a caretaker role.',
+    stateLocalRole:
+      'State administrations had no primary role in the collapse but later supported election administration and the transfer to a new mandate.',
+    positiveOutcomes:
+      'The crisis was resolved through a general election and peaceful transfer rather than extra-constitutional retention of power.',
+    lessons:
+      'A newly appointed minority government should face a prompt floor test, and caretaker authority should remain narrow after support is lost.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Charan Singh government',
+        'union-government',
+        'policy-decision',
+        4,
+        'Accepted office on fragile outside support and advised dissolution without first establishing confidence.',
+      ),
+      eventResponsibility(
+        'Congress (I)',
+        'institution',
+        'direct-action',
+        4,
+        'Withdrew the external support on which the minority government depended.',
+      ),
+      eventResponsibility(
+        'President and constitutional institutions',
+        'institution',
+        'policy-decision',
+        3,
+        'Managed the dissolution, caretaker period, and return to elections.',
+      ),
+    ],
+  },
+  {
+    eventId: 'nellie-massacre-1983',
+    choiceAssessment: 'wrong',
+    choiceScore: 1,
+    choiceReason:
+      'The killings were criminal mass violence, while proceeding with elections amid acute threat and failing to protect targeted villages were grave state failures.',
+    unionRole:
+      'The Union’s election and security decisions in Assam carried major responsibility for proceeding without adequate protection.',
+    stateLocalRole:
+      'Assam authorities and police failed to prevent and rapidly stop foreseeable attacks.',
+    positiveOutcomes:
+      'There was no positive in the massacre; its enduring value is as a warning about citizenship politics, impunity, and vulnerable-community protection.',
+    lessons:
+      'Election legitimacy cannot be separated from physical security, neutral policing, and accountability for mass violence.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Perpetrating mobs',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Carried out mass killings of civilians.',
+        'high',
+      ),
+      eventResponsibility(
+        'Assam state government and police',
+        'state-government',
+        'failure-to-prevent',
+        5,
+        'Failed to protect villages amid known communal and electoral risk.',
+      ),
+      eventResponsibility(
+        'Union government and election authorities',
+        'union-government',
+        'policy-decision',
+        4,
+        'Proceeding with elections under dangerous conditions materially raised risk.',
+      ),
+    ],
+  },
+  {
+    eventId: 'operation-blue-star-1984',
+    choiceAssessment: 'mostly-wrong',
+    choiceScore: 4,
+    choiceReason:
+      'Armed occupation and violence created a real security problem, but the political failures preceding the assault and use of the army at the Golden Temple produced severe and foreseeable costs.',
+    unionRole:
+      'Prime Minister Indira Gandhi and Union security leadership made the assault decision and bear primary responsibility for strategy and proportionality.',
+    stateLocalRole:
+      'Punjab political and policing failures contributed to escalation before central military intervention.',
+    positiveOutcomes:
+      'The operation removed heavily armed militants from the complex, but that limited security gain was outweighed by religious, civilian, and political damage.',
+    lessons:
+      'Religious-site crises require sustained political negotiation, precise intelligence, proportional tactics, and planning for communal consequences.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Armed militants led by Jarnail Singh Bhindranwale',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Militarised the complex and contributed to escalating violence.',
+      ),
+      eventResponsibility(
+        'Indira Gandhi government and Union security leadership',
+        'union-government',
+        'policy-decision',
+        5,
+        'Authorised and designed the military assault.',
+        'high',
+      ),
+      eventResponsibility(
+        'Punjab political and policing institutions',
+        'state-government',
+        'failure-to-prevent',
+        3,
+        'Failed to contain escalation before military intervention.',
+      ),
+    ],
+  },
+  {
+    eventId: 'anti-sikh-violence-1984',
+    choiceAssessment: 'wrong',
+    choiceScore: 1,
+    choiceReason:
+      'Organised attacks on Sikh civilians and the failure of police and political leadership to protect them were indefensible.',
+    unionRole:
+      'The newly installed Rajiv Gandhi government and Union-controlled Delhi Police bore grave responsibility for delayed protection and accountability.',
+    stateLocalRole:
+      'Delhi political networks, police stations, and local administrations failed to stop or were implicated in attacks; failures also occurred in other states.',
+    positiveOutcomes:
+      'There was no positive in the violence; later inquiries, convictions, and public memory provide limited accountability lessons.',
+    lessons:
+      'Leadership must issue immediate unambiguous restraint, deploy neutral protection, preserve evidence, and prosecute organisers regardless of party.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Organised mobs and political instigators',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Carried out and enabled targeted mass violence.',
+        'high',
+      ),
+      eventResponsibility(
+        'Delhi Police and local administration',
+        'local-administration',
+        'failure-to-respond',
+        5,
+        'Failed to protect Sikh civilians and stop attacks.',
+        'high',
+      ),
+      eventResponsibility(
+        'Union political leadership',
+        'union-government',
+        'failure-to-respond',
+        5,
+        'Failed to provide timely, effective, and accountable national protection.',
+      ),
+    ],
+  },
+  {
+    eventId: 'bhopal-1984',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The leak was an industrial disaster, not a public-policy choice; accountability lies in corporate safety failures, weak regulation, emergency response, and the later legal settlement.',
+    unionRole:
+      'The Union shaped industrial regulation, international legal strategy, relief law, and the settlement, with major accountability concerns.',
+    stateLocalRole:
+      'Madhya Pradesh regulators and Bhopal emergency systems failed to prevent the disaster and provide prepared public warning and response.',
+    positiveOutcomes:
+      'The disaster drove stronger environmental, hazardous-industry, and disaster-management law, though justice and remediation remain incomplete.',
+    lessons:
+      'High-risk industry requires independent inspection, community warning systems, corporate liability, health surveillance, and transparent compensation.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Union Carbide Corporation and plant management',
+        'corporate',
+        'direct-action',
+        5,
+        'Bore primary responsibility for unsafe design, maintenance, and risk control.',
+        'high',
+      ),
+      eventResponsibility(
+        'Madhya Pradesh regulators and local administration',
+        'state-government',
+        'failure-to-prevent',
+        4,
+        'Failed to enforce adequate industrial safety and emergency preparedness.',
+      ),
+      eventResponsibility(
+        'Union government and legal institutions',
+        'union-government',
+        'failure-to-respond',
+        3,
+        'Relief, settlement, extradition, and long-term remediation were inadequate or contested.',
+      ),
+    ],
+  },
+  {
+    eventId: 'bhagalpur-riots-1989',
+    choiceAssessment: 'wrong',
+    choiceScore: 1,
+    choiceReason:
+      'Communal killings and displacement were criminal acts compounded by serious policing, administrative, and accountability failures.',
+    unionRole:
+      'The Union had an oversight and reinforcement role but Bihar authorities controlled the primary response.',
+    stateLocalRole:
+      'Bihar government, district administration, and police bore major responsibility for prevention, neutrality, response, and later accountability.',
+    positiveOutcomes:
+      'There was no positive in the violence; later cases and documentation provide limited institutional learning.',
+    lessons:
+      'Communal-risk intelligence must trigger neutral deployment, rapid intervention, evidence preservation, and protection from political interference.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Communal mobs and organisers',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Committed killings, arson, and displacement.',
+      ),
+      eventResponsibility(
+        'Bihar government, police, and district administration',
+        'state-government',
+        'failure-to-prevent',
+        5,
+        'Failed to prevent and contain sustained violence and ensure accountability.',
+      ),
+      eventResponsibility(
+        'Union government',
+        'union-government',
+        'failure-to-respond',
+        2,
+        'Had a secondary responsibility to monitor and support constitutional protection.',
+      ),
+    ],
+  },
+  {
+    eventId: 'mandal-1990',
+    choiceAssessment: 'mixed',
+    choiceScore: 6.5,
+    choiceReason:
+      'Expanding representation for Other Backward Classes addressed real exclusion, but abrupt rollout, limited preparation, and inadequate communication intensified social conflict.',
+    unionRole:
+      'Prime Minister V. P. Singh and the Union made the implementation decision and bore responsibility for design and rollout.',
+    stateLocalRole:
+      'States, universities, employers, police, and local administrations managed implementation and protests.',
+    positiveOutcomes:
+      'Representation and political voice for historically excluded communities expanded durably.',
+    lessons:
+      'Affirmative action should combine evidence, transparent criteria, communication, periodic review, and broader education and opportunity policy.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'V. P. Singh government',
+        'union-government',
+        'policy-decision',
+        5,
+        'Implemented the Mandal recommendations at the Union level.',
+      ),
+      eventResponsibility(
+        'Violent protesters and instigators',
+        'non-state-group',
+        'direct-action',
+        3,
+        'Escalated opposition into coercion and violence.',
+      ),
+      eventResponsibility(
+        'State and educational administrations',
+        'state-government',
+        'implementation',
+        3,
+        'Managed reservations and public-order consequences.',
+      ),
+    ],
+  },
+  {
+    eventId: 'gold-mobilisation-1991',
+    choiceAssessment: 'mostly-right',
+    choiceScore: 7,
+    choiceReason:
+      'The transaction was costly emergency financing, but using available gold to raise immediate foreign exchange was a proportionate response to imminent external-payment failure.',
+    unionRole:
+      'The Chandra Shekhar government authorised the proposal during the crisis and bore responsibility for using temporary financing rather than a durable correction.',
+    stateLocalRole:
+      'State governments did not control the transaction, though accumulated state and Union fiscal pressures formed part of the broader macroeconomic context.',
+    positiveOutcomes:
+      'The US$200 million transaction bought time, preserved payment capacity, and was later reversed through SBI repurchase.',
+    lessons:
+      'Emergency collateral can bridge a liquidity crisis but cannot substitute for fiscal correction, reserve rebuilding, exchange-rate adjustment, and structural reform.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Chandra Shekhar government',
+        'union-government',
+        'policy-decision',
+        4,
+        'Authorised the emergency gold transaction during the external-payments crisis.',
+      ),
+      eventResponsibility(
+        'State Bank of India and Reserve Bank of India',
+        'institution',
+        'implementation',
+        5,
+        'Structured and executed the transaction and subsequent repurchase.',
+        'high',
+      ),
+      eventResponsibility(
+        'Accumulated fiscal and external imbalances',
+        'structural',
+        'shared-context',
+        5,
+        'Created the reserve and confidence crisis that made emergency financing necessary.',
+      ),
+    ],
+  },
+  {
+    eventId: 'liberalisation-1991',
+    choiceAssessment: 'mostly-right',
+    choiceScore: 8.5,
+    choiceReason:
+      'Stabilisation, de-licensing, trade reform, and exchange-rate changes addressed an acute crisis and structural inefficiency, though adjustment support and distribution were incomplete.',
+    unionRole:
+      'Prime Minister Rao, Finance Minister Manmohan Singh, and Union institutions designed and executed the reform package.',
+    stateLocalRole:
+      'States shaped investment, labor, land, infrastructure, and the regional distribution of gains.',
+    positiveOutcomes:
+      'Macroeconomic stability, productivity, investment, exports, and long-run growth capacity improved.',
+    lessons:
+      'Market reform works best with competition policy, social protection, human development, and state-level implementation.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Rao government and economic-policy team',
+        'union-government',
+        'positive-leadership',
+        5,
+        'Designed and implemented the crisis stabilisation and structural reforms.',
+        'high',
+      ),
+      eventResponsibility(
+        'RBI and Union economic institutions',
+        'institution',
+        'implementation',
+        4,
+        'Executed monetary, exchange-rate, financial, and regulatory changes.',
+      ),
+      eventResponsibility(
+        'State governments',
+        'state-government',
+        'implementation',
+        3,
+        'Determined much of the later regional investment and opportunity pattern.',
+      ),
+    ],
+  },
+  {
+    eventId: 'babri-demolition-1992',
+    choiceAssessment: 'wrong',
+    choiceScore: 1,
+    choiceReason:
+      'The demolition was unlawful mob action enabled by foreseeable political mobilisation and failures of state and Union protection.',
+    unionRole:
+      'The Rao government bore major responsibility for failing to ensure constitutional protection despite warnings and formal assurances.',
+    stateLocalRole:
+      'The Uttar Pradesh government and police bore direct responsibility for security planning, assurances, and failure to stop the demolition.',
+    positiveOutcomes:
+      'There was no positive in the demolition; later judicial resolution and institutional scrutiny are remedial, not benefits of the act.',
+    lessons:
+      'Constitutional sites and minority rights require enforceable security plans, neutral policing, and consequences for false assurances.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Kar sevaks and mobilisation organisations',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Carried out and organised the demolition.',
+        'high',
+      ),
+      eventResponsibility(
+        'Uttar Pradesh government and police',
+        'state-government',
+        'failure-to-prevent',
+        5,
+        'Failed to honour protection commitments and stop the mob.',
+        'high',
+      ),
+      eventResponsibility(
+        'Rao government and Union institutions',
+        'union-government',
+        'failure-to-prevent',
+        4,
+        'Failed to use available constitutional and security authority effectively.',
+      ),
+    ],
+  },
+  {
+    eventId: 'gujral-doctrine-premiership-1997',
+    choiceAssessment: 'mostly-right',
+    choiceScore: 7,
+    choiceReason:
+      'Non-reciprocal accommodation toward smaller neighbours was a proportionate attempt to reduce fears of Indian dominance, though diplomacy alone could not overcome security disputes or regional power asymmetry.',
+    unionRole:
+      'Prime Minister Gujral and the Ministry of External Affairs carried the doctrine into the Union government’s neighbourhood approach.',
+    stateLocalRole:
+      'Border states and local economies were affected by trade, migration, water, and security relations but did not control national diplomacy.',
+    positiveOutcomes:
+      'The doctrine established a durable language of reassurance, dialogue, and cooperative regional leadership that influenced later neighbourhood policy.',
+    lessons:
+      'A larger state can build trust through restraint and asymmetric generosity, but commitments need security safeguards, delivery, and sustained follow-through.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Prime Minister I. K. Gujral',
+        'union-government',
+        'positive-leadership',
+        4,
+        'Made non-reciprocity and reassurance central to the neighbourhood approach.',
+      ),
+      eventResponsibility(
+        'Ministry of External Affairs',
+        'institution',
+        'implementation',
+        3,
+        'Translated the doctrine into bilateral and regional diplomacy.',
+      ),
+      eventResponsibility(
+        'South Asian security and power asymmetries',
+        'structural',
+        'shared-context',
+        3,
+        'Limited the ability of diplomatic generosity alone to resolve conflict.',
+      ),
+    ],
+  },
+  {
+    eventId: 'mumbai-riots-blasts-1992',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The riots and bombings were criminal violence; responsibility is divided between communal actors, policing failures, and terrorist organisers.',
+    unionRole:
+      'The Union had intelligence, counterterrorism, and constitutional oversight responsibilities but Maharashtra controlled most riot policing.',
+    stateLocalRole:
+      'Maharashtra government and Mumbai Police bore major responsibility for neutral prevention, response, investigation, and accountability.',
+    positiveOutcomes:
+      'Security coordination and investigation capacity later improved, though communal justice and police accountability remained incomplete.',
+    lessons:
+      'Communal violence and retaliatory terrorism reinforce each other when policing is partial and organised crime networks are entrenched.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Communal mobs and political instigators',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Carried out riot violence and retaliation.',
+      ),
+      eventResponsibility(
+        'Bombing conspirators and organised-crime network',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Planned and executed the March 1993 serial bombings.',
+        'high',
+      ),
+      eventResponsibility(
+        'Maharashtra government and Mumbai Police',
+        'state-government',
+        'failure-to-respond',
+        4,
+        'Failed to maintain neutral protection and accountability during riots.',
+      ),
+    ],
+  },
+  {
+    eventId: 'pokhran-1998',
+    choiceAssessment: 'mixed',
+    choiceScore: 6.5,
+    choiceReason:
+      'The tests strengthened declared deterrence and strategic autonomy but intensified a regional arms race, sanctions, and nuclear risk.',
+    unionRole:
+      'Prime Minister Vajpayee and Union strategic leadership made and controlled the test decision.',
+    stateLocalRole:
+      'Rajasthan and local administrations had limited roles in security and local consequences.',
+    positiveOutcomes:
+      'India clarified its nuclear posture and later entered broader strategic and civil-nuclear engagement.',
+    lessons:
+      'Deterrence choices require command-and-control safeguards, doctrine transparency, diplomacy, and nonproliferation responsibility.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Vajpayee government and strategic establishment',
+        'union-government',
+        'policy-decision',
+        5,
+        'Authorised and executed the nuclear tests.',
+        'high',
+      ),
+      eventResponsibility(
+        'Regional nuclear-security structure',
+        'structural',
+        'shared-context',
+        3,
+        'India–Pakistan–China security dynamics shaped the perceived deterrence need.',
+      ),
+    ],
+  },
+  {
+    eventId: 'kargil-1999',
+    choiceAssessment: 'mostly-right',
+    choiceScore: 8,
+    choiceReason:
+      'Pakistan’s intrusion was the direct cause; India’s limited military response and respect for the Line of Control were broadly defensible, despite serious intelligence failures.',
+    unionRole:
+      'The Vajpayee government managed military response and diplomacy well but bears responsibility for pre-intrusion intelligence and surveillance gaps.',
+    stateLocalRole:
+      'Jammu and Kashmir local administration supported civilians and logistics but did not control national strategy.',
+    positiveOutcomes:
+      'Territory was restored, international support increased, and the Kargil Review drove intelligence and defence reforms.',
+    lessons:
+      'Political restraint in war should be paired with persistent surveillance, joint intelligence, and civil-military coordination.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Pakistan military leadership and intruding forces',
+        'foreign-state',
+        'direct-action',
+        5,
+        'Planned and carried out the cross-Line-of-Control intrusion.',
+        'high',
+      ),
+      eventResponsibility(
+        'Indian intelligence and surveillance institutions',
+        'institution',
+        'failure-to-prevent',
+        3,
+        'Failed to detect or correctly assess the intrusion early.',
+      ),
+      eventResponsibility(
+        'Vajpayee government and Indian armed forces',
+        'union-government',
+        'positive-leadership',
+        5,
+        'Mounted a limited response and effective diplomatic campaign.',
+      ),
+    ],
+  },
+  {
+    eventId: 'gujarat-violence-2002',
+    choiceAssessment: 'wrong',
+    choiceScore: 1.5,
+    choiceReason:
+      'The Godhra attack and subsequent mass violence were criminal acts, while Gujarat’s protection, policing, relief, and accountability failures were grave.',
+    unionRole:
+      'The Vajpayee government had constitutional and political oversight responsibility and is marked down for insufficiently forceful protection and accountability.',
+    stateLocalRole:
+      'The Gujarat government, police, and local administration bore primary responsibility for preventing reprisals, protecting minorities, and ensuring impartial investigation.',
+    positiveOutcomes:
+      'There was no positive in the violence; later trials, Supreme Court intervention, and rights oversight provided partial corrective accountability.',
+    lessons:
+      'A state must immediately protect targeted communities, separate political rhetoric from policing, and move sensitive investigations outside compromised chains of command.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Godhra train attackers and communal mobs',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Committed the initiating train attack and subsequent mass violence.',
+        'high',
+      ),
+      eventResponsibility(
+        'Gujarat government, police, and local administration',
+        'state-government',
+        'failure-to-respond',
+        5,
+        'Failed to provide timely, neutral, and effective protection and accountability.',
+        'high',
+      ),
+      eventResponsibility(
+        'Vajpayee government and Union leadership',
+        'union-government',
+        'failure-to-respond',
+        3,
+        'Did not use political and constitutional oversight forcefully enough.',
+      ),
+    ],
+  },
+  {
+    eventId: 'rti-2005',
+    choiceAssessment: 'right',
+    choiceScore: 9,
+    choiceReason:
+      'Creating an enforceable citizen right to public information was a strong accountability choice with broad democratic value.',
+    unionRole:
+      'The Manmohan Singh government and Parliament enacted the framework and established central institutions.',
+    stateLocalRole:
+      'States and local public authorities are responsible for records, information officers, commissions, and compliance.',
+    positiveOutcomes:
+      'Citizens, journalists, and activists gained a durable tool for exposing decisions, spending, and corruption.',
+    lessons:
+      'Transparency laws require staffed commissions, timely records, whistleblower safety, and resistance to exemption creep.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Manmohan Singh government and Parliament',
+        'union-government',
+        'positive-leadership',
+        5,
+        'Enacted the national right-to-information framework.',
+      ),
+      eventResponsibility(
+        'Union, state, and local public authorities',
+        'institution',
+        'implementation',
+        4,
+        'Determine whether the statutory right works in daily practice.',
+      ),
+      eventResponsibility(
+        'Civil-society transparency movement',
+        'non-state-group',
+        'positive-leadership',
+        4,
+        'Built the public demand and practical model for the law.',
+      ),
+    ],
+  },
+  {
+    eventId: 'mgnrega-2005',
+    choiceAssessment: 'mostly-right',
+    choiceScore: 8,
+    choiceReason:
+      'A legal rural employment guarantee created a valuable social floor, though payment delays, rationing, and uneven asset quality weaken implementation.',
+    unionRole:
+      'The Manmohan Singh government and Parliament designed the entitlement and finance framework.',
+    stateLocalRole:
+      'States, districts, panchayats, and local administrations control work provision, records, assets, and payments.',
+    positiveOutcomes:
+      'Rural income support, women’s participation, bargaining power, and crisis resilience improved.',
+    lessons:
+      'Legal guarantees need timely automatic funding, transparent demand records, social audits, and local technical capacity.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Manmohan Singh government and Parliament',
+        'union-government',
+        'positive-leadership',
+        5,
+        'Created the national legal employment guarantee.',
+      ),
+      eventResponsibility(
+        'State governments and local bodies',
+        'state-government',
+        'implementation',
+        5,
+        'Control most delivery quality, payment processing, and asset creation.',
+      ),
+      eventResponsibility(
+        'Union rural-development administration',
+        'union-government',
+        'implementation',
+        4,
+        'Controls national finance, systems, monitoring, and payment architecture.',
+      ),
+    ],
+  },
+  {
+    eventId: 'mumbai-attacks-2008',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The attacks were terrorism, not a policy decision; direct culpability lies with the attackers and organisers, alongside preventable intelligence, coastal-security, and response failures.',
+    unionRole:
+      'The Union bore intelligence, maritime-security, counterterrorism, and elite-response responsibility.',
+    stateLocalRole:
+      'Maharashtra and Mumbai police bore frontline preparedness, command, equipment, and initial-response responsibility.',
+    positiveOutcomes:
+      'The attacks led to the NIA, NSG hubs, coastal-security expansion, and stronger interagency attention.',
+    lessons:
+      'Threat intelligence must be fused into operational action, and local first responders need equipment, command clarity, and interoperable communications.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Lashkar-e-Taiba attackers and organisers',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Planned and executed the terrorist attacks.',
+        'high',
+      ),
+      eventResponsibility(
+        'Union intelligence and coastal-security institutions',
+        'institution',
+        'failure-to-prevent',
+        3,
+        'Failed to convert threat information and maritime vulnerabilities into prevention.',
+      ),
+      eventResponsibility(
+        'Maharashtra government and Mumbai Police',
+        'state-government',
+        'failure-to-respond',
+        3,
+        'Initial response was constrained by equipment, command, and training gaps.',
+      ),
+    ],
+  },
+  {
+    eventId: 'pakistan-flood-aid-2010',
+    choiceAssessment: 'mostly-right',
+    choiceScore: 7.5,
+    choiceReason:
+      'Providing limited civilian disaster relief through United Nations channels was a proportionate humanitarian choice that did not require India to relax terrorism accountability or bilateral security policy.',
+    unionRole:
+      'Prime Minister Manmohan Singh, External Affairs Minister S. M. Krishna, and the Union government made and publicly defended the assistance decision.',
+    stateLocalRole:
+      'Indian state and local governments had no material decision role; implementation was handled through Union foreign policy and multilateral relief institutions.',
+    positiveOutcomes:
+      'India contributed to emergency relief, reinforced a regional humanitarian norm, and distinguished Pakistani civilians from the actors responsible for terrorism and state security policy.',
+    lessons:
+      'Humanitarian relief after conflict should use transparent multilateral channels, disclose delivery, and remain explicitly separate from security concessions or unresolved accountability.',
+    confidence: 'high',
+    assessmentAsOf: heardClaimReviewedDate,
+    responsibilities: [
+      eventResponsibility(
+        '2010 Pakistan floods',
+        'structural',
+        'direct-action',
+        5,
+        'Created a mass civilian humanitarian emergency affecting roughly one-fifth of Pakistan.',
+        'high',
+      ),
+      eventResponsibility(
+        'Manmohan Singh government and External Affairs Ministry',
+        'union-government',
+        'positive-leadership',
+        5,
+        'Authorised and expanded the relief commitment despite severe bilateral tension.',
+        'high',
+      ),
+      eventResponsibility(
+        'United Nations humanitarian agencies',
+        'institution',
+        'implementation',
+        4,
+        'Provided the multilateral channel for most of the Indian contribution.',
+        'high',
+      ),
+      eventResponsibility(
+        'Government of Pakistan',
+        'foreign-state',
+        'implementation',
+        3,
+        'Accepted the offer and coordinated access to the international relief response.',
+        'medium',
+      ),
+    ],
+  },
+  {
+    eventId: 'aadhaar-2010',
+    choiceAssessment: 'mixed',
+    choiceScore: 7,
+    choiceReason:
+      'Creating reusable digital identity infrastructure addressed real inclusion and authentication problems, but the early non-statutory rollout underweighted privacy, correction, and exclusion safeguards.',
+    unionRole:
+      'The Manmohan Singh government and UIDAI launched the system; later Union governments expanded and legislated it.',
+    stateLocalRole:
+      'States integrated Aadhaar into benefits and services, creating both delivery gains and local exclusion risks.',
+    positiveOutcomes:
+      'Identity coverage, bank linkage, authentication, and digital public infrastructure expanded at extraordinary scale.',
+    lessons:
+      'Identity systems need statutory purpose limits, privacy protection, offline alternatives, correction rights, and no denial of essential services.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Manmohan Singh government and UIDAI',
+        'union-government',
+        'policy-decision',
+        5,
+        'Launched and designed the national digital identity system.',
+      ),
+      eventResponsibility(
+        'Later Union governments and Parliament',
+        'union-government',
+        'implementation',
+        4,
+        'Expanded usage and created the later statutory framework.',
+      ),
+      eventResponsibility(
+        'State departments and service agencies',
+        'state-government',
+        'implementation',
+        4,
+        'Determine whether authentication improves delivery or excludes beneficiaries.',
+      ),
+    ],
+  },
+  {
+    eventId: 'anti-corruption-movement-2011',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The movement arose from real accountability failures, while its maximalist tactics and simplified institutional claims sometimes reduced deliberative quality.',
+    unionRole:
+      'The UPA government bore responsibility for scandal exposure, slow accountability, and an initially defensive response.',
+    stateLocalRole:
+      'Delhi Police and local administration managed demonstrations; state governments were part of the broader corruption context.',
+    positiveOutcomes:
+      'Corruption became a dominant electoral issue, Lokpal pressure increased, and new political participation emerged.',
+    lessons:
+      'Accountability reform needs independent institutions and evidence, while protest leadership must preserve pluralism and constitutional process.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'UPA government and implicated public institutions',
+        'union-government',
+        'failure-to-respond',
+        4,
+        'Scandals and weak trust-restoring action created the protest environment.',
+      ),
+      eventResponsibility(
+        'India Against Corruption leadership',
+        'non-state-group',
+        'direct-action',
+        4,
+        'Organised and framed the national mobilisation.',
+      ),
+      eventResponsibility(
+        'Media and civil society',
+        'institution',
+        'shared-context',
+        3,
+        'Expanded investigation, visibility, and mobilisation.',
+      ),
+    ],
+  },
+  {
+    eventId: 'delhi-gang-rape-protests-2012',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The crime was direct criminal violence; the protests were a legitimate response to systemic safety, policing, and justice failures.',
+    unionRole:
+      'The Union controlled Delhi Police and national criminal law, and was responsible for rapid reform and public-order restraint.',
+    stateLocalRole:
+      'Delhi institutions bore responsibility for transport safety, policing conditions, emergency response, and survivor support.',
+    positiveOutcomes:
+      'The Justice Verma Committee, criminal-law amendments, public awareness, and sustained gender-safety scrutiny followed.',
+    lessons:
+      'Legal reform must be paired with policing quality, prevention, survivor services, transport safety, and social change.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Perpetrators',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Committed the violent crime.',
+        'high',
+      ),
+      eventResponsibility(
+        'Delhi Police and public-safety institutions',
+        'local-administration',
+        'failure-to-prevent',
+        4,
+        'Operated within a system with major safety and response weaknesses.',
+      ),
+      eventResponsibility(
+        'Union government and Parliament',
+        'union-government',
+        'positive-leadership',
+        3,
+        'Responded with an expert committee and legal reform, though implementation remains incomplete.',
+      ),
+      eventResponsibility(
+        'Protesters and women’s-rights movement',
+        'non-state-group',
+        'positive-leadership',
+        5,
+        'Forced national attention and institutional response.',
+      ),
+    ],
+  },
+  {
+    eventId: 'modi-government-2014',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The government formation was the constitutional result of a competitive election, not a policy decision to rate as inherently right or wrong.',
+    unionRole:
+      'Narendra Modi and the NDA assumed responsibility for Union governance after winning the mandate.',
+    stateLocalRole:
+      'States remained constitutionally responsible for their own governments and implementation domains.',
+    positiveOutcomes:
+      'The transition was peaceful, decisive, and electorally legitimate.',
+    lessons:
+      'A democratic mandate authorises government but does not remove institutional checks, federal duties, or accountability.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Indian electorate',
+        'public-electorate',
+        'positive-leadership',
+        5,
+        'Produced the electoral mandate.',
+      ),
+      eventResponsibility(
+        'Election Commission of India',
+        'institution',
+        'positive-leadership',
+        4,
+        'Administered the election and result process.',
+      ),
+      eventResponsibility(
+        'Narendra Modi and NDA government',
+        'union-government',
+        'implementation',
+        5,
+        'Assumed full political responsibility for subsequent Union governance.',
+      ),
+    ],
+  },
+  {
+    eventId: 'demonetisation-2016',
+    choiceAssessment: 'mostly-wrong',
+    choiceScore: 3.5,
+    choiceReason:
+      'The goals of combating illicit cash and improving compliance were legitimate, but the shock design, minimal notice, implementation burden, and near-total note return make the intervention poorly justified.',
+    unionRole:
+      'Prime Minister Modi and the Union executive bear primary responsibility for the decision, secrecy, objectives, and timetable.',
+    stateLocalRole:
+      'States had little design authority and mainly managed economic and public-order consequences.',
+    positiveOutcomes:
+      'Bank deposits, digital-payment adoption, and tax scrutiny increased, though attribution and net benefit remain contested.',
+    lessons:
+      'Large monetary interventions need measurable objectives, institutional consultation, distribution analysis, logistics testing, and exit criteria.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Prime Minister Modi and Union government',
+        'union-government',
+        'policy-decision',
+        5,
+        'Made and announced the withdrawal decision.',
+        'high',
+      ),
+      eventResponsibility(
+        'Reserve Bank of India and banking system',
+        'institution',
+        'implementation',
+        4,
+        'Executed currency exchange and remonetisation under severe constraints.',
+      ),
+      eventResponsibility(
+        'State and local administrations',
+        'state-government',
+        'implementation',
+        2,
+        'Managed downstream disruption without meaningful control over design.',
+      ),
+    ],
+  },
+  {
+    eventId: 'gst-2017',
+    choiceAssessment: 'mostly-right',
+    choiceScore: 7.5,
+    choiceReason:
+      'A national value-added tax and common market were sound reforms, but rate complexity, rushed systems, refunds, and small-firm burdens weakened rollout.',
+    unionRole:
+      'The Modi government led implementation, technology, and central legislation, while building on earlier governments’ constitutional work.',
+    stateLocalRole:
+      'State governments jointly designed GST through the Council and administer major parts of compliance and enforcement.',
+    positiveOutcomes:
+      'Interstate tax barriers fell, formal transaction trails expanded, and cooperative tax federalism gained a durable institution.',
+    lessons:
+      'Complex national systems require fewer rates, tested technology, stable rules, timely refunds, and genuine federal consultation.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Modi government and Union tax administration',
+        'union-government',
+        'policy-decision',
+        5,
+        'Led final rollout, central law, and technology implementation.',
+      ),
+      eventResponsibility(
+        'State governments and GST Council',
+        'state-government',
+        'policy-decision',
+        5,
+        'Shared constitutional design, rates, rules, and administration.',
+      ),
+      eventResponsibility(
+        'GST Network and tax administrations',
+        'institution',
+        'implementation',
+        4,
+        'Determined portal reliability, refunds, and compliance experience.',
+      ),
+    ],
+  },
+  {
+    eventId: 'article370-2019',
+    choiceAssessment: 'contested',
+    choiceScore: 5.5,
+    choiceReason:
+      'Uniform constitutional integration and administrative reform are defensible goals, but unilateral reorganisation under President’s Rule, detention, and communication restrictions created serious federal and rights concerns.',
+    unionRole:
+      'Prime Minister Modi, Home Minister Amit Shah, and Parliament made and implemented the constitutional and territorial changes.',
+    stateLocalRole:
+      'Jammu and Kashmir lacked an elected state government at the decision point; local administration implemented restrictions under Union authority.',
+    positiveOutcomes:
+      'Uniform application of some laws, direct Union investment, and later electoral restoration are cited benefits.',
+    lessons:
+      'Major federal changes need democratic consent, proportional security measures, clear statehood timelines, and transparent outcome evaluation.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Modi government and Parliament',
+        'union-government',
+        'policy-decision',
+        5,
+        'Designed and enacted the constitutional and territorial change.',
+        'high',
+      ),
+      eventResponsibility(
+        'Union-appointed Jammu and Kashmir administration',
+        'local-administration',
+        'implementation',
+        4,
+        'Implemented detentions, communications restrictions, and reorganisation.',
+      ),
+      eventResponsibility(
+        'Militant violence and regional security conflict',
+        'non-state-group',
+        'shared-context',
+        3,
+        'Created genuine security pressures but did not determine constitutional proportionality.',
+      ),
+    ],
+  },
+  {
+    eventId: 'caa-protests-delhi-2019',
+    choiceAssessment: 'mostly-wrong',
+    choiceScore: 4,
+    choiceReason:
+      'The citizenship policy pursued a stated humanitarian aim but used religion-based eligibility and weak consultation, while policing and political failures allowed protest conflict to become communal violence.',
+    unionRole:
+      'The Modi government and Parliament enacted the CAA; Union-controlled Delhi Police bore major responsibility for protest management and protection during Delhi violence.',
+    stateLocalRole:
+      'State responses varied; the Delhi government had limited policing power but responsibilities for relief and local services.',
+    positiveOutcomes:
+      'Peaceful civic mobilisation, constitutional scrutiny, and public debate on citizenship were democratic positives; the violence itself had none.',
+    lessons:
+      'Citizenship reform requires equal-treatment analysis, transparent implementation rules, consultation, and politically neutral policing.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Modi government and Parliament',
+        'union-government',
+        'policy-decision',
+        5,
+        'Enacted and defended the citizenship amendment.',
+      ),
+      eventResponsibility(
+        'Violent mobs and political instigators',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Committed communal attacks and escalated conflict.',
+      ),
+      eventResponsibility(
+        'Delhi Police and Union Home Ministry',
+        'union-government',
+        'failure-to-respond',
+        4,
+        'Bore policing and protection responsibility during northeast Delhi violence.',
+      ),
+      eventResponsibility(
+        'Peaceful protesters and civil-society groups',
+        'non-state-group',
+        'positive-leadership',
+        3,
+        'Exercised democratic dissent and constitutional advocacy.',
+      ),
+    ],
+  },
+  {
+    eventId: 'covid-lockdown-2020',
+    choiceAssessment: 'mixed',
+    choiceScore: 4.5,
+    choiceReason:
+      'A national distancing intervention was defensible under uncertainty, but four hours’ notice, migrant planning failures, centralisation, and uneven health preparation imposed severe avoidable costs.',
+    unionRole:
+      'Prime Minister Modi and the Union made the timing, notice, national restrictions, fiscal, and vaccine-policy decisions.',
+    stateLocalRole:
+      'States and local bodies implemented health care, policing, quarantine, relief, transport, and later wave response with widely varying capacity.',
+    positiveOutcomes:
+      'The first lockdown bought some preparation time, health and vaccine capacity expanded, and digital public-health systems developed.',
+    lessons:
+      'Emergency restrictions need migrant, food, income, transport, education, federal, and communication plans before announcement.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'SARS-CoV-2 pandemic',
+        'structural',
+        'direct-action',
+        5,
+        'Created the exogenous public-health emergency.',
+        'high',
+      ),
+      eventResponsibility(
+        'Modi government and Union disaster-management authority',
+        'union-government',
+        'policy-decision',
+        5,
+        'Designed and announced the national lockdown and central response.',
+      ),
+      eventResponsibility(
+        'State governments and local administrations',
+        'state-government',
+        'implementation',
+        5,
+        'Controlled much frontline health care, relief, policing, and mobility management.',
+      ),
+    ],
+  },
+  {
+    eventId: 'farm-laws-2020',
+    choiceAssessment: 'mostly-wrong',
+    choiceScore: 4,
+    choiceReason:
+      'Agricultural marketing reform addressed real problems, but limited consultation, compressed parliamentary passage, weak bargaining safeguards, and later repeal made the package unsuccessful.',
+    unionRole:
+      'The Modi government designed, passed, defended, and eventually repealed the laws and bears primary responsibility for consultation and sequencing failures.',
+    stateLocalRole:
+      'States had major constitutional and implementation interests but were not adequately integrated into design; Punjab, Haryana, and others managed prolonged protests.',
+    positiveOutcomes:
+      'The episode surfaced genuine market and farmer-income reform needs and demonstrated the capacity of sustained peaceful protest to reverse policy.',
+    lessons:
+      'Federal and livelihood-sensitive reform requires pre-legislative consultation, pilots, bargaining protections, and credible transition guarantees.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Modi government and Parliament majority',
+        'union-government',
+        'policy-decision',
+        5,
+        'Designed and rapidly enacted the farm-law package.',
+      ),
+      eventResponsibility(
+        'State governments',
+        'state-government',
+        'shared-context',
+        3,
+        'Had major market and implementation stakes but limited influence over design.',
+      ),
+      eventResponsibility(
+        'Farmer unions and protesters',
+        'non-state-group',
+        'direct-action',
+        4,
+        'Organised sustained mobilisation; most protest was peaceful, with some serious clashes.',
+      ),
+    ],
+  },
+  {
+    eventId: 'manipur-violence-2023',
+    choiceAssessment: 'wrong',
+    choiceScore: 1.5,
+    choiceReason:
+      'Ethnic attacks, sexual violence, displacement, and prolonged segregation were criminal acts compounded by severe state protection, policing, investigation, and political-response failures.',
+    unionRole:
+      'The Modi government and Union Home Ministry bore constitutional and security responsibility and are marked down for the speed, visibility, and effectiveness of intervention.',
+    stateLocalRole:
+      'The Manipur government and police bore primary responsibility for prevention, neutrality, protection, investigation, and restoring shared civic space.',
+    positiveOutcomes:
+      'There was no positive in the violence; Supreme Court oversight, relief work, and public documentation are limited corrective developments.',
+    lessons:
+      'Ethnic conflict requires neutral command, weapons control, protected relief, rapid investigation, political mediation, and accountability across communities.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Armed groups, mobs, and perpetrators across communities',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Committed killings, sexual violence, arson, and displacement.',
+        'high',
+      ),
+      eventResponsibility(
+        'Manipur government and police',
+        'state-government',
+        'failure-to-respond',
+        5,
+        'Failed to maintain neutral protection and effective investigation.',
+        'high',
+      ),
+      eventResponsibility(
+        'Modi government and Union Home Ministry',
+        'union-government',
+        'failure-to-respond',
+        4,
+        'Failed to restore security and political resolution quickly enough.',
+      ),
+    ],
+  },
+  {
+    eventId: 'chandrayaan3-2023',
+    choiceAssessment: 'right',
+    choiceScore: 9,
+    choiceReason:
+      'A focused, technically disciplined lunar programme was a strong science, capability, and strategic-investment choice.',
+    unionRole:
+      'Successive Union governments funded the space programme; the Modi government sustained Chandrayaan-3 after the earlier landing failure.',
+    stateLocalRole:
+      'Karnataka and local ecosystems supported ISRO facilities, suppliers, and talent, but mission authority was national.',
+    positiveOutcomes:
+      'Scientific data, engineering capability, public confidence, supplier capacity, and international standing improved.',
+    lessons:
+      'Long-horizon public technology succeeds through institutional autonomy, learning from failure, stable funding, and technical accountability.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'ISRO scientists, engineers, and mission leadership',
+        'institution',
+        'positive-leadership',
+        5,
+        'Designed, tested, and executed the mission.',
+        'high',
+      ),
+      eventResponsibility(
+        'Successive Union governments',
+        'union-government',
+        'positive-leadership',
+        4,
+        'Sustained institutional funding and strategic support.',
+      ),
+      eventResponsibility(
+        'Indian research and industrial ecosystem',
+        'corporate',
+        'implementation',
+        3,
+        'Supplied components, talent, and supporting capability.',
+      ),
+    ],
+  },
+  {
+    eventId: 'election-2024',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The result was the constitutional choice of voters, not a government decision to score as right or wrong.',
+    unionRole:
+      'The NDA formed government and Narendra Modi began a third term, now under stronger coalition constraints.',
+    stateLocalRole:
+      'State election machinery, parties, and voters determined constituency outcomes and coalition arithmetic.',
+    positiveOutcomes:
+      'The election restored coalition bargaining at the Union level and produced another peaceful transfer into a new parliamentary term.',
+    lessons:
+      'Electoral victory grants governing authority, while reduced seat share and coalition dependence are meaningful accountability signals.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Indian electorate',
+        'public-electorate',
+        'positive-leadership',
+        5,
+        'Determined the parliamentary mandate and coalition balance.',
+      ),
+      eventResponsibility(
+        'Election Commission and election machinery',
+        'institution',
+        'implementation',
+        4,
+        'Administered the national election.',
+      ),
+      eventResponsibility(
+        'NDA coalition and Narendra Modi',
+        'union-government',
+        'implementation',
+        5,
+        'Assumed responsibility for governing under the new mandate.',
+      ),
+    ],
+  },
+  {
+    eventId: 'neet-ug-2024-controversy',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The leak and irregularities were failures of exam security and administration, not a defensible policy choice; the nationwide cancellation question depended on evidence of how widespread the breach was.',
+    unionRole:
+      'NTA and the Union Education Ministry bore primary responsibility for exam security, transparent scoring, grievance handling, and timely public communication.',
+    stateLocalRole:
+      'Bihar and Jharkhand police and local authorities were responsible for investigating and prosecuting leak networks operating in Hazaribagh and Patna.',
+    positiveOutcomes:
+      'The controversy produced a limited re-test, Supreme Court scrutiny, criminal investigations, and stronger national attention to public-exam security.',
+    lessons:
+      'High-stakes exams require chain-of-custody controls, independent audits, anomaly detection, transparent scoring, and a pre-defined re-test threshold.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Paper-leak and impersonation network',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Compromised exam integrity through criminal access and distribution.',
+        'high',
+      ),
+      eventResponsibility(
+        'National Testing Agency and Union Education Ministry',
+        'union-government',
+        'failure-to-prevent',
+        5,
+        'Failed to secure the exam and initially maintain confidence in scoring and redress.',
+        'high',
+      ),
+      eventResponsibility(
+        'Supreme Court and investigating agencies',
+        'institution',
+        'positive-leadership',
+        3,
+        'Established the evidentiary boundary and pursued accountability.',
+      ),
+    ],
+  },
+  {
+    eventId: 'mahakumbh-crowd-crush-2025',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The religious gathering was legitimate, but crowd density, route control, barriers, emergency access, and casualty transparency were administrative responsibilities that failed.',
+    unionRole:
+      'The Union had supporting disaster-management, rail, transport, and security roles but did not control the primary festival ground plan.',
+    stateLocalRole:
+      'The Uttar Pradesh government, mela authority, Prayagraj administration, and police bore primary responsibility for crowd modelling, route separation, emergency access, and transparent reporting.',
+    positiveOutcomes:
+      'A judicial inquiry, revised crowd routes, cancelled special access, and renewed scrutiny of mega-event safety followed.',
+    lessons:
+      'Mega-events need hard density limits, one-way movement, independent safety review, redundant exits, real-time public alerts, and verified casualty accounting.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Uttar Pradesh government and Maha Kumbh administration',
+        'state-government',
+        'failure-to-prevent',
+        5,
+        'Owned the event plan, crowd controls, policing, and emergency design.',
+      ),
+      eventResponsibility(
+        'Prayagraj police and local command',
+        'local-administration',
+        'failure-to-respond',
+        4,
+        'Managed barriers, routes, density, and immediate rescue conditions.',
+      ),
+      eventResponsibility(
+        'Extreme crowd density and pilgrim movement',
+        'structural',
+        'shared-context',
+        3,
+        'Created the immediate physical risk that planning was meant to control.',
+      ),
+    ],
+  },
+  {
+    eventId: 'pahalgam-attack-2025',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The attack was deliberate terrorism; direct blame belongs to the attackers and organisers, while government accountability concerns intelligence, route security, and protection of a highly promoted tourist area.',
+    unionRole:
+      'The Modi government and Union security agencies bore responsibility for counterterrorism intelligence, national security posture, and the post-attack response.',
+    stateLocalRole:
+      'The Jammu and Kashmir administration and local security apparatus were responsible for tourism-area risk assessment, deployment, and emergency response.',
+    positiveOutcomes:
+      'The attack produced a major security review, national solidarity with victims, and renewed scrutiny of intelligence and tourist protection.',
+    lessons:
+      'Claims of normalisation must be matched by granular threat intelligence, protected tourist routes, local warning networks, and rapid medical access.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Terrorist attackers and organisers',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Planned and carried out the targeted killing of civilians.',
+        'high',
+      ),
+      eventResponsibility(
+        'Union intelligence and security institutions',
+        'institution',
+        'failure-to-prevent',
+        3,
+        'Failed to detect or prevent a major attack in a promoted tourism zone.',
+      ),
+      eventResponsibility(
+        'Jammu and Kashmir administration and local security',
+        'local-administration',
+        'failure-to-prevent',
+        3,
+        'Held frontline responsibility for local risk controls and emergency readiness.',
+      ),
+    ],
+  },
+  {
+    eventId: 'operation-sindoor-2025',
+    choiceAssessment: 'contested',
+    choiceScore: 6.5,
+    choiceReason:
+      'A limited response to a mass-casualty terrorist attack had a defensible security rationale, but cross-border strikes between nuclear-armed states created major escalation, civilian, attribution, and proportionality risks.',
+    unionRole:
+      'Prime Minister Modi, the Cabinet Committee on Security, and Union military leadership made the retaliation, target, escalation, and cessation decisions.',
+    stateLocalRole:
+      'Border states and local administrations managed civilian evacuation, shelters, damage, and public communication under fire.',
+    positiveOutcomes:
+      'India demonstrated retaliation capacity and the crisis stopped after four days, while military readiness and civil-defence gaps received renewed attention.',
+    lessons:
+      'Cross-border retaliation needs verified attribution, narrow objectives, civilian-harm controls, truthful loss reporting, protected communications, and a credible de-escalation channel.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Modi government and Indian military leadership',
+        'union-government',
+        'policy-decision',
+        5,
+        'Authorised and executed Operation Sindoor and escalation management.',
+      ),
+      eventResponsibility(
+        'Pakistan military leadership',
+        'foreign-state',
+        'direct-action',
+        4,
+        'Conducted retaliatory drone, missile, artillery, and military operations.',
+      ),
+      eventResponsibility(
+        'Indian and Pakistani armed forces',
+        'institution',
+        'implementation',
+        4,
+        'Controlled targeting, force protection, and battlefield escalation.',
+      ),
+      eventResponsibility(
+        'Terrorist organisations linked by India to the Pahalgam attack',
+        'non-state-group',
+        'shared-context',
+        4,
+        'Created the initiating security context, while precise sponsorship claims remain contested.',
+      ),
+    ],
+  },
+  {
+    eventId: 'air-india-ai171-2025',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The crash was an accident under continuing technical investigation; responsibility should not be assigned to a cause, person, airline, or regulator before the final evidentiary record.',
+    unionRole:
+      'The Union, DGCA, AAIB, and Civil Aviation Ministry were responsible for investigation, regulatory review, fleet safety oversight, and transparent publication.',
+    stateLocalRole:
+      'Gujarat and Ahmedabad emergency services, hospitals, police, and local authorities handled the crash site, victims, and ground consequences.',
+    positiveOutcomes:
+      'The response produced a formal AAIB investigation, fleet inspections, emergency review, and a high-level systems committee.',
+    lessons:
+      'Aviation accountability must follow flight data, maintenance, human factors, design, regulation, and emergency evidence rather than early speculation.',
+    confidence: 'high',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Accident cause under AAIB investigation',
+        'structural',
+        'shared-context',
+        5,
+        'The final causal chain remained unresolved at the July 2026 cutoff.',
+        'high',
+      ),
+      eventResponsibility(
+        'Air India and operational safety system',
+        'corporate',
+        'implementation',
+        3,
+        'Held operational responsibility, with fault and causation still under investigation.',
+      ),
+      eventResponsibility(
+        'DGCA and Union aviation oversight',
+        'union-government',
+        'failure-to-prevent',
+        2,
+        'Held regulatory responsibility, without a final finding that oversight caused the crash.',
+      ),
+      eventResponsibility(
+        'Ahmedabad and Gujarat emergency responders',
+        'local-administration',
+        'positive-leadership',
+        4,
+        'Managed fire, rescue, hospitals, identification, and ground response.',
+      ),
+    ],
+  },
+  {
+    eventId: 'neet-ug-2026-crisis',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The leak was criminal misconduct enabled by repeated exam-security failure; cancellation and re-examination were necessary corrective actions, while protest policing and delayed accountability deepened distrust.',
+    unionRole:
+      'NTA and the Union Education Ministry bore primary responsibility for exam security, institutional reform, candidate communication, re-exam integrity, and accountable leadership.',
+    stateLocalRole:
+      'State police and local administrations investigated leak networks and managed protests; Delhi Police bore responsibility for proportionate treatment of demonstrators.',
+    positiveOutcomes:
+      'The compromised exam was cancelled, a re-exam was held, courts demanded accountability, and students created sustained pressure for structural exam reform.',
+    lessons:
+      'Repeated failure requires independent governance, audited question production, compartmentalised access, digital traceability, whistleblower channels, and leadership consequences.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Paper-leak network and facilitators',
+        'non-state-group',
+        'direct-action',
+        5,
+        'Compromised confidential exam material and candidate fairness.',
+      ),
+      eventResponsibility(
+        'National Testing Agency and Union Education Ministry',
+        'union-government',
+        'failure-to-prevent',
+        5,
+        'Failed to prevent a second major NEET integrity crisis and restore trust quickly.',
+      ),
+      eventResponsibility(
+        'Police handling of youth protests',
+        'local-administration',
+        'implementation',
+        3,
+        'Bore responsibility for lawful, proportionate crowd management and arrests.',
+      ),
+      eventResponsibility(
+        'Students and youth protest organisers',
+        'non-state-group',
+        'positive-leadership',
+        4,
+        'Sustained public pressure for accountability and fair examinations.',
+      ),
+    ],
+  },
+  {
+    eventId: 'sikkim-tunnel-disaster-2026',
+    choiceAssessment: 'not-a-policy-choice',
+    choiceReason:
+      'The explosion was an industrial disaster under investigation; project safety systems, gas detection, contractor practices, and regulatory oversight require scrutiny before final fault is assigned.',
+    unionRole:
+      'Union power-sector authorities, labor-safety institutions, and national rescue forces had regulatory, project-governance, and emergency-support responsibilities.',
+    stateLocalRole:
+      'The Sikkim government, project authorities, district administration, and local emergency system bore frontline safety, inspection, rescue, and worker-protection responsibilities.',
+    positiveOutcomes:
+      'The rescue operation recovered trapped workers, a multi-agency inquiry began, and underground gas and hydropower safety received national scrutiny.',
+    lessons:
+      'Tunnelling requires continuous gas monitoring, ventilation redundancy, worker tracking, independent inspection, escape planning, and transparent contractor accountability.',
+    confidence: 'medium',
+    assessmentAsOf: ratingAsOf,
+    responsibilities: [
+      eventResponsibility(
+        'Project operator and contractors',
+        'corporate',
+        'failure-to-prevent',
+        4,
+        'Held primary workplace safety and tunnel-risk responsibilities, with final fault still under investigation.',
+      ),
+      eventResponsibility(
+        'Sikkim regulators and district administration',
+        'state-government',
+        'implementation',
+        3,
+        'Held inspection, emergency readiness, worker protection, and local response duties.',
+      ),
+      eventResponsibility(
+        'Union power and labor-safety oversight',
+        'union-government',
+        'shared-context',
+        2,
+        'Held sectoral and national safety-policy responsibilities.',
+      ),
+      eventResponsibility(
+        'State, national, and project rescue teams',
+        'institution',
+        'positive-leadership',
+        4,
+        'Conducted hazardous recovery and rescue operations.',
+      ),
+    ],
+  },
+]
+
+export const claims: ClaimSeed[] = [
+  {
+    id: 'nehru-democratic-foundations',
+    jurisdictionId: 'india',
+    leaderTermId: 'nehru-1947',
+    title: 'Durable democratic foundations',
+    body:
+      'Competitive elections, parliamentary government, an independent judiciary, and civilian rule became normal practice during the founding period.',
+    stance: 'achievement',
+    category: 'institutions',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['india-constitution', 'britannica-modern-india'],
+  },
+  {
+    id: 'nehru-economic-security-costs',
+    jurisdictionId: 'india',
+    leaderTermId: 'nehru-1947',
+    title: 'State-led model and 1962 failure',
+    body:
+      'The early development model built industrial capacity but also entrenched licensing and low competition; the 1962 war exposed severe security failures.',
+    stance: 'concern',
+    category: 'economy',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['rbi-handbook', 'britannica-modern-india'],
+  },
+  {
+    id: 'shastri-food-security',
+    jurisdictionId: 'india',
+    leaderTermId: 'shastri-1964',
+    policyId: 'food-corporations-1964',
+    title: 'Food and farm emphasis',
+    body:
+      'The government strengthened the policy direction that supported later gains in agricultural productivity and food security.',
+    stance: 'achievement',
+    category: 'agriculture',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'food-corporations-act-1964',
+      'rbi-handbook',
+      'britannica-modern-india',
+    ],
+  },
+  {
+    id: 'fci-national-foodgrain-capacity',
+    jurisdictionId: 'india',
+    leaderTermId: 'shastri-1964',
+    policyId: 'food-corporations-1964',
+    title: 'National procurement, buffer, and distribution capacity',
+    body:
+      'FCI created a permanent national mechanism for foodgrain procurement, inter-state movement, storage, buffer stocks, price support, and public distribution.',
+    stance: 'achievement',
+    category: 'food-security',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'food-corporations-act-1964',
+      'world-bank-foodgrain-policy-1999',
+    ],
+  },
+  {
+    id: 'fci-cost-concentration',
+    jurisdictionId: 'india',
+    leaderTermId: 'shastri-1964',
+    policyId: 'food-corporations-1964',
+    title: 'High costs and concentrated procurement',
+    body:
+      'The system accumulated high carrying and subsidy costs, inventory and quality problems, and procurement concentrated in particular crops, regions, and larger marketable-surplus farms.',
+    stance: 'concern',
+    category: 'food-security',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['world-bank-foodgrain-policy-1999'],
+  },
+  {
+    id: 'indira-green-revolution-1971',
+    jurisdictionId: 'india',
+    leaderTermId: 'indira-1966',
+    title: 'Food security and strategic victory',
+    body:
+      'Agricultural transformation reduced dependence on food imports, while the 1971 war was a major strategic success.',
+    stance: 'achievement',
+    category: 'state-capacity',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['rbi-handbook', 'britannica-modern-india'],
+  },
+  {
+    id: 'indira-emergency',
+    jurisdictionId: 'india',
+    leaderTermId: 'indira-1966',
+    eventId: 'emergency-1975',
+    title: 'Emergency rule',
+    body:
+      'Suspension of liberties, censorship, detentions, and coercive programmes caused exceptional damage to democratic institutions.',
+    stance: 'concern',
+    category: 'institutions',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['india-constitution', 'britannica-modern-india'],
+  },
+  {
+    id: 'desai-democratic-repair',
+    jurisdictionId: 'india',
+    leaderTermId: 'desai-1977',
+    policyId: 'constitution-44th-1978',
+    title: 'Democratic repair',
+    body:
+      'The post-Emergency government restored civil liberties and helped strengthen constitutional protections against future emergency abuse.',
+    stance: 'achievement',
+    category: 'institutions',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['india-constitution', 'britannica-modern-india'],
+  },
+  {
+    id: 'desai-coalition-instability',
+    jurisdictionId: 'india',
+    leaderTermId: 'desai-1977',
+    title: 'Coalition instability',
+    body:
+      'Internal conflict prevented the Janata government from converting democratic repair into a durable governing programme.',
+    stance: 'concern',
+    category: 'governance',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['britannica-modern-india'],
+  },
+  {
+    id: '44th-incomplete-repair',
+    jurisdictionId: 'india',
+    leaderTermId: 'desai-1977',
+    policyId: 'constitution-44th-1978',
+    title: 'Democratic repair was substantial, not total',
+    body:
+      'The amendment strengthened liberty and emergency safeguards but did not reverse every centralising Emergency-era change and moved property from a fundamental right to a constitutional legal right.',
+    stance: 'concern',
+    category: 'constitutional',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['india-constitution', 'britannica-modern-india'],
+  },
+  {
+    id: 'charan-agrarian-voice',
+    jurisdictionId: 'india',
+    leaderTermId: 'charan-singh-1979',
+    title: 'Agrarian representation',
+    body:
+      'Charan Singh gave small farmers and agrarian interests a powerful national political voice.',
+    stance: 'achievement',
+    category: 'agriculture',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['pm-india-former', 'britannica-modern-india'],
+  },
+  {
+    id: 'charan-no-confidence',
+    jurisdictionId: 'india',
+    leaderTermId: 'charan-singh-1979',
+    eventId: 'charan-singh-government-collapse-1979',
+    title: 'No durable governing record',
+    body:
+      'The government fell before facing a confidence vote, leaving almost no basis for outcome attribution.',
+    stance: 'concern',
+    category: 'governance',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['pm-india-former', 'charan-singh-dissolution-court-record'],
+  },
+  {
+    id: 'indira-second-term-stability',
+    jurisdictionId: 'india',
+    leaderTermId: 'indira-1980',
+    title: 'Governmental stability restored',
+    body:
+      'The return to a stable majority government ended the fragmentation of the late 1970s.',
+    stance: 'achievement',
+    category: 'governance',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['pm-india-former'],
+  },
+  {
+    id: 'indira-punjab-crisis',
+    jurisdictionId: 'india',
+    leaderTermId: 'indira-1980',
+    eventId: 'operation-blue-star-1984',
+    title: 'Punjab crisis',
+    body:
+      'Escalating centralisation and the handling of Punjab culminated in Operation Blue Star and profound social costs.',
+    stance: 'concern',
+    category: 'security',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['britannica-modern-india'],
+  },
+  {
+    id: 'rajiv-modernisation',
+    jurisdictionId: 'india',
+    leaderTermId: 'rajiv-1984',
+    title: 'Technology and telecom modernisation',
+    body:
+      'Policy shifted toward computing, telecommunications, and a less restrictive economic environment.',
+    stance: 'achievement',
+    category: 'technology',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['rbi-handbook', 'britannica-modern-india'],
+  },
+  {
+    id: 'rajiv-integrity-conflict',
+    jurisdictionId: 'india',
+    leaderTermId: 'rajiv-1984',
+    title: 'Conflict and corruption allegations',
+    body:
+      'The Sri Lanka intervention, communal-policy controversies, and Bofors allegations weakened reform credibility.',
+    stance: 'concern',
+    category: 'governance',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['britannica-modern-india'],
+  },
+  {
+    id: 'rajiv-anti-sikh-accountability',
+    jurisdictionId: 'india',
+    leaderTermId: 'rajiv-1984',
+    eventId: 'anti-sikh-violence-1984',
+    title: 'Failure of protection and delayed accountability',
+    body:
+      'The anti-Sikh violence began as Rajiv Gandhi took office; official inquiries documented grave failures of protection and accountability.',
+    stance: 'concern',
+    category: 'institutions',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['nanavati-commission', 'sciences-po-communal-1'],
+  },
+  {
+    id: 'vp-mandal',
+    jurisdictionId: 'india',
+    leaderTermId: 'vp-singh-1989',
+    eventId: 'mandal-1990',
+    policyId: 'mandal-1990',
+    title: 'Expanded backward-class representation',
+    body:
+      'Implementing the Mandal recommendations permanently widened access to central public employment for Other Backward Classes.',
+    stance: 'achievement',
+    category: 'inclusion',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['britannica-modern-india'],
+  },
+  {
+    id: 'vp-instability',
+    jurisdictionId: 'india',
+    leaderTermId: 'vp-singh-1989',
+    title: 'Social conflict and coalition collapse',
+    body:
+      'The government could not contain the intense social and political conflict surrounding Mandal and the Ayodhya mobilisation.',
+    stance: 'concern',
+    category: 'governance',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['britannica-modern-india'],
+  },
+  {
+    id: 'chandra-crisis-context',
+    jurisdictionId: 'india',
+    leaderTermId: 'chandra-shekhar-1990',
+    eventId: 'gold-mobilisation-1991',
+    title: 'Governed under extreme constraint',
+    body:
+      'A tiny minority government operated during an acute external-payments and political crisis.',
+    stance: 'context',
+    category: 'economy',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'rbi-history-gold-1991',
+      'imf-india-crisis-2000',
+      'rbi-handbook',
+      'india-budget-1991',
+    ],
+  },
+  {
+    id: 'rao-liberalisation',
+    jurisdictionId: 'india',
+    leaderTermId: 'rao-1991',
+    eventId: 'liberalisation-1991',
+    policyId: 'economic-reforms-1991',
+    title: 'Economic regime change',
+    body:
+      'The Rao government enabled reforms that reduced licensing and trade barriers and stabilised the external account.',
+    stance: 'achievement',
+    category: 'economy',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['india-budget-1991', 'rbi-handbook'],
+  },
+  {
+    id: 'rao-babri-integrity',
+    jurisdictionId: 'india',
+    leaderTermId: 'rao-1991',
+    eventId: 'babri-demolition-1992',
+    title: 'Babri and integrity failures',
+    body:
+      'Failure to prevent the Babri Masjid demolition and later corruption allegations materially reduce the government’s institutional record.',
+    stance: 'concern',
+    category: 'institutions',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['britannica-modern-india', 'sciences-po-communal-2'],
+  },
+  {
+    id: 'deve-federal-coalition',
+    jurisdictionId: 'india',
+    leaderTermId: 'deve-gowda-1996',
+    title: 'Federal coalition continuity',
+    body:
+      'The United Front maintained economic-policy continuity and gave regional parties a larger role in Union governance.',
+    stance: 'achievement',
+    category: 'federalism',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['britannica-modern-india'],
+  },
+  {
+    id: 'trai-independent-regulator',
+    jurisdictionId: 'india',
+    leaderTermId: 'deve-gowda-1996',
+    policyId: 'trai-act-1997',
+    title: 'Telecom gained a specialist regulator',
+    body:
+      'TRAI separated tariff and regulatory scrutiny from the government’s operator role and created a durable institution for interconnection, competition, recommendations, and consumer interests.',
+    stance: 'achievement',
+    category: 'telecom-regulation',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['trai-history', 'world-bank-telecom-reform-2008'],
+  },
+  {
+    id: 'trai-early-authority-gaps',
+    jurisdictionId: 'india',
+    leaderTermId: 'deve-gowda-1996',
+    policyId: 'trai-act-1997',
+    title: 'Early authority and dispute design were weak',
+    body:
+      'Jurisdictional conflict with the telecom department and limited original powers required statutory repair and a separate appellate tribunal, while competition gains depended on later licensing and policy changes.',
+    stance: 'concern',
+    category: 'telecom-regulation',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['trai-history', 'world-bank-telecom-reform-2008'],
+  },
+  {
+    id: 'gujral-doctrine',
+    jurisdictionId: 'india',
+    leaderTermId: 'gujral-1997',
+    eventId: 'gujral-doctrine-premiership-1997',
+    title: 'Regional diplomatic doctrine',
+    body:
+      'The Gujral Doctrine emphasised non-reciprocal cooperation with smaller South Asian neighbours.',
+    stance: 'achievement',
+    category: 'foreign-policy',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'pm-india-former',
+      'idsa-gujral-doctrine',
+      'britannica-modern-india',
+    ],
+  },
+  {
+    id: 'vajpayee-infrastructure',
+    jurisdictionId: 'india',
+    leaderTermId: 'vajpayee-1998',
+    title: 'Infrastructure and telecom reform',
+    body:
+      'Highways, rural roads, telecom competition, and fiscal reforms created durable productive capacity.',
+    stance: 'achievement',
+    category: 'infrastructure',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['rbi-handbook', 'world-bank-india'],
+  },
+  {
+    id: 'pmgsy-access-opportunity',
+    jurisdictionId: 'india',
+    leaderTermId: 'vajpayee-1998',
+    policyId: 'pmgsy-2000',
+    title: 'Rural roads expanded access and opportunity',
+    body:
+      'Impact evidence associates completed PMGSY roads with more reliable travel, market access, movement toward non-farm work, and improved access to education and services.',
+    stance: 'achievement',
+    category: 'rural-infrastructure',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['world-bank-pmgsy-impact-2021', 'pmgsy-official'],
+  },
+  {
+    id: 'pmgsy-quality-maintenance-gaps',
+    jurisdictionId: 'india',
+    leaderTermId: 'vajpayee-1998',
+    policyId: 'pmgsy-2000',
+    title: 'Targets, quality, and maintenance remained uneven',
+    body:
+      'CAG found planning, contracting, fund, quality-control, completion, and maintenance weaknesses, showing that road sanction or construction does not guarantee durable connectivity.',
+    stance: 'concern',
+    category: 'rural-infrastructure',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['cag-pmgsy-audit-2016'],
+  },
+  {
+    id: 'vajpayee-communal-violence',
+    jurisdictionId: 'india',
+    leaderTermId: 'vajpayee-1998',
+    title: 'Failure to protect during communal violence',
+    body:
+      'The 2002 Gujarat violence remains a major negative when assessing inclusion, rights, and Union leadership.',
+    stance: 'concern',
+    category: 'institutions',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['nhrc-gujarat-2002', 'sciences-po-communal-2'],
+  },
+  {
+    id: 'manmohan-growth-rights',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    title: 'Growth with rights-based public policy',
+    body:
+      'High growth coincided with RTI, MGNREGA, education and food entitlements, and a large expansion of public-service access.',
+    stance: 'achievement',
+    category: 'human-development',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['world-bank-india', 'rti-act', 'mgnrega-act'],
+  },
+  {
+    id: 'manmohan-second-term',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    title: 'Second-term drift and scandals',
+    body:
+      'Inflation, major corruption scandals, and slow decision-making damaged confidence despite continued institutional continuity.',
+    stance: 'concern',
+    category: 'governance',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['rbi-handbook', 'britannica-modern-india'],
+  },
+  {
+    id: 'manmohan-pakistan-flood-humanitarian-aid',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    eventId: 'pakistan-flood-aid-2010',
+    policyId: 'pakistan-flood-relief-2010',
+    title: 'Humanitarian restraint amid India–Pakistan hostility',
+    body:
+      'The UPA government separated civilian flood relief from unresolved terrorism and security disputes, committing US$25 million through United Nations humanitarian channels.',
+    stance: 'achievement',
+    category: 'foreign-policy',
+    confidence: 'high',
+    asOfDate: heardClaimReviewedDate,
+    sourceIds: [
+      'mea-pakistan-flood-aid-2010',
+      'mea-pakistan-flood-aid-unga-2010',
+      'un-ocha-india-pakistan-erf-2010',
+    ],
+  },
+  {
+    id: 'pakistan-flood-aid-fact-check',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    eventId: 'pakistan-flood-aid-2010',
+    policyId: 'pakistan-flood-relief-2010',
+    title: 'Fact check: true amount, misleading frame',
+    body:
+      '“Congress gave Pakistan US$25 million after 26/11” is substantially true on amount and chronology, but omits that this was 2010 flood relief for civilians, channelled through the United Nations rather than unrestricted support to Pakistan’s government or a concession on terrorism.',
+    stance: 'mixed',
+    category: 'fact-check',
+    confidence: 'high',
+    asOfDate: heardClaimReviewedDate,
+    sourceIds: [
+      'mea-pakistan-flood-aid-2010',
+      'mea-pakistan-flood-aid-unga-2010',
+      'un-ocha-india-pakistan-erf-2010',
+      'guardian-pakistan-flood-aid-2010',
+    ],
+  },
+  {
+    id: 'pakistan-flood-aid-impact-limit',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    eventId: 'pakistan-flood-aid-2010',
+    policyId: 'pakistan-flood-relief-2010',
+    title: 'The gesture did not resolve the security conflict',
+    body:
+      'The contribution was modest relative to the disaster, and available evidence does not isolate recipient-level effects or show a durable India–Pakistan diplomatic or counterterrorism breakthrough.',
+    stance: 'concern',
+    category: 'foreign-policy',
+    confidence: 'medium',
+    asOfDate: heardClaimReviewedDate,
+    sourceIds: [
+      'un-ocha-india-pakistan-erf-2010',
+      'guardian-pakistan-flood-aid-2010',
+      'brookings-pakistan-flood-aid-2010',
+    ],
+  },
+  {
+    id: 'modi-infrastructure-digital',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Infrastructure and digital state capacity',
+    body:
+      'Capital investment, highway and expressway capacity, electrification, digital identity, instant payments, and direct benefit delivery expanded the state’s implementation reach.',
+    stance: 'achievement',
+    category: 'infrastructure',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'world-bank-india',
+      'aadhaar-act',
+      'mospi-national-accounts',
+      'npci-upi-statistics',
+      'morth-year-end-2025',
+    ],
+  },
+  {
+    id: 'modi-poverty-services',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    eventId: 'national-mpi-decline-2023',
+    title: 'Basic services and multidimensional poverty',
+    body:
+      'National MPI fell from 24.85% in 2015-16 to an observed 14.96% in 2019-21, while electricity, sanitation, clean cooking, and other services improved; the 11.28% figure for 2022-23 is an official extrapolation, not a new survey.',
+    stance: 'achievement',
+    category: 'human-development',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'world-bank-india',
+      'world-bank-poverty-equity-2025',
+      'niti-mpi-2023',
+      'undp-global-mpi-2022',
+    ],
+  },
+  {
+    id: 'modi-macro-formalisation',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Formalisation and macro capacity',
+    body:
+      'GST and digital compliance broadened formal systems while aggregate output recovered strongly after the pandemic shock.',
+    stance: 'achievement',
+    category: 'economy',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'cbic-gst',
+      'mospi-national-accounts',
+      'world-bank-india',
+      'imf-india-article-iv-2025',
+    ],
+  },
+  {
+    id: 'modi-demonetisation',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    eventId: 'demonetisation-2016',
+    policyId: 'demonetisation-2016',
+    title: 'Demonetisation’s disruption',
+    body:
+      'The sudden currency withdrawal imposed large transition costs, while nearly all withdrawn currency returned to the banking system.',
+    stance: 'concern',
+    category: 'economy',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['rbi-demonetisation'],
+  },
+  {
+    id: 'modi-jobs-inclusion',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Jobs quality and unequal opportunity',
+    body:
+      'Employment ratios improved recently, but job quality, youth opportunity, women’s work, and the distribution of growth remain central unresolved questions.',
+    stance: 'concern',
+    category: 'inclusion',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'world-bank-india',
+      'world-bank-poverty-equity-2025',
+      'ilo-india-employment-2024',
+      'imf-india-article-iv-2025',
+    ],
+  },
+  {
+    id: 'modi-institutions',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Institutional and civil-liberty decline',
+    body:
+      'V-Dem’s expert-coded electoral and liberal democracy indices show a sustained decline after 2014; the dataset’s uncertainty cautions still apply.',
+    stance: 'concern',
+    category: 'institutions',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['vdem-v16', 'owid-vdem', 'freedom-house-india-2026'],
+  },
+  {
+    id: 'modi-electoral-bonds',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Electoral-bond political-finance failure',
+    body:
+      'The Supreme Court struck down the electoral-bond framework because anonymous political funding violated voters’ right to information and unlimited corporate contributions were arbitrary.',
+    stance: 'concern',
+    category: 'integrity',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['supreme-electoral-bonds-2024'],
+  },
+  {
+    id: 'modi-social-cohesion-response',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Social cohesion and conflict response',
+    body:
+      'The CAA protest cycle, Delhi violence, and prolonged Manipur conflict raise material questions about minority protection, policing, consultation, and speed of Union response.',
+    stance: 'concern',
+    category: 'society',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'citizenship-amendment-act',
+      'mha-annual-reports',
+      'supreme-court-manipur-2023',
+      'hrw-india-2026',
+    ],
+  },
+  {
+    id: 'india-long-run-progress',
+    jurisdictionId: 'india',
+    title: 'Large long-run human-development gains',
+    body:
+      'Life expectancy, literacy, infant survival, electricity, sanitation, and real output per person all improved substantially over the available post-independence record.',
+    stance: 'achievement',
+    category: 'human-development',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['world-bank-india', 'census-history', 'undp-hdr-2025'],
+  },
+  {
+    id: 'india-progress-uneven',
+    jurisdictionId: 'india',
+    title: 'Progress remains uneven and incomplete',
+    body:
+      'State gaps, job quality, gender participation, air pollution, educational quality, inequality, and institutional health prevent a simple “India is doing well” conclusion.',
+    stance: 'concern',
+    category: 'inclusion',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['world-bank-india', 'niti-mpi-2023', 'vdem-v16'],
+  },
+  {
+    id: 'india-causality-context',
+    jurisdictionId: 'india',
+    title: 'Government attribution is limited',
+    body:
+      'Outcomes reflect prior reforms, state governments, global cycles, demography, courts, businesses, civil society, and time lags; a Prime Minister’s term is not a controlled experiment.',
+    stance: 'context',
+    category: 'methodology',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['world-bank-india', 'rbi-handbook'],
+  },
+  {
+    id: 'bjp-comparison-execution-case',
+    jurisdictionId: 'india',
+    title: 'The strongest BJP case is execution and infrastructure',
+    body:
+      'BJP-led terms have a strong record in rural roads, highways, telecom competition, digital payments, public-service delivery, national infrastructure, and tax formalisation. These outcomes remain shared with states, earlier reforms, later implementation, firms, and households.',
+    stance: 'achievement',
+    category: 'party-comparison',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'world-bank-pmgsy-impact-2021',
+      'morth-year-end-2025',
+      'npci-upi-statistics',
+      'world-bank-india',
+      'cbic-gst',
+      'commerce-fta-achievements-2026',
+    ],
+  },
+  {
+    id: 'congress-comparison-institution-reform-case',
+    jurisdictionId: 'india',
+    title: 'Congress has the stronger founding-institution and reform case',
+    body:
+      'Congress-led terms established India’s parliamentary-democratic practice and major food institutions, carried the 1991 economic regime change, and enacted durable accountability and social-protection laws including RTI and MGNREGA.',
+    stance: 'mixed',
+    category: 'party-comparison',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'india-constitution',
+      'food-corporations-act-1964',
+      'india-budget-1991',
+      'rti-act',
+      'mgnrega-act',
+    ],
+  },
+  {
+    id: 'bjp-comparison-institution-costs',
+    jurisdictionId: 'india',
+    title: 'BJP’s institutional and social costs prevent a clear win',
+    body:
+      'The BJP-led record is reduced by the Union leadership response to the 2002 Gujarat violence, demonetisation’s disruption, the unconstitutional electoral-bond framework, and independent indicators showing weaker civil-liberty and institutional checks during the Modi era.',
+    stance: 'concern',
+    category: 'party-comparison',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'nhrc-gujarat-2002',
+      'rbi-demonetisation',
+      'supreme-electoral-bonds-2024',
+      'vdem-v16',
+    ],
+  },
+  {
+    id: 'party-comparison-rating-math',
+    jurisdictionId: 'india',
+    title: 'The published term averages are effectively close',
+    body:
+      'Using this site’s current editorial PM-term estimates, the simple mean is 6.75 for BJP-led rated terms and 6.73 for Congress-led terms. Weighting by days in office through July 24, 2026 gives 6.60 for BJP and 6.84 for Congress.',
+    stance: 'context',
+    category: 'methodology',
+    confidence: 'high',
+    asOfDate: '2026-07-24',
+    sourceIds: ['pm-india-current', 'pm-india-former'],
+  },
+  {
+    id: 'party-comparison-era-sample-limit',
+    jurisdictionId: 'india',
+    title: 'The samples cover radically different eras and sizes',
+    body:
+      'Congress has seven rated terms covering about 54.3 years; BJP has two covering about 18.3 years. Congress’s day-weighted edge and BJP’s tiny simple-average edge are both sensitive to era and sample size, and neither is a clean party verdict.',
+    stance: 'context',
+    category: 'methodology',
+    confidence: 'high',
+    asOfDate: '2026-07-24',
+    sourceIds: [
+      'pm-india-former',
+      'rbi-handbook',
+      'india-constitution',
+      'britannica-modern-india',
+    ],
+  },
+  {
+    id: 'exchange-rate-real-gdp-context',
+    jurisdictionId: 'india',
+    title: 'The exchange rate and real GDP measure different things',
+    body:
+      'Rupees per US dollar is a bilateral nominal price, while real GDP per person measures inflation-adjusted domestic output. The rupee can depreciate as Indian prices, interest rates, trade flows, capital flows, or the dollar change even while India produces more real output.',
+    stance: 'context',
+    category: 'economic-methodology',
+    confidence: 'high',
+    asOfDate: '2026-07-24',
+    sourceIds: ['world-bank-exchange-rate', 'world-bank-constant-prices'],
+  },
+  {
+    id: 'idra-industrial-capacity',
+    jurisdictionId: 'india',
+    leaderTermId: 'nehru-1947',
+    policyId: 'idra-1951',
+    title: 'Industrial capacity and coordination',
+    body:
+      'Licensing and public coordination helped direct scarce capital toward strategic industrial capacity in the early republic.',
+    stance: 'achievement',
+    category: 'industrial-policy',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['idra-1951-act', 'rbi-handbook'],
+  },
+  {
+    id: 'idra-license-raj',
+    jurisdictionId: 'india',
+    leaderTermId: 'nehru-1947',
+    policyId: 'idra-1951',
+    title: 'Permission-heavy industrial system',
+    body:
+      'The licensing structure concentrated discretion, suppressed entry and competition, and became a central target of the 1991 reforms.',
+    stance: 'concern',
+    category: 'industrial-policy',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['idra-1951-act', 'india-budget-1991'],
+  },
+  {
+    id: 'income-tax-1961-durable-framework',
+    jurisdictionId: 'india',
+    leaderTermId: 'nehru-1947',
+    policyId: 'income-tax-act-1961',
+    title: 'A durable national direct-tax framework',
+    body:
+      'The 1961 Act consolidated charging, assessment, collection, appeals, and enforcement into the code that governed India’s direct taxes for sixty-four years.',
+    stance: 'achievement',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['income-tax-act-1961', 'income-tax-act-2025-guide'],
+  },
+  {
+    id: 'income-tax-1961-complexity-context',
+    jurisdictionId: 'india',
+    leaderTermId: 'nehru-1947',
+    policyId: 'income-tax-act-1961',
+    title: 'Amendment, litigation, and access costs accumulated',
+    body:
+      'By replacement, the heavily amended framework was difficult to navigate and still faced large litigation and administration burdens; these outcomes also reflect later governments, enforcement, and economic structure.',
+    stance: 'concern',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'income-tax-act-2025-guide',
+      'finance-committee-direct-taxes-2025',
+    ],
+  },
+  {
+    id: 'bank-nationalisation-access',
+    jurisdictionId: 'india',
+    leaderTermId: 'indira-1966',
+    policyId: 'bank-nationalisation-1969',
+    title: 'Rural and priority-sector banking expanded',
+    body:
+      'Public ownership supported branch expansion and directed credit beyond established urban and industrial borrowers.',
+    stance: 'achievement',
+    category: 'financial-policy',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['rbi-handbook'],
+  },
+  {
+    id: 'bank-nationalisation-governance',
+    jurisdictionId: 'india',
+    leaderTermId: 'indira-1966',
+    policyId: 'bank-nationalisation-1969',
+    title: 'Political credit and governance costs',
+    body:
+      'Directed lending widened access but also created incentives for political allocation, weak governance, and later bad-loan accumulation.',
+    stance: 'concern',
+    category: 'financial-policy',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['rbi-handbook', 'britannica-modern-india'],
+  },
+  {
+    id: '42nd-social-provisions',
+    jurisdictionId: 'india',
+    leaderTermId: 'indira-1966',
+    policyId: 'constitution-42nd-1976',
+    title: 'Some social-constitutional provisions endured',
+    body:
+      'The amendment added Fundamental Duties and textual commitments including socialist, secular, and environmental language.',
+    stance: 'context',
+    category: 'constitutional',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['india-constitution'],
+  },
+  {
+    id: '42nd-authoritarian-centralisation',
+    jurisdictionId: 'india',
+    leaderTermId: 'indira-1966',
+    policyId: 'constitution-42nd-1976',
+    title: 'Authoritarian centralisation during the Emergency',
+    body:
+      'The package sought to weaken judicial and federal restraints while civil liberties and opposition politics were suppressed.',
+    stance: 'concern',
+    category: 'constitutional',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['india-constitution', 'britannica-modern-india'],
+  },
+  {
+    id: 'modvat-input-credit',
+    jurisdictionId: 'india',
+    leaderTermId: 'rajiv-1984',
+    policyId: 'modvat-1986',
+    title: 'Input credit attacked tax-on-tax',
+    body:
+      'MODVAT let manufacturers offset specified duties paid on inputs, reducing embedded excise and establishing the credit-chain principle later carried into CENVAT and GST.',
+    stance: 'achievement',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['budget-speech-1986-87', 'nipfp-tax-reform-2005'],
+  },
+  {
+    id: 'modvat-partial-coverage',
+    jurisdictionId: 'india',
+    leaderTermId: 'rajiv-1984',
+    policyId: 'modvat-1986',
+    title: 'The first design remained partial and rule-heavy',
+    body:
+      'Initial sector exclusions and product conditions limited neutral crediting and preserved classification disputes until later expansions and replacement systems.',
+    stance: 'concern',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'budget-speech-1986-87',
+      'budget-speech-1994-95',
+      'nipfp-tax-reform-2005',
+    ],
+  },
+  {
+    id: 'mandal-rollout-conflict',
+    jurisdictionId: 'india',
+    leaderTermId: 'vp-singh-1989',
+    policyId: 'mandal-1990',
+    title: 'Abrupt rollout intensified conflict',
+    body:
+      'Limited preparation and communication contributed to intense protest and political instability around an otherwise defensible representation goal.',
+    stance: 'concern',
+    category: 'affirmative-action',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['britannica-modern-india'],
+  },
+  {
+    id: '1991-uneven-adjustment',
+    jurisdictionId: 'india',
+    leaderTermId: 'rao-1991',
+    policyId: 'economic-reforms-1991',
+    title: 'Adjustment and gains were uneven',
+    body:
+      'Liberalisation raised productivity and opportunity but did not automatically create equal regional, labor, or social outcomes.',
+    stance: 'concern',
+    category: 'economic-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['world-bank-india', 'rbi-handbook'],
+  },
+  {
+    id: 'tax-1991-lower-broader-base',
+    jurisdictionId: 'india',
+    leaderTermId: 'rao-1991',
+    policyId: 'tax-rationalisation-1991',
+    title: 'Lower rates and broader bases changed the tax regime',
+    body:
+      'Successive budgets reduced tariff and tax-rate complexity, broadened bases, and tied moderate rates to stronger compliance rather than relying on very high statutory rates.',
+    stance: 'achievement',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'india-budget-1991',
+      'budget-speech-1994-95',
+      'nipfp-tax-reform-2005',
+    ],
+  },
+  {
+    id: 'tax-1991-adjustment-administration',
+    jurisdictionId: 'india',
+    leaderTermId: 'rao-1991',
+    policyId: 'tax-rationalisation-1991',
+    title: 'Efficiency gains did not remove uneven adjustment',
+    body:
+      'Tariff and rate reform improved incentives, but exposed protected firms and workers to adjustment while disputes, evasion, exemptions, and administrative capacity remained continuing problems.',
+    stance: 'concern',
+    category: 'tax-reform',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'india-budget-1991',
+      'budget-speech-1994-95',
+      'nipfp-tax-reform-2005',
+      'rbi-handbook',
+    ],
+  },
+  {
+    id: 'service-tax-broadened-base',
+    jurisdictionId: 'india',
+    leaderTermId: 'rao-1991',
+    policyId: 'service-tax-1994',
+    title: 'A growing service economy entered the tax base',
+    body:
+      'The first 5% levy covered telephone, non-life insurance, and stock-broker services, beginning the shift toward comparable indirect taxation of goods and services.',
+    stance: 'achievement',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['budget-speech-1994-95', 'nipfp-tax-reform-2005'],
+  },
+  {
+    id: 'service-tax-list-complexity',
+    jurisdictionId: 'india',
+    leaderTermId: 'rao-1991',
+    policyId: 'service-tax-1994',
+    title: 'Expansion created classification and compliance costs',
+    body:
+      'A levy that began narrowly grew through service-by-service additions, creating boundary disputes and cascading that later negative-list reform and GST sought to reduce.',
+    stance: 'concern',
+    category: 'tax-reform',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'budget-speech-1994-95',
+      'nipfp-tax-reform-2005',
+      'cag-service-tax-audit-2019',
+    ],
+  },
+  {
+    id: 'rti-accountability-channel',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    eventId: 'rti-2005',
+    policyId: 'rti-2005',
+    title: 'A practical citizen accountability channel',
+    body:
+      'RTI made routine public records contestable by citizens, journalists, and civil-society organisations.',
+    stance: 'achievement',
+    category: 'transparency',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['rti-act'],
+  },
+  {
+    id: 'rti-implementation-gaps',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    policyId: 'rti-2005',
+    title: 'Delays and institutional weakening',
+    body:
+      'Vacancies, delayed appeals, non-compliance, and risks faced by information seekers reduce the law’s realised value.',
+    stance: 'concern',
+    category: 'transparency',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['rti-act'],
+  },
+  {
+    id: 'mgnrega-social-floor',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    eventId: 'mgnrega-2005',
+    policyId: 'mgnrega-2005',
+    title: 'Durable rural employment floor',
+    body:
+      'The legal guarantee created a large counter-cyclical income and employment mechanism available across rural India.',
+    stance: 'achievement',
+    category: 'social-protection',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['mgnrega-act', 'world-bank-india'],
+  },
+  {
+    id: 'mgnrega-payment-rationing',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    policyId: 'mgnrega-2005',
+    title: 'Payment delays and rationed demand',
+    body:
+      'Late wage payments, variable state capacity, and work rationing weaken a nominally demand-driven guarantee.',
+    stance: 'concern',
+    category: 'social-protection',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['mgnrega-act'],
+  },
+  {
+    id: 'state-vat-credit-federal-reform',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    policyId: 'state-vat-2005',
+    title: 'Invoice credit modernised state sales taxation',
+    body:
+      'Coordinated state VAT reduced cascading, improved transaction trails, and created administrative and federal experience later used for GST.',
+    stance: 'achievement',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['rbi-state-vat-2005', 'nipfp-tax-reform-2005'],
+  },
+  {
+    id: 'state-vat-audit-gaps',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    policyId: 'state-vat-2005',
+    title: 'State execution and controls were uneven',
+    body:
+      'CAG’s cross-state review identified weaknesses in registration, returns, input-credit verification, refunds, and information systems, limiting the reform’s realised neutrality and revenue assurance.',
+    stance: 'concern',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['cag-state-vat-study', 'rbi-state-vat-2005'],
+  },
+  {
+    id: 'fcra-2010-traceability',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    policyId: 'fcra-2010',
+    title: 'A unified foreign-contribution audit framework',
+    body:
+      'Renewable registration, annual returns, designated accounts, and prior permission improved formal traceability of foreign contributions.',
+    stance: 'achievement',
+    category: 'civil-society-regulation',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['fcra-2010-act', 'mha-fcra-division'],
+  },
+  {
+    id: 'fcra-2010-discretion',
+    jurisdictionId: 'india',
+    leaderTermId: 'manmohan-2004',
+    policyId: 'fcra-2010',
+    title: 'Broad discretion and overlapping enforcement',
+    body:
+      'Public-interest and national-interest powers are broad, while several security and financial crimes were already covered by other laws.',
+    stance: 'concern',
+    category: 'civil-society-regulation',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['fcra-2010-act', 'fcra-2026-prs'],
+  },
+  {
+    id: 'aadhaar-delivery-scale',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    eventId: 'aadhaar-2010',
+    policyId: 'aadhaar-2016',
+    title: 'Authentication and benefit-delivery scale',
+    body:
+      'Aadhaar became a widely reused identity layer for bank access, authentication, and public-benefit delivery.',
+    stance: 'achievement',
+    category: 'digital-public-infrastructure',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['aadhaar-act', 'world-bank-india'],
+  },
+  {
+    id: 'aadhaar-exclusion-privacy',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'aadhaar-2016',
+    title: 'Exclusion, privacy, and mandatory-use risks',
+    body:
+      'Authentication failure, correction barriers, data-linkage risk, and expansion beyond tightly defined uses can deny services or weaken privacy.',
+    stance: 'concern',
+    category: 'digital-public-infrastructure',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['aadhaar-act'],
+  },
+  {
+    id: 'ibc-credit-discipline',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'ibc-2016',
+    title: 'A credible unified insolvency threat',
+    body:
+      'The Code replaced fragmented processes and changed bargaining incentives for defaulting firms and creditors.',
+    stance: 'achievement',
+    category: 'financial-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['ibc-2016-act', 'ibbi-annual-2025'],
+  },
+  {
+    id: 'ibc-delay-capacity',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'ibc-2016',
+    title: 'Tribunal delay and recovery variability',
+    body:
+      'Many cases exceed statutory timelines, and realised recoveries vary sharply with asset quality and litigation.',
+    stance: 'concern',
+    category: 'financial-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['ibbi-annual-2025'],
+  },
+  {
+    id: 'demonetisation-formalisation-context',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'demonetisation-2016',
+    title: 'Formalisation and digital payments accelerated',
+    body:
+      'Digital payment and formal reporting expanded after 2016, but multiple concurrent reforms prevent clean causal attribution to demonetisation.',
+    stance: 'context',
+    category: 'monetary-executive-action',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['rbi-demonetisation', 'world-bank-india'],
+  },
+  {
+    id: 'gst-common-market',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'gst-2017',
+    title: 'National common market and tax trail',
+    body:
+      'GST reduced interstate indirect-tax fragmentation and created a much denser digital transaction trail.',
+    stance: 'achievement',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['cbic-gst', 'world-bank-gst-implementation', 'rbi-handbook'],
+  },
+  {
+    id: 'gst-small-firm-complexity',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'gst-2017',
+    title: 'Complex rates and small-firm compliance',
+    body:
+      'Multiple rates, frequent changes, portal issues, and working-capital delays imposed disproportionate early costs on smaller firms.',
+    stance: 'concern',
+    category: 'tax-reform',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'world-bank-gst-implementation',
+      'cag-gst-audit-2024',
+      'cbic-gst',
+    ],
+  },
+  {
+    id: 'corporate-tax-2019-rate-clarity',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'corporate-tax-cut-2019',
+    title: 'A lower, cleaner option improved rate competitiveness',
+    body:
+      'Eligible domestic companies could choose a 22% base rate and new manufacturers 15% without specified incentives or MAT, reducing the headline burden and exemption trade-offs.',
+    stance: 'achievement',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['pib-corporate-tax-2019'],
+  },
+  {
+    id: 'corporate-tax-2019-cost-causality',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'corporate-tax-cut-2019',
+    title: 'Fiscal cost is clearer than additional investment',
+    body:
+      'The government estimated a Rs 1.45 lakh crore revenue effect, while the slowdown and pandemic make it difficult to isolate how much investment and employment the rate cut itself added.',
+    stance: 'concern',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'pib-corporate-tax-revenue-impact-2020',
+      'economic-survey-2023-industry',
+    ],
+  },
+  {
+    id: 'corporate-tax-2019-uneven-uptake',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'corporate-tax-cut-2019',
+    title: 'The optional regime was less attractive to some smaller firms',
+    body:
+      'NIPFP found that larger companies adopted the lower-rate options more readily, while loss of deductions could leave some younger or smaller companies with an unattractive user-cost trade-off.',
+    stance: 'concern',
+    category: 'tax-reform',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['nipfp-corporate-tax-2023'],
+  },
+  {
+    id: 'caa-humanitarian-citizenship-route',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    eventId: 'caa-protests-delhi-2019',
+    policyId: 'citizenship-amendment-act-2019',
+    title: 'A statutory route for specified long-settled minorities',
+    body:
+      'The Act removes the illegal-migrant bar and shortens the residence requirement for six named religious communities from Afghanistan, Bangladesh, and Pakistan who entered India by December 31, 2014.',
+    stance: 'achievement',
+    category: 'citizenship-policy',
+    confidence: 'high',
+    asOfDate: caaReviewedDate,
+    sourceIds: ['citizenship-amendment-act', 'caa-prs-2019'],
+  },
+  {
+    id: 'caa-documented-citizenship-grants',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    eventId: 'caa-protests-delhi-2019',
+    policyId: 'citizenship-amendment-act-2019',
+    title: 'The route has produced real citizenship grants',
+    body:
+      'Two directly documented official batches granted 14 certificates in Delhi and 188 in Ahmedabad. These 202 grants prove operation, but they are selected batches and not a national total.',
+    stance: 'achievement',
+    category: 'citizenship-policy',
+    confidence: 'high',
+    asOfDate: caaReviewedDate,
+    sourceIds: [
+      'caa-pib-first-certificates-2024',
+      'caa-pib-ahmedabad-2024',
+    ],
+  },
+  {
+    id: 'caa-selective-eligibility',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    eventId: 'caa-protests-delhi-2019',
+    policyId: 'citizenship-amendment-act-2019',
+    title: 'The persecution test is selective rather than general',
+    body:
+      'Eligibility depends on six religions, three countries, a 2014 entry date, and place of residence. Persecuted Ahmadis, Shias, atheists, Rohingya, Sri Lankan Tamils, and other groups do not receive the same accelerated route.',
+    stance: 'concern',
+    category: 'citizenship-policy',
+    confidence: 'high',
+    asOfDate: caaReviewedDate,
+    sourceIds: ['citizenship-amendment-act', 'caa-prs-2019', 'caa-hrw-2024'],
+  },
+  {
+    id: 'caa-four-year-operational-delay',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    eventId: 'caa-protests-delhi-2019',
+    policyId: 'citizenship-amendment-act-2019',
+    title: 'Promised relief was delayed for more than four years',
+    body:
+      'The Act commenced on January 10, 2020, but the application Rules did not arrive until March 11, 2024, leaving the special section 6B route without its operational process.',
+    stance: 'concern',
+    category: 'citizenship-policy',
+    confidence: 'high',
+    asOfDate: caaReviewedDate,
+    sourceIds: ['caa-commencement-2020', 'caa-rules-2024'],
+  },
+  {
+    id: 'caa-constitutional-case-pending',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    eventId: 'caa-protests-delhi-2019',
+    policyId: 'citizenship-amendment-act-2019',
+    title: 'The Supreme Court has not issued a final merits judgment',
+    body:
+      'The Act and Rules remain in force and were not stayed. As of July 24, 2026, the constitutional challenge remained pending, so this rating does not treat legality as finally resolved.',
+    stance: 'context',
+    category: 'evidence-gap',
+    confidence: 'high',
+    asOfDate: caaReviewedDate,
+    sourceIds: [
+      'caa-supreme-court-office-report-2026',
+      'caa-supreme-court-observer',
+    ],
+  },
+  {
+    id: 'caa-does-not-revoke-existing-citizenship',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    eventId: 'caa-protests-delhi-2019',
+    policyId: 'citizenship-amendment-act-2019',
+    title: 'The Act does not itself revoke an existing Indian’s citizenship',
+    body:
+      'CAA creates an accelerated acquisition route. Claims about a combined nationwide NRC and CAA effect concern a separate, contingent policy interaction and are not an outcome produced by CAA alone.',
+    stance: 'context',
+    category: 'citizenship-policy',
+    confidence: 'high',
+    asOfDate: caaReviewedDate,
+    sourceIds: ['citizenship-amendment-act', 'caa-prs-2019'],
+  },
+  {
+    id: 'caa-2014-cutoff-not-extended',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'citizenship-amendment-act-2019',
+    title: 'The CAA citizenship cutoff remains December 31, 2014',
+    body:
+      'A separate 2025 immigration exemption protects specified later arrivals from passport and foreigner-law requirements through December 31, 2024; it did not amend the statutory CAA citizenship cutoff.',
+    stance: 'context',
+    category: 'citizenship-policy',
+    confidence: 'high',
+    asOfDate: caaReviewedDate,
+    sourceIds: ['citizenship-amendment-act', 'caa-exemption-order-2025'],
+  },
+  {
+    id: 'caa-rules-operational-system',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    eventId: 'caa-protests-delhi-2019',
+    policyId: 'citizenship-amendment-rules-2024',
+    title: 'A digital application and verification system now operates',
+    body:
+      'The Rules define forms, alternative documents, district verification, an oath, empowered-committee scrutiny, and electronic certificate processing; official batches show the workflow has completed applications.',
+    stance: 'achievement',
+    category: 'citizenship-policy',
+    confidence: 'high',
+    asOfDate: caaReviewedDate,
+    sourceIds: [
+      'caa-rules-2024',
+      'caa-pib-first-certificates-2024',
+      'caa-pib-ahmedabad-2024',
+    ],
+  },
+  {
+    id: 'caa-rules-access-and-discretion',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'citizenship-amendment-rules-2024',
+    title: 'Document alternatives help, while scrutiny remains discretionary',
+    body:
+      'The Rules accept several historical documents and expired records, but community eligibility, document verification, and fit-and-proper review can still create uneven access without published processing standards.',
+    stance: 'mixed',
+    category: 'citizenship-policy',
+    confidence: 'medium',
+    asOfDate: caaReviewedDate,
+    sourceIds: ['caa-rules-2024', 'caa-prs-2019'],
+  },
+  {
+    id: 'caa-rules-national-outcome-gap',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'citizenship-amendment-rules-2024',
+    title: 'No complete national application and decision table is published',
+    body:
+      'Available records identify selected grants but do not provide a current national denominator for applications, approvals, refusals, pending cases, reasons, or processing time. A success rate would therefore be invented.',
+    stance: 'context',
+    category: 'evidence-gap',
+    confidence: 'high',
+    asOfDate: caaReviewedDate,
+    sourceIds: [
+      'caa-pib-first-certificates-2024',
+      'caa-pib-ahmedabad-2024',
+      'caa-supreme-court-office-report-2026',
+    ],
+  },
+  {
+    id: 'caa-rules-passport-update-2026',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'citizenship-amendment-rules-2024',
+    title: 'A May 2026 amendment updated passport disclosure',
+    body:
+      'The current Schedule IC requires applicants to declare valid or expired Pakistani, Afghan, or Bangladeshi passports and surrender them within 15 days after citizenship approval.',
+    stance: 'context',
+    category: 'citizenship-policy',
+    confidence: 'high',
+    asOfDate: caaReviewedDate,
+    sourceIds: ['caa-rules-passport-2026'],
+  },
+  {
+    id: 'farm-laws-market-choice',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'farm-laws-2020',
+    title: 'Market-choice problem was real',
+    body:
+      'Agricultural marketing, storage, intermediation, and investment constraints warranted reform.',
+    stance: 'context',
+    category: 'agricultural-reform',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['prs-farm-laws'],
+  },
+  {
+    id: 'farm-laws-consultation',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'farm-laws-2020',
+    title: 'Consultation and bargaining safeguards failed',
+    body:
+      'Compressed lawmaking, weak federal consultation, and unresolved bargaining and dispute risks destroyed political legitimacy and led to repeal.',
+    stance: 'concern',
+    category: 'agricultural-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['prs-farm-laws'],
+  },
+  {
+    id: 'personal-tax-regime-uptake-relief',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'personal-tax-regime-2020',
+    title: 'Most individual filers chose the new regime',
+    body:
+      'For AY 2024–25, CBDT reported 5.27 crore of 7.28 crore returns under the new regime; later slabs and rebates removed income tax up to Rs 12 lakh for eligible ordinary income from FY 2025–26.',
+    stance: 'achievement',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'pib-new-tax-regime-uptake-2024',
+      'pib-personal-tax-relief-2025',
+    ],
+  },
+  {
+    id: 'personal-tax-regime-limited-reach',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'personal-tax-regime-2020',
+    title: 'Relief is substantial but not universal',
+    body:
+      'Households outside the income-tax base receive no direct benefit, some deduction-heavy taxpayers remain better off under the old regime, and maintaining two systems preserves annual comparison work.',
+    stance: 'concern',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'pib-personal-tax-relief-2025',
+      'finance-committee-direct-taxes-2025',
+      'income-tax-act-2025-guide',
+    ],
+  },
+  {
+    id: 'personal-tax-regime-outcomes-gap',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'personal-tax-regime-2020',
+    title: 'Regime selection is not a complete welfare test',
+    body:
+      'High uptake shows that many filers preferred the available calculation, but does not establish the regime’s economy-wide effects on saving, consumption, compliance cost, or distribution.',
+    stance: 'context',
+    category: 'evidence-gap',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'pib-new-tax-regime-uptake-2024',
+      'finance-committee-direct-taxes-2025',
+    ],
+  },
+  {
+    id: 'faceless-tax-lower-interface',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'faceless-tax-administration-2020',
+    title: 'National electronic allocation reduced physical interface',
+    body:
+      'Random allocation and electronic communication reduced dependence on a local assessing officer and created a practical channel for lower-discretion, remote tax proceedings.',
+    stance: 'achievement',
+    category: 'tax-administration',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['pib-faceless-tax-2020', 'finance-committee-direct-taxes-2025'],
+  },
+  {
+    id: 'faceless-tax-expertise-remedy-gaps',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'faceless-tax-administration-2020',
+    title: 'Expertise, correction, and litigation gaps remain',
+    body:
+      'Parliament’s Finance Committee found the reform valuable but warned that random allocation can mismatch specialist cases and that rectification, hearing, appeals, and tax-litigation performance still need systemic improvement.',
+    stance: 'concern',
+    category: 'tax-administration',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['finance-committee-direct-taxes-2025'],
+  },
+  {
+    id: 'fcra-2020-centralised-audit',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'fcra-amendment-2020',
+    title: 'Centralised receipt and stronger formal auditability',
+    body:
+      'A single SBI receipt account and tighter transfer rules make fund-flow tracing more standardised.',
+    stance: 'achievement',
+    category: 'civil-society-regulation',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['fcra-2020-act', 'fcra-2020-prs'],
+  },
+  {
+    id: 'fcra-2020-ngo-burden',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'fcra-amendment-2020',
+    title: 'Smaller NGOs and sub-grant partners bear high costs',
+    body:
+      'The transfer ban, 20% administration cap, central account, and compliance load can weaken local partners and service delivery.',
+    stance: 'concern',
+    category: 'civil-society-regulation',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: ['fcra-2020-prs', 'icj-fcra-2020'],
+  },
+  {
+    id: 'fcra-2020-court-context',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'fcra-amendment-2020',
+    title: 'Constitutionally upheld, not empirically validated',
+    body:
+      'The Supreme Court largely upheld the challenged provisions in 2022, while allowing passport identification; legal validity does not establish optimal policy impact.',
+    stance: 'context',
+    category: 'civil-society-regulation',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['noel-harper-2022'],
+  },
+  {
+    id: 'income-tax-2025-simplified-transition',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'income-tax-act-2025',
+    title: 'The replacement code launched on schedule',
+    body:
+      'The Act and 2026 Rules took effect on April 1, 2026 with a single tax-year concept, reorganised forms, continuity for PAN and existing schemes, and no new tax merely from replacing the code.',
+    stance: 'achievement',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'income-tax-act-2025-passed',
+      'income-tax-act-2025-guide',
+      'income-tax-rules-2026',
+    ],
+  },
+  {
+    id: 'income-tax-2025-too-new',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'income-tax-act-2025',
+    title: 'No outcome verdict is yet defensible',
+    body:
+      'Only tax years beginning from April 2026 use the new code, while returns and proceedings for earlier years continue under the 1961 Act; compliance, dispute, and revenue outcomes therefore remain unobserved.',
+    stance: 'context',
+    category: 'evidence-gap',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['income-tax-act-2025-guide', 'income-tax-rules-2026'],
+  },
+  {
+    id: 'income-tax-2025-digital-search-risk',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'income-tax-act-2025',
+    title: 'Simpler drafting does not remove rights concerns',
+    body:
+      'The code retains strong search and enforcement powers and expressly covers access to virtual digital space, making necessity, authorisation, data minimisation, and effective remedies important safeguards.',
+    stance: 'concern',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['income-tax-act-2025-passed', 'prs-income-tax-bill-2025'],
+  },
+  {
+    id: 'gst-2025-fewer-principal-slabs',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'gst-rate-reset-2025',
+    title: 'Fewer principal slabs simplify the rate map',
+    body:
+      'The 56th GST Council shifted most covered supplies toward principal 5% and 18% rates, with a special 40% rate for selected luxury or demerit supplies and reductions across many household, health, farm, and production items.',
+    stance: 'achievement',
+    category: 'tax-reform',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['gst-council-56-2025', 'gst-rate-faq-2025'],
+  },
+  {
+    id: 'gst-2025-transition-incidence',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'gst-rate-reset-2025',
+    title: 'Transition and distribution remain uncertain',
+    body:
+      'Businesses had to update classifications, prices, systems, and input-credit treatment quickly. Separately, 2025–26 GST receipts were revised below budget, but available evidence does not isolate how much, if any, the rate reset caused.',
+    stance: 'concern',
+    category: 'tax-reform',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    sourceIds: [
+      'gst-council-56-2025',
+      'gst-rate-faq-2025',
+      'prs-budget-analysis-2026-27',
+    ],
+  },
+  {
+    id: 'gst-2025-outcomes-too-new',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'gst-rate-reset-2025',
+    title: 'Revenue, inflation, and equity outcomes are not mature',
+    body:
+      'Most changes began on September 22, 2025, leaving less than a year of observations; claims of revenue neutrality, durable price pass-through, higher consumption, or improved equity remain unproven.',
+    stance: 'context',
+    category: 'evidence-gap',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['gst-rate-faq-2025', 'prs-budget-analysis-2026-27'],
+  },
+  {
+    id: 'fcra-2026-asset-governance',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'fcra-amendment-bill-2026',
+    title: 'Closes an asset-custody gap',
+    body:
+      'The Bill creates a Designated Authority to supervise, manage, transfer, or dispose foreign-funded assets when an FCRA certificate ends.',
+    stance: 'achievement',
+    category: 'civil-society-regulation',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['fcra-2026-sansad', 'fcra-2026-prs'],
+  },
+  {
+    id: 'fcra-2026-penalty-reduction',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'fcra-amendment-bill-2026',
+    title: 'Maximum prison penalty would fall',
+    body:
+      'The pending Bill reduces the general maximum imprisonment term for an FCRA violation from five years to one year.',
+    stance: 'achievement',
+    category: 'civil-society-regulation',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['fcra-2026-prs'],
+  },
+  {
+    id: 'fcra-2026-asset-vesting-rights',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'fcra-amendment-bill-2026',
+    title: 'Asset vesting can follow non-renewal without hearing or appeal',
+    body:
+      'PRS finds that non-renewal can trigger provisional and then permanent vesting, including partly foreign-funded assets, without a specified hearing or appeal against renewal denial.',
+    stance: 'concern',
+    category: 'civil-society-regulation',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['fcra-2026-prs'],
+  },
+  {
+    id: 'fcra-2026-rules-renewal-test',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'fcra-amendment-rules-2026',
+    title: 'Makes the renewal activity test more explicit',
+    body:
+      'The Rules state a minimum-use test and update prescribed forms, giving applicants and administrators a clearer documented renewal criterion.',
+    stance: 'achievement',
+    category: 'civil-society-regulation',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['fcra-2026-rules', 'fcra-2026-prs'],
+  },
+  {
+    id: 'fcra-2026-spending-threshold',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'fcra-amendment-rules-2026',
+    title: 'Separate 2026 rules create a minimum-spending pressure',
+    body:
+      'The June 2026 Rules deem reasonable activity for renewal only when at least ₹10 lakh of foreign contribution was used over two financial years, which may disadvantage small organisations.',
+    stance: 'concern',
+    category: 'civil-society-regulation',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['fcra-2026-rules', 'fcra-2026-prs', 'amnesty-fcra-2026'],
+  },
+  {
+    id: 'fcra-2026-rules-separate-from-bill',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'fcra-amendment-rules-2026',
+    title: 'The Rules are in force separately from the pending Bill',
+    body:
+      'The June 2026 Rules operate under the existing Act; the March 2026 asset-governance Bill remains a separate pending legislative proposal.',
+    stance: 'context',
+    category: 'civil-society-regulation',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    sourceIds: ['fcra-2026-rules', 'fcra-2026-sansad', 'fcra-2026-prs'],
+  },
+]
+
+export const curatedAnswers: CuratedAnswerSeed[] = [
+  {
+    id: 'modi-doing-good',
+    jurisdictionId: 'india',
+    question: 'Is Modi doing good?',
+    aliases: [
+      'is modi good',
+      'how is modi doing',
+      'modi performance',
+      'is narendra modi doing well',
+      'modi achievements and cons',
+    ],
+    shortAnswer:
+      'The evidence is mixed. Delivery capacity, infrastructure, digital systems, and basic services are meaningful strengths. Jobs quality, disruptive policy choices, social cohesion, and independent institutional indicators are substantial weaknesses.',
+    verdict:
+      'Editorial estimate: 6.3/10, medium confidence. Five blinded replications returned 6.1–6.3; a July 2026 evidence refresh made road expansion, poverty reduction, and trade agreements explicit while preserving major jobs, crisis, integrity, and institutional deductions.',
+    confidence: 'medium',
+    asOfDate: '2026-07-24',
+    claimSections: [
+      { claimId: 'modi-road-expansion', section: 'achievement', sortOrder: 1 },
+      { claimId: 'modi-poverty-services', section: 'achievement', sortOrder: 2 },
+      {
+        claimId: 'modi-monetary-poverty-decline',
+        section: 'achievement',
+        sortOrder: 3,
+      },
+      {
+        claimId: 'modi-trade-agreement-strategy',
+        section: 'achievement',
+        sortOrder: 4,
+      },
+      { claimId: 'modi-infrastructure-digital', section: 'achievement', sortOrder: 5 },
+      { claimId: 'modi-macro-formalisation', section: 'achievement', sortOrder: 6 },
+      { claimId: 'modi-demonetisation', section: 'concern', sortOrder: 1 },
+      { claimId: 'modi-jobs-inclusion', section: 'concern', sortOrder: 2 },
+      { claimId: 'modi-institutions', section: 'concern', sortOrder: 3 },
+      { claimId: 'modi-electoral-bonds', section: 'concern', sortOrder: 4 },
+      { claimId: 'modi-social-cohesion-response', section: 'concern', sortOrder: 5 },
+      { claimId: 'poverty-methodology-caveat', section: 'context', sortOrder: 1 },
+      { claimId: 'highway-network-classification-caveat', section: 'context', sortOrder: 2 },
+      { claimId: 'india-causality-context', section: 'context', sortOrder: 3 },
+    ],
+  },
+  {
+    id: 'bjp-vs-congress',
+    jurisdictionId: 'india',
+    question: 'Is BJP better than Congress?',
+    aliases: [
+      'bjp vs congress',
+      'congress vs bjp',
+      'is congress better than bjp',
+      'which party is better in india',
+      'who governed better bjp or congress',
+      'bjp congress comparison',
+    ],
+    shortAnswer:
+      'There is no defensible categorical winner. BJP has a tiny simple-average edge, while the day-weighted average gives Congress a modest edge. BJP’s strongest case is recent execution, roads, digital systems, and trade diplomacy; Congress’s strongest case is institution-building, the 1991 reforms, and rights-based public policy.',
+    verdict:
+      'Current editorial comparison: no decisive winner. BJP leads the simple mean 6.75 to 6.73; Congress leads the day-weighted mean 6.84 to 6.60. Both records contain major institutional, social, economic, and integrity failures, and the periods are too different for a scientific party ranking.',
+    confidence: 'medium',
+    asOfDate: '2026-07-24',
+    claimSections: [
+      {
+        claimId: 'bjp-comparison-execution-case',
+        section: 'achievement',
+        sortOrder: 1,
+      },
+      {
+        claimId: 'congress-comparison-institution-reform-case',
+        section: 'concern',
+        sortOrder: 1,
+      },
+      {
+        claimId: 'bjp-comparison-institution-costs',
+        section: 'concern',
+        sortOrder: 2,
+      },
+      {
+        claimId: 'party-comparison-rating-math',
+        section: 'context',
+        sortOrder: 1,
+      },
+      {
+        claimId: 'party-comparison-era-sample-limit',
+        section: 'context',
+        sortOrder: 2,
+      },
+      {
+        claimId: 'india-causality-context',
+        section: 'context',
+        sortOrder: 3,
+      },
+    ],
+  },
+  {
+    id: 'india-heading',
+    jurisdictionId: 'india',
+    question: 'Where is India heading?',
+    aliases: [
+      'india direction',
+      'future of india',
+      'where india is going',
+      'india progress outlook',
+    ],
+    shortAnswer:
+      'The broad direction is upward in productive capacity, basic services, connectivity, and human development. The path is constrained by job quality, uneven state performance, pollution, gender gaps, and weaker institutional checks.',
+    verdict:
+      'Direction: positive but unbalanced. India is becoming more capable faster than it is becoming equally prosperous, environmentally secure, or institutionally accountable.',
+    confidence: 'medium',
+    asOfDate: ratingAsOf,
+    claimSections: [
+      { claimId: 'india-long-run-progress', section: 'achievement', sortOrder: 1 },
+      { claimId: 'modi-road-expansion', section: 'achievement', sortOrder: 2 },
+      { claimId: 'modi-monetary-poverty-decline', section: 'achievement', sortOrder: 3 },
+      { claimId: 'modi-trade-agreement-strategy', section: 'achievement', sortOrder: 4 },
+      { claimId: 'india-progress-uneven', section: 'concern', sortOrder: 1 },
+      { claimId: 'modi-institutions', section: 'concern', sortOrder: 2 },
+      { claimId: 'modi-social-cohesion-response', section: 'concern', sortOrder: 3 },
+      { claimId: 'india-causality-context', section: 'context', sortOrder: 1 },
+    ],
+  },
+  {
+    id: 'india-progress-since-independence',
+    jurisdictionId: 'india',
+    question: 'Has India progressed since independence?',
+    aliases: [
+      'india since 1947',
+      'has india improved',
+      'india progress after independence',
+      'is india better now',
+    ],
+    shortAnswer:
+      'Yes on most measurable human-development, survival, infrastructure, and economic-capacity indicators. The scale of improvement is large, but the starting point was extremely low and progress is uneven across people and states.',
+    verdict:
+      'Clear long-run progress, incomplete convergence. The relevant question is no longer whether India changed, but who benefited, how durable the gains are, and what the opportunity cost was.',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    claimSections: [
+      { claimId: 'india-long-run-progress', section: 'achievement', sortOrder: 1 },
+      { claimId: 'india-progress-uneven', section: 'concern', sortOrder: 1 },
+      { claimId: 'india-causality-context', section: 'context', sortOrder: 1 },
+    ],
+  },
+  {
+    id: 'rupee-dollar-real-gdp',
+    jurisdictionId: 'india',
+    question: 'Why can the rupee weaken while real GDP rises?',
+    aliases: [
+      'rupee dollar',
+      'dollar rupee',
+      'dollar to rupee',
+      'rupee vs dollar',
+      'exchange rate and gdp',
+      'currency depreciation',
+      'rupee depreciation real gdp',
+      'does a weak rupee mean modi failed',
+      'dollar value increased',
+    ],
+    shortAnswer:
+      'They measure different things. The exchange rate is the rupee price of one foreign currency; real GDP tracks inflation-adjusted output produced inside India. A weaker rupee can raise import costs and matter for inflation or foreign-currency debt, but by itself it does not prove that real production or living standards fell.',
+    verdict:
+      'Do not score a Prime Minister from INR per US dollar alone. Use it as contextual evidence alongside real output per person, employment, inflation, trade, productivity, household income, and the global strength of the dollar.',
+    confidence: 'high',
+    asOfDate: ratingAsOf,
+    claimSections: [
+      {
+        claimId: 'india-long-run-progress',
+        section: 'achievement',
+        sortOrder: 1,
+      },
+      {
+        claimId: 'exchange-rate-real-gdp-context',
+        section: 'context',
+        sortOrder: 1,
+      },
+      {
+        claimId: 'india-causality-context',
+        section: 'context',
+        sortOrder: 2,
+      },
+    ],
+  },
+]
+
+export const progressDimensions = [
+  {
+    id: 'economic-opportunity',
+    name: 'Economic opportunity',
+    weight: 0.25,
+    description:
+      'Material productivity and the breadth of access to paid work, not headline GDP alone.',
+    color: '#c66a12',
+  },
+  {
+    id: 'human-capability',
+    name: 'Human capability',
+    weight: 0.25,
+    description:
+      'The ability to live, learn, and survive childhood: health, literacy, and longevity.',
+    color: '#287a57',
+  },
+  {
+    id: 'basic-systems',
+    name: 'Basic systems',
+    weight: 0.2,
+    description:
+      'Electricity, sanitation, and digital access that make everyday life and production possible.',
+    color: '#2368a2',
+  },
+  {
+    id: 'inclusion',
+    name: 'Inclusion',
+    weight: 0.15,
+    description:
+      'Whether progress reaches women, poorer households, and people outside the strongest regions.',
+    color: '#9b4f67',
+  },
+  {
+    id: 'institutions',
+    name: 'Institutions and liberties',
+    weight: 0.1,
+    description:
+      'Electoral competition, civil liberties, participation, accountability, and restraints on power.',
+    color: '#6558a6',
+  },
+  {
+    id: 'sustainability',
+    name: 'Sustainability',
+    weight: 0.05,
+    description:
+      'Whether development reduces pollution exposure and shifts toward cleaner energy.',
+    color: '#4d7c0f',
+  },
+] as const
+
+export const indicatorDefinitions: IndicatorDefinitionSeed[] = [
+  {
+    id: 'real-gdp-per-capita',
+    sourceCode: 'NY.GDP.PCAP.KD',
+    name: 'Real GDP per capita',
+    shortName: 'Real GDP/person',
+    description: 'Inflation-adjusted economic output per person in constant 2015 US dollars.',
+    plainLanguage:
+      'This estimates how much inflation-adjusted economic output exists per resident. It is an economy-wide average, not the income received by a typical person.',
+    example:
+      'If it rises from $2,000 to $2,400, output per person increased 20%. A household’s own income may move very differently.',
+    unit: 'constant 2015 US$',
+    format: 'currency',
+    dimensionId: 'economic-opportunity',
+    dimensionWeight: 0.7,
+    direction: 'higher',
+    transform: 'log',
+    goalpostLow: 400,
+    goalpostHigh: 25000,
+    sourceId: 'world-bank-api',
+    frequency: 'annual',
+    stateReady: true,
+  },
+  {
+    id: 'official-exchange-rate',
+    sourceCode: 'PA.NUS.FCRF',
+    name: 'Official exchange rate: rupees per US dollar',
+    shortName: 'INR per US$',
+    description:
+      'Period-average number of Indian rupees required to buy one US dollar.',
+    plainLanguage:
+      'This is the average rupee price of one US dollar during the year. A rise means nominal rupee depreciation, but it does not automatically mean India produced less or became poorer.',
+    example:
+      'Moving from Rs 61 per dollar to Rs 87 means a dollar costs about 43% more rupees, while one rupee buys about 30% fewer dollars. Domestic real output can still rise at the same time.',
+    unit: 'INR per US$',
+    format: 'number',
+    dimensionId: 'economic-opportunity',
+    dimensionWeight: 0,
+    direction: 'neutral',
+    scoreRole: 'context',
+    transform: 'linear',
+    goalpostLow: 1,
+    goalpostHigh: 200,
+    sourceId: 'world-bank-api',
+    frequency: 'annual',
+    stateReady: false,
+  },
+  {
+    id: 'employment-population',
+    sourceCode: 'SL.EMP.TOTL.SP.ZS',
+    name: 'Employment-to-population ratio',
+    shortName: 'Employment ratio',
+    description: 'Share of people age 15+ who are employed; modeled ILO estimate.',
+    plainLanguage:
+      'Out of every 100 people age 15 or older, this estimates how many currently have a job.',
+    example:
+      'A value of 53% means about 53 of every 100 adults are employed. It does not tell us whether those jobs are secure, well-paid, or full-time.',
+    unit: '% age 15+',
+    format: 'percent',
+    dimensionId: 'economic-opportunity',
+    dimensionWeight: 0.3,
+    direction: 'higher',
+    transform: 'linear',
+    goalpostLow: 35,
+    goalpostHigh: 75,
+    sourceId: 'world-bank-api',
+    frequency: 'annual',
+    stateReady: true,
+  },
+  {
+    id: 'life-expectancy',
+    sourceCode: 'SP.DYN.LE00.IN',
+    name: 'Life expectancy at birth',
+    shortName: 'Life expectancy',
+    description: 'Expected years of life at birth under current mortality patterns.',
+    plainLanguage:
+      'This estimates how long a newborn would live if the current pattern of death rates continued throughout that child’s life.',
+    example:
+      'A value of 72 years means a newborn is expected to live about 72 years under today’s mortality conditions. It is not the maximum age people can reach.',
+    unit: 'years',
+    format: 'number',
+    dimensionId: 'human-capability',
+    dimensionWeight: 0.35,
+    direction: 'higher',
+    transform: 'linear',
+    goalpostLow: 35,
+    goalpostHigh: 85,
+    sourceId: 'world-bank-api',
+    frequency: 'annual',
+    stateReady: true,
+  },
+  {
+    id: 'infant-mortality',
+    sourceCode: 'SP.DYN.IMRT.IN',
+    name: 'Infant mortality rate',
+    shortName: 'Infant mortality',
+    description: 'Deaths before age one per 1,000 live births.',
+    plainLanguage:
+      'This counts how many babies die before their first birthday for every 1,000 babies born alive. Lower is better.',
+    example:
+      'A rate of 23 means roughly 23 infant deaths per 1,000 live births, or about 2.3%.',
+    unit: 'per 1,000 live births',
+    format: 'number',
+    dimensionId: 'human-capability',
+    dimensionWeight: 0.3,
+    direction: 'lower',
+    transform: 'linear',
+    goalpostLow: 2,
+    goalpostHigh: 150,
+    sourceId: 'world-bank-api',
+    frequency: 'annual',
+    stateReady: true,
+  },
+  {
+    id: 'adult-literacy',
+    sourceCode: 'SE.ADT.LITR.ZS',
+    name: 'Adult literacy rate',
+    shortName: 'Adult literacy',
+    description: 'Share of people age 15+ who can read and write a short statement.',
+    plainLanguage:
+      'Out of every 100 people age 15 or older, this estimates how many can read and write a short, simple statement.',
+    example:
+      'A literacy rate of 78% means about 78 of every 100 adults meet that basic test. It does not measure reading quality or years of schooling.',
+    unit: '% age 15+',
+    format: 'percent',
+    dimensionId: 'human-capability',
+    dimensionWeight: 0.35,
+    direction: 'higher',
+    transform: 'linear',
+    goalpostLow: 20,
+    goalpostHigh: 100,
+    sourceId: 'world-bank-api',
+    frequency: 'survey',
+    stateReady: true,
+  },
+  {
+    id: 'electricity-access',
+    sourceCode: 'EG.ELC.ACCS.ZS',
+    name: 'Access to electricity',
+    shortName: 'Electricity access',
+    description: 'Share of the population with access to electricity.',
+    plainLanguage:
+      'This estimates the share of people whose household or community has an electricity connection.',
+    example:
+      'A value of 99.9% means roughly 999 of every 1,000 people have access. It does not show whether power is reliable, affordable, or available all day.',
+    unit: '% population',
+    format: 'percent',
+    dimensionId: 'basic-systems',
+    dimensionWeight: 0.35,
+    direction: 'higher',
+    transform: 'linear',
+    goalpostLow: 10,
+    goalpostHigh: 100,
+    sourceId: 'world-bank-api',
+    frequency: 'annual',
+    stateReady: true,
+  },
+  {
+    id: 'basic-sanitation',
+    sourceCode: 'SH.STA.BASS.ZS',
+    name: 'At least basic sanitation',
+    shortName: 'Basic sanitation',
+    description: 'Share using at least basic sanitation services.',
+    plainLanguage:
+      'This estimates the share of people using an improved sanitation facility that is not shared with other households.',
+    example:
+      'A value of 83% means about 83 of every 100 people use at least a basic sanitation service. It does not guarantee safe waste treatment.',
+    unit: '% population',
+    format: 'percent',
+    dimensionId: 'basic-systems',
+    dimensionWeight: 0.35,
+    direction: 'higher',
+    transform: 'linear',
+    goalpostLow: 5,
+    goalpostHigh: 100,
+    sourceId: 'world-bank-api',
+    frequency: 'annual',
+    stateReady: true,
+  },
+  {
+    id: 'internet-use',
+    sourceCode: 'IT.NET.USER.ZS',
+    name: 'Individuals using the internet',
+    shortName: 'Internet use',
+    description: 'Share of individuals who used the internet during the previous three months.',
+    plainLanguage:
+      'Out of every 100 people, this estimates how many used the internet recently.',
+    example:
+      'A value of 70% means about 70 of every 100 people used the internet in the measured period. It does not measure speed, affordability, or digital skill.',
+    unit: '% population',
+    format: 'percent',
+    dimensionId: 'basic-systems',
+    dimensionWeight: 0.3,
+    direction: 'higher',
+    transform: 'linear',
+    goalpostLow: 0,
+    goalpostHigh: 95,
+    sourceId: 'world-bank-api',
+    frequency: 'annual',
+    stateReady: true,
+  },
+  {
+    id: 'female-labor-force',
+    sourceCode: 'SL.TLF.CACT.FE.ZS',
+    name: 'Female labor-force participation',
+    shortName: 'Women in labor force',
+    description: 'Share of women age 15+ who are economically active; modeled ILO estimate.',
+    plainLanguage:
+      'This estimates the share of women age 15 or older who are working or actively looking for work.',
+    example:
+      'A value of 32% means about 32 of every 100 adult women are in the labor force. Some may be unemployed but actively seeking work.',
+    unit: '% female population 15+',
+    format: 'percent',
+    dimensionId: 'inclusion',
+    dimensionWeight: 0.4,
+    direction: 'higher',
+    transform: 'linear',
+    goalpostLow: 15,
+    goalpostHigh: 70,
+    sourceId: 'world-bank-api',
+    frequency: 'annual',
+    stateReady: true,
+  },
+  {
+    id: 'multidimensional-poverty',
+    name: 'Multidimensional poverty headcount',
+    shortName: 'MPI poverty',
+    description: 'Share of people classified as multidimensionally poor under India’s national MPI.',
+    plainLanguage:
+      'This estimates how many people face a weighted combination of deprivations in health, education, and living standards.',
+    example:
+      'A value of 11.3% means about 11 of every 100 people meet the national multidimensional-poverty threshold. It is not the same as income or consumption poverty.',
+    unit: '% population',
+    format: 'percent',
+    dimensionId: 'inclusion',
+    dimensionWeight: 0.4,
+    direction: 'lower',
+    transform: 'linear',
+    goalpostLow: 0,
+    goalpostHigh: 60,
+    sourceId: 'niti-mpi-2023',
+    frequency: 'survey',
+    stateReady: true,
+  },
+  {
+    id: 'consumption-gini',
+    sourceCode: 'SI.POV.GINI',
+    name: 'Consumption Gini coefficient',
+    shortName: 'Consumption Gini',
+    description: 'World Bank estimate of consumption inequality; lower is more equal.',
+    plainLanguage:
+      'This compresses the inequality of household consumption into a 0–100 scale. Zero means everyone consumes the same amount; higher values mean more inequality.',
+    example:
+      'A value of 25.5 indicates relatively low measured consumption inequality. It does not measure wealth inequality and may not be directly comparable with income-based Gini values.',
+    unit: 'Gini points',
+    format: 'index',
+    dimensionId: 'inclusion',
+    dimensionWeight: 0.2,
+    direction: 'lower',
+    transform: 'linear',
+    goalpostLow: 25,
+    goalpostHigh: 60,
+    sourceId: 'world-bank-api',
+    frequency: 'survey',
+    stateReady: true,
+  },
+  {
+    id: 'electoral-democracy',
+    sourceCode: 'v2x_polyarchy',
+    name: 'Electoral Democracy Index',
+    shortName: 'Electoral democracy',
+    description: 'V-Dem index of free, fair, inclusive, and meaningful electoral competition.',
+    plainLanguage:
+      'This expert-coded 0–1 index asks whether elections are clean, inclusive, competitive, and supported by freedom of association and expression.',
+    example:
+      'A value of 0.38 is a modelled assessment, not a vote percentage. Moving toward 1 means stronger electoral-democratic conditions.',
+    unit: '0–1 index',
+    format: 'index',
+    dimensionId: 'institutions',
+    dimensionWeight: 0.4,
+    direction: 'higher',
+    transform: 'linear',
+    goalpostLow: 0,
+    goalpostHigh: 1,
+    sourceId: 'vdem-v16',
+    frequency: 'annual',
+    stateReady: false,
+  },
+  {
+    id: 'liberal-democracy',
+    sourceCode: 'v2x_libdem',
+    name: 'Liberal Democracy Index',
+    shortName: 'Liberal democracy',
+    description: 'V-Dem index combining electoral democracy with civil liberties and constraints on executive power.',
+    plainLanguage:
+      'This 0–1 expert-coded index combines elections with civil liberties, rule of law, judicial constraints, and legislative checks on the executive.',
+    example:
+      'A value of 0.26 means the model finds substantial distance from the strongest liberal-democratic conditions. It is an estimate with uncertainty, not a direct count.',
+    unit: '0–1 index',
+    format: 'index',
+    dimensionId: 'institutions',
+    dimensionWeight: 0.4,
+    direction: 'higher',
+    transform: 'linear',
+    goalpostLow: 0,
+    goalpostHigh: 1,
+    sourceId: 'vdem-v16',
+    frequency: 'annual',
+    stateReady: false,
+  },
+  {
+    id: 'participatory-democracy',
+    sourceCode: 'v2x_partipdem',
+    name: 'Participatory Democracy Index',
+    shortName: 'Participation',
+    description: 'V-Dem index of citizen participation beyond electoral voting.',
+    plainLanguage:
+      'This 0–1 expert-coded index looks at citizen participation beyond voting, including civil society, local democracy, and direct participation.',
+    example:
+      'A value of 0.25 indicates limited measured participation outside elections. Higher values indicate broader and deeper participation.',
+    unit: '0–1 index',
+    format: 'index',
+    dimensionId: 'institutions',
+    dimensionWeight: 0.2,
+    direction: 'higher',
+    transform: 'linear',
+    goalpostLow: 0,
+    goalpostHigh: 1,
+    sourceId: 'vdem-v16',
+    frequency: 'annual',
+    stateReady: false,
+  },
+  {
+    id: 'pm25-exposure',
+    sourceCode: 'EN.ATM.PM25.MC.M3',
+    name: 'PM2.5 mean annual exposure',
+    shortName: 'PM2.5 exposure',
+    description: 'Population-weighted mean annual exposure to fine particulate air pollution.',
+    plainLanguage:
+      'This estimates the average concentration of very small air-pollution particles people breathe over a year. Lower exposure is healthier.',
+    example:
+      'A value of 54 µg/m³ means average exposure is about 54 micrograms of PM2.5 in each cubic metre of air. The progress goalpost used here is 5 µg/m³.',
+    unit: 'µg/m³',
+    format: 'number',
+    dimensionId: 'sustainability',
+    dimensionWeight: 0.5,
+    direction: 'lower',
+    transform: 'linear',
+    goalpostLow: 5,
+    goalpostHigh: 100,
+    sourceId: 'world-bank-api',
+    frequency: 'annual',
+    stateReady: true,
+  },
+  {
+    id: 'renewable-electricity',
+    sourceCode: 'EG.ELC.RNEW.ZS',
+    name: 'Renewable electricity output',
+    shortName: 'Renewable electricity',
+    description: 'Share of total electricity output generated from renewable sources.',
+    plainLanguage:
+      'Out of every 100 units of electricity generated, this estimates how many came from renewable sources such as hydro, wind, solar, geothermal, or biomass.',
+    example:
+      'A value of 19% means about 19 of every 100 electricity units were renewable. It does not include all low-carbon generation, such as nuclear power.',
+    unit: '% electricity output',
+    format: 'percent',
+    dimensionId: 'sustainability',
+    dimensionWeight: 0.5,
+    direction: 'higher',
+    transform: 'linear',
+    goalpostLow: 0,
+    goalpostHigh: 100,
+    sourceId: 'world-bank-api',
+    frequency: 'annual',
+    stateReady: true,
+  },
+]
+
+export const manualIndicatorObservations = [
+  {
+    indicatorId: 'multidimensional-poverty',
+    jurisdictionId: 'india',
+    period: 2015,
+    value: 24.85,
+    status: 'observed',
+    sourceId: 'niti-mpi-2023',
+    note: 'NFHS-4 reference period, 2015–16.',
+  },
+  {
+    indicatorId: 'multidimensional-poverty',
+    jurisdictionId: 'india',
+    period: 2019,
+    value: 14.96,
+    status: 'observed',
+    sourceId: 'niti-mpi-2023',
+    note: 'NFHS-5 reference period, 2019–21.',
+  },
+  {
+    indicatorId: 'multidimensional-poverty',
+    jurisdictionId: 'india',
+    period: 2022,
+    value: 11.28,
+    status: 'estimated',
+    sourceId: 'niti-mpi-2023',
+    note: 'Official extrapolation for 2022–23; not a direct survey observation.',
+  },
+] as const

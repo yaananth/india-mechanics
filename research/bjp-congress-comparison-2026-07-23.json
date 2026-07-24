@@ -1,0 +1,189 @@
+{
+  "batchId": "bjp-congress-comparison-2026-07-23",
+  "rosterVersion": "source-roster-v0.8",
+  "jurisdictionId": "india",
+  "lane": "political-performance",
+  "topic": "Comparing BJP-led and Congress-led Union governments without treating party averages as causal scores",
+  "fromDate": "1947-08-15",
+  "throughDate": "2026-07-23",
+  "reviewer": "India Mechanics editorial pass",
+  "queries": [
+    "site:pmindia.gov.in current Prime Minister India July 2026",
+    "site:eci.gov.in 2024 Lok Sabha results BJP Congress",
+    "site:worldbank.org India development outcomes infrastructure jobs",
+    "site:v-dem.net India democracy data 2026",
+    "site:indiacode.nic.in Constitution of India",
+    "site:indiabudget.gov.in Budget Speech 1991",
+    "site:sci.gov.in electoral bonds judgment 2024"
+  ],
+  "candidates": [
+    {
+      "id": "pm-india-current",
+      "url": "https://www.pmindia.gov.in/en/pms-profile/",
+      "publisher": "Prime Minister's Office, Government of India",
+      "sourceRegistryId": "pm-india",
+      "sourceClass": "official",
+      "independenceGroup": "prime-ministers-office",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "eci-2024",
+      "url": "https://www.eci.gov.in/general-election-to-loksabha-2024-statistical-reports",
+      "publisher": "Election Commission of India",
+      "sourceRegistryId": "eci",
+      "sourceClass": "official",
+      "independenceGroup": "election-commission",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-india",
+      "url": "https://data.worldbank.org/country/india",
+      "publisher": "World Bank",
+      "sourceRegistryId": "world-bank",
+      "sourceClass": "multilateral-statistics",
+      "independenceGroup": "world-bank",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "vdem-v16",
+      "url": "https://www.v-dem.net/data/the-v-dem-dataset/",
+      "publisher": "Varieties of Democracy Institute",
+      "sourceRegistryId": null,
+      "sourceClass": "academic-dataset",
+      "independenceGroup": "v-dem",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "india-constitution",
+      "url": "https://www.indiacode.nic.in/bitstream/123456789/19150/1/constitution_of_india.pdf",
+      "publisher": "India Code, Legislative Department",
+      "sourceRegistryId": "india-code",
+      "sourceClass": "official",
+      "independenceGroup": "legislative-department",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "india-budget-1991",
+      "url": "https://www.indiabudget.gov.in/budget_archive/bspeech/bs199192.pdf",
+      "publisher": "Ministry of Finance, Government of India",
+      "sourceRegistryId": "india-budget",
+      "sourceClass": "official",
+      "independenceGroup": "ministry-of-finance",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": false,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "supreme-electoral-bonds-2024",
+      "url": "https://api.sci.gov.in/supremecourt/2017/27935/27935_2017_1_1501_50573_Judgement_15-Feb-2024.pdf",
+      "publisher": "Supreme Court of India",
+      "sourceRegistryId": "courts",
+      "sourceClass": "official",
+      "independenceGroup": "supreme-court",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-pmgsy-impact-2021",
+      "url": "https://documents1.worldbank.org/curated/en/099555012012152503/pdf/P1535360224abf0e409925072d177110d8a.pdf",
+      "publisher": "World Bank",
+      "sourceRegistryId": "world-bank",
+      "sourceClass": "multilateral-analysis",
+      "independenceGroup": "world-bank",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

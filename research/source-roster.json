@@ -1,0 +1,402 @@
+{
+  "version": "source-roster-v0.11",
+  "updatedAt": "2026-07-24",
+  "rule": "Web search discovers candidates. Only reviewed source items enter the published database.",
+  "sources": [
+    {
+      "id": "india-code",
+      "name": "India Code",
+      "domains": ["indiacode.nic.in"],
+      "roles": ["law", "rules", "notifications"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "gazette-india",
+      "name": "Gazette of India",
+      "domains": ["egazette.nic.in"],
+      "roles": ["notifications", "commencement", "appointments"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "sansad",
+      "name": "Parliament of India",
+      "domains": ["sansad.in", "eparlib.sansad.in"],
+      "roles": ["bills", "debates", "questions", "committees"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "eci",
+      "name": "Election Commission of India",
+      "domains": ["eci.gov.in"],
+      "roles": ["elections", "turnout", "results"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "courts",
+      "name": "Supreme Court, High Courts, and eCourts",
+      "domains": ["sci.gov.in", "api.sci.gov.in", "ecourts.gov.in"],
+      "roles": ["judgments", "orders"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "mospi",
+      "name": "MoSPI",
+      "domains": ["mospi.gov.in"],
+      "roles": ["official-statistics", "national-accounts"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "india-budget",
+      "name": "Union Budget, Ministry of Finance",
+      "domains": ["indiabudget.gov.in"],
+      "roles": ["budget-speeches", "budget-estimates", "fiscal-statements"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "finance-ministry",
+      "name": "Ministry of Finance",
+      "domains": ["dea.gov.in", "dor.gov.in"],
+      "roles": ["tax-policy", "fiscal-analysis", "official-reports"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "income-tax-department",
+      "name": "Income Tax Department",
+      "domains": ["incometax.gov.in", "incometaxindia.gov.in"],
+      "roles": ["direct-tax-law", "rules", "taxpayer-guidance", "filing-statistics"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "gst-council",
+      "name": "Goods and Services Tax Council",
+      "domains": ["gstcouncil.gov.in"],
+      "roles": ["gst-decisions", "meeting-records", "rate-recommendations"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "pib",
+      "name": "Press Information Bureau",
+      "domains": ["pib.gov.in", "static.pib.gov.in"],
+      "roles": ["official-announcements", "ministry-statements", "policy-chronology"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "pm-india",
+      "name": "Prime Minister's Office",
+      "domains": ["pmindia.gov.in"],
+      "roles": ["prime-minister-terms", "official-biographies", "government-chronology"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "trai",
+      "name": "Telecom Regulatory Authority of India",
+      "domains": ["trai.gov.in"],
+      "roles": ["telecom-law", "regulation", "sector-history", "operational-statistics"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "rural-development",
+      "name": "Ministry of Rural Development and PMGSY",
+      "domains": ["rural.gov.in", "pmgsy.nic.in"],
+      "roles": ["rural-roads", "programme-guidance", "operational-statistics"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "world-bank",
+      "name": "World Bank",
+      "domains": [
+        "worldbank.org",
+        "data.worldbank.org",
+        "api.worldbank.org",
+        "databank.worldbank.org",
+        "datahelpdesk.worldbank.org"
+      ],
+      "roles": ["multilateral-statistics", "indicator-methodology", "development-analysis"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "imf",
+      "name": "International Monetary Fund",
+      "domains": ["imf.org", "elibrary.imf.org"],
+      "roles": ["macroeconomy", "fiscal-analysis", "financial-sector", "employment-context"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "ilo",
+      "name": "International Labour Organization",
+      "domains": ["ilo.org"],
+      "roles": ["employment", "job-quality", "skills", "labour-market"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "freedom-house",
+      "name": "Freedom House",
+      "domains": ["freedomhouse.org"],
+      "roles": ["political-rights", "civil-liberties", "institutional-analysis"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "human-rights-watch",
+      "name": "Human Rights Watch",
+      "domains": ["hrw.org"],
+      "roles": ["human-rights", "conflict", "civil-society", "field-reporting"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "npci",
+      "name": "National Payments Corporation of India",
+      "domains": ["npci.org.in"],
+      "roles": ["digital-payments", "upi", "payment-system-statistics"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "rbi",
+      "name": "Reserve Bank of India",
+      "domains": ["rbi.org.in", "data.rbi.org.in"],
+      "roles": ["banking", "inflation", "finance", "historical-series"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "census",
+      "name": "Census of India",
+      "domains": ["censusindia.gov.in"],
+      "roles": ["population", "demography", "literacy"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "cag",
+      "name": "Comptroller and Auditor General",
+      "domains": ["cag.gov.in"],
+      "roles": ["audit", "government-performance"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "nipfp",
+      "name": "National Institute of Public Finance and Policy",
+      "domains": ["nipfp.org.in", "nipfp.org"],
+      "roles": ["tax-policy", "public-finance", "fiscal-federalism"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "mha",
+      "name": "Ministry of Home Affairs",
+      "domains": [
+        "mha.gov.in",
+        "fcraonline.nic.in",
+        "indiancitizenshiponline.nic.in"
+      ],
+      "roles": [
+        "internal-security",
+        "fcra",
+        "citizenship",
+        "official-incidents"
+      ],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "nhrc",
+      "name": "National Human Rights Commission",
+      "domains": ["nhrc.nic.in"],
+      "roles": ["human-rights", "communal-violence", "proceedings"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "reuters",
+      "name": "Reuters India",
+      "domains": ["reuters.com"],
+      "roles": ["breaking-news", "independent-national"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "pti",
+      "name": "Press Trust of India",
+      "domains": ["ptinews.com"],
+      "roles": ["breaking-news", "institutional-reporting"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "the-hindu",
+      "name": "The Hindu",
+      "domains": ["thehindu.com"],
+      "roles": ["courts", "policy", "history", "corroboration"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "indian-express",
+      "name": "Indian Express",
+      "domains": ["indianexpress.com"],
+      "roles": ["investigations", "law", "policy", "explainers"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "bbc-india",
+      "name": "BBC India",
+      "domains": ["bbc.com"],
+      "roles": ["international-context", "archives"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "frontline",
+      "name": "Frontline",
+      "domains": ["frontline.thehindu.com"],
+      "roles": ["retrospective-analysis"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "india-today",
+      "name": "India Today",
+      "domains": ["indiatoday.in"],
+      "roles": ["contemporaneous-archive", "secondary-reporting"],
+      "ratingCeiling": 3
+    },
+    {
+      "id": "prs",
+      "name": "PRS Legislative Research",
+      "domains": ["prsindia.org"],
+      "roles": ["legislative-analysis", "bill-index"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "epw",
+      "name": "Economic and Political Weekly",
+      "domains": ["epw.in"],
+      "roles": ["scholarly-history", "policy-analysis"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "mp-idsa",
+      "name": "Manohar Parrikar Institute for Defence Studies and Analyses",
+      "domains": ["idsa.in"],
+      "roles": ["foreign-policy", "security-analysis", "regional-history"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "indian-kanoon",
+      "name": "Indian Kanoon",
+      "domains": ["indiankanoon.org"],
+      "roles": ["court-record-republication", "legal-history"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "supreme-court-observer",
+      "name": "Supreme Court Observer",
+      "domains": ["scobserver.in"],
+      "roles": ["court-tracking", "constitutional-analysis"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "mea",
+      "name": "Ministry of External Affairs",
+      "domains": ["mea.gov.in"],
+      "roles": [
+        "foreign-policy",
+        "humanitarian-assistance",
+        "official-statements",
+        "parliamentary-answers"
+      ],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "un-ocha",
+      "name": "United Nations and OCHA",
+      "domains": ["un.org", "digitallibrary.un.org", "unocha.org"],
+      "roles": [
+        "humanitarian-finance",
+        "disaster-impact",
+        "multilateral-records"
+      ],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "guardian",
+      "name": "The Guardian",
+      "domains": ["theguardian.com"],
+      "roles": ["independent-reporting", "international-context"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "brookings",
+      "name": "Brookings Institution",
+      "domains": ["brookings.edu"],
+      "roles": ["policy-analysis", "humanitarian-analysis", "event-transcripts"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "road-transport",
+      "name": "Ministry of Road Transport and Highways and NHAI",
+      "domains": ["morth.nic.in", "morth.gov.in", "nhai.gov.in"],
+      "roles": ["highways", "construction", "road-safety", "finance"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "ncaer",
+      "name": "National Council of Applied Economic Research",
+      "domains": ["ncaer.org"],
+      "roles": ["impact-evaluation", "rural-development", "infrastructure"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "niti",
+      "name": "NITI Aayog",
+      "domains": ["niti.gov.in"],
+      "roles": ["multidimensional-poverty", "policy-analysis", "state-data"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "undp",
+      "name": "United Nations Development Programme",
+      "domains": ["undp.org", "hdr.undp.org"],
+      "roles": ["human-development", "multidimensional-poverty"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "department-commerce",
+      "name": "Department of Commerce, Government of India",
+      "domains": ["commerce.gov.in"],
+      "roles": ["trade-agreements", "tariffs", "trade-statistics"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "australia-dfat",
+      "name": "Australian Department of Foreign Affairs and Trade",
+      "domains": ["dfat.gov.au"],
+      "roles": ["treaty-text", "trade-agreement-status", "partner-statistics"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "efta",
+      "name": "European Free Trade Association",
+      "domains": ["efta.int"],
+      "roles": ["treaty-text", "entry-into-force", "investment-objectives"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "uk-government",
+      "name": "Government of the United Kingdom",
+      "domains": ["gov.uk", "trade-tariff.service.gov.uk", "business.gov.uk"],
+      "roles": ["treaty-text", "entry-into-force", "impact-assessment"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "eu-commission",
+      "name": "European Commission",
+      "domains": ["ec.europa.eu", "policy.trade.ec.europa.eu"],
+      "roles": ["negotiation-status", "treaty-text", "trade-statistics"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "nz-mfat",
+      "name": "New Zealand Ministry of Foreign Affairs and Trade",
+      "domains": ["mfat.govt.nz"],
+      "roles": ["treaty-text", "signature-status", "trade-statistics"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "oec",
+      "name": "Observatory of Economic Complexity",
+      "domains": ["oec.world"],
+      "roles": ["bilateral-trade-data", "product-composition"],
+      "ratingCeiling": 4
+    }
+  ]
+}

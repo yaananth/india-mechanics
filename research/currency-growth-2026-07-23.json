@@ -1,0 +1,59 @@
+{
+  "batchId": "inr-real-growth-explainer-2026-07-23",
+  "rosterVersion": "source-roster-v0.5",
+  "jurisdictionId": "india",
+  "lane": "indicator-methodology",
+  "topic": "Indian rupee per US dollar versus real GDP per capita",
+  "fromDate": "2014-01-01",
+  "throughDate": "2026-07-23",
+  "reviewer": "India Mechanics editorial pass",
+  "queries": [
+    "site:data.worldbank.org PA.NUS.FCRF India official exchange rate",
+    "site:datahelpdesk.worldbank.org current constant price series",
+    "site:databank.worldbank.org NY.GDP.PCAP.KD metadata"
+  ],
+  "candidates": [
+    {
+      "id": "world-bank-india-exchange-rate",
+      "url": "https://data.worldbank.org/indicator/PA.NUS.FCRF?locations=IN",
+      "publisher": "World Bank",
+      "sourceRegistryId": "world-bank",
+      "sourceClass": "multilateral",
+      "independenceGroup": "world-bank",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-constant-price-method",
+      "url": "https://datahelpdesk.worldbank.org/knowledgebase/articles/114942-what-is-the-difference-between-current-and-constan",
+      "publisher": "World Bank Data Help Desk",
+      "sourceRegistryId": "world-bank",
+      "sourceClass": "multilateral",
+      "independenceGroup": "world-bank",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": false,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

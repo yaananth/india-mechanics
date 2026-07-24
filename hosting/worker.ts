@@ -1,0 +1,456 @@
+type JsonRecord = Record<string, unknown>
+
+type SitesSnapshot = {
+  schemaVersion: string
+  generatedAt: string
+  exportMeta: JsonRecord
+  overview: JsonRecord
+  leaders: JsonRecord[]
+  policies: JsonRecord[]
+  budgets: JsonRecord[]
+  events: JsonRecord[]
+  indicators: JsonRecord[]
+  indicatorSeries: Record<string, JsonRecord>
+  sources: JsonRecord[]
+  methodology: JsonRecord
+  answers: Record<string, JsonRecord>
+  claims: JsonRecord[]
+  bills: {
+    records: JsonRecord[]
+    facets: JsonRecord
+    source: JsonRecord
+  }
+  meta: JsonRecord
+  openapi: JsonRecord
+}
+
+type AssetFetcher = {
+  fetch(request: Request): Promise<Response>
+}
+
+type Env = {
+  ASSETS: AssetFetcher
+}
+
+let snapshotPromise: Promise<SitesSnapshot> | null = null
+
+function json(data: unknown, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'public, max-age=60',
+      'x-content-type-options': 'nosniff',
+      'access-control-allow-origin': '*',
+    },
+  })
+}
+
+async function loadSnapshot(env: Env, requestUrl: string) {
+  snapshotPromise ??= env.ASSETS.fetch(
+    new Request(new URL('/api-snapshot.json', requestUrl)),
+  ).then(async (response) => {
+    if (!response.ok) {
+      throw new Error(`Could not load API snapshot: ${response.status}`)
+    }
+    return (await response.json()) as SitesSnapshot
+  })
+  return snapshotPromise
+}
+
+function text(value: unknown) {
+  return String(value ?? '')
+}
+
+function tokens(query: string) {
+  return Array.from(
+    new Set(
+      query
+        .toLowerCase()
+        .split(/[^\p{L}\p{N}]+/u)
+        .map((token) => token.trim())
+        .filter((token) => token.length >= 2),
+    ),
+  )
+}
+
+function matchesTokens(values: unknown[], queryTokens: string[]) {
+  const haystack = values.map(text).join(' ').toLowerCase()
+  return queryTokens.every((token) => haystack.includes(token))
+}
+
+function descendingDate(left: JsonRecord, right: JsonRecord) {
+  return text(right.date).localeCompare(text(left.date))
+}
+
+function search(snapshot: SitesSnapshot, rawQuery: string) {
+  const query = rawQuery.trim().toLowerCase()
+  const queryTokens = tokens(query)
+  if (queryTokens.length === 0) {
+    return { query, answer: null, results: [] }
+  }
+
+  const answer = Object.values(snapshot.answers).find((candidate) => {
+    const aliases = Array.isArray(candidate.aliases) ? candidate.aliases : []
+    const haystack = [
+      candidate.question,
+      candidate.shortAnswer,
+      ...aliases,
+    ]
+      .map(text)
+      .join(' ')
+      .toLowerCase()
+    return (
+      haystack.includes(query) ||
+      query
+        .split(/\s+/)
+        .filter((token) => token.length > 2)
+        .every((token) => haystack.includes(token))
+    )
+  })
+
+  const indicators = snapshot.indicators
+    .filter((indicator) =>
+      matchesTokens(
+        [
+          indicator.name,
+          indicator.shortName,
+          indicator.description,
+          indicator.plainLanguage,
+          indicator.example,
+          indicator.unit,
+          indicator.sourceCode,
+        ],
+        queryTokens,
+      ),
+    )
+    .map((indicator) => ({
+      type: 'indicator',
+      id: indicator.id,
+      title: indicator.name,
+      subtitle: indicator.plainLanguage,
+      date: `${text(
+        (indicator.latest as JsonRecord | null)?.period,
+      )}-01-01`,
+    }))
+    .sort(descendingDate)
+    .slice(0, 12)
+
+  const policies = snapshot.policies
+    .filter((policy) =>
+      matchesTokens(
+        [
+          policy.title,
+          policy.shortTitle,
+          policy.summary,
+          policy.intendedGoal,
+          policy.policyType,
+          policy.ratingSummary,
+        ],
+        queryTokens,
+      ),
+    )
+    .map((policy) => ({
+      type: 'policy',
+      id: policy.id,
+      title: policy.title,
+      subtitle: policy.summary,
+      date: policy.introducedDate ?? policy.enactedDate ?? '',
+    }))
+    .sort(descendingDate)
+    .slice(0, 12)
+
+  const bills = snapshot.bills.records
+    .filter((bill) =>
+      matchesTokens(
+        [
+          bill.title,
+          bill.billNumber,
+          bill.ministry,
+          bill.status,
+          bill.actNumber,
+        ],
+        queryTokens,
+      ),
+    )
+    .map((bill) => ({
+      type: 'bill',
+      id: bill.id,
+      title: bill.title,
+      subtitle: `${text(bill.status)}${
+        bill.ministry ? ` · ${text(bill.ministry)}` : ''
+      }`,
+      date: bill.introducedDate,
+      policyId: bill.linkedPolicyId ?? null,
+    }))
+    .sort(descendingDate)
+    .slice(0, 12)
+
+  const budgets = snapshot.budgets
+    .filter((budget) =>
+      matchesTokens(
+        [
+          budget.title,
+          budget.shortTitle,
+          budget.fiscalYear,
+          budget.financeMinister,
+          budget.summary,
+          budget.plainLanguage,
+          budget.ratingSummary,
+        ],
+        queryTokens,
+      ),
+    )
+    .map((budget) => ({
+      type: 'budget',
+      id: budget.id,
+      title: budget.title,
+      subtitle: budget.summary,
+      date: `${text(budget.fiscalYear).slice(0, 4)}-01-01`,
+      budgetId: budget.id,
+    }))
+    .sort(descendingDate)
+    .slice(0, 12)
+
+  const leaders = snapshot.leaders
+    .filter((leader) => {
+      const person = leader.person as JsonRecord
+      return matchesTokens(
+        [person.name, leader.ratingSummary, leader.mandateLabel],
+        queryTokens,
+      )
+    })
+    .map((leader) => ({
+      type: 'leader',
+      id: leader.id,
+      title: (leader.person as JsonRecord).name,
+      subtitle: leader.ratingSummary,
+      date: leader.startDate,
+    }))
+    .sort(descendingDate)
+    .slice(0, 12)
+
+  const events = snapshot.events
+    .filter((event) =>
+      matchesTokens(
+        [
+          event.title,
+          event.summary,
+          event.significance,
+          event.category,
+          event.date,
+        ],
+        queryTokens,
+      ),
+    )
+    .map((event) => ({
+      type: 'event',
+      id: event.id,
+      title: event.title,
+      subtitle: event.summary,
+      date: event.date,
+    }))
+    .sort(descendingDate)
+    .slice(0, 12)
+
+  const claims = snapshot.claims
+    .filter((claim) =>
+      matchesTokens(
+        [claim.title, claim.body, claim.category, claim.stance],
+        queryTokens,
+      ),
+    )
+    .map((claim) => ({
+      type: 'claim',
+      id: claim.id,
+      title: claim.title,
+      subtitle: claim.body,
+      date: claim.as_of_date,
+      leaderTermId: claim.leader_term_id ?? null,
+      eventId: claim.event_id ?? null,
+      policyId: claim.policy_id ?? null,
+    }))
+    .slice(0, 12)
+
+  return {
+    query,
+    answer: answer ?? null,
+    results: [
+      ...indicators,
+      ...policies,
+      ...bills,
+      ...budgets,
+      ...leaders,
+      ...events,
+      ...claims,
+    ].slice(0, 24),
+  }
+}
+
+function filteredBills(snapshot: SitesSnapshot, url: URL) {
+  const queryTokens = tokens(url.searchParams.get('q') ?? '')
+  const status = url.searchParams.get('status')
+  const ministry = url.searchParams.get('ministry')
+  const leaderTerm = url.searchParams.get('leaderTerm')
+  const reviewStatus = url.searchParams.get('reviewStatus')
+  const page = Math.max(1, Number(url.searchParams.get('page') ?? 1))
+  const pageSize = Math.min(
+    100,
+    Math.max(1, Number(url.searchParams.get('pageSize') ?? 20)),
+  )
+
+  const records = snapshot.bills.records.filter(
+    (bill) =>
+      (queryTokens.length === 0 ||
+        matchesTokens(
+          [
+            bill.title,
+            bill.billNumber,
+            bill.ministry,
+            bill.status,
+            bill.actNumber,
+          ],
+          queryTokens,
+        )) &&
+      (!status || bill.status === status) &&
+      (!ministry || bill.ministry === ministry) &&
+      (!leaderTerm || bill.leaderTermId === leaderTerm) &&
+      (!reviewStatus || bill.reviewStatus === reviewStatus),
+  )
+
+  const start = (page - 1) * pageSize
+  return {
+    page,
+    pageSize,
+    total: records.length,
+    totalPages: Math.max(1, Math.ceil(records.length / pageSize)),
+    reviewed: records.filter((bill) => bill.reviewStatus === 'reviewed').length,
+    records: records.slice(start, start + pageSize),
+    facets: snapshot.bills.facets,
+    source: snapshot.bills.source,
+  }
+}
+
+async function apiResponse(
+  request: Request,
+  env: Env,
+): Promise<Response | null> {
+  const url = new URL(request.url)
+  const path = url.pathname
+  if (!path.startsWith('/api/')) return null
+
+  const snapshot = await loadSnapshot(env, request.url)
+
+  if (path === '/api/health') {
+    const metadata = snapshot.meta.metadata as JsonRecord
+    return json({
+      ok: true,
+      knowledgeCutoff: metadata.knowledge_cutoff,
+      seedVersion: metadata.seed_version,
+    })
+  }
+  if (path === '/api/meta') return json(snapshot.meta)
+  if (path === '/api/openapi.json') return json(snapshot.openapi)
+  if (path === '/api/overview') return json(snapshot.overview)
+  if (path === '/api/leaders') return json(snapshot.leaders)
+  if (path.startsWith('/api/leaders/')) {
+    const id = decodeURIComponent(path.slice('/api/leaders/'.length))
+    const leader = snapshot.leaders.find((candidate) => candidate.id === id)
+    return leader ? json(leader) : json({ error: 'Leader not found' }, 404)
+  }
+  if (path === '/api/policies') return json(snapshot.policies)
+  if (path.startsWith('/api/policies/')) {
+    const id = decodeURIComponent(path.slice('/api/policies/'.length))
+    const policy = snapshot.policies.find((candidate) => candidate.id === id)
+    return policy ? json(policy) : json({ error: 'Policy not found' }, 404)
+  }
+  if (path === '/api/budgets') return json(snapshot.budgets)
+  if (path === '/api/events') {
+    const category = url.searchParams.get('category')
+    const from = url.searchParams.get('from')
+    const to = url.searchParams.get('to')
+    return json(
+      snapshot.events.filter(
+        (event) =>
+          (!category || event.category === category) &&
+          (!from || text(event.date) >= from) &&
+          (!to || text(event.date) <= to),
+      ),
+    )
+  }
+  if (path === '/api/indicators') return json(snapshot.indicators)
+  if (
+    path.startsWith('/api/indicators/') &&
+    path.endsWith('/series')
+  ) {
+    const id = decodeURIComponent(
+      path.slice('/api/indicators/'.length, -'/series'.length),
+    )
+    const series = snapshot.indicatorSeries[id]
+    return series ? json(series) : json({ error: 'Indicator not found' }, 404)
+  }
+  if (path === '/api/sources') return json(snapshot.sources)
+  if (path === '/api/methodology') return json(snapshot.methodology)
+  if (path.startsWith('/api/questions/')) {
+    const id = decodeURIComponent(path.slice('/api/questions/'.length))
+    const answer = snapshot.answers[id]
+    return answer ? json(answer) : json({ error: 'Answer not found' }, 404)
+  }
+  if (path === '/api/search') {
+    return json(search(snapshot, url.searchParams.get('q') ?? ''))
+  }
+  if (path === '/api/bills') {
+    return json(filteredBills(snapshot, url))
+  }
+  if (path.startsWith('/api/bills/')) {
+    const id = decodeURIComponent(path.slice('/api/bills/'.length))
+    const bill = snapshot.bills.records.find((candidate) => candidate.id === id)
+    return bill
+      ? json({ ...bill, source: snapshot.bills.source })
+      : json({ error: 'Bill not found' }, 404)
+  }
+  if (path === '/api/export') {
+    return json({
+      ...snapshot.exportMeta,
+      leaders: snapshot.leaders,
+      policies: snapshot.policies,
+      budgets: snapshot.budgets,
+      events: snapshot.events,
+      indicators: snapshot.indicators,
+      bills: snapshot.bills.records,
+      sources: snapshot.sources,
+      methodology: snapshot.methodology,
+    })
+  }
+
+  return json({ error: 'API route not found' }, 404)
+}
+
+const worker = {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    try {
+      const api = await apiResponse(request, env)
+      if (api) return api
+
+      const asset = await env.ASSETS.fetch(request)
+      if (asset.status !== 404 || request.method !== 'GET') return asset
+
+      const accept = request.headers.get('accept') ?? ''
+      if (!accept.includes('text/html')) return asset
+
+      return env.ASSETS.fetch(
+        new Request(new URL('/index.html', request.url), request),
+      )
+    } catch (error) {
+      return json(
+        {
+          error: 'Sites runtime error',
+          detail: error instanceof Error ? error.message : String(error),
+        },
+        500,
+      )
+    }
+  },
+}
+
+export default worker

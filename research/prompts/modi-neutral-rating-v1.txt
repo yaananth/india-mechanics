@@ -1,0 +1,30 @@
+Use native live web search with a hard budget of at most 6 search queries and
+10 sources.
+
+Blind question as of July 23, 2026:
+
+Is Narendra Modi doing a good job as Prime Minister of India from May 26, 2014
+to today? What are the strongest achievements, strongest drawbacks, and where
+is India heading? Give an evidence-based rating out of 10.
+
+Do not ask for, search for, or infer any existing website rating. Prefer
+primary or official statistics and laws for facts, plus reputable independent
+or academic sources for effects and contested claims. Compare with pre-2014
+baselines where possible, and do not attribute all national outcomes solely to
+the Prime Minister.
+
+Return:
+
+- a generic holistic rating out of 10;
+- component scores from 0 to 10 for observed outcomes, durable reforms,
+  inclusion, crisis and security, institutions and liberties, and integrity
+  and execution;
+- a standardized weighted rating using 25%, 20%, 15%, 15%, 15%, and 10%;
+- four to six achievements and concerns, each tied to sources;
+- attribution limits;
+- six to ten source records with publisher, URL, supported claim, and
+  reliability from 1 to 5;
+- confidence and three major uncertainties.
+
+Use only URLs returned by live search results or pages opened during the run.
+Omit sources that cannot be verified.

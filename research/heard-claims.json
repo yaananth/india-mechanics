@@ -1,0 +1,32 @@
+{
+  "version": "heard-claims-v0.1",
+  "reviewedThrough": "2026-07-24",
+  "queryTemplateVersion": "query-templates-v0.4",
+  "records": [
+    {
+      "id": "congress-pakistan-25m-after-2611",
+      "submittedClaim": "Even after the 26/11 attacks, the Congress government provided $25 million in aid to Pakistan.",
+      "verdict": "substantially-true-missing-context",
+      "factCheck": "The Congress-led UPA announced US$25 million for Pakistan flood relief in August 2010. The government said the assistance was being channelled through the United Nations, and UN records identify a US$20 million Indian contribution to Pakistan's Emergency Response Fund. It was humanitarian disaster relief, not unrestricted budget support or compensation related to 26/11.",
+      "missingContext": [
+        "The aid responded to catastrophic 2010 floods affecting civilians.",
+        "The commitment began at US$5 million and was raised to US$25 million.",
+        "The assistance was routed through multilateral humanitarian channels.",
+        "The timing after 26/11 is true but does not establish that the aid weakened India's terrorism response."
+      ],
+      "eventId": "pakistan-flood-aid-2010",
+      "policyId": "pakistan-flood-relief-2010",
+      "leaderTermId": "manmohan-2004",
+      "claimId": "pakistan-flood-aid-fact-check",
+      "ratingTreatment": "rationale-only",
+      "ratingReason": "A proportionate humanitarian gesture is a modest foreign-policy positive, but its scale and isolated nature are too small to change a ten-year Prime Minister score. Mumbai preparedness and terrorism accountability remain separate negative evidence.",
+      "sourceIds": [
+        "mea-pakistan-flood-aid-2010",
+        "mea-pakistan-flood-aid-unga-2010",
+        "un-ocha-india-pakistan-erf-2010",
+        "guardian-pakistan-flood-aid-2010",
+        "brookings-pakistan-flood-aid-2010"
+      ]
+    }
+  ]
+}

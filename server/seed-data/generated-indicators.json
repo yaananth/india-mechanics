@@ -1,0 +1,6302 @@
+{
+  "generatedAt": "2026-07-24T00:14:26.357Z",
+  "asOfDate": "2026-07-24",
+  "recommendedProgressYear": 2025,
+  "cutoffs": {
+    "worldBank": 2025,
+    "vdem": 2025
+  },
+  "observations": [
+    {
+      "indicatorId": "adult-literacy",
+      "jurisdictionId": "india",
+      "period": 1981,
+      "value": 40.7599983215332,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "adult-literacy",
+      "jurisdictionId": "india",
+      "period": 1991,
+      "value": 48.2200012207031,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "adult-literacy",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 61.0099983215332,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "adult-literacy",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 62.75,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "adult-literacy",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 68.325817300837,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "adult-literacy",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 69.3000030517578,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "adult-literacy",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 69.8279300354369,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "adult-literacy",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 73.6883524760717,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "adult-literacy",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 74.8938629973395,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "adult-literacy",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 75.5270629470344,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "adult-literacy",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 76.0596617430205,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "adult-literacy",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 76.3199996948242,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "adult-literacy",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 81.6999969482422,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "adult-literacy",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 78.1625330351403,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 14.6638821125248,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 17.2206798996747,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 19.9645829063411,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 22.7256519741888,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 25.504088846955,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 28.2988919138167,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 31.1102746501892,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 33.9383850862219,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 36.7829765979312,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 39.6431708126058,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 42.5191116694177,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 45.4108795020998,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 48.3205923569019,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 51.2472926178236,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 54.1905506719672,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 57.1496392627885,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 60.1238284933312,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 63.1125583715917,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 66.1148742165368,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 69.1300220717047,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 72.0482326780192,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 74.9328568041953,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 77.8161883735175,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 80.6978943350927,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "basic-sanitation",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 83.380872478201,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "consumption-gini",
+      "jurisdictionId": "india",
+      "period": 1977,
+      "value": 29.7,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "consumption-gini",
+      "jurisdictionId": "india",
+      "period": 1983,
+      "value": 27.2,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "consumption-gini",
+      "jurisdictionId": "india",
+      "period": 1987,
+      "value": 27.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "consumption-gini",
+      "jurisdictionId": "india",
+      "period": 1993,
+      "value": 26.1,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "consumption-gini",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 27.7,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "consumption-gini",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 27.8,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "consumption-gini",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 28.8,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "consumption-gini",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 25.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1945,
+      "value": 0.197,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1946,
+      "value": 0.21,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1947,
+      "value": 0.226,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1948,
+      "value": 0.185,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1949,
+      "value": 0.187,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1950,
+      "value": 0.272,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1951,
+      "value": 0.312,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1952,
+      "value": 0.596,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1953,
+      "value": 0.661,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1954,
+      "value": 0.661,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1955,
+      "value": 0.661,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1956,
+      "value": 0.661,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1957,
+      "value": 0.668,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1958,
+      "value": 0.67,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1959,
+      "value": 0.67,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1960,
+      "value": 0.67,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1961,
+      "value": 0.67,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1962,
+      "value": 0.655,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1963,
+      "value": 0.653,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1964,
+      "value": 0.65,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1965,
+      "value": 0.644,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1966,
+      "value": 0.645,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1967,
+      "value": 0.66,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1968,
+      "value": 0.665,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1969,
+      "value": 0.665,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1970,
+      "value": 0.664,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1971,
+      "value": 0.618,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1972,
+      "value": 0.612,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1973,
+      "value": 0.612,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1974,
+      "value": 0.57,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1975,
+      "value": 0.39,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1976,
+      "value": 0.381,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1977,
+      "value": 0.494,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1978,
+      "value": 0.652,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1979,
+      "value": 0.656,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1980,
+      "value": 0.646,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1981,
+      "value": 0.643,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1982,
+      "value": 0.641,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1983,
+      "value": 0.641,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1984,
+      "value": 0.642,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1985,
+      "value": 0.658,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1986,
+      "value": 0.668,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1987,
+      "value": 0.668,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1988,
+      "value": 0.664,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1989,
+      "value": 0.665,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1990,
+      "value": 0.693,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1991,
+      "value": 0.713,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1992,
+      "value": 0.726,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1993,
+      "value": 0.731,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1994,
+      "value": 0.738,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1995,
+      "value": 0.738,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1996,
+      "value": 0.741,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1997,
+      "value": 0.742,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1998,
+      "value": 0.746,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 1999,
+      "value": 0.737,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 0.735,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 0.735,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 0.739,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 0.736,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 0.731,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 0.723,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 0.721,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 0.721,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 0.721,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 0.683,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 0.671,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 0.671,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 0.659,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 0.65,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 0.617,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 0.543,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 0.524,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 0.488,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 0.482,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 0.43,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 0.39,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 0.398,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 0.384,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 0.374,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 0.381,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electoral-democracy",
+      "jurisdictionId": "india",
+      "period": 2025,
+      "value": 0.377,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 1993,
+      "value": 50.9,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 1994,
+      "value": 49.8113098144531,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 1995,
+      "value": 51.4087753295898,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 1996,
+      "value": 53.0035209655762,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 1997,
+      "value": 54.5948638916016,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 1998,
+      "value": 56.1821327209473,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 1999,
+      "value": 60.1,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 60.3,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 62,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 62.3,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 65.4,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 64.4,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 68.8,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 67.9,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 72.3,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 74.1,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 75,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 76.3,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 79.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 79.9,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 83.1,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 85.1,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 88,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 89.6,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 91.8,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 95.7,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 95.9,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 96.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 99.6,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 99.2,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 99.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "electricity-access",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 99.9,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 1991,
+      "value": 53.537,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 1992,
+      "value": 53.561,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 1993,
+      "value": 53.581,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 1994,
+      "value": 53.655,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 1995,
+      "value": 53.975,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 1996,
+      "value": 54.302,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 1997,
+      "value": 54.592,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 1998,
+      "value": 54.892,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 1999,
+      "value": 55.213,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 55.52,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 55.363,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 55.175,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 55.056,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 54.928,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 54.812,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 53.938,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 53.076,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 52.2,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 51.379,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 50.586,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 50.012,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 49.418,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 49.267,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 49.132,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 48.985,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 48.83,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 48.655,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 48.466,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 48.88,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 47.496,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 49.171,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 51.003,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 52.415,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 53.317,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "employment-population",
+      "jurisdictionId": "india",
+      "period": 2025,
+      "value": 53.31,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 1990,
+      "value": 30.257,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 1991,
+      "value": 30.361,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 1992,
+      "value": 30.476,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 1993,
+      "value": 30.595,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 1994,
+      "value": 30.736,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 1995,
+      "value": 31.331,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 1996,
+      "value": 31.934,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 1997,
+      "value": 32.542,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 1998,
+      "value": 33.157,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 1999,
+      "value": 33.775,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 34.397,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 34.483,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 34.57,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 34.66,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 34.753,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 34.852,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 33.499,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 32.179,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 30.892,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 29.641,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 28.425,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 27.583,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 26.764,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 26.669,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 26.607,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 26.582,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 26.575,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 26.578,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 26.568,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 26.539,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 25.998,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 27.724,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 29.348,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 30.984,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 32.415,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "female-labor-force",
+      "jurisdictionId": "india",
+      "period": 2025,
+      "value": 32.425,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1960,
+      "value": 150.4,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1961,
+      "value": 148.4,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1962,
+      "value": 146.6,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1963,
+      "value": 145,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1964,
+      "value": 143.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1965,
+      "value": 142,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1966,
+      "value": 140.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1967,
+      "value": 139.2,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1968,
+      "value": 137.9,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1969,
+      "value": 136.4,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1970,
+      "value": 134.8,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1971,
+      "value": 133.1,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1972,
+      "value": 131.2,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1973,
+      "value": 129,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1974,
+      "value": 126.7,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1975,
+      "value": 124,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1976,
+      "value": 121.1,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1977,
+      "value": 117.9,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1978,
+      "value": 114.7,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1979,
+      "value": 111.4,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1980,
+      "value": 108.2,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1981,
+      "value": 105.2,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1982,
+      "value": 102.4,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1983,
+      "value": 99.8,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1984,
+      "value": 97.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1985,
+      "value": 95.2,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1986,
+      "value": 93,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1987,
+      "value": 90.8,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1988,
+      "value": 88.6,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1989,
+      "value": 86.4,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1990,
+      "value": 84.4,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1991,
+      "value": 82.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1992,
+      "value": 80.7,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1993,
+      "value": 79,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1994,
+      "value": 77.3,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1995,
+      "value": 75.6,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1996,
+      "value": 73.9,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1997,
+      "value": 72.1,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1998,
+      "value": 70.2,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 1999,
+      "value": 68.3,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 66.3,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 64.3,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 62.4,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 60.4,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 58.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 56.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 54.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 52.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 50.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 48.4,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 46.3,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 44.2,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 42.2,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 40.1,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 38.2,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 36.3,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 34.6,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 32.9,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 31.3,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 29.8,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 28.3,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 27,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 25.7,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 24.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "infant-mortality",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 23.3,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 1990,
+      "value": 0,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 1992,
+      "value": 0.000111,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 1993,
+      "value": 0.000218,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 1994,
+      "value": 0.00107,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 1995,
+      "value": 0.0262,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 1996,
+      "value": 0.0463,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 1997,
+      "value": 0.0708,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 1998,
+      "value": 0.139,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 1999,
+      "value": 0.273,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 0.527532449930946,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 0.660146377009928,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 1.53787558175083,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 1.68648997063625,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 1.97613649190559,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 2.388099909,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 2.80549986534254,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 3.95,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 4.38,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 5.12,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 7.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 10.07,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 11.10000038,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 12.30000019,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 13.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 14.89999962,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 16.5,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 18.20000076,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 20.0813000379384,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 29.52350044,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 43.40544313,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 49.2580986,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 55.9,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 60.25230026,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 64.9434967,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "internet-use",
+      "jurisdictionId": "india",
+      "period": 2025,
+      "value": 70,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1945,
+      "value": 0.162,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1946,
+      "value": 0.165,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1947,
+      "value": 0.142,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1948,
+      "value": 0.153,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1949,
+      "value": 0.154,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1950,
+      "value": 0.262,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1951,
+      "value": 0.286,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1952,
+      "value": 0.461,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1953,
+      "value": 0.506,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1954,
+      "value": 0.506,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1955,
+      "value": 0.506,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1956,
+      "value": 0.506,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1957,
+      "value": 0.513,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1958,
+      "value": 0.514,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1959,
+      "value": 0.514,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1960,
+      "value": 0.514,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1961,
+      "value": 0.514,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1962,
+      "value": 0.501,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1963,
+      "value": 0.499,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1964,
+      "value": 0.499,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1965,
+      "value": 0.489,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1966,
+      "value": 0.488,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1967,
+      "value": 0.502,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1968,
+      "value": 0.506,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1969,
+      "value": 0.506,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1970,
+      "value": 0.493,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1971,
+      "value": 0.458,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1972,
+      "value": 0.455,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1973,
+      "value": 0.455,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1974,
+      "value": 0.425,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1975,
+      "value": 0.286,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1976,
+      "value": 0.265,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1977,
+      "value": 0.345,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1978,
+      "value": 0.514,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1979,
+      "value": 0.515,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1980,
+      "value": 0.503,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1981,
+      "value": 0.499,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1982,
+      "value": 0.497,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1983,
+      "value": 0.498,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1984,
+      "value": 0.494,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1985,
+      "value": 0.517,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1986,
+      "value": 0.521,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1987,
+      "value": 0.521,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1988,
+      "value": 0.517,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1989,
+      "value": 0.517,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1990,
+      "value": 0.54,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1991,
+      "value": 0.561,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1992,
+      "value": 0.572,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1993,
+      "value": 0.576,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1994,
+      "value": 0.582,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1995,
+      "value": 0.582,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1996,
+      "value": 0.588,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1997,
+      "value": 0.591,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1998,
+      "value": 0.593,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 1999,
+      "value": 0.586,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 0.584,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 0.584,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 0.587,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 0.583,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 0.578,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 0.573,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 0.569,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 0.569,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 0.569,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 0.539,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 0.532,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 0.532,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 0.525,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 0.522,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 0.488,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 0.417,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 0.406,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 0.371,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 0.363,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 0.324,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 0.292,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 0.307,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 0.291,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 0.273,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 0.281,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "liberal-democracy",
+      "jurisdictionId": "india",
+      "period": 2025,
+      "value": 0.26,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1960,
+      "value": 45.61,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1961,
+      "value": 45.824,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1962,
+      "value": 46.133,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1963,
+      "value": 46.458,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1964,
+      "value": 46.742,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1965,
+      "value": 45.558,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1966,
+      "value": 45.884,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1967,
+      "value": 46.184,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1968,
+      "value": 47.925,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1969,
+      "value": 48.26,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1970,
+      "value": 48.585,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1971,
+      "value": 48.902,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1972,
+      "value": 49.213,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1973,
+      "value": 49.642,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1974,
+      "value": 50.259,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1975,
+      "value": 50.761,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1976,
+      "value": 51.302,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1977,
+      "value": 51.822,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1978,
+      "value": 52.42,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1979,
+      "value": 53.014,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1980,
+      "value": 53.593,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1981,
+      "value": 54.173,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1982,
+      "value": 54.735,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1983,
+      "value": 55.283,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1984,
+      "value": 55.813,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1985,
+      "value": 56.324,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1986,
+      "value": 56.819,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1987,
+      "value": 57.291,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1988,
+      "value": 57.744,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1989,
+      "value": 58.196,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1990,
+      "value": 58.618,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1991,
+      "value": 59.032,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1992,
+      "value": 59.445,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1993,
+      "value": 59.823,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1994,
+      "value": 60.237,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1995,
+      "value": 60.63,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1996,
+      "value": 61.027,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1997,
+      "value": 61.439,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1998,
+      "value": 61.852,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 1999,
+      "value": 62.284,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 62.749,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 63.158,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 63.649,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 64.086,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 64.484,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 64.939,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 65.373,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 65.803,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 66.247,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 66.7,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 67.162,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 67.623,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 68.076,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 68.499,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 68.932,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 69.326,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 69.709,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 70.068,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 70.415,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 70.746,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 70.156,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 67.282,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 71.698,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 72.003,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "life-expectancy",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 72.235,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1960,
+      "value": 4.7619000037619,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1961,
+      "value": 4.7619000037619,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1962,
+      "value": 4.7619000037619,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1963,
+      "value": 4.7619000037619,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1964,
+      "value": 4.7619000037619,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1965,
+      "value": 4.7619000037619,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1966,
+      "value": 6.35912500535913,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1967,
+      "value": 7.5000000065,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1968,
+      "value": 7.5000000065,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1969,
+      "value": 7.5000000065,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1970,
+      "value": 7.5000000065,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1971,
+      "value": 7.49193523096824,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1972,
+      "value": 7.59446837394936,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1973,
+      "value": 7.74203856214968,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1974,
+      "value": 8.1016032272183,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1975,
+      "value": 8.37589194565386,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1976,
+      "value": 8.96041272812392,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1977,
+      "value": 8.73857617131458,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1978,
+      "value": 8.19284034840393,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1979,
+      "value": 8.12579094635689,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1980,
+      "value": 7.86294470113798,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1981,
+      "value": 8.65852281709317,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1982,
+      "value": 9.45513193348639,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1983,
+      "value": 10.0988982440461,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1984,
+      "value": 11.3625833326667,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1985,
+      "value": 12.3687499995833,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1986,
+      "value": 12.61083333325,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1987,
+      "value": 12.9615,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1988,
+      "value": 13.9170833333333,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1989,
+      "value": 16.2255,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1990,
+      "value": 17.5035,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1991,
+      "value": 22.7424333333333,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1992,
+      "value": 25.9180833333333,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1993,
+      "value": 30.4932916666667,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1994,
+      "value": 31.3737425,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1995,
+      "value": 32.4270766666667,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1996,
+      "value": 35.4331733333333,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1997,
+      "value": 36.3132858333333,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1998,
+      "value": 41.259365,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 1999,
+      "value": 43.0554283333334,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 44.941605,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 47.1864141666667,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 48.6103191666667,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 46.5832841666667,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 45.3164666666666,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 44.099975,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 45.3070083333333,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 41.3485333333333,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 43.5051833333333,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 48.4052666666666,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 45.7258121212121,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 46.6704666666667,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 53.4372333333333,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 58.5978454166667,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 61.0295144607843,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 64.1519444632786,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 67.1953128073894,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 65.1215686450659,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 68.3894670935422,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 70.4203405359551,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 74.0995668836052,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 73.9180128154351,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 78.6044905829916,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 82.5992764460784,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 83.669281580941,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "official-exchange-rate",
+      "jurisdictionId": "india",
+      "period": 2025,
+      "value": 87.1584483507393,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1945,
+      "value": 0.099,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1946,
+      "value": 0.102,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1947,
+      "value": 0.145,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1948,
+      "value": 0.158,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1949,
+      "value": 0.158,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1950,
+      "value": 0.187,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1951,
+      "value": 0.205,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1952,
+      "value": 0.343,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1953,
+      "value": 0.38,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1954,
+      "value": 0.38,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1955,
+      "value": 0.38,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1956,
+      "value": 0.38,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1957,
+      "value": 0.386,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1958,
+      "value": 0.387,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1959,
+      "value": 0.387,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1960,
+      "value": 0.387,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1961,
+      "value": 0.387,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1962,
+      "value": 0.376,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1963,
+      "value": 0.374,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1964,
+      "value": 0.376,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1965,
+      "value": 0.372,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1966,
+      "value": 0.372,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1967,
+      "value": 0.379,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1968,
+      "value": 0.384,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1969,
+      "value": 0.384,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1970,
+      "value": 0.381,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1971,
+      "value": 0.352,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1972,
+      "value": 0.344,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1973,
+      "value": 0.342,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1974,
+      "value": 0.312,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1975,
+      "value": 0.215,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1976,
+      "value": 0.213,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1977,
+      "value": 0.301,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1978,
+      "value": 0.401,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1979,
+      "value": 0.403,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1980,
+      "value": 0.397,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1981,
+      "value": 0.397,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1982,
+      "value": 0.399,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1983,
+      "value": 0.399,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1984,
+      "value": 0.399,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1985,
+      "value": 0.411,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1986,
+      "value": 0.417,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1987,
+      "value": 0.417,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1988,
+      "value": 0.415,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1989,
+      "value": 0.416,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1990,
+      "value": 0.444,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1991,
+      "value": 0.464,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1992,
+      "value": 0.471,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1993,
+      "value": 0.475,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1994,
+      "value": 0.482,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1995,
+      "value": 0.482,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1996,
+      "value": 0.486,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1997,
+      "value": 0.487,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1998,
+      "value": 0.49,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 1999,
+      "value": 0.482,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 0.483,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 0.483,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 0.485,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 0.491,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 0.479,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 0.479,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 0.474,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 0.475,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 0.475,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 0.45,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 0.44,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 0.438,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 0.434,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 0.425,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 0.384,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 0.33,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 0.319,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 0.298,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 0.296,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 0.269,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 0.252,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 0.255,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 0.253,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 0.236,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 0.246,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "participatory-democracy",
+      "jurisdictionId": "india",
+      "period": 2025,
+      "value": 0.246,
+      "status": "modelled",
+      "sourceId": "owid-vdem",
+      "note": "V-Dem point estimate retrieved through the Our World in Data mirror."
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 1990,
+      "value": 51.2032665473841,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 1991,
+      "value": 50.1661937890725,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 1992,
+      "value": 50.1221696951975,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 1993,
+      "value": 50.0781456013225,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 1994,
+      "value": 50.0341215074474,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 1995,
+      "value": 48.0040000846993,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 1996,
+      "value": 49.9460733196973,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 1997,
+      "value": 49.9020492258223,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 1998,
+      "value": 49.8580251319472,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 1999,
+      "value": 49.8140010380722,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 50.7630256086335,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 50.4537854823933,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 51.2544544512511,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 52.5149836233186,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 50.8446162251344,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 51.3369278641143,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 49.2546056005498,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 49.4513350486064,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 51.2664820637014,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 52.2626731220367,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 51.7188200456979,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 55.0258281992835,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 53.0196291324327,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 52.2693789873114,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 51.6872206933655,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 51.4355933740253,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 54.4218755239322,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 55.1724251484484,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 56.6795240921875,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 53.5981486621548,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 52.1933674059995,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 55.6234726382873,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 50.6577446303517,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "pm25-exposure",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 54.0522242217331,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1960,
+      "value": 312.777847829868,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1961,
+      "value": 316.739644665114,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1962,
+      "value": 318.381945826526,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1963,
+      "value": 329.64149485279,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1964,
+      "value": 346.011883332873,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1965,
+      "value": 329.392574458173,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1966,
+      "value": 322.241317769904,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1967,
+      "value": 340.080025745202,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1968,
+      "value": 344.128288078031,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1969,
+      "value": 358.966799409582,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1970,
+      "value": 369.19248063917,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1971,
+      "value": 367.033309772096,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1972,
+      "value": 357.07792915078,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1973,
+      "value": 360.637844054436,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1974,
+      "value": 356.615069655557,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1975,
+      "value": 380.159941384358,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1976,
+      "value": 377.496025416227,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1977,
+      "value": 395.443306819602,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1978,
+      "value": 408.51694440403,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1979,
+      "value": 378.219592791247,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1980,
+      "value": 394.182239921013,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1981,
+      "value": 408.153549793307,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1982,
+      "value": 412.596737104221,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1983,
+      "value": 432.429235384759,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1984,
+      "value": 438.541705512915,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1985,
+      "value": 450.966703855867,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1986,
+      "value": 461.725611476403,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1987,
+      "value": 469.209956296394,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1988,
+      "value": 502.937342187065,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1989,
+      "value": 521.073383839123,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1990,
+      "value": 537.870269536103,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1991,
+      "value": 531.898397833351,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1992,
+      "value": 549.235069964895,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1993,
+      "value": 563.372872336747,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1994,
+      "value": 588.727892180632,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1995,
+      "value": 620.699954336366,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1996,
+      "value": 654.355928434052,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1997,
+      "value": 667.598423093399,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1998,
+      "value": 695.293709337082,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 1999,
+      "value": 742.53920839812,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 756.704109533187,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 778.507377522499,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 793.615912901002,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 841.278894562408,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 892.596614580718,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 947.732565644272,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 1008.23275344818,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 1069.24696812234,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 1086.50605251005,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 1155.10163273817,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 1235.15939132939,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 1281.61054354937,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 1333.09626557649,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 1399.4537980281,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 1484.31640682961,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 1583.99815907985,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 1694.46534973787,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 1788.69770318481,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 1883.35772705055,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 1936.03067741063,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 1806.50110583865,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 1965.30943437472,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2022,
+      "value": 2098.21124476122,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2023,
+      "value": 2229.71491223037,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2024,
+      "value": 2366.8328910323,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "real-gdp-per-capita",
+      "jurisdictionId": "india",
+      "period": 2025,
+      "value": 2523.43601851376,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 1990,
+      "value": 24.7652606487719,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 1991,
+      "value": 23.0664204187271,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 1992,
+      "value": 21.0259677041328,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 1993,
+      "value": 19.8011385156651,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 1994,
+      "value": 21.5045147370769,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 1995,
+      "value": 17.4889447464526,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 1996,
+      "value": 15.9921062813213,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 1997,
+      "value": 16.2470060008757,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 1998,
+      "value": 16.9261287505985,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 1999,
+      "value": 15.5192560358564,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2000,
+      "value": 14.0401258332442,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2001,
+      "value": 13.6197629481384,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2002,
+      "value": 12.8005809834912,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2003,
+      "value": 11.5191856915079,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2004,
+      "value": 12.8708458297682,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2005,
+      "value": 14.3659113976406,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2006,
+      "value": 15.9724580053981,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2007,
+      "value": 16.8958319059597,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2008,
+      "value": 17.1072579022733,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2009,
+      "value": 15.3504789989236,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2010,
+      "value": 14.9419430950586,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2011,
+      "value": 15.306114125047,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2012,
+      "value": 16.2449871875852,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2013,
+      "value": 15.2987635527139,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2014,
+      "value": 15.8631842012333,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2015,
+      "value": 14.8948527456761,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2016,
+      "value": 13.5971725653557,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2017,
+      "value": 14.1593786090421,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2018,
+      "value": 15.0102597827208,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2019,
+      "value": 16.8275232132522,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2020,
+      "value": 19.7557474948152,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    },
+    {
+      "indicatorId": "renewable-electricity",
+      "jurisdictionId": "india",
+      "period": 2021,
+      "value": 19.131292447169,
+      "status": "observed",
+      "sourceId": "world-bank-api"
+    }
+  ]
+}
