@@ -7,7 +7,7 @@ import {
   Scale,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import type { Overview, Source } from '../types.ts'
+import type { Jurisdiction, Overview, Source } from '../types.ts'
 import { sentenceCase } from '../utils.ts'
 import { SourceRating } from '../components/common.tsx'
 
@@ -15,11 +15,14 @@ export function SourcesView({
   sources,
   onMethodologyOpen,
   knowledge,
+  jurisdiction,
 }: {
   sources: Source[]
   onMethodologyOpen: () => void
   knowledge: Overview['knowledge']
+  jurisdiction: Jurisdiction
 }) {
+  const leaderLabel = jurisdiction.level === 'country' ? 'PMs' : 'CMs'
   const [minimumRating, setMinimumRating] = useState(1)
   const [sourceType, setSourceType] = useState('all')
   const sourceTypes = useMemo(
@@ -100,14 +103,16 @@ export function SourcesView({
         </div>
         <nav className="machine-access__links" aria-label="Research API links">
           <a
-            href="/api/export?jurisdiction=india"
+            href={`/api/export?jurisdiction=${jurisdiction.id}`}
             target="_blank"
             rel="noreferrer"
           >
             <Database size={17} aria-hidden="true" />
             <span>
               <strong>Dataset export</strong>
-              <small>Events, PMs, policies, budgets, indicators, and sources</small>
+              <small>
+                Events, {leaderLabel}, policies, budgets, indicators, and sources
+              </small>
             </span>
             <ExternalLink size={14} aria-hidden="true" />
           </a>

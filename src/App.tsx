@@ -443,6 +443,7 @@ function App() {
             sources={data.sources}
             onMethodologyOpen={() => setMethodologyOpen(true)}
             knowledge={data.overview.knowledge}
+            jurisdiction={data.overview.jurisdiction}
           />
         )}
       </AppShell>
