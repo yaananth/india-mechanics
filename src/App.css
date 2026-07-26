@@ -237,6 +237,29 @@ a.icon-button {
   min-height: calc(100vh - 64px);
 }
 
+.research-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 6px 24px;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--line);
+  background: #f6f8f7;
+  font-size: 11px;
+  line-height: 1.4;
+  gap: 22px;
+}
+
+.research-status span {
+  white-space: nowrap;
+}
+
+.research-status strong {
+  color: var(--ink);
+  font-weight: 750;
+}
+
 .view {
   width: min(100%, 1320px);
   margin: 0 auto;
@@ -6123,6 +6146,20 @@ a.icon-button {
   }
 
   .header-actions .icon-button {
+    display: none;
+  }
+
+  .research-status {
+    justify-content: flex-start;
+    min-height: 28px;
+    padding: 5px 14px;
+    overflow-x: auto;
+    font-size: 10px;
+    gap: 16px;
+    scrollbar-width: none;
+  }
+
+  .research-status::-webkit-scrollbar {
     display: none;
   }
 

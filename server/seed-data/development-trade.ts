@@ -9,7 +9,7 @@ import type {
   SourceSeed,
 } from '../types.ts'
 
-const reviewedDate = '2026-07-24'
+const reviewedDate = '2026-07-26'
 const weights = [0.2, 0.3, 0.2, 0.15, 0.15] as const
 
 export const developmentSources: SourceSeed[] = [
@@ -28,7 +28,7 @@ export const developmentSources: SourceSeed[] = [
       'Government achievement framing; highway declarations and project length are not identical to net-new construction or quality.',
     publishedDate: '2025-12-30',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'morth-infrastructure-2026',
@@ -44,7 +44,7 @@ export const developmentSources: SourceSeed[] = [
       'Promotional publication; network growth includes newly declared National Highways.',
     publishedDate: '2026-06-09',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'cag-bharatmala-2023',
@@ -60,7 +60,7 @@ export const developmentSources: SourceSeed[] = [
       'Audit period predates the latest completion totals and later corrective action.',
     publishedDate: '2023-08-10',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'nhai-annual-2024',
@@ -76,7 +76,7 @@ export const developmentSources: SourceSeed[] = [
       'Institutional self-report; does not independently judge value for money.',
     publishedDate: '2024-09-30',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'pmgsy-status-2026',
@@ -92,7 +92,7 @@ export const developmentSources: SourceSeed[] = [
       'Cumulative totals span Vajpayee, UPA, and Modi governments and do not establish road quality or causal outcomes.',
     publishedDate: '2026-07-21',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'ncaer-pmgsy-2026',
@@ -109,7 +109,7 @@ export const developmentSources: SourceSeed[] = [
       'Selected-state sample and commissioned with programme-agency guidance; not a nationwide causal estimate.',
     publishedDate: '2026-07-15',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'morth-road-accidents-2023',
@@ -125,7 +125,7 @@ export const developmentSources: SourceSeed[] = [
       'Police-reported data can undercount crashes and lag current infrastructure conditions.',
     publishedDate: '2024-09-30',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'world-bank-poverty-trend-2026',
@@ -142,7 +142,7 @@ export const developmentSources: SourceSeed[] = [
       'The unusually large final-year decline may partly reflect improved enumeration and consumption reporting.',
     publishedDate: '2026-04-01',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'world-bank-poverty-repro-2026',
@@ -158,7 +158,7 @@ export const developmentSources: SourceSeed[] = [
       'Reproducibility does not eliminate legitimate disagreement over welfare aggregates and comparability.',
     publishedDate: '2026-04-30',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'mospi-hces-2023-24',
@@ -174,7 +174,7 @@ export const developmentSources: SourceSeed[] = [
       'MoSPI does not publish a new official Indian poverty rate from the survey.',
     publishedDate: '2025-08-01',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'undp-global-mpi-2022',
@@ -190,7 +190,7 @@ export const developmentSources: SourceSeed[] = [
       'Uses different indicators from NITI national MPI and most NFHS-5 collection predates COVID-19.',
     publishedDate: '2022-10-17',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'imf-pandemic-poverty-2023',
@@ -206,7 +206,7 @@ export const developmentSources: SourceSeed[] = [
       'Simulation results depend on reweighting, eligibility, and leakage assumptions.',
     publishedDate: '2023-07-07',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'commerce-fta-achievements-2026',
@@ -222,7 +222,7 @@ export const developmentSources: SourceSeed[] = [
       'Promotional and partly forecast-based; the treaty text controls legal obligations.',
     publishedDate: '2026-03-06',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'commerce-annual-2025-26',
@@ -238,7 +238,7 @@ export const developmentSources: SourceSeed[] = [
       'Government analysis does not isolate agreement causality or adjustment costs.',
     publishedDate: '2026-04-13',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'dfat-india-ecta',
@@ -253,7 +253,7 @@ export const developmentSources: SourceSeed[] = [
       'Partner-government framing and statistics do not establish net welfare for India.',
     publishedDate: '2022-12-29',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'efta-india-tepa-2025',
@@ -268,7 +268,7 @@ export const developmentSources: SourceSeed[] = [
       'The US$100 billion and one-million-job figures are objectives, not delivered outcomes.',
     publishedDate: '2025-10-01',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'uk-india-ceta-2026',
@@ -284,7 +284,7 @@ export const developmentSources: SourceSeed[] = [
       'Modelled trade and GDP benefits are forecasts rather than observed results.',
     publishedDate: '2026-07-15',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'pib-india-oman-cepa-2026',
@@ -300,7 +300,7 @@ export const developmentSources: SourceSeed[] = [
       'Too new for outcome claims and presented in promotional language.',
     publishedDate: '2026-06-01',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'nz-india-fta-2026',
@@ -315,7 +315,7 @@ export const developmentSources: SourceSeed[] = [
     limitations: 'No outcome can be observed before entry into force.',
     publishedDate: '2026-04-27',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'eu-india-fta-2026',
@@ -331,7 +331,7 @@ export const developmentSources: SourceSeed[] = [
       'The text remains subject to legal revision and approval; projected benefits are not outcomes.',
     publishedDate: '2026-01-27',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
   {
     id: 'oec-india-uae-trade',
@@ -346,7 +346,7 @@ export const developmentSources: SourceSeed[] = [
     limitations:
       'Reporting periods and classifications must be aligned with official Indian fiscal-year statistics.',
     accessedDate: reviewedDate,
-    linkStatus: 'checked-2026-07-24',
+    linkStatus: 'checked-2026-07-26',
   },
 ]
 

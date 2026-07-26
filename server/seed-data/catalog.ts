@@ -20,6 +20,7 @@ const accessedDate = '2026-07-23'
 const caaReviewedDate = '2026-07-24'
 const heardClaimReviewedDate = '2026-07-24'
 const sanitationReviewedDate = '2026-07-24'
+const refreshReviewedDate = '2026-07-26'
 
 export const sources: SourceSeed[] = [
   {
@@ -34,7 +35,7 @@ export const sources: SourceSeed[] = [
     bestFor: 'Current office-holder and official term facts.',
     limitations:
       'Government-authored performance language is not an independent assessment of outcomes.',
-    accessedDate,
+    accessedDate: refreshReviewedDate,
   },
   {
     id: 'pm-india-former',
@@ -96,6 +97,136 @@ export const sources: SourceSeed[] = [
       'Secondary analysis rather than a court ruling or enacted implementation record; no outcome evidence can exist for an infructuous bill.',
     publishedDate: '2026-04-16',
     accessedDate: '2026-07-24',
+  },
+  {
+    id: 'national-honour-amendment-bill-2026',
+    title:
+      'The Prevention of Insults to National Honour (Amendment) Bill, 2026, as introduced',
+    publisher: 'Rajya Sabha Secretariat, Parliament of India',
+    url: 'https://sansad.in/getFile/BillsTexts/RSBillTexts/Asintroduced/e724202624345PM.pdf?source=legislation',
+    sourceType: 'official-bill-text',
+    reliability: 5,
+    ratingReason:
+      'The as-introduced parliamentary text controls the proposed offence, penalty, and statement of objects and reasons.',
+    bestFor:
+      'The exact proposal to extend section 3 protection from the National Anthem to the National Song.',
+    limitations:
+      'The government rationale does not establish necessity, proportionality, enforcement quality, or constitutional validity.',
+    publishedDate: '2026-07-24',
+    accessedDate: refreshReviewedDate,
+  },
+  {
+    id: 'prs-national-honour-bill-2026',
+    title: 'Prevention of Insults to National Honour (Amendment) Bill, 2026',
+    publisher: 'PRS Legislative Research',
+    url: 'https://prsindia.org/billtrack/the-prevention-of-insults-to-national-honour-amendment-bill-2026',
+    sourceType: 'independent-legislative-analysis',
+    reliability: 4,
+    ratingReason:
+      'Clause-level summary tied to the official text with focused questions about necessity, proportionality, and speech and religion protections.',
+    bestFor:
+      'Plain-language bill design and the main constitutional and enforcement questions.',
+    limitations:
+      'The Bill is pending and has no implementation or outcome evidence.',
+    publishedDate: '2026-07-24',
+    accessedDate: refreshReviewedDate,
+  },
+  {
+    id: 'pm-bhavya-industrial-parks-2026',
+    title: 'Cabinet approves Bharat Audyogik Vikas Yojana (BHAVYA)',
+    publisher: 'Prime Minister’s Office, Government of India',
+    url: 'https://www.pmindia.gov.in/en/news_updates/cabinet-approves-bharat-audyogik-vikas-yojana-bhavya/',
+    sourceType: 'official-cabinet-decision',
+    reliability: 5,
+    ratingReason:
+      'Primary Cabinet announcement for the national industrial-parks scheme, its outlay, delivery model, site selection, and intended capacity.',
+    bestFor:
+      'The March 18, 2026 approval of up to 100 plug-and-play industrial parks and the Rs 33,660 crore public outlay.',
+    limitations:
+      'Cabinet objectives and projected jobs are not demonstrated implementation or outcome results.',
+    publishedDate: '2026-03-18',
+    accessedDate: refreshReviewedDate,
+  },
+  {
+    id: 'pm-bhavya-rasayan-2026',
+    title:
+      'Cabinet approves BHAVYA Rasayan scheme for world-class chemical parks',
+    publisher: 'Prime Minister’s Office, Government of India',
+    url: 'https://www.pmindia.gov.in/en/news_updates/cabinet-approves-bharat-audyogik-vikas-yojana-rasayan-bhavya-scheme-to-promote-establishment-of-world-class-chemical-parks-in-india/',
+    sourceType: 'official-cabinet-decision',
+    reliability: 5,
+    ratingReason:
+      'Primary Cabinet announcement for three chemical parks, common infrastructure, competitive state selection, and central capital support.',
+    bestFor:
+      'The July 24, 2026 design and Rs 3,030 crore Union outlay.',
+    limitations:
+      'Projected investment, jobs, import substitution, and environmental performance remain unobserved.',
+    publishedDate: '2026-07-24',
+    accessedDate: refreshReviewedDate,
+  },
+  {
+    id: 'cse-industrial-estates-guidelines',
+    title: 'Guidelines on environmental management of industrial estates',
+    publisher: 'Centre for Science and Environment',
+    url: 'https://www.cseindia.org/guidelines-on-environmental-management-of-industrial-estates-1486',
+    sourceType: 'independent-environmental-guidance',
+    reliability: 4,
+    ratingReason:
+      'Specialist guidance on common effluent systems, hazardous waste, siting, monitoring, emergency planning, and regulatory capacity in industrial estates.',
+    bestFor:
+      'Assessing environmental and community safeguards that industrial and chemical park design must include.',
+    limitations:
+      'General implementation guidance rather than an evaluation of the newly approved BHAVYA schemes.',
+    accessedDate: refreshReviewedDate,
+  },
+  {
+    id: 'president-pradhan-resignation-2026',
+    title: 'Press Communique on the resignation of Dharmendra Pradhan',
+    publisher: 'President of India',
+    url: 'https://www.presidentofindia.gov.in/press_releases/press-communique-35',
+    sourceType: 'official-ministerial-record',
+    reliability: 5,
+    ratingReason:
+      'Controlling constitutional record accepting the Education Minister’s resignation and assigning additional charge.',
+    bestFor:
+      'The July 25, 2026 ministerial resignation and immediate portfolio arrangement.',
+    limitations:
+      'The communique does not establish all reasons, culpability, or the effectiveness of later exam reform.',
+    publishedDate: '2026-07-25',
+    accessedDate: refreshReviewedDate,
+  },
+  {
+    id: 'ap-pradhan-resignation-2026',
+    title:
+      'India’s education minister quits as youth protests spread across the country',
+    publisher: 'Associated Press',
+    url: 'https://apnews.com/article/india-cockroach-education-minister-56d69c289589f057c0e72cde0c3d75d3',
+    sourceType: 'independent-news',
+    reliability: 4,
+    ratingReason:
+      'On-the-ground national reporting tying the resignation to the exam crisis, protest movement, political response, and unresolved demands.',
+    bestFor:
+      'Independent chronology and context around the resignation and nationwide youth mobilisation.',
+    limitations:
+      'A developing-news account; protest demands, arrests, and political consequences may continue changing.',
+    publishedDate: '2026-07-25',
+    accessedDate: refreshReviewedDate,
+  },
+  {
+    id: 'pib-exam-reform-task-force-2026',
+    title: 'Government announces task force to reform examination system',
+    publisher: 'Ministry of Education via Press Information Bureau',
+    url: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=2296324&reg=3&lang=2',
+    sourceType: 'official-policy-announcement',
+    reliability: 5,
+    ratingReason:
+      'Primary announcement of the task force chair, mandate, consultation process, reporting deadline, and proposed examination reforms.',
+    bestFor:
+      'The July 26, 2026 corrective response to repeated high-stakes examination failures.',
+    limitations:
+      'An announced task force and reform menu are not implemented safeguards or demonstrated exam outcomes.',
+    publishedDate: '2026-07-26',
+    accessedDate: refreshReviewedDate,
   },
   {
     id: 'world-bank-india',
@@ -2557,6 +2688,9 @@ const policyComponentValues: Record<string, Array<number | null>> = {
   'citizenship-amendment-rules-2024': [7, 5, 6.5, 4.5, 5.5],
   'income-tax-act-2025': [8, null, 6.5, 5.5, 7],
   'gst-rate-reset-2025': [8, null, 6.5, 6.5, 6],
+  'bhavya-industrial-parks-2026': [8, null, 6.5, 6, 6.5],
+  'bhavya-rasayan-2026': [8, null, 6.5, 5.5, 6],
+  'national-honour-amendment-bill-2026': [6.5, null, 6, 4.5, 5],
   'fcra-amendment-bill-2026': [6.5, null, 4, 3.5, 4],
   'delimitation-bill-2026': [7, null, 5, 5.5, 3.5],
   'fcra-amendment-rules-2026': [6, null, 5, 4, 4.5],
@@ -2786,6 +2920,27 @@ const policyRationales: Record<string, string[]> = {
     'Council coordination and official transition guidance enabled rapid rollout, while businesses still had to update prices, systems, classifications, and credits.',
     'Many reductions cover essentials and mass-use goods, but item-by-item incidence and the distribution of revenue replacement remain uncertain.',
     'Fewer principal slabs improve durability, while future Council revisions and revenue pressure can recreate complexity.',
+  ],
+  'bhavya-industrial-parks-2026': [
+    'Targets fragmented industrial land, delayed plug-and-play infrastructure, regional manufacturing gaps, and the need for scalable shared facilities.',
+    'Not yet observable because the scheme was approved in March 2026 and park investment, occupancy, jobs, and output remain proposals.',
+    'Competitive site selection, Union capital support, and shared infrastructure are coherent, while land assembly, state capacity, procurement, utilities, and clearances create substantial execution risk.',
+    'Distributed parks can broaden regional jobs and supplier access, but land, displacement, worker housing, pollution, and local participation need enforceable safeguards.',
+    'Common infrastructure can be durable, while low occupancy, stranded public assets, maintenance failure, and environmentally weak siting could create long-lived costs.',
+  ],
+  'bhavya-rasayan-2026': [
+    'Targets chemical-sector infrastructure, import dependence, fragmented facilities, logistics, waste treatment, and the absence of world-scale clusters.',
+    'Not yet observable because the three parks, private investment, jobs, production, and import substitution remain future outcomes.',
+    'Competitive state selection and common infrastructure can improve execution, but chemical safety, effluent treatment, hazardous waste, emergency capacity, monitoring, and land delivery are demanding.',
+    'The scheme can create skilled jobs and shared treatment capacity, while nearby communities and workers face concentrated pollution, accident, water, and land risks if safeguards fail.',
+    'Chemical clusters are durable productive assets only when environmental liabilities, maintenance, monitoring, emergency response, and closure obligations remain funded for decades.',
+  ],
+  'national-honour-amendment-bill-2026': [
+    'Protecting assemblies engaged in the National Song is a legitimate symbolic-order concern, but the government has not published evidence that existing public-order law leaves a material enforcement gap.',
+    'Not yet observable because the Bill remains pending and no implementation or outcome record exists.',
+    'Extending the existing section 3 offence is administratively simple, while the meaning of intentional prevention or disturbance and police discretion require clearer safeguards.',
+    'The text does not compel anyone to sing, but criminal penalties around expressive conduct can chill dissent, religious objection, satire, or protest if interpreted broadly or selectively.',
+    'Parity with National Anthem protection may endure, while vague enforcement, constitutional litigation, and politicised use could create larger long-run costs than the narrow problem warrants.',
   ],
   'fcra-amendment-bill-2026': [
     'Addresses a legitimate unmanaged-asset gap when an FCRA certificate ends.',
@@ -3617,6 +3772,79 @@ export const policies: PolicySeed[] = [
       'gst-council-56-2025',
       'gst-rate-faq-2025',
       'prs-budget-analysis-2026-27',
+    ],
+  },
+  {
+    id: 'bhavya-industrial-parks-2026',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'Bharat Audyogik Vikas Yojana (BHAVYA), 2026',
+    shortTitle: 'BHAVYA industrial parks',
+    policyType: 'industrial-infrastructure',
+    introducedDate: '2026-03-18',
+    status: 'executive-action',
+    coverageStatus: 'reviewed',
+    ratingBasis: 'design',
+    summary:
+      'Approved central support for up to 100 plug-and-play industrial parks selected competitively across states, with shared infrastructure and a Rs 33,660 crore public outlay.',
+    intendedGoal:
+      'Accelerate manufacturing investment, reduce project setup delays, spread industrial capacity across regions, and create serviced clusters for firms and workers.',
+    ratingScore: policyRating('bhavya-industrial-parks-2026'),
+    ratingConfidence: 'low',
+    ratingSummary:
+      'Provisional 6.8/10 design rating: the infrastructure and regional-manufacturing problem is real and the competitive cluster model is credible, but effectiveness cannot yet be scored and land, occupancy, environmental, maintenance, and state-execution risks are substantial.',
+    assessmentAsOf: refreshReviewedDate,
+    sourceIds: [
+      'pm-bhavya-industrial-parks-2026',
+      'cse-industrial-estates-guidelines',
+    ],
+  },
+  {
+    id: 'bhavya-rasayan-2026',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'BHAVYA Rasayan chemical-parks scheme, 2026',
+    shortTitle: 'BHAVYA Rasayan',
+    policyType: 'chemical-industrial-policy',
+    introducedDate: '2026-07-24',
+    status: 'executive-action',
+    coverageStatus: 'reviewed',
+    ratingBasis: 'design',
+    summary:
+      'Approved Union support for three world-scale chemical parks with common infrastructure, competitive state selection, and a Rs 3,030 crore central outlay.',
+    intendedGoal:
+      'Build efficient chemical clusters, attract private investment, create jobs, strengthen supply chains, and reduce import dependence.',
+    ratingScore: policyRating('bhavya-rasayan-2026'),
+    ratingConfidence: 'low',
+    ratingSummary:
+      'Provisional 6.6/10 design rating: shared infrastructure and cluster scale have plausible industrial value, but no outcomes exist and chemical pollution, hazardous waste, water, accident, land, and long-term liability controls will determine whether the scheme is beneficial.',
+    assessmentAsOf: refreshReviewedDate,
+    sourceIds: ['pm-bhavya-rasayan-2026', 'cse-industrial-estates-guidelines'],
+  },
+  {
+    id: 'national-honour-amendment-bill-2026',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title:
+      'Prevention of Insults to National Honour (Amendment) Bill, 2026',
+    shortTitle: 'National Song protection bill',
+    policyType: 'speech-and-symbols-law',
+    introducedDate: '2026-07-24',
+    status: 'pending',
+    coverageStatus: 'reviewed',
+    ratingBasis: 'design',
+    summary:
+      'Would extend the existing offence for intentionally preventing or disturbing National Anthem singing to assemblies engaged in singing the National Song, Vande Mataram.',
+    intendedGoal:
+      'Give the National Song statutory protection parallel to the National Anthem and punish deliberate disruption of assemblies singing it.',
+    ratingScore: policyRating('national-honour-amendment-bill-2026'),
+    ratingConfidence: 'low',
+    ratingSummary:
+      'Provisional 5.6/10 design rating: the bill is narrower than claims of compulsory singing and protects a legitimate symbolic interest, but necessity is weakly demonstrated and ambiguous criminal enforcement creates speech, conscience, protest, and selective-use risks.',
+    assessmentAsOf: refreshReviewedDate,
+    sourceIds: [
+      'national-honour-amendment-bill-2026',
+      'prs-national-honour-bill-2026',
     ],
   },
   {
@@ -4498,17 +4726,22 @@ export const events: EventSeed[] = [
     id: 'neet-ug-2026-crisis',
     jurisdictionId: 'india',
     date: '2026-05-12',
-    title: 'NEET-UG 2026 paper leak, re-exam, and youth protests',
+    endDate: '2026-07-26',
+    title:
+      'NEET-UG 2026 crisis, youth protests, and ministerial accountability',
     summary:
-      'NTA cancelled the May 3 NEET-UG after finding extensive question overlap with leaked material, held a June 21 re-exam, and faced court scrutiny and expanding student-led protests.',
+      'NTA cancelled the May 3 NEET-UG after finding extensive question overlap with leaked material, held a June 21 re-exam, and faced court scrutiny and expanding youth protests. The Education Minister resigned on July 25 and the Union announced a Nandan Nilekani-led examination-reform task force on July 26.',
     significance:
-      'The second major NEET integrity crisis in three years intensified demands for exam reform, institutional accountability, fair testing, and restraint in policing youth protest.',
+      'The second major NEET integrity crisis in three years produced rare ministerial accountability and a formal reform process while leaving implementation, protest policing, candidate harm, and future exam integrity unresolved.',
     category: 'education',
     confidence: 'medium',
     sourceIds: [
       'nta-neet-notices',
       'indian-express-neet-2026',
       'ap-neet-protests-2026',
+      'president-pradhan-resignation-2026',
+      'ap-pradhan-resignation-2026',
+      'pib-exam-reform-task-force-2026',
     ],
     leaderTermIds: ['modi-2014'],
   },
@@ -6715,15 +6948,15 @@ export const eventAssessments: EventAssessmentSeed[] = [
     eventId: 'neet-ug-2026-crisis',
     choiceAssessment: 'not-a-policy-choice',
     choiceReason:
-      'The leak was criminal misconduct enabled by repeated exam-security failure; cancellation and re-examination were necessary corrective actions, while protest policing and delayed accountability deepened distrust.',
+      'The leak was criminal misconduct enabled by repeated exam-security failure; cancellation and re-examination were necessary corrective actions. The ministerial resignation and task force are meaningful accountability steps, while protest policing and the absence of implemented safeguards keep the response incomplete.',
     unionRole:
-      'NTA and the Union Education Ministry bore primary responsibility for exam security, institutional reform, candidate communication, re-exam integrity, and accountable leadership.',
+      'NTA and the Union Education Ministry bore primary responsibility for exam security, institutional reform, candidate communication, re-exam integrity, ministerial accountability, and delivery of the announced task-force recommendations.',
     stateLocalRole:
       'State police and local administrations investigated leak networks and managed protests; Delhi Police bore responsibility for proportionate treatment of demonstrators.',
     positiveOutcomes:
-      'The compromised exam was cancelled, a re-exam was held, courts demanded accountability, and students created sustained pressure for structural exam reform.',
+      'The compromised exam was cancelled, a re-exam was held, courts demanded accountability, the Education Minister resigned, a reform task force was announced, and students created sustained pressure for structural change.',
     lessons:
-      'Repeated failure requires independent governance, audited question production, compartmentalised access, digital traceability, whistleblower channels, and leadership consequences.',
+      'Repeated failure requires independent governance, audited question production, compartmentalised access, digital traceability, whistleblower channels, leadership consequences, and public implementation milestones rather than another report without follow-through.',
     confidence: 'medium',
     assessmentAsOf: ratingAsOf,
     responsibilities: [
@@ -6739,7 +6972,7 @@ export const eventAssessments: EventAssessmentSeed[] = [
         'union-government',
         'failure-to-prevent',
         5,
-        'Failed to prevent a second major NEET integrity crisis and restore trust quickly.',
+        'Failed to prevent a second major NEET integrity crisis; the resignation and task force are corrective steps rather than proof of repaired systems.',
       ),
       eventResponsibility(
         'Police handling of youth protests',
@@ -7427,6 +7660,119 @@ export const claims: ClaimSeed[] = [
     ],
   },
   {
+    id: 'bhavya-industrial-parks-design-upside',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'bhavya-industrial-parks-2026',
+    title: 'Plug-and-play parks can reduce manufacturing setup barriers',
+    body:
+      'Competitive site selection, common infrastructure, and serviced industrial land can reduce duplicated utilities and project delays while spreading manufacturing investment beyond established clusters. These are design benefits, not yet observed outcomes.',
+    stance: 'achievement',
+    category: 'industrial-infrastructure',
+    confidence: 'medium',
+    asOfDate: refreshReviewedDate,
+    sourceIds: [
+      'pm-bhavya-industrial-parks-2026',
+      'cse-industrial-estates-guidelines',
+    ],
+  },
+  {
+    id: 'bhavya-industrial-parks-delivery-risk',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'bhavya-industrial-parks-2026',
+    title: 'Land, occupancy, utilities, and maintenance determine value',
+    body:
+      'The public outlay and park count do not prove productive use. Weak demand, delayed state infrastructure, land conflict, worker-housing gaps, pollution control, or poor maintenance could leave expensive underused assets.',
+    stance: 'concern',
+    category: 'industrial-infrastructure',
+    confidence: 'medium',
+    asOfDate: refreshReviewedDate,
+    sourceIds: [
+      'pm-bhavya-industrial-parks-2026',
+      'cse-industrial-estates-guidelines',
+    ],
+  },
+  {
+    id: 'bhavya-rasayan-common-infrastructure',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'bhavya-rasayan-2026',
+    title: 'Chemical clusters can share safer and more efficient infrastructure',
+    body:
+      'Common logistics, treatment systems, monitoring, utilities, and emergency capacity can be more efficient than fragmented plants if the three parks are selected and governed well. No investment, job, or production result exists yet.',
+    stance: 'achievement',
+    category: 'chemical-industrial-policy',
+    confidence: 'medium',
+    asOfDate: refreshReviewedDate,
+    sourceIds: ['pm-bhavya-rasayan-2026', 'cse-industrial-estates-guidelines'],
+  },
+  {
+    id: 'bhavya-rasayan-environmental-risk',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'bhavya-rasayan-2026',
+    title: 'Chemical-park failure can concentrate long-lived harm',
+    body:
+      'Chemical clusters can also concentrate hazardous waste, effluent, water demand, fire and explosion risk, worker exposure, and community burdens. Site selection, continuous monitoring, emergency plans, liability, and funded closure obligations must be enforceable before the scheme earns outcome credit.',
+    stance: 'concern',
+    category: 'chemical-industrial-policy',
+    confidence: 'high',
+    asOfDate: refreshReviewedDate,
+    sourceIds: ['pm-bhavya-rasayan-2026', 'cse-industrial-estates-guidelines'],
+  },
+  {
+    id: 'national-honour-bill-symbolic-purpose',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'national-honour-amendment-bill-2026',
+    title: 'The bill targets deliberate disruption, not refusal to sing',
+    body:
+      'The introduced text extends the offence of intentionally preventing singing or causing disturbance to an assembly. It does not create an express duty for every person to sing Vande Mataram.',
+    stance: 'achievement',
+    category: 'speech-and-symbols-law',
+    confidence: 'high',
+    asOfDate: refreshReviewedDate,
+    sourceIds: [
+      'national-honour-amendment-bill-2026',
+      'prs-national-honour-bill-2026',
+    ],
+  },
+  {
+    id: 'national-honour-bill-rights-risk',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'national-honour-amendment-bill-2026',
+    title: 'Criminal enforcement may reach beyond genuine disruption',
+    body:
+      'The government has not published evidence of a large enforcement gap, and “causing disturbance” may be applied unevenly to protest, satire, conscience, religious objection, or political disagreement unless courts or Parliament impose tighter limits.',
+    stance: 'concern',
+    category: 'speech-and-symbols-law',
+    confidence: 'medium',
+    asOfDate: refreshReviewedDate,
+    sourceIds: [
+      'national-honour-amendment-bill-2026',
+      'prs-national-honour-bill-2026',
+    ],
+  },
+  {
+    id: 'national-honour-bill-too-early',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    policyId: 'national-honour-amendment-bill-2026',
+    title: 'Pending design cannot receive an effectiveness score',
+    body:
+      'The bill was introduced on July 24, 2026 and remains pending. Passage, rules, police practice, prosecutions, judicial interpretation, and social effects cannot be assumed from introduction.',
+    stance: 'context',
+    category: 'speech-and-symbols-law',
+    confidence: 'high',
+    asOfDate: refreshReviewedDate,
+    sourceIds: [
+      'national-honour-amendment-bill-2026',
+      'prs-national-honour-bill-2026',
+    ],
+  },
+  {
     id: 'modi-demonetisation',
     jurisdictionId: 'india',
     leaderTermId: 'modi-2014',
@@ -7501,6 +7847,56 @@ export const claims: ClaimSeed[] = [
       'mha-annual-reports',
       'supreme-court-manipur-2023',
       'hrw-india-2026',
+    ],
+  },
+  {
+    id: 'neet-2026-ministerial-accountability',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    eventId: 'neet-ug-2026-crisis',
+    title: 'The Education Minister’s resignation created direct accountability',
+    body:
+      'The President accepted Dharmendra Pradhan’s resignation on July 25, 2026 after the repeated exam-security failure and nationwide youth protests. This is a meaningful accountability outcome, while responsibility also remains institutional across NTA, the Ministry, vendors, security processes, and leak networks.',
+    stance: 'achievement',
+    category: 'education-accountability',
+    confidence: 'high',
+    asOfDate: refreshReviewedDate,
+    sourceIds: [
+      'president-pradhan-resignation-2026',
+      'ap-pradhan-resignation-2026',
+    ],
+  },
+  {
+    id: 'neet-2026-task-force-response',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    eventId: 'neet-ug-2026-crisis',
+    title: 'A formal examination-reform process has begun',
+    body:
+      'The Union announced a Nandan Nilekani-led task force covering governance, question security, technology, grievance handling, state coordination, and legal reform. The breadth of the mandate is positive, but a task force is not implementation and cannot yet prove safer examinations.',
+    stance: 'context',
+    category: 'education-accountability',
+    confidence: 'high',
+    asOfDate: refreshReviewedDate,
+    sourceIds: [
+      'pib-exam-reform-task-force-2026',
+    ],
+  },
+  {
+    id: 'neet-2026-protest-rights',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    eventId: 'neet-ug-2026-crisis',
+    title: 'Corrective reform does not erase protest-policing concerns',
+    body:
+      'The youth movement forced sustained political attention, while arrests, detention, crowd control, and restrictions still require proportionality and due-process scrutiny. Reform credit and protest-rights accountability must remain separate.',
+    stance: 'concern',
+    category: 'education-accountability',
+    confidence: 'medium',
+    asOfDate: refreshReviewedDate,
+    sourceIds: [
+      'ap-neet-protests-2026',
+      'ap-pradhan-resignation-2026',
     ],
   },
   {

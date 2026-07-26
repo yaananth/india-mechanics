@@ -8,6 +8,7 @@ import type {
 
 const accessedDate = '2026-07-23'
 const assessmentAsOf = '2026-07-23'
+const refreshReviewedAt = '2026-07-26'
 
 export const budgetSources: SourceSeed[] = [
   {
@@ -267,7 +268,7 @@ export const budgetSources: SourceSeed[] = [
     limitations:
       'Government-authored benefit claims are intentions rather than independent outcome evidence.',
     publishedDate: '2026-02-01',
-    accessedDate,
+    accessedDate: refreshReviewedAt,
   },
   {
     id: 'prs-budget-analysis-2026-27',
@@ -281,7 +282,7 @@ export const budgetSources: SourceSeed[] = [
     limitations:
       'It evaluates the proposal and revised estimates before final 2026-27 outcomes exist.',
     publishedDate: '2026-02-01',
-    accessedDate,
+    accessedDate: refreshReviewedAt,
   },
 ]
 
@@ -955,7 +956,7 @@ export const budgets: BudgetSeed[] = [
     ratingConfidence: 'low',
     ratingSummary:
       'A disciplined, investment-heavy proposal with meaningful service increases, reduced by interest burden and recent underspending evidence.',
-    assessmentAsOf,
+    assessmentAsOf: refreshReviewedAt,
     sourceIds: [
       'budget-at-glance-2026-27',
       'budget-speech-2026-27',

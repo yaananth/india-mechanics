@@ -354,6 +354,7 @@ function App() {
         onJurisdictionChange={handleJurisdictionChange}
         onSearchOpen={() => setSearchOpen(true)}
         onMethodologyOpen={() => setMethodologyOpen(true)}
+        knowledge={data.overview.knowledge}
       >
         {navigation.view === 'overview' && (
           <OverviewView

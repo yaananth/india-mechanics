@@ -13,7 +13,7 @@ import {
   WalletCards,
 } from 'lucide-react'
 import type { ReactNode } from 'react'
-import type { Jurisdiction, ViewId } from '../types.ts'
+import type { Jurisdiction, Overview, ViewId } from '../types.ts'
 
 const baseNavigation: Array<{
   id: ViewId
@@ -64,6 +64,7 @@ export function AppShell({
   onJurisdictionChange,
   onSearchOpen,
   onMethodologyOpen,
+  knowledge,
   children,
 }: {
   activeView: ViewId
@@ -73,6 +74,7 @@ export function AppShell({
   onJurisdictionChange: (jurisdictionId: string) => void
   onSearchOpen: () => void
   onMethodologyOpen: () => void
+  knowledge: Overview['knowledge']
   children: ReactNode
 }) {
   const navigation = baseNavigation.map((item) =>
@@ -177,6 +179,19 @@ export function AppShell({
           </div>
         </div>
       </header>
+
+      <div className="research-status" aria-label="Research freshness">
+        <span>
+          Research reviewed through <strong>{knowledge.cutoff}</strong>
+        </span>
+        <span>
+          Indicators checked <strong>{knowledge.indicatorAsOfDate}</strong>
+        </span>
+        <span>
+          Political status checked{' '}
+          <strong>{knowledge.politicalStatusChecked}</strong>
+        </span>
+      </div>
 
       <main id="main-content" className="app-main">
         {children}

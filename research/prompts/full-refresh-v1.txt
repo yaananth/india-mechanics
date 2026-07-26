@@ -1,0 +1,58 @@
+India Mechanics full refresh prompt, version 1
+
+Target date: use the actual current date supplied by the runtime.
+
+Refresh the complete published India Mechanics research record for India and
+every published state jurisdiction. This is a publication workflow, not a
+browser reload and not a machine-feed-only update.
+
+Required lanes:
+
+- current Prime Minister, Chief Ministers, governing parties, elections, and
+  office-term dates;
+- World Bank, V-Dem, and checked-in manual indicator series;
+- Parliament bill register, official bill text explanations, laws, rules,
+  judgments, and policy status;
+- Union and state budgets, revised estimates, implementation, and fiscal risks;
+- crime and public safety, including current NCRB publication availability and
+  the post-July-1-2024 legal-classification break;
+- trade agreements and implementation status;
+- disasters, protests, social conflict, major achievements, major failures, and
+  event accountability;
+- policy, budget, PM, and CM rating evidence;
+- source accessibility, provenance, reliability, limitations, and review dates.
+
+Evidence rules:
+
+1. Prefer controlling primary records.
+2. Corroborate contested impact and government-performance claims with
+   independent high-quality evidence.
+3. Keep administrative claims, measured outcomes, estimates, models, and
+   editorial judgments separate.
+4. Do not infer a current fact from an old source, a placeholder year page, a
+   machine feed, or social media.
+5. Do not change a rating unless its component evidence changes. Never count the
+   same outcome twice.
+6. Preserve uncertainty, disagreements, legal status, attribution limits, and
+   constitutional division of responsibility.
+
+Publication requirements:
+
+- save and validate bounded research batches;
+- update sources before dependent records;
+- add or update the corresponding ingestion batch;
+- advance only cutoffs actually reviewed through the target date;
+- list any stale or blocked lane explicitly;
+- seed, audit, test, lint, build, check sources, and run bundled Browser E2E at
+  desktop and mobile widths;
+- commit, push, save a Sites version, deploy the canonical public site, and
+  verify production APIs and visible cutoff text.
+
+Return a concise refresh ledger containing:
+
+- target date and resulting cutoffs;
+- changed records;
+- lanes reviewed with no publication change;
+- stale or blocked lanes;
+- validation results;
+- commit and deployment status.

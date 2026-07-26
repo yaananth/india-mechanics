@@ -1,7 +1,7 @@
 {
   "version": "policy-funnel-v0.1",
-  "reviewedThrough": "2026-07-24",
-  "queryTemplateVersion": "query-templates-v0.6",
+  "reviewedThrough": "2026-07-26",
+  "queryTemplateVersion": "query-templates-v0.7",
   "records": [
     {
       "eventId": "independence-partition-1947",

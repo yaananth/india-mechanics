@@ -287,18 +287,18 @@ describe('research database integrity', () => {
                 ROUND(
                   SUM(
                     lt.rating_score *
-                    (julianday(COALESCE(lt.end_date, '2026-07-24')) -
+                    (julianday(COALESCE(lt.end_date, '2026-07-26')) -
                      julianday(lt.start_date))
                   ) /
                   SUM(
-                    julianday(COALESCE(lt.end_date, '2026-07-24')) -
+                    julianday(COALESCE(lt.end_date, '2026-07-26')) -
                     julianday(lt.start_date)
                   ),
                   2
                 ) AS day_weighted_average,
                 ROUND(
                   SUM(
-                    julianday(COALESCE(lt.end_date, '2026-07-24')) -
+                    julianday(COALESCE(lt.end_date, '2026-07-26')) -
                     julianday(lt.start_date)
                   ) / 365.2425,
                   1
@@ -864,10 +864,10 @@ describe('research database integrity', () => {
       )
       .all()
     expect(summary).toEqual({
-      count: 4407,
+      count: 4408,
       first_date: '1952-05-16',
-      latest_date: '2026-07-20',
-      reviewed: 35,
+      latest_date: '2026-07-24',
+      reviewed: 36,
     })
     expect(incomplete).toEqual([])
   })
@@ -906,8 +906,8 @@ describe('research database integrity', () => {
       .all()
 
     expect(coverage).toMatchObject({
-      total: 4407,
-      independent_review: 35,
+      total: 4408,
+      independent_review: 36,
     })
     expect((coverage as { official_text: number }).official_text).toBeGreaterThan(
       2300,
@@ -964,8 +964,8 @@ describe('research database integrity', () => {
       review_status: 'reviewed',
     })
     expect(latest).toEqual({
-      linked_policy_id: null,
-      review_status: 'discovered',
+      linked_policy_id: 'national-honour-amendment-bill-2026',
+      review_status: 'reviewed',
     })
   })
 
@@ -996,9 +996,9 @@ describe('research database integrity', () => {
         }>
       ).map((row) => [row.key, row.value]),
     )
-    expect(metadata.knowledge_cutoff).toBe('2026-07-24')
-    expect(metadata.editorial_reviewed_through).toBe('2026-07-24')
-    expect(metadata.source_roster_version).toBe('source-roster-v0.11')
+    expect(metadata.knowledge_cutoff).toBe('2026-07-26')
+    expect(metadata.editorial_reviewed_through).toBe('2026-07-26')
+    expect(metadata.source_roster_version).toBe('source-roster-v0.12')
     expect(metadata.source_rubric_version).toBe('source-v0.2')
     expect(Number(metadata.latest_world_bank_period)).toBeGreaterThanOrEqual(2024)
     expect(Number(metadata.latest_vdem_period)).toBeGreaterThanOrEqual(2024)
@@ -1080,7 +1080,7 @@ describe('research database integrity', () => {
     }>
     expect(unpublishedClaims).toEqual([])
     expect(batches).toContainEqual({
-      source_roster_version: 'source-roster-v0.11',
+      source_roster_version: 'source-roster-v0.12',
       review_status: 'published',
     })
     expect(
@@ -1157,6 +1157,19 @@ describe('research database integrity', () => {
         review_status: 'published',
       })
     }
+    expect(
+      db
+        .prepare(
+          `SELECT candidates_found, rejected_records, review_status
+           FROM ingestion_batches
+           WHERE id = 'full-refresh-2026-07-26'`,
+        )
+        .get(),
+    ).toEqual({
+      candidates_found: 29,
+      rejected_records: 6,
+      review_status: 'published',
+    })
   })
 })
 
@@ -1241,7 +1254,7 @@ describe('state and Chief Minister extensibility', () => {
       .get()
     expect(counts).toEqual({
       events: 10,
-      policies: 7,
+      policies: 8,
       budgets: 3,
       observations: 88,
       answers: 3,
@@ -1347,8 +1360,8 @@ describe('state and Chief Minister extensibility', () => {
       ).map((row) => [row.key, row.value]),
     )
     expect(metadata).toMatchObject({
-      knowledge_cutoff: '2026-07-24',
-      political_status_checked: '2026-07-24',
+      knowledge_cutoff: '2026-07-26',
+      political_status_checked: '2026-07-26',
       timeline_starts: '1969-01-14',
     })
 
@@ -1399,7 +1412,7 @@ describe('state and Chief Minister extensibility', () => {
       )
       .get()
     expect(counts).toEqual({
-      events: 13,
+      events: 14,
       policies: 15,
       budgets: 3,
       observations: 73,

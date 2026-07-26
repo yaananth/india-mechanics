@@ -20,7 +20,8 @@ import type {
   SourceSeed,
 } from '../types.ts'
 
-const reviewedAt = '2026-07-24'
+const reviewedAt = '2026-07-26'
+const refreshReviewedAt = '2026-07-26'
 
 export const andhraSources: SourceSeed[] = [
   {
@@ -274,6 +275,71 @@ export const andhraSources: SourceSeed[] = [
       'Election results do not establish the quality of the incoming government or explain voter motivation by themselves.',
     publishedDate: '2024-06-04',
     accessedDate: reviewedAt,
+  },
+  {
+    id: 'ap-chief-minister-profile-2026',
+    title: 'Chief Minister profile: N. Chandrababu Naidu',
+    publisher: 'Government of Andhra Pradesh',
+    url: 'https://ap.gov.in/?page_id=241',
+    sourceType: 'official-office-record',
+    reliability: 5,
+    ratingReason:
+      'Current state-government profile identifying N. Chandrababu Naidu as Chief Minister.',
+    bestFor: 'Direct verification of the sitting Andhra Pradesh Chief Minister.',
+    limitations:
+      'The official profile does not independently evaluate the government’s performance.',
+    accessedDate: refreshReviewedAt,
+  },
+  {
+    id: 'indian-express-ap-population-policy-2026',
+    title:
+      'Andhra Pradesh proposes Rs 50,000 crore policy to reverse fertility decline',
+    publisher: 'Indian Express',
+    url: 'https://indianexpress.com/article/explained/andhra-pradesh-population-management-policy-tfr-10571124/',
+    sourceType: 'independent-policy-reporting',
+    reliability: 4,
+    ratingReason:
+      'Detailed explanation of the Assembly announcement, fertility trend, proposed incentives, lifecycle measures, and fiscal scale.',
+    bestFor:
+      'Policy design, demographic context, proposed benefits, and implementation questions.',
+    limitations:
+      'The programme was still being developed and reported costs and eligibility may change.',
+    publishedDate: '2026-03-06',
+    accessedDate: refreshReviewedAt,
+  },
+  {
+    id: 'indian-express-ap-population-rights-2026',
+    title:
+      'Andhra Pradesh population policy: falling fertility and competing rights and development arguments',
+    publisher: 'Indian Express',
+    url: 'https://indianexpress.com/article/long-reads/andhra-pradesh-population-policy-falling-fertility-rates-10721109/',
+    sourceType: 'independent-long-form-analysis',
+    reliability: 4,
+    ratingReason:
+      'Long-form reporting with named demographic, gender, health, and policy voices examining the policy’s assumptions and tradeoffs.',
+    bestFor:
+      'Rights, equity, autonomy, fiscal, and demographic risks beyond the government’s stated objectives.',
+    limitations:
+      'Early analysis of an evolving policy rather than measured implementation outcomes.',
+    publishedDate: '2026-05-18',
+    accessedDate: refreshReviewedAt,
+  },
+  {
+    id: 'prs-ap-irrigation-two-child-amendment-2026',
+    title:
+      'Andhra Pradesh Farmers Management of Irrigation Systems (Amendment) Bill, 2026',
+    publisher: 'Andhra Pradesh Legislature via PRS Legislative Research',
+    url: 'https://prsindia.org/files/bills_acts/bills_states/andhra-pradesh/2026/Bill9of2026AP.pdf',
+    sourceType: 'official-state-bill-republication',
+    reliability: 4,
+    ratingReason:
+      'Direct bill text removing a two-child disqualification from elections to water-user and irrigation-management bodies.',
+    bestFor:
+      'One legal implementation step aligned with the state’s pronatalist policy direction.',
+    limitations:
+      'A sector-specific eligibility amendment does not establish the full population policy, fiscal package, or outcomes.',
+    publishedDate: '2026-03-04',
+    accessedDate: refreshReviewedAt,
   },
   {
     id: 'pti-naidu-oath-2014',
@@ -555,6 +621,7 @@ export const andhraLeaderTerms: LeaderTermSeed[] = [
     assessmentAsOf: reviewedAt,
     sourceIds: [
       'eci-ap-2024',
+      'ap-chief-minister-profile-2026',
       'ap-budget-2026-27',
       'ap-ses-2024-25',
       'pib-ap-pmgsy-2026',
@@ -639,6 +706,7 @@ const andhraPolicyComponents: Record<string, Array<number | null>> = {
   'ap-nadu-nedu-2019': [8, 7, 7.5, 8, 7.5],
   'ap-three-capitals-2020': [6, 3, 3, 3.5, 2.5],
   'ap-amaravati-restart-2024': [7.5, null, 6.5, 5.5, 6],
+  'ap-population-management-2026': [7.5, null, 5.5, 6, 5.5],
 }
 
 function policyRating(policyId: string) {
@@ -824,6 +892,32 @@ export const andhraPolicies: PolicySeed[] = [
     assessmentAsOf: reviewedAt,
     sourceIds: ['ap-crda', 'ap-budget-2026-27', 'ap-amaravati-judgment-2022'],
   },
+  {
+    id: 'ap-population-management-2026',
+    jurisdictionId: 'andhra-pradesh',
+    leaderTermId: 'ap-naidu-2024',
+    title: 'Andhra Pradesh Population Management Policy initiative, 2026',
+    shortTitle: 'Population Management Policy',
+    policyType: 'demographic-and-family-policy',
+    introducedDate: '2026-03-05',
+    status: 'executive-action',
+    coverageStatus: 'reviewed',
+    ratingBasis: 'design',
+    summary:
+      'Launched a broad pronatalist and ageing-policy initiative spanning family incentives, maternal and child support, childcare, women’s work, migration, health, skills, and elderly care.',
+    intendedGoal:
+      'Respond to low fertility and population ageing while supporting families, sustaining the workforce, and building long-run health and social-protection capacity.',
+    ratingScore: policyRating('ap-population-management-2026'),
+    ratingConfidence: 'low',
+    ratingSummary:
+      'Provisional 6.2/10 design rating: ageing, care, women’s work, migration, and family costs are real problems, but effectiveness cannot yet be scored and cash incentives, fiscal scale, eligibility, women’s autonomy, implementation complexity, and demographic uncertainty require stronger safeguards.',
+    assessmentAsOf: refreshReviewedAt,
+    sourceIds: [
+      'indian-express-ap-population-policy-2026',
+      'indian-express-ap-population-rights-2026',
+      'prs-ap-irrigation-two-child-amendment-2026',
+    ],
+  },
 ]
 
 const andhraPolicyRationales: Record<string, string[]> = {
@@ -875,6 +969,13 @@ const andhraPolicyRationales: Record<string, string[]> = {
     'Budgeted capital and renewed agency activity improve readiness, while finance and project controls remain execution risks.',
     'Honouring prior commitments supports affected farmers, but regional distribution and affordability need explicit safeguards.',
     'A stable capital direction may be durable, but debt, land-market dependence, and future political reversal remain material risks.',
+  ],
+  'ap-population-management-2026': [
+    'Low fertility, ageing, care burdens, women’s employment, migration, and long-run workforce capacity are legitimate state-policy problems that require more than a birth target.',
+    'Not yet observable because the initiative remains in early consultation and implementation and no fertility, care, health, workforce, or elderly-outcome window exists.',
+    'A lifecycle package is more coherent than a single cash transfer, but eligibility, delivery agencies, recurring expenditure, verification, and coordination across health, education, labour, local government, and welfare are demanding.',
+    'Childcare, maternal health, flexible work, migration, and elderly support can widen capability, while cash-linked pronatalism may pressure women, exclude poorer or non-traditional households, and treat fertility as an administrative target.',
+    'Demographic policy requires decades of stable services and fiscal capacity; politically attractive incentives may be difficult to sustain and may not produce the intended family decisions.',
   ],
 }
 
@@ -1609,6 +1710,56 @@ export const andhraClaims: ClaimSeed[] = [
     confidence: 'high',
     asOfDate: reviewedAt,
     sourceIds: ['ap-budget-2026-27', 'ap-ses-2024-25', 'niti-ap-macro-fiscal-2025'],
+  },
+  {
+    id: 'ap-population-policy-lifecycle-design',
+    jurisdictionId: 'andhra-pradesh',
+    leaderTermId: 'ap-naidu-2024',
+    policyId: 'ap-population-management-2026',
+    title: 'The policy addresses more than birth incentives',
+    body:
+      'The initiative combines family support with maternal and child health, childcare, women’s employment, migration, skills, and elderly care. That lifecycle design is more credible than treating fertility as one cash-payment problem.',
+    stance: 'achievement',
+    category: 'demographic-policy',
+    confidence: 'medium',
+    asOfDate: refreshReviewedAt,
+    sourceIds: [
+      'indian-express-ap-population-policy-2026',
+      'indian-express-ap-population-rights-2026',
+    ],
+  },
+  {
+    id: 'ap-population-policy-rights-fiscal-risk',
+    jurisdictionId: 'andhra-pradesh',
+    leaderTermId: 'ap-naidu-2024',
+    policyId: 'ap-population-management-2026',
+    title: 'Pronatalist incentives create autonomy and fiscal risks',
+    body:
+      'Large proposed incentives may support families, but unclear eligibility, recurring fiscal cost, pressure on women, exclusion of poorer or non-traditional households, and uncertain fertility response prevent a high design score.',
+    stance: 'concern',
+    category: 'demographic-policy',
+    confidence: 'medium',
+    asOfDate: refreshReviewedAt,
+    sourceIds: [
+      'indian-express-ap-population-policy-2026',
+      'indian-express-ap-population-rights-2026',
+    ],
+  },
+  {
+    id: 'ap-population-policy-too-early',
+    jurisdictionId: 'andhra-pradesh',
+    leaderTermId: 'ap-naidu-2024',
+    policyId: 'ap-population-management-2026',
+    title: 'No demographic or service outcome can yet be credited',
+    body:
+      'The initiative was announced in 2026 and remains in early implementation. Removing selected two-child disqualifications and opening consultation are policy actions, not proof of more births, stronger families, higher women’s employment, better care, or slower ageing.',
+    stance: 'context',
+    category: 'demographic-policy',
+    confidence: 'high',
+    asOfDate: refreshReviewedAt,
+    sourceIds: [
+      'prs-ap-irrigation-two-child-amendment-2026',
+    ],
   },
   {
     id: 'ap-shared-attribution',

@@ -40,6 +40,30 @@ const modelledWorldBankIndicators = new Set([
   'rural-open-defecation',
 ])
 
+const sleep = (milliseconds: number) =>
+  new Promise((resolve) => setTimeout(resolve, milliseconds))
+
+async function mapWithConcurrency<T, Result>(
+  values: T[],
+  concurrency: number,
+  worker: (value: T) => Promise<Result>,
+) {
+  const results = new Array<Result>(values.length)
+  let nextIndex = 0
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, values.length) }, async () => {
+      while (nextIndex < values.length) {
+        const index = nextIndex
+        nextIndex += 1
+        results[index] = await worker(values[index])
+      }
+    }),
+  )
+
+  return results
+}
+
 async function fetchWorldBank(
   indicatorId: string,
   sourceCode: string,
@@ -47,9 +71,18 @@ async function fetchWorldBank(
   const url =
     `https://api.worldbank.org/v2/country/IND/indicator/${sourceCode}` +
     '?format=json&per_page=100'
-  const response = await fetch(url)
-  if (!response.ok) {
-    throw new Error(`World Bank request failed for ${sourceCode}: ${response.status}`)
+  let response: Response | null = null
+
+  for (let attempt = 1; attempt <= 4; attempt += 1) {
+    response = await fetch(url)
+    if (response.ok) break
+    if (attempt < 4) await sleep(attempt * 750)
+  }
+
+  if (!response?.ok) {
+    throw new Error(
+      `World Bank request failed for ${sourceCode} after retries: ${response?.status ?? 'network error'}`,
+    )
   }
   const payload = (await response.json()) as WorldBankResponse
   if (!Array.isArray(payload) || !Array.isArray(payload[1])) {
@@ -124,10 +157,11 @@ async function main() {
       definition.sourceId === 'world-bank-api',
   )
 
-  const worldBankResults = await Promise.all(
-    worldBankDefinitions.map((definition) =>
+  const worldBankResults = await mapWithConcurrency(
+    worldBankDefinitions,
+    4,
+    (definition) =>
       fetchWorldBank(definition.id, definition.sourceCode as string),
-    ),
   )
   const vdemResults = await Promise.all(
     (Object.keys(vdemSeries) as Array<keyof typeof vdemSeries>).map(fetchVdem),

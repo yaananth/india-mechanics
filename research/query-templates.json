@@ -1,6 +1,21 @@
 {
-  "version": "query-templates-v0.6",
+  "version": "query-templates-v0.7",
   "templates": [
+    {
+      "id": "full-refresh",
+      "lane": "full-refresh",
+      "queries": [
+        "site:{currentOfficeDomain} current officeholder {jurisdiction} {targetDate}",
+        "site:{officialStatisticsDomain} {jurisdiction} latest statistics {targetDate}",
+        "site:{legislatureDomain} OR site:{lawDomain} {jurisdiction} new bill act rule judgment after:{previousCutoff}",
+        "site:{budgetDomain} {jurisdiction} budget revised estimate implementation after:{previousCutoff}",
+        "site:{crimeDomain} {jurisdiction} latest crime report downloadable tables",
+        "site:{tradeDomain} India trade agreement status after:{previousCutoff}",
+        "site:{stateDomain} {state} cabinet policy programme after:{previousCutoff}",
+        "site:reuters.com OR site:apnews.com OR site:ptinews.com {jurisdiction} after:{previousCutoff}",
+        "site:thehindu.com OR site:indianexpress.com OR site:newindianexpress.com {jurisdiction} after:{previousCutoff}"
+      ]
+    },
     {
       "id": "official-policy",
       "lane": "policy",

@@ -85,6 +85,16 @@ The checked-in machine-data snapshots make the project runnable without
 refreshing external feeds. Run refresh commands only when intentionally updating
 the evidence cutoff.
 
+### Agent command: `refresh`
+
+When the user says `refresh`, the agent follows
+[`research/prompts/full-refresh-v1.txt`](research/prompts/full-refresh-v1.txt):
+refreshes machine feeds and bills, reviews every published national and state
+evidence lane through the current date, advances only completed cutoffs, runs
+the full verification suite, commits and pushes the source, and redeploys the
+canonical public site. It is broader than `npm run refresh:latest`, which cannot
+perform narrative web research or publication judgment by itself.
+
 ## Common commands
 
 | Command | Purpose |
@@ -94,6 +104,7 @@ the evidence cutoff.
 | `npm run data:refresh` | Refresh World Bank and V-Dem series, audit, and reseed |
 | `npm run bills:explain` | Extract official purposes from available parliamentary PDFs |
 | `npm run bills:refresh` | Refresh the Sansad register, bill explanations, audits, and database |
+| `npm run refresh:feeds` | Refresh machine indicators and the parliamentary register |
 | `npm run research:validate -- <batch.json>` | Validate a deterministic research batch |
 | `npm run policy:audit` | Check the reviewed-policy funnel |
 | `npm run claims:audit` | Check heard-claim coverage |

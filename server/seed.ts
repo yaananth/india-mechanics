@@ -117,8 +117,8 @@ import type {
   PolicyRegisterSeed,
 } from './types.ts'
 
-export const seedVersion = '2026-07-24.15'
-const sourceRosterVersion = 'source-roster-v0.11'
+export const seedVersion = '2026-07-26.1'
+const sourceRosterVersion = 'source-roster-v0.12'
 const allJurisdictions = [
   ...jurisdictions,
   ...andhraJurisdictions,
@@ -339,17 +339,17 @@ function insertRows(
   )
   const stateMetadata = {
     'andhra-pradesh': {
-      knowledge_cutoff: '2026-07-24',
-      editorial_reviewed_through: '2026-07-24',
-      political_status_checked: '2026-07-24',
-      indicator_as_of_date: '2026-07-24',
+      knowledge_cutoff: '2026-07-26',
+      editorial_reviewed_through: '2026-07-26',
+      political_status_checked: '2026-07-26',
+      indicator_as_of_date: '2026-07-26',
       timeline_starts: '2014-06-02',
     },
     'tamil-nadu': {
-      knowledge_cutoff: '2026-07-24',
-      editorial_reviewed_through: '2026-07-24',
-      political_status_checked: '2026-07-24',
-      indicator_as_of_date: '2026-07-24',
+      knowledge_cutoff: '2026-07-26',
+      editorial_reviewed_through: '2026-07-26',
+      political_status_checked: '2026-07-26',
+      indicator_as_of_date: '2026-07-26',
       timeline_starts: '1969-01-14',
     },
   }
@@ -419,7 +419,7 @@ function insertRows(
       row.sourceType,
       row.reliability,
       row.rubricVersion ?? 'source-v0.2',
-      row.linkStatus ?? 'checked-2026-07-24',
+      row.linkStatus ?? 'checked-2026-07-26',
       row.ratingReason,
       row.bestFor,
       row.limitations,
@@ -1140,7 +1140,7 @@ function insertRows(
       generatedBills.bills.length +
       allClaims.length +
       generated.observations.length,
-    0,
+    1,
     'India Mechanics editorial pass',
     'published',
     metadata.generated_at,
@@ -1430,6 +1430,25 @@ function insertRows(
     'published',
     metadata.generated_at,
     `Published a plain-language explanation for every register record; extracted ${generatedBillDocuments.officialText} official-text purposes, preserved title-derived fallbacks for unavailable or unreadable documents, labelled bill-specific versus policy-family links, corrected the Delimitation Bill status with a sourced override, and published a provisional design rating without an effectiveness score.`,
+  )
+  db.prepare(
+    `INSERT INTO ingestion_batches
+      (id, source_roster_version, query_scope, run_at, agent_model,
+       candidates_found, rejected_records, reviewer, review_status,
+       published_at, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).run(
+    'full-refresh-2026-07-26',
+    sourceRosterVersion,
+    'Full India, Andhra Pradesh, and Tamil Nadu refresh across current officeholders, indicators, bills, policies, budgets, crime, trade, events, sources, and ratings',
+    metadata.generated_at,
+    'Codex full-refresh workflow',
+    29,
+    6,
+    'India Mechanics full-refresh editorial pass',
+    'published',
+    metadata.generated_at,
+    'Advanced reviewed cutoffs through July 26, refreshed World Bank, V-Dem, and Sansad data, added one bill and official-text explanation, reviewed the National Song bill and BHAVYA industrial policies, updated the NEET crisis with ministerial resignation and a reform task force, added Andhra Pradesh population-policy analysis and Tamil Nadu fiscal-white-paper accountability, and preserved the NCRB 2024 table-access gap without changing PM or CM ratings.',
   )
 }
 

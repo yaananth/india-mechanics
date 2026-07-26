@@ -1,6 +1,6 @@
 # India Mechanics Architecture
 
-Last updated: 2026-07-24
+Last updated: 2026-07-26
 
 This document is the operating map for the India Mechanics research system. It
 describes where data comes from, how evidence becomes a published record, how
@@ -386,7 +386,8 @@ The published AP corpus contains:
 - three CM terms: Naidu 2014-19, Jagan 2019-24, and Naidu 2024-present;
 - the same six-component leader formula used for PM terms;
 - ten post-split accountability events;
-- seven reviewed state policies, including a cross-term rural-road record;
+- eight reviewed state policies, including a cross-term rural-road record and
+  a design-only population-management initiative;
 - three landmark state budgets, including the current 2026-27 proposal;
 - twenty-nine AP-coded indicators and eighty-eight observations;
 - three reviewed state questions;
@@ -414,7 +415,7 @@ The published Tamil Nadu corpus contains:
 - twenty-four in-scope CM terms, including acting and short transitions;
 - nine rated substantial terms using the same six-component formula;
 - an explicitly unscored Vijay government beginning May 10, 2026;
-- thirteen accountability events and fifteen reviewed policies;
+- fourteen accountability events and fifteen reviewed policies;
 - three reviewed budgets, with no fabricated current-government budget rating;
 - twenty-seven visible TN-coded indicators and seventy-three observations;
 - three reviewed state questions and a state-only source ledger;
@@ -708,7 +709,7 @@ npm run data:refresh
 To reproduce a historical as-of:
 
 ```bash
-npx tsx scripts/fetch-indicators.ts --as-of=2026-07-24
+npx tsx scripts/fetch-indicators.ts --as-of=2026-07-26
 npm run db:seed
 ```
 
@@ -716,6 +717,12 @@ npm run db:seed
 
 `npm run refresh:latest` refreshes machine data, tests the system, and builds the
 site. It does not auto-publish narrative news.
+
+The agent command `refresh` is the full publication workflow defined in
+`AGENTS.md` and `research/prompts/full-refresh-v1.txt`. It covers every published
+evidence lane and jurisdiction, updates only reviewed cutoffs, commits and
+pushes the validated source, and redeploys Sites. It must not be reduced to the
+`refresh:latest` npm script.
 
 When a user or agent asks for the latest:
 

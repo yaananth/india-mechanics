@@ -21,7 +21,7 @@ import type {
   SourceSeed,
 } from '../types.ts'
 
-const reviewedAt = '2026-07-24'
+const reviewedAt = '2026-07-26'
 
 export const tamilNaduSources: SourceSeed[] = [
   {
@@ -99,6 +99,54 @@ export const tamilNaduSources: SourceSeed[] = [
     limitations:
       'An oath record does not establish later policy, execution, or outcome performance.',
     publishedDate: '2026-05-10',
+    accessedDate: reviewedAt,
+  },
+  {
+    id: 'tn-finance-white-paper-2026',
+    title: 'White Paper on the State of Finances of Tamil Nadu, 2026',
+    publisher: 'Finance Department, Government of Tamil Nadu',
+    url: 'https://financedept.tn.gov.in/en/my-documents/2020/07/TN_White_Paper_English-2026.pdf',
+    sourceType: 'official-fiscal-analysis',
+    reliability: 5,
+    ratingReason:
+      'Primary fiscal white paper issued by the incoming government using state accounts, debt, guarantees, public-enterprise, power-sector, and pension records.',
+    bestFor:
+      'The Vijay government’s inherited-fiscal diagnosis and the baseline it chose before its first full budget.',
+    limitations:
+      'The incoming government selected the framing and attribution; figures and causal claims require comparison with audited accounts, prior budgets, and independent analysis.',
+    publishedDate: '2026-06-16',
+    accessedDate: reviewedAt,
+  },
+  {
+    id: 'new-indian-express-tn-white-paper-2026',
+    title: 'Tamil Nadu’s reported fiscal exposure reaches Rs 13.18 lakh crore',
+    publisher: 'New Indian Express',
+    url: 'https://www.newindianexpress.com/states/tamil-nadu/2026/Jun/17/tamil-nadus-true-debt-rs-1318l-crore-white-paper',
+    sourceType: 'independent-state-reporting',
+    reliability: 4,
+    ratingReason:
+      'Detailed contemporaneous reporting on the white paper’s debt, guarantees, public-enterprise, power, and pension claims.',
+    bestFor:
+      'Independent extraction of the main fiscal claims and their scale.',
+    limitations:
+      'The figures originate in an incoming-government white paper and still require reconciliation with audited accounts and prior budgets.',
+    publishedDate: '2026-06-17',
+    accessedDate: reviewedAt,
+  },
+  {
+    id: 'new-indian-express-tn-white-paper-response-2026',
+    title: 'Former Finance Minister disputes Tamil Nadu white-paper framing',
+    publisher: 'New Indian Express',
+    url: 'https://www.newindianexpress.com/states/tamil-nadu/2026/Jun/18/ex-fm-slams-tvk-dares-it-to-keepdebt-lower-than-that-of-dmk-regime',
+    sourceType: 'independent-state-reporting',
+    reliability: 4,
+    ratingReason:
+      'Named reporting of the outgoing government’s response and competing interpretation of debt, deficits, and fiscal responsibility.',
+    bestFor:
+      'Preserving disagreement and avoiding treatment of the incoming government’s attribution as a neutral finding.',
+    limitations:
+      'A political rebuttal is not an independent fiscal audit and does not by itself disprove the white paper.',
+    publishedDate: '2026-06-18',
     accessedDate: reviewedAt,
   },
   {
@@ -814,8 +862,12 @@ export const tamilNaduLeaderTerms: LeaderTermSeed[] = [
     startDate: '2026-05-10',
     governmentName: 'TVK-led coalition government',
     mandateLabel: 'TVK 108 seats with coalition support',
-    reason: 'the government is only about 75 days old and has no completed budget or observable outcome window.',
-    sourceIds: ['eci-tn-2026', 'tn-lok-bhavan-vijay-2026'],
+    reason: 'the government is less than three months old and has published a fiscal white paper but no completed full budget or observable outcome window.',
+    sourceIds: [
+      'eci-tn-2026',
+      'tn-lok-bhavan-vijay-2026',
+      'tn-finance-white-paper-2026',
+    ],
   }),
 ]
 
@@ -1604,6 +1656,24 @@ export const tamilNaduEvents: EventSeed[] = [
     sourceIds: ['eci-tn-2026', 'tn-lok-bhavan-vijay-2026'],
     leaderTermIds: ['tn-vijay-2026'],
   },
+  {
+    id: 'tn-fiscal-white-paper-2026',
+    jurisdictionId: 'tamil-nadu',
+    date: '2026-06-16',
+    title: 'Vijay government publishes a fiscal white paper',
+    summary:
+      'The incoming TVK-led government published a detailed account of debt, guarantees, deficits, public enterprises, power-sector exposure, pensions, and inherited fiscal commitments before presenting its first full budget.',
+    significance:
+      'The document creates an inspectable fiscal baseline and direct accountability for the incoming government’s future budget choices, while its attribution claims remain government-authored and politically contested.',
+    category: 'budget',
+    confidence: 'medium',
+    sourceIds: [
+      'tn-finance-white-paper-2026',
+      'new-indian-express-tn-white-paper-2026',
+      'new-indian-express-tn-white-paper-response-2026',
+    ],
+    leaderTermIds: ['tn-vijay-2026'],
+  },
 ]
 
 export const tamilNaduEventAssessments: EventAssessmentSeed[] = [
@@ -2112,6 +2182,52 @@ export const tamilNaduEventAssessments: EventAssessmentSeed[] = [
       },
     ],
   },
+  {
+    eventId: 'tn-fiscal-white-paper-2026',
+    choiceAssessment: 'mostly-right',
+    choiceScore: 7,
+    choiceReason:
+      'Publishing a detailed inherited-fiscal baseline before the first full budget improves transparency and testability. The score remains below the top tier because an incoming government controls the framing and the document does not itself repair debt, deficits, public enterprises, pensions, or service delivery.',
+    unionRole:
+      'Union borrowing rules, Finance Commission transfers, centrally sponsored schemes, and national macroeconomic conditions shape part of the fiscal context but do not author the state white paper.',
+    stateLocalRole:
+      'The Vijay government and Finance Department chose the data, attribution, and reform framing; prior Tamil Nadu governments remain responsible for their own budgets and liabilities and may contest the interpretation.',
+    positiveOutcomes:
+      'The publication creates a public baseline against which the first TVK budget, later accounts, fiscal rules, and promised administrative reforms can be tested.',
+    lessons:
+      'A fiscal white paper should be followed by machine-readable tables, reconciliation with audited accounts, explicit responsibility across terms, a costed budget, and measurable debt, power, pension, and service-delivery milestones.',
+    confidence: 'medium',
+    assessmentAsOf: reviewedAt,
+    responsibilities: [
+      {
+        actorType: 'state-government',
+        actorName: 'Vijay government and Tamil Nadu Finance Department',
+        responsibilityKind: 'positive-leadership',
+        level: 4,
+        assessment:
+          'Published the fiscal diagnosis and now owns the accuracy of its claims and the quality of the first full budget response.',
+        confidence: 'high',
+      },
+      {
+        actorType: 'state-government',
+        actorName: 'Stalin government and earlier Tamil Nadu administrations',
+        responsibilityKind: 'shared-context',
+        level: 3,
+        assessment:
+          'Created parts of the inherited debt, guarantees, spending commitments, and public-enterprise position, while responsibility spans multiple terms and national conditions.',
+        confidence: 'medium',
+      },
+      {
+        actorType: 'institution',
+        actorName: 'Audited state accounts and independent fiscal scrutiny',
+        responsibilityKind: 'implementation',
+        level: 3,
+        assessment:
+          'Must test the white paper’s figures, attribution, and later budget delivery.',
+        confidence: 'high',
+      },
+    ],
+  },
 ]
 
 export const tamilNaduClaims: ClaimSeed[] = [
@@ -2386,12 +2502,70 @@ export const tamilNaduClaims: ClaimSeed[] = [
     eventId: 'tn-vijay-government-2026',
     title: 'The Vijay government is too new for a rating',
     body:
-      'Vijay took office on May 10, 2026. Campaign promises, appointments, and early announcements cannot substitute for an enacted budget, implementation record, institutional conduct, and observed outcomes.',
+      'Vijay took office on May 10, 2026. The fiscal white paper is a useful accountability baseline, but it is not a full budget, implementation record, institutional track record, or observed outcome window.',
     stance: 'context',
     category: 'current-government',
     confidence: 'high',
     asOfDate: reviewedAt,
-    sourceIds: ['eci-tn-2026', 'tn-lok-bhavan-vijay-2026'],
+    sourceIds: [
+      'eci-tn-2026',
+      'tn-lok-bhavan-vijay-2026',
+      'tn-finance-white-paper-2026',
+    ],
+  },
+  {
+    id: 'tn-vijay-fiscal-disclosure',
+    jurisdictionId: 'tamil-nadu',
+    leaderTermId: 'tn-vijay-2026',
+    eventId: 'tn-fiscal-white-paper-2026',
+    title: 'The fiscal white paper creates a measurable starting point',
+    body:
+      'Publishing debt, guarantees, deficits, public-enterprise, power, and pension concerns before the first full budget improves transparency and makes later promises easier to test against an explicit baseline.',
+    stance: 'achievement',
+    category: 'public-finance',
+    confidence: 'medium',
+    asOfDate: reviewedAt,
+    sourceIds: [
+      'tn-finance-white-paper-2026',
+      'new-indian-express-tn-white-paper-2026',
+      'new-indian-express-tn-white-paper-response-2026',
+    ],
+  },
+  {
+    id: 'tn-white-paper-attribution-limit',
+    jurisdictionId: 'tamil-nadu',
+    leaderTermId: 'tn-vijay-2026',
+    eventId: 'tn-fiscal-white-paper-2026',
+    title: 'A white paper is a government argument, not a neutral verdict',
+    body:
+      'The incoming government selected the framing and political attribution. Audited accounts, prior budgets, public-enterprise statements, and independent fiscal analysis must test which liabilities were inherited, when they arose, and how much control each government had.',
+    stance: 'context',
+    category: 'public-finance',
+    confidence: 'high',
+    asOfDate: reviewedAt,
+    sourceIds: [
+      'tn-finance-white-paper-2026',
+      'new-indian-express-tn-white-paper-2026',
+      'new-indian-express-tn-white-paper-response-2026',
+    ],
+  },
+  {
+    id: 'tn-vijay-budget-outcomes-pending',
+    jurisdictionId: 'tamil-nadu',
+    leaderTermId: 'tn-vijay-2026',
+    eventId: 'tn-fiscal-white-paper-2026',
+    title: 'No budget or fiscal outcome should be inferred yet',
+    body:
+      'At the July 26 cutoff, the new government had not produced a reviewed full budget or actual spending record. Proposed fiscal, procurement, pension, and administrative changes remain design signals until enacted, funded, implemented, and measured.',
+    stance: 'concern',
+    category: 'public-finance',
+    confidence: 'high',
+    asOfDate: reviewedAt,
+    sourceIds: [
+      'tn-finance-white-paper-2026',
+      'new-indian-express-tn-white-paper-2026',
+      'new-indian-express-tn-white-paper-response-2026',
+    ],
   },
   {
     id: 'tn-shared-attribution',

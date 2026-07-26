@@ -151,6 +151,14 @@ export const reviewedPolicyRegisterMatchers: PolicyRegisterMatcher[] = [
     matches: (title, date) =>
       date === '2026-04-16' && title === 'THE DELIMITATION BILL 2026',
   },
+  {
+    policyId: 'national-honour-amendment-bill-2026',
+    matches: (title, date) =>
+      date === '2026-07-24' &&
+      title.includes(
+        'PREVENTION OF INSULTS TO NATIONAL HONOUR AMENDMENT BILL 2026',
+      ),
+  },
 ]
 
 export function linkedPolicyMatch(title: string, date: string) {

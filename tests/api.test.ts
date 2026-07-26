@@ -21,8 +21,8 @@ describe('read API', () => {
   it('returns an overview with source cutoffs and a current PM', async () => {
     const response = await request(app).get('/api/overview')
     expect(response.status).toBe(200)
-    expect(response.body.knowledge.cutoff).toBe('2026-07-24')
-    expect(response.body.knowledge.billRegisterAsOfDate).toBe('2026-07-24')
+    expect(response.body.knowledge.cutoff).toBe('2026-07-26')
+    expect(response.body.knowledge.billRegisterAsOfDate).toBe('2026-07-26')
     expect(response.body.knowledge.timelineStarts).toBe('1945-01-01')
     expect(response.body.currentTerm.person.name).toBe('Narendra Modi')
     expect(response.body.progress.overall.score).toBeGreaterThan(0)
@@ -119,7 +119,7 @@ describe('read API', () => {
       leaders.body.find((leader: { id: string }) => leader.id === 'ap-naidu-2024')
         .specialistAssessments,
     ).toEqual([])
-    expect(policies.body).toHaveLength(7)
+    expect(policies.body).toHaveLength(8)
     expect(budgets.body).toHaveLength(3)
     expect(events.body).toHaveLength(10)
     expect(
@@ -145,6 +145,12 @@ describe('read API', () => {
       policies.body.some(
         (policy: { id: string }) =>
           policy.id === 'ap-rural-road-connectivity-2016',
+      ),
+    ).toBe(true)
+    expect(
+      policies.body.some(
+        (policy: { id: string }) =>
+          policy.id === 'ap-population-management-2026',
       ),
     ).toBe(true)
     expect(
@@ -177,6 +183,34 @@ describe('read API', () => {
       ),
     ).toBe(true)
     expect(response.body.attributionCaveat).toContain('Chief Minister')
+  })
+
+  it('publishes Andhra Pradesh population management as provisional design', async () => {
+    const response = await request(app)
+      .get('/api/policies/ap-population-management-2026')
+      .query({ jurisdiction: 'andhra-pradesh' })
+
+    expect(response.status).toBe(200)
+    expect(response.body).toMatchObject({
+      leader: { name: 'N. Chandrababu Naidu' },
+      ratingBasis: 'design',
+      ratingConfidence: 'low',
+      ratingScore: 6.2,
+    })
+    expect(
+      response.body.componentScores.find(
+        (component: { id: string }) => component.id === 'effectiveness',
+      ).score,
+    ).toBeNull()
+    expect(
+      response.body.claims.map((claim: { id: string }) => claim.id),
+    ).toEqual(
+      expect.arrayContaining([
+        'ap-population-policy-lifecycle-design',
+        'ap-population-policy-rights-fiscal-risk',
+        'ap-population-policy-too-early',
+      ]),
+    )
   })
 
   it('publishes modern Tamil Nadu as an isolated state jurisdiction', async () => {
@@ -231,8 +265,8 @@ describe('read API', () => {
       featuredAnswer: { id: 'tn-modern-progress' },
     })
     expect(overview.body.knowledge).toMatchObject({
-      cutoff: '2026-07-24',
-      politicalStatusChecked: '2026-07-24',
+      cutoff: '2026-07-26',
+      politicalStatusChecked: '2026-07-26',
       timelineStarts: '1969-01-14',
     })
     expect(overview.body.progress.overall.score).toBeGreaterThan(0)
@@ -259,7 +293,7 @@ describe('read API', () => {
           budget.leaderTermId !== 'tn-vijay-2026',
       ),
     ).toBe(true)
-    expect(events.body).toHaveLength(13)
+    expect(events.body).toHaveLength(14)
     expect(
       events.body.every(
         (event: {
@@ -288,6 +322,11 @@ describe('read API', () => {
       events.body.some(
         (event: { id: string }) =>
           event.id === 'tn-road-delivery-and-safety-2025',
+      ),
+    ).toBe(true)
+    expect(
+      events.body.some(
+        (event: { id: string }) => event.id === 'tn-fiscal-white-paper-2026',
       ),
     ).toBe(true)
   })
@@ -355,6 +394,40 @@ describe('read API', () => {
     })
   })
 
+  it('shows the Vijay fiscal white paper without treating it as a budget outcome', async () => {
+    const [events, current] = await Promise.all([
+      request(app).get('/api/events').query({ jurisdiction: 'tamil-nadu' }),
+      request(app)
+        .get('/api/leaders/tn-vijay-2026')
+        .query({ jurisdiction: 'tamil-nadu' }),
+    ])
+
+    const whitePaper = events.body.find(
+      (event: { id: string }) => event.id === 'tn-fiscal-white-paper-2026',
+    )
+    expect(whitePaper).toMatchObject({
+      governments: [
+        expect.objectContaining({
+          termId: 'tn-vijay-2026',
+          party: expect.objectContaining({ id: 'tvk' }),
+        }),
+      ],
+      accountability: expect.objectContaining({
+        choiceAssessment: 'mostly-right',
+      }),
+    })
+    expect(
+      current.body.claims.map((claim: { id: string }) => claim.id),
+    ).toEqual(
+      expect.arrayContaining([
+        'tn-vijay-fiscal-disclosure',
+        'tn-white-paper-attribution-limit',
+        'tn-vijay-budget-outcomes-pending',
+      ]),
+    )
+    expect(current.body.ratingScore).toBeNull()
+  })
+
   it('publishes crime and public-safety trends without treating FIR counts as direct harm', async () => {
     const [indiaAnswer, indiaMurder, apViolence, apAnswer] = await Promise.all([
       request(app).get('/api/search').query({
@@ -378,6 +451,7 @@ describe('read API', () => {
       confidence: 'medium',
     })
     expect(indiaAnswer.body.answer.verdict).toContain('bounded')
+    expect(indiaAnswer.body.answer.shortAnswer).toContain('released 2024')
     expect(indiaMurder.body.observations).toEqual([
       expect.objectContaining({ period: 2015, value: 2.6 }),
       expect.objectContaining({ period: 2019, value: 2.2 }),
@@ -708,7 +782,7 @@ describe('read API', () => {
     expect(exportResponse.body.events.length).toBeGreaterThanOrEqual(44)
     expect(exportResponse.body.policies.length).toBeGreaterThanOrEqual(30)
     expect(exportResponse.body.budgets).toHaveLength(17)
-    expect(exportResponse.body.bills).toHaveLength(4407)
+    expect(exportResponse.body.bills).toHaveLength(4408)
     expect(exportResponse.body.sources.length).toBeGreaterThan(20)
     expect(openapi.body.openapi).toBe('3.1.0')
   })
@@ -887,17 +961,18 @@ describe('read API', () => {
       pageSize: 5,
     })
     expect(response.status).toBe(200)
-    expect(response.body.total).toBe(4407)
-    expect(response.body.explained).toBe(4407)
+    expect(response.body.total).toBe(4408)
+    expect(response.body.explained).toBe(4408)
     expect(response.body.officialOrReviewed).toBeGreaterThan(2300)
-    expect(response.body.reviewed).toBe(35)
+    expect(response.body.reviewed).toBe(36)
     expect(response.body.records).toHaveLength(5)
     expect(response.body.records[0]).toMatchObject({
-      introducedDate: '2026-07-20',
+      introducedDate: '2026-07-24',
       leader: { name: 'Narendra Modi' },
-      reviewStatus: 'discovered',
+      reviewStatus: 'reviewed',
+      linkedPolicyId: 'national-honour-amendment-bill-2026',
       explanation: {
-        verdict: 'not-assessed',
+        verdict: 'reviewed-policy',
       },
     })
     expect(response.body.facets.statuses.length).toBeGreaterThan(5)
@@ -1060,6 +1135,72 @@ describe('read API', () => {
     )
     expect(stances.has('achievement')).toBe(true)
     expect(stances.has('concern')).toBe(true)
+  })
+
+  it('reviews the pending National Song protection bill without inventing outcomes', async () => {
+    const [policy, bill] = await Promise.all([
+      request(app).get('/api/policies/national-honour-amendment-bill-2026'),
+      request(app).get(
+        '/api/bills/sansad-bill-2026-07-24-08ecdadde507d8cb',
+      ),
+    ])
+
+    expect(policy.status).toBe(200)
+    expect(policy.body).toMatchObject({
+      status: 'pending',
+      ratingBasis: 'design',
+      ratingScore: 5.6,
+      leader: { name: 'Narendra Modi' },
+    })
+    expect(
+      policy.body.componentScores.find(
+        (component: { id: string }) => component.id === 'effectiveness',
+      ).score,
+    ).toBeNull()
+    expect(
+      policy.body.claims.map((claim: { id: string }) => claim.id),
+    ).toEqual(
+      expect.arrayContaining([
+        'national-honour-bill-symbolic-purpose',
+        'national-honour-bill-rights-risk',
+        'national-honour-bill-too-early',
+      ]),
+    )
+
+    expect(bill.status).toBe(200)
+    expect(bill.body).toMatchObject({
+      status: 'Pending',
+      reviewStatus: 'reviewed',
+      linkedPolicyId: 'national-honour-amendment-bill-2026',
+      linkedPolicyScope: 'bill-specific',
+    })
+  })
+
+  it('keeps both 2026 BHAVYA industrial schemes design-only', async () => {
+    const [parks, chemical] = await Promise.all([
+      request(app).get('/api/policies/bhavya-industrial-parks-2026'),
+      request(app).get('/api/policies/bhavya-rasayan-2026'),
+    ])
+
+    expect(parks.status).toBe(200)
+    expect(parks.body).toMatchObject({
+      ratingBasis: 'design',
+      ratingScore: 6.8,
+      ratingConfidence: 'low',
+    })
+    expect(chemical.status).toBe(200)
+    expect(chemical.body).toMatchObject({
+      ratingBasis: 'design',
+      ratingScore: 6.6,
+      ratingConfidence: 'low',
+    })
+    for (const response of [parks, chemical]) {
+      expect(
+        response.body.componentScores.find(
+          (component: { id: string }) => component.id === 'effectiveness',
+        ).score,
+      ).toBeNull()
+    }
   })
 
   it('publishes the in-force 2026 FCRA Rules separately from the pending Bill', async () => {

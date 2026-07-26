@@ -1,13 +1,23 @@
 {
-  "generatedAt": "2026-07-24T08:22:14.805Z",
-  "asOfDate": "2026-07-24",
+  "generatedAt": "2026-07-26T18:44:11.080Z",
+  "asOfDate": "2026-07-26",
   "extractionVersion": "bill-document-extract-v0.1",
-  "totalBills": 4407,
-  "attempted": 3377,
-  "officialText": 2436,
+  "totalBills": 4408,
+  "attempted": 3378,
+  "officialText": 2437,
   "unreadable": 794,
   "failed": 147,
   "documents": [
+    {
+      "billId": "sansad-bill-2026-07-24-08ecdadde507d8cb",
+      "sourceUrl": "https://sansad.in/getFile/BillsTexts/RSBillTexts/Asintroduced/e724202624345PM.pdf?source=legislation",
+      "sourceKind": "introduced",
+      "extractionStatus": "official-text",
+      "officialPurpose": "further to amend the Prevention of Insults to National Honour Act, 1971.",
+      "governmentRationale": "Therefore, in order to prohibit any person from intentionally preventing the singing of the National Song (Vande Mataram) or causing disturbance to any assembly engaged in such singing, it is proposed to amend section 3 of the said Act to include the National Song also within its ambit, so as to make such acts punishable. The Bill seeks to achieve the above objectives.",
+      "contentHash": "9bd0e1c745213670ad0220ae5021c0a32db338fabc4ae8b97118f7e406d549b8",
+      "extractedAt": "2026-07-26T18:28:51.450Z"
+    },
     {
       "billId": "sansad-bill-2026-07-20-aa44f21f7a14dfe0",
       "sourceUrl": "https://sansad.in/getFile/BillsTexts/LSBillTexts/Asintroduced/english7202026122228PM.pdf?source=legislation",

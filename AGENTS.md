@@ -3,6 +3,37 @@
 This repository is both software and a public research record. Treat evidence
 changes with the same care as code changes.
 
+## When the user says refresh
+
+The standalone command `refresh`, or a clear request to refresh India Mechanics,
+means a full current-publication cycle through today's date. It never means only
+reloading the browser, clearing a cache, refreshing World Bank data, or updating
+the parliamentary register.
+
+1. Read `/api/meta` and every jurisdiction's cutoff before changing data.
+2. Use `research/prompts/full-refresh-v1.txt` as the controlling refresh prompt.
+3. Run `npm run data:refresh` and `npm run bills:refresh`.
+4. Review every published evidence lane for India and every published state:
+   current officeholders and parties, elections, laws and judgments, policies
+   and rules, budgets, indicators, crime and public safety, trade agreements,
+   disasters, protests and social conflict, major achievements and failures,
+   source health, and rating-relevant evidence.
+5. Use `research/source-roster.json` and `research/query-templates.json`. Save
+   bounded research batches and validate each with
+   `npm run research:validate -- <batch.json>`.
+6. Update sources before claims. Update events, accountability, policies,
+   budgets, answers, ratings, and `ingestion_batches` only when evidence
+   warrants a change.
+7. Advance each global or jurisdiction cutoff only for evidence lanes actually
+   reviewed through the refresh date. Preserve and report any stale lane.
+8. Run database seeding, research audits, rating audit, tests, lint, build,
+   dependency audit, source checks, and bundled Browser E2E at desktop and
+   mobile widths.
+9. Commit and push the exact validated source, save a Sites version, redeploy
+   the canonical public site, and verify the production APIs and visible cutoff.
+10. Report the new cutoff, changed records, unchanged-but-reviewed lanes,
+    blocked or stale lanes, verification results, commit, and deployment.
+
 ## When the user asks for the latest
 
 1. Read `/api/meta` or `server/seed-data/research-metadata.ts`.

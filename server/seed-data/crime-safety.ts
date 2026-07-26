@@ -11,7 +11,7 @@ import type {
   SourceSeed,
 } from '../types.ts'
 
-const reviewedAt = '2026-07-24'
+const reviewedAt = '2026-07-26'
 
 export const crimeSafetySources: SourceSeed[] = [
   {
@@ -80,7 +80,7 @@ export const crimeSafetySources: SourceSeed[] = [
   },
   {
     id: 'ncrb-crime-2024-empty-index',
-    title: 'Crime in India 2024 publication page',
+    title: 'Crime in India 2024 publication page without downloadable records',
     publisher: 'National Crime Records Bureau',
     url: 'https://www.ncrb.gov.in/crime-in-india-year-wise.html?keyword=&year=2024',
     sourceType: 'official-availability-record',
@@ -88,9 +88,41 @@ export const crimeSafetySources: SourceSeed[] = [
     ratingReason:
       'Official NCRB year page used to verify whether a newer crime report is actually downloadable.',
     bestFor:
-      'The July 24, 2026 evidence gap: the page exists but currently returns no publication records.',
+      'The July 26, 2026 evidence gap: the year is listed and a cover is displayed, but the result table still says no records found.',
     limitations:
-      'This is an availability check, not crime data. It must be refreshed before claiming that 2024 statistics are published.',
+      'This is an availability check, not the underlying report. Government and press announcements of release do not make state and offence tables reproducible.',
+    accessedDate: reviewedAt,
+  },
+  {
+    id: 'pib-crime-india-2024-release',
+    title: 'Release of Crime in India 2024',
+    publisher: 'National Crime Records Bureau via Press Information Bureau',
+    url: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=2294568&reg=3&lang=2',
+    sourceType: 'official-publication-announcement',
+    reliability: 5,
+    ratingReason:
+      'Official announcement that NCRB released the Crime in India 2024 report.',
+    bestFor: 'Publication chronology and official headline release status.',
+    limitations:
+      'The announcement is not a substitute for downloadable tables and does not create a comparable state series by itself.',
+    publishedDate: '2026-05-06',
+    accessedDate: reviewedAt,
+  },
+  {
+    id: 'indian-express-crime-india-2024',
+    title:
+      'NCRB Crime in India 2024: total cases fall, cybercrime and economic offences rise',
+    publisher: 'Indian Express',
+    url: 'https://indianexpress.com/article/india/crime-cases-saw-dip-but-cyber-offences-rose-in-2024-ncrb-data-10676671/',
+    sourceType: 'independent-data-reporting',
+    reliability: 4,
+    ratingReason:
+      'Detailed national reporting based on the newly released NCRB report with named rates, counts, and year-on-year comparisons.',
+    bestFor:
+      'Provisional national 2024 headline signals while the official table files remain unavailable through the NCRB year page.',
+    limitations:
+      'Secondary extraction cannot replace the official tables, state detail, definitions, or a published IPC-to-BNS comparison bridge.',
+    publishedDate: '2026-05-07',
     accessedDate: reviewedAt,
   },
   {
@@ -1024,14 +1056,36 @@ export const crimeSafetyClaims: ClaimSeed[] = [
   {
     id: 'crime-2024-data-gap',
     jurisdictionId: 'india',
-    title: 'The official 2024 page has no downloadable crime records yet',
+    title: 'The 2024 release exists, but reproducible tables remain unavailable',
     body:
-      'As reviewed on July 24, 2026, NCRB exposes a 2024 year page but it returns no publication records. The latest usable Crime in India dataset therefore remains 2023.',
+      'NCRB and the Union announced Crime in India 2024, and independent reporting summarizes national headline figures. As reviewed on July 26, however, the official NCRB year page still returns “no records found,” so the latest reproducible national and state table series in India Mechanics remains 2023.',
     stance: 'context',
     category: 'data-availability',
     confidence: 'high',
     asOfDate: reviewedAt,
-    sourceIds: ['ncrb-crime-2024-empty-index', 'ncrb-crime-2023-part-i'],
+    sourceIds: [
+      'ncrb-crime-2024-empty-index',
+      'pib-crime-india-2024-release',
+      'indian-express-crime-india-2024',
+      'ncrb-crime-2023-part-i',
+    ],
+  },
+  {
+    id: 'india-crime-2024-headline-signal',
+    jurisdictionId: 'india',
+    leaderTermId: 'modi-2014',
+    title: 'National 2024 headlines are mixed and provisional',
+    body:
+      'Independent reporting from the released NCRB report says total cases fell about 6% and the recorded crime rate fell from 448.3 per lakh in 2023 to 418.9 in 2024, while murder cases fell 2.4% to 27,049. Cybercrime rose 17.9% to 1,01,928 cases and economic offences rose 4.6% to 2,14,379. These are current signals, not yet an appended trend series, because official tables and the IPC-to-BNS bridge remain unavailable.',
+    stance: 'mixed',
+    category: 'public-safety',
+    confidence: 'medium',
+    asOfDate: reviewedAt,
+    sourceIds: [
+      'pib-crime-india-2024-release',
+      'indian-express-crime-india-2024',
+      'ncrb-crime-2024-empty-index',
+    ],
   },
   {
     id: 'india-criminal-law-data-break',
@@ -1154,7 +1208,7 @@ export const crimeSafetyCuratedAnswers: CuratedAnswerSeed[] = [
       'cybercrime india',
     ],
     shortAnswer:
-      'Mixed. The registered murder rate improved, violent crime rose and then levelled, and reporting-sensitive women, child, total, and cyber categories increased. National digital policing and cyber systems expanded, while investigation, conviction, pendency, under-reporting, and state-level responsibility prevent a simple PM verdict.',
+      'Mixed. The reproducible series through 2023 shows an improved murder rate, violent crime rising and then levelling, and reporting-sensitive women, child, total, and cyber categories increasing. The released 2024 national headlines suggest fewer murders but sharply higher cybercrime and a slightly higher total rate; those figures remain provisional in this site until official tables and a BNS comparison bridge are downloadable.',
     verdict:
       'Public-safety direction is mixed, with a positive lethal-violence signal and material justice and cyber gaps. Crime now affects the shared crisis and integrity components, but the PM effect is bounded because police and public order are primarily state responsibilities.',
     confidence: 'medium',
@@ -1191,9 +1245,14 @@ export const crimeSafetyCuratedAnswers: CuratedAnswerSeed[] = [
         sortOrder: 2,
       },
       {
-        claimId: 'india-criminal-law-data-break',
+        claimId: 'india-crime-2024-headline-signal',
         section: 'context',
         sortOrder: 3,
+      },
+      {
+        claimId: 'india-criminal-law-data-break',
+        section: 'context',
+        sortOrder: 4,
       },
     ],
   },

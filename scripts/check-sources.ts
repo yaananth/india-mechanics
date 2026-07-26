@@ -52,10 +52,23 @@ async function checkSource(
         },
       })
     }
+    if (response.status === 416) {
+      response = await fetch(source.url, {
+        method: 'GET',
+        redirect: 'follow',
+        signal: controller.signal,
+        headers: {
+          'user-agent': 'India-Mechanics-Source-Check/0.1',
+        },
+      })
+    }
     const classification =
       response.status >= 200 && response.status < 400
         ? 'reachable'
-        : response.status === 401 || response.status === 403 || response.status === 429
+        : response.status === 401 ||
+            response.status === 403 ||
+            response.status === 429 ||
+            response.status >= 500
           ? 'blocked'
           : 'missing'
     return {
@@ -85,7 +98,10 @@ async function checkSource(
       causeCode === 'SELF_SIGNED_CERT_IN_CHAIN' ||
       causeCode === 'ECONNRESET' ||
       causeCode === 'ETIMEDOUT' ||
-      causeCode === 'UND_ERR_CONNECT_TIMEOUT'
+      causeCode === 'UND_ERR_CONNECT_TIMEOUT' ||
+      causeCode === 'ENOTFOUND' ||
+      causeCode === 'EAI_AGAIN' ||
+      causeCode === 'ECONNREFUSED'
     ) {
       return {
         id: source.id,

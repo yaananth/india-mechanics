@@ -1,6 +1,6 @@
 {
-  "version": "source-roster-v0.11",
-  "updatedAt": "2026-07-24",
+  "version": "source-roster-v0.12",
+  "updatedAt": "2026-07-26",
   "rule": "Web search discovers candidates. Only reviewed source items enter the published database.",
   "sources": [
     {
@@ -85,6 +85,40 @@
       "name": "Prime Minister's Office",
       "domains": ["pmindia.gov.in"],
       "roles": ["prime-minister-terms", "official-biographies", "government-chronology"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "president-india",
+      "name": "President of India",
+      "domains": ["presidentofindia.gov.in"],
+      "roles": ["ministerial-appointments", "resignations", "constitutional-communiques"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "education-ministry",
+      "name": "Ministry of Education",
+      "domains": ["education.gov.in"],
+      "roles": ["education-policy", "examinations", "official-reform-announcements"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "andhra-government",
+      "name": "Government of Andhra Pradesh",
+      "domains": ["ap.gov.in", "population.ap.gov.in", "goir.ap.gov.in"],
+      "roles": ["state-policy", "state-programmes", "government-orders", "current-office"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "tamil-nadu-government",
+      "name": "Government of Tamil Nadu",
+      "domains": [
+        "tn.gov.in",
+        "cms.tn.gov.in",
+        "financedept.tn.gov.in",
+        "assembly.tn.gov.in",
+        "lokbhavan.tn.gov.in"
+      ],
+      "roles": ["state-policy", "state-budget", "current-office", "legislature"],
       "ratingCeiling": 5
     },
     {
@@ -194,6 +228,13 @@
       "ratingCeiling": 5
     },
     {
+      "id": "ncrb",
+      "name": "National Crime Records Bureau",
+      "domains": ["ncrb.gov.in"],
+      "roles": ["crime-statistics", "publication-availability", "criminal-justice-data"],
+      "ratingCeiling": 5
+    },
+    {
       "id": "nhrc",
       "name": "National Human Rights Commission",
       "domains": ["nhrc.nic.in"],
@@ -215,6 +256,13 @@
       "ratingCeiling": 4
     },
     {
+      "id": "associated-press",
+      "name": "Associated Press",
+      "domains": ["apnews.com"],
+      "roles": ["breaking-news", "independent-national", "field-reporting"],
+      "ratingCeiling": 4
+    },
+    {
       "id": "the-hindu",
       "name": "The Hindu",
       "domains": ["thehindu.com"],
@@ -227,6 +275,20 @@
       "domains": ["indianexpress.com"],
       "roles": ["investigations", "law", "policy", "explainers"],
       "ratingCeiling": 4
+    },
+    {
+      "id": "new-indian-express",
+      "name": "New Indian Express",
+      "domains": ["newindianexpress.com"],
+      "roles": ["state-policy", "regional-reporting", "corroboration"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "times-of-india",
+      "name": "Times of India",
+      "domains": ["timesofindia.indiatimes.com"],
+      "roles": ["state-policy", "contemporaneous-reporting"],
+      "ratingCeiling": 3
     },
     {
       "id": "bbc-india",
@@ -261,6 +323,20 @@
       "name": "Economic and Political Weekly",
       "domains": ["epw.in"],
       "roles": ["scholarly-history", "policy-analysis"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "impri",
+      "name": "Impact and Policy Research Institute",
+      "domains": ["impriindia.com"],
+      "roles": ["policy-analysis", "demography", "social-policy"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "cse",
+      "name": "Centre for Science and Environment",
+      "domains": ["cseindia.org"],
+      "roles": ["environmental-policy", "industrial-pollution", "implementation-guidance"],
       "ratingCeiling": 4
     },
     {
