@@ -1,6 +1,6 @@
 # India Mechanics Architecture
 
-Last updated: 2026-07-26
+Last updated: 2026-07-29
 
 This document is the operating map for the India Mechanics research system. It
 describes where data comes from, how evidence becomes a published record, how
@@ -88,6 +88,7 @@ server/seed-data/catalog.ts             reviewed sources, terms, events, claims
 server/seed-data/budgets.ts             reviewed budgets, allocations, and ratings
 server/seed-data/security.ts            all-PM national-security assessment lane
 server/seed-data/crime-safety.ts        crime, justice, cyber, and current-news lane
+server/seed-data/semiconductors.ts       cross-term semiconductor history and policy lane
 server/seed-data/andhra-pradesh.ts      post-split AP state and CM corpus
 server/seed-data/tamil-nadu.ts          modern Tamil Nadu state and CM corpus
 server/seed-data/research-metadata.ts   knowledge and review cutoffs
@@ -236,6 +237,45 @@ and public order are primarily state subjects. CM attribution is larger but
 remains shared with courts, prosecution, Union law and platforms, local
 administration, financial institutions, reporting behavior, and social
 conditions.
+
+### Strategic-technology semiconductor lane
+
+`server/seed-data/semiconductors.ts` keeps semiconductor evidence separate from
+the national core catalog while using the same sources, events, policy scores,
+claims, accountability, and curated-answer schema.
+
+The lane publishes four distinct policy records:
+
+- the SCL public-capability programme beginning in 1976;
+- the 2007-14 incentive and commercial-fab attempts;
+- India Semiconductor Mission 1.0 from December 2021; and
+- Semicon 2.0 as a separate July 2026 design-only programme.
+
+Historical and current claims are not collapsed into a party narrative. The
+review records that Fairchild seriously considered India in the mid-1960s while
+the exact Robert Noyce, complete-blueprint, and fifty-office details remain
+unproven. It gives the Indira-era SCL programme credit, treats the 1989 fire and
+slow recovery as a cross-government capability loss, records UPA policy delay
+and failed fab delivery, and gives the Modi government explicit credit for the
+first sustained mission and operating commercial assembly and test plants.
+
+Current-output rules are strict:
+
+- packaging and testing are real semiconductor manufacturing but are not
+  front-end wafer fabrication;
+- proposed Taloja capacity is not production;
+- Tata Assam's planned full capacity is not current output;
+- Dholera construction and technology partnerships are not qualified wafers;
+- public incentive envelopes and total project investment cannot be added when
+  the former finances part of the latter;
+- projected jobs, domestic value, yields, customers, and exports remain
+  prospective until observed.
+
+The July 29 rating review raised Modi's durable-reforms component from 7.4 to
+7.6 and integrity and execution from 5.9 to 6.0. Five evidence-aware
+replications still produced a rounded 6.7 balanced rating. The national-security
+strategic-autonomy component rose from 7.6 to 7.8 without counting the same
+evidence again in the general crisis score.
 
 ### Published state modules
 
@@ -748,18 +788,20 @@ claim summaries, locators, hashes where appropriate, and source links.
 
 Cutoff fields:
 
-- `knowledgeCutoff`: latest date for which the project has completed its stated
-  review;
+- `knowledgeCutoff`: newest date covered by any published, reviewed evidence
+  lane;
 - `editorialReviewedThrough`: latest date claims and evaluations were reviewed;
 - `politicalStatusChecked`: latest direct check of current office/election state;
 - `indicatorAsOfDate`: date the feed refresh ran;
 - latest World Bank and V-Dem periods: actual newest observations, not the
   request date.
 
-The UI reads these fields from SQLite. Agents should read `/api/meta`, not infer
-currency from the current date. Cutoffs should ultimately be tracked per topic
-or dataset; refreshing World Bank data must not advance the riot, court, election,
-or PM-evaluation cutoff.
+The UI reads these fields from SQLite and separately labels the latest evidence
+date and the last full editorial sweep. Agents should read `/api/meta`, not infer
+currency from the current date. A topic-specific review may advance
+`knowledgeCutoff` without advancing `editorialReviewedThrough`,
+`politicalStatusChecked`, or feed dates. Refreshing World Bank data must not
+advance the riot, court, election, or PM-evaluation cutoff.
 
 ## 11. Country and State Progress Index
 
@@ -1088,6 +1130,8 @@ The current automated suite checks:
 - Tamil Nadu naming-boundary isolation, full CM chronology, current-term
   no-score behavior, and state-only evidence;
 - reviewed-answer balance;
+- semiconductor history, planned-versus-operating capacity, design-only
+  Semicon 2.0 treatment, and rating-replication stability;
 - search and export APIs.
 
 Browser E2E must cover:

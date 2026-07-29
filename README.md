@@ -127,6 +127,7 @@ server/specialist-ratings.ts          specialist-score arithmetic
 server/seed-data/catalog.ts           national core corpus
 server/seed-data/security.ts          national-security lane
 server/seed-data/crime-safety.ts      crime, justice, and current-signal lane
+server/seed-data/semiconductors.ts     semiconductor history and industrial-policy lane
 server/seed-data/andhra-pradesh.ts    post-split AP corpus
 server/seed-data/tamil-nadu.ts        modern Tamil Nadu and CM corpus
 server/seed-data/budgets.ts           budget records and ratings
@@ -143,6 +144,13 @@ tests/                                database, scoring, API, and URL contracts
 The generated `data/india-mechanics.sqlite` file is disposable and gitignored.
 The source of truth is the schema, seed data, reviewed research batches, and
 checked-in feed snapshots.
+
+The semiconductor lane is deliberately cross-term. It credits the SCL
+foundation, records the 1989 capability loss and UPA-era investment failures,
+separates planned capacity from operating production, and publishes distinct
+ratings for India Semiconductor Mission 1.0 and Semicon 2.0. Its reviewed answer
+also discloses how semiconductor evidence changes PM component scores even when
+the rounded headline does not change.
 
 Every government Bill has a plain-language explanation. The UI distinguishes
 register-derived summaries, official-text reviews, and independent assessments.

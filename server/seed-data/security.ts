@@ -11,6 +11,7 @@ import type {
 } from '../types.ts'
 
 const assessedAt = '2026-07-24'
+const semiconductorAssessedAt = '2026-07-29'
 
 export const securitySources: SourceSeed[] = [
   {
@@ -569,8 +570,8 @@ export const securitySpecialistAssessments: LeaderSpecialistAssessmentSeed[] = [
     confidence: 'medium',
     status: 'reviewed',
     summary:
-      'Operational security is a comparative strength: LWE and most Northeast insurgency indicators fell substantially, India demonstrated greater willingness to retaliate across the border, and defence-industrial capability expanded. Major prevention failures, the China border shock, Manipur, and weaker safeguards keep the rights-adjusted result materially lower.',
-    assessmentAsOf: assessedAt,
+      'Operational security is a comparative strength: LWE and most Northeast insurgency indicators fell substantially, India demonstrated greater willingness to retaliate across the border, and defence-industrial and semiconductor capability expanded. Major prevention failures, the China border shock, Manipur, and weaker safeguards keep the rights-adjusted result materially lower.',
+    assessmentAsOf: semiconductorAssessedAt,
     sourceIds: [
       'mha-annual-report-2013-14',
       'mha-annual-report-2024-25',
@@ -582,6 +583,9 @@ export const securitySpecialistAssessments: LeaderSpecialistAssessmentSeed[] = [
       'ap-ladakh-disengagement-2024',
       'mod-dap-2020',
       'pib-defence-exports-2026',
+      'pib-semicon-india-2021',
+      'pib-semiconductor-status-2026',
+      'tata-asml-dholera-2026',
       'ap-pahalgam-2025',
       'supreme-court-manipur-2023',
     ],
@@ -606,9 +610,9 @@ export const securitySpecialistAssessments: LeaderSpecialistAssessmentSeed[] = [
       },
       {
         dimensionId: 'security-strategic-autonomy',
-        score: 7.6,
+        score: 7.8,
         rationale:
-          'Defence acquisition reform, domestic production, diversified partnerships, and record official defence exports expanded capability and freedom of action. Import dependence, procurement delays, and uncertain battlefield conversion limit the score.',
+          'Defence acquisition reform, domestic production, diversified partnerships, record official defence exports, and verified semiconductor assembly and test production expanded capability and freedom of action. The front-end fab remains unfinished, and import dependence, procurement delays, and uncertain battlefield conversion limit the score.',
       },
       {
         dimensionId: 'security-safeguards',

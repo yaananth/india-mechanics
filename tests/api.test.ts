@@ -21,7 +21,8 @@ describe('read API', () => {
   it('returns an overview with source cutoffs and a current PM', async () => {
     const response = await request(app).get('/api/overview')
     expect(response.status).toBe(200)
-    expect(response.body.knowledge.cutoff).toBe('2026-07-26')
+    expect(response.body.knowledge.cutoff).toBe('2026-07-29')
+    expect(response.body.knowledge.editorialReviewedThrough).toBe('2026-07-26')
     expect(response.body.knowledge.billRegisterAsOfDate).toBe('2026-07-26')
     expect(response.body.knowledge.timelineStarts).toBe('1945-01-01')
     expect(response.body.currentTerm.person.name).toBe('Narendra Modi')
@@ -575,7 +576,7 @@ describe('read API', () => {
       { id: 'balanced', score: 6.7 },
       { id: 'development', score: 7.1 },
       { id: 'human-capability', score: 6.7 },
-      { id: 'governance', score: 6 },
+      { id: 'governance', score: 6.1 },
     ])
     for (const profile of response.body.ratingProfiles) {
       expect(
@@ -587,16 +588,26 @@ describe('read API', () => {
     }
     expect(response.body.ratingAudit).toMatchObject({
       runCount: 5,
-      genericMean: 6.28,
-      standardizedMean: 6.22,
-      standardDeviation: 0.07,
-      minimum: 6.1,
-      maximum: 6.3,
+      genericMean: 6.72,
+      standardizedMean: 6.66,
+      standardDeviation: 0.05,
+      minimum: 6.6,
+      maximum: 6.7,
       previousRating: 6.7,
       revisedRating: 6.7,
       status: 'stable',
     })
-    expect(response.body.ratingAudit.notes).toContain('double-count')
+    expect(response.body.ratingAudit.notes).toContain('front-end fabrication')
+    expect(
+      response.body.componentScores.find(
+        (component: { id: string }) => component.id === 'reforms',
+      ),
+    ).toMatchObject({ score: 7.6 })
+    expect(
+      response.body.componentScores.find(
+        (component: { id: string }) => component.id === 'integrity',
+      ),
+    ).toMatchObject({ score: 6 })
     expect(response.body.specialistAssessments).toHaveLength(2)
     expect(response.body.specialistAssessments).toContainEqual(
       expect.objectContaining({
@@ -617,6 +628,93 @@ describe('read API', () => {
     expect(response.body.sources.length).toBeGreaterThanOrEqual(12)
   })
 
+  it('fact-checks the semiconductor narrative and publishes cross-term policy credit', async () => {
+    const [mission, secondPhase, answer, events, leader] = await Promise.all([
+      request(app).get('/api/policies/semicon-india-programme-2021'),
+      request(app).get('/api/policies/semicon-india-2-2026'),
+      request(app).get('/api/search').query({
+        jurisdiction: 'india',
+        q: 'did modi build semiconductor industry',
+      }),
+      request(app).get('/api/events'),
+      request(app).get('/api/leaders/modi-2014'),
+    ])
+
+    expect(mission.status).toBe(200)
+    expect(mission.body).toMatchObject({
+      ratingScore: 7.5,
+      ratingBasis: 'retrospective',
+      ratingConfidence: 'medium',
+      leader: { name: 'Narendra Modi' },
+    })
+    expect(
+      mission.body.claims.map((claim: { id: string }) => claim.id),
+    ).toEqual(
+      expect.arrayContaining([
+        'modi-semiconductor-mission-strategy',
+        'modi-semiconductor-commercial-production',
+        'semiconductor-front-end-fab-pending',
+        'semiconductor-viral-capacity-corrections',
+        'modi-semiconductor-rating-treatment',
+      ]),
+    )
+
+    expect(secondPhase.status).toBe(200)
+    expect(secondPhase.body).toMatchObject({
+      ratingScore: 7.2,
+      ratingBasis: 'design',
+      ratingConfidence: 'low',
+    })
+    expect(
+      secondPhase.body.componentScores.find(
+        (component: { id: string }) => component.id === 'effectiveness',
+      ).score,
+    ).toBeNull()
+
+    expect(answer.body.answer).toMatchObject({
+      id: 'india-semiconductor-credit',
+      confidence: 'high',
+      asOfDate: '2026-07-29',
+    })
+    expect(answer.body.answer.verdict).toContain('6.72')
+    expect(
+      answer.body.answer.claims.some(
+        (claim: { id: string }) => claim.id === 'fairchild-india-viral-claim',
+      ),
+    ).toBe(true)
+
+    const production = events.body.find(
+      (event: { id: string }) =>
+        event.id === 'commercial-semiconductor-production-2026',
+    )
+    expect(production.accountability).toMatchObject({
+      choiceAssessment: 'mostly-right',
+      choiceScore: 8,
+    })
+    expect(
+      events.body.find(
+        (event: { id: string }) => event.id === 'scl-fire-rebuild-1989',
+      ).accountability.choiceAssessment,
+    ).toBe('not-a-policy-choice')
+    expect(
+      events.body.find(
+        (event: { id: string }) => event.id === 'intel-semiconductor-window-2007',
+      ).accountability.choiceAssessment,
+    ).toBe('mostly-wrong')
+
+    expect(
+      leader.body.specialistAssessments
+        .find(
+          (assessment: { topicId: string }) =>
+            assessment.topicId === 'national-security',
+        )
+        .componentScores.find(
+          (component: { id: string }) =>
+            component.id === 'security-strategic-autonomy',
+        ).score,
+    ).toBe(7.8)
+  })
+
   it('finds protests and major failures through cross-entity search', async () => {
     const [protest, riot] = await Promise.all([
       request(app).get('/api/search').query({ q: 'railway strike' }),
@@ -633,7 +731,7 @@ describe('read API', () => {
   it('returns a sourced accountability brief for every timeline event', async () => {
     const response = await request(app).get('/api/events')
     expect(response.status).toBe(200)
-    expect(response.body).toHaveLength(77)
+    expect(response.body).toHaveLength(81)
     expect(response.body[0].id).toBe('national-cybercrime-complaints-2025')
     expect(
       response.body.every(

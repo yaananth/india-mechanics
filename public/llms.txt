@@ -1,9 +1,10 @@
 # India Mechanics
 
 India Mechanics is a source-backed, multi-jurisdiction research database and
-website. The national corpus covers India from 1945; the first state corpus
-covers post-bifurcation Andhra Pradesh from June 2, 2014. It separates measured
-observations, historical events, sourced claims, and editorial term evaluations.
+website. The national corpus covers India from 1945; state corpora cover
+post-bifurcation Andhra Pradesh from June 2, 2014 and modern Tamil Nadu from
+January 14, 1969. It separates measured observations, historical events, sourced
+claims, and editorial term evaluations.
 
 Always read the current cutoff before answering:
 - /api/meta
@@ -59,6 +60,13 @@ Interpretation rules:
 19. Timeline events expose `governments` with the linked PM/CM term, office,
     party, and dates. An empty array means the event is intentionally outside a
     mapped head-of-government term.
+20. `knowledge_cutoff` is the newest published evidence date.
+    `editorial_reviewed_through` is the last full editorial sweep; do not treat a
+    topic-specific update as a complete refresh.
+21. Semiconductor records distinguish front-end wafer fabrication from
+    assembly, packaging, and test. Planned plant capacity is not current output,
+    and public incentive envelopes must not be added to project investment when
+    they finance part of the same projects.
 
 Repository maintenance and latest-data workflow are documented in:
 - AGENTS.md

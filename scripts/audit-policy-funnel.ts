@@ -6,6 +6,12 @@ import {
   policies,
   sources,
 } from '../server/seed-data/catalog.ts'
+import {
+  semiconductorClaims,
+  semiconductorEvents,
+  semiconductorPolicies,
+  semiconductorSources,
+} from '../server/seed-data/semiconductors.ts'
 import { reviewedPolicyRegisterMatchers } from '../server/seed-data/policy-register-links.ts'
 import { researchMetadata } from '../server/seed-data/research-metadata.ts'
 
@@ -48,17 +54,21 @@ const [funnel, generatedBills, queryTemplates] = await Promise.all([
 ])
 
 const errors: string[] = []
-const policyIds = new Set(policies.map((policy) => policy.id))
-const eventIds = new Set(events.map((event) => event.id))
+const allPolicies = [...policies, ...semiconductorPolicies]
+const allEvents = [...events, ...semiconductorEvents]
+const allClaims = [...claims, ...semiconductorClaims]
+const allSources = [...sources, ...semiconductorSources]
+const policyIds = new Set(allPolicies.map((policy) => policy.id))
+const eventIds = new Set(allEvents.map((event) => event.id))
 const lawSourceIds = new Set(
-  sources
+  allSources
     .filter((source) =>
       ['law', 'official-parliamentary-register'].includes(source.sourceType),
     )
     .map((source) => source.id),
 )
 const lawBackedEventIds = new Set(
-  events
+  allEvents
     .filter((event) =>
       event.sourceIds.some((sourceId) => lawSourceIds.has(sourceId)),
     )
@@ -104,7 +114,7 @@ for (const record of funnel.records) {
     )
     continue
   }
-  const claimBridge = claims.some(
+  const claimBridge = allClaims.some(
     (claim) =>
       claim.eventId === record.eventId && claim.policyId === record.policyId,
   )

@@ -1,7 +1,7 @@
 {
-  "version": "heard-claims-v0.1",
-  "reviewedThrough": "2026-07-26",
-  "queryTemplateVersion": "query-templates-v0.7",
+  "version": "heard-claims-v0.2",
+  "reviewedThrough": "2026-07-29",
+  "queryTemplateVersion": "query-templates-v0.8",
   "records": [
     {
       "id": "congress-pakistan-25m-after-2611",
@@ -26,6 +26,40 @@
         "un-ocha-india-pakistan-erf-2010",
         "guardian-pakistan-flood-aid-2010",
         "brookings-pakistan-flood-aid-2010"
+      ]
+    },
+    {
+      "id": "india-semiconductor-lost-decades-and-modi-revival",
+      "submittedClaim": "Congress killed India's semiconductor opportunities from Fairchild and Intel through the SCL era, while Modi created more than $25 billion of investment and operating Taloja, Assam, Dholera, and Micron production.",
+      "verdict": "mixed",
+      "factCheck": "The strategic contrast is real but the viral details are not. Fairchild seriously considered India in the mid-1960s and bureaucracy deterred it, but the reviewed record does not prove the complete-blueprint, fifty-office, or exact Robert Noyce story. SCL created real public capability, suffered a destructive 1989 fire, and resumed production only in 1997. UPA policy delay contributed to missed Intel opportunities, while the 2007 incentive policy and 2014 fab approvals also existed but failed to produce an operating commercial fab. Modi's India Semiconductor Mission has now produced commercial assembly and test plants and a credible front-end fab pipeline. Taloja's 80,000 wafers and Assam's 48 million chips per day are planned rather than current production, Dholera remains under construction, and public outlay overlaps project investment rather than forming one clean $25 billion total.",
+      "missingContext": [
+        "Robert Noyce co-founded Intel in 1968; calling him Intel's co-founder in a 1964 episode is retrospective shorthand.",
+        "The 2005 $700 million Intel proposal was described as wafer testing or assembly and test, while the 2007 missed opportunity concerned a separate multibillion-dollar manufacturing discussion.",
+        "The reviewed record does not substantiate the claim that AMD equipment sat at Indian ports for years and was returned.",
+        "India had no operational commercial wafer fab in 2014, but SCL retained government and strategic fabrication capability.",
+        "Micron and CG Semi are genuine commercial production achievements, primarily in assembly, packaging, and testing rather than front-end wafer fabrication.",
+        "Jobs, local value added, yields, utilisation, customers, exports, and long-run subsidy efficiency remain incomplete."
+      ],
+      "eventId": "commercial-semiconductor-production-2026",
+      "policyId": "semicon-india-programme-2021",
+      "leaderTermId": "modi-2014",
+      "claimId": "modi-semiconductor-rating-treatment",
+      "ratingTreatment": "score-change",
+      "ratingReason": "The evidence raises Modi's durable-reforms component from 7.4 to 7.6 and integrity-and-execution from 5.9 to 6.0. Five replications still produce a rounded 6.7 headline because front-end fabrication and broad outcome measures remain unfinished.",
+      "sourceIds": [
+        "pib-semicon-india-2021",
+        "pib-semiconductor-status-2026",
+        "carnegie-ism-review-2025",
+        "fairchild-india-history-1990",
+        "scl-capacity-case-study-2019",
+        "livemint-intel-policy-delay-2007",
+        "pib-semiconductor-fabs-2014",
+        "micron-sanand-commercial-2026",
+        "pib-cg-semi-commercial-2026",
+        "tata-assam-construction-2026",
+        "tata-asml-dholera-2026",
+        "reuters-adani-tower-paused-2025"
       ]
     }
   ]

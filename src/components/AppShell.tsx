@@ -182,7 +182,11 @@ export function AppShell({
 
       <div className="research-status" aria-label="Research freshness">
         <span>
-          Research reviewed through <strong>{knowledge.cutoff}</strong>
+          Latest reviewed evidence <strong>{knowledge.cutoff}</strong>
+        </span>
+        <span>
+          Full editorial sweep{' '}
+          <strong>{knowledge.editorialReviewedThrough}</strong>
         </span>
         <span>
           Indicators checked <strong>{knowledge.indicatorAsOfDate}</strong>

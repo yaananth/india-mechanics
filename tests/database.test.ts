@@ -216,13 +216,91 @@ describe('research database integrity', () => {
     })
     expect(audit).toEqual({
       run_count: 5,
-      standardized_mean: 6.22,
-      standard_deviation: 0.07,
-      minimum: 6.1,
-      maximum: 6.3,
+      standardized_mean: 6.66,
+      standard_deviation: 0.05,
+      minimum: 6.6,
+      maximum: 6.7,
       previous_rating: 6.7,
       revised_rating: 6.7,
       status: 'stable',
+    })
+  })
+
+  it('publishes semiconductor history and current policy without counting plans as output', () => {
+    const policies = db
+      .prepare(
+        `SELECT id, rating_score, rating_basis, rating_confidence, status
+         FROM policies
+         WHERE id IN (
+           'scl-semiconductor-programme-1976',
+           'semiconductor-incentive-policy-2007',
+           'semicon-india-programme-2021',
+           'semicon-india-2-2026'
+         )
+         ORDER BY introduced_date`,
+      )
+      .all()
+    expect(policies).toEqual([
+      {
+        id: 'scl-semiconductor-programme-1976',
+        rating_score: 6.1,
+        rating_basis: 'retrospective',
+        rating_confidence: 'medium',
+        status: 'executive-action',
+      },
+      {
+        id: 'semiconductor-incentive-policy-2007',
+        rating_score: 5.1,
+        rating_basis: 'retrospective',
+        rating_confidence: 'medium',
+        status: 'infructuous',
+      },
+      {
+        id: 'semicon-india-programme-2021',
+        rating_score: 7.5,
+        rating_basis: 'retrospective',
+        rating_confidence: 'medium',
+        status: 'executive-action',
+      },
+      {
+        id: 'semicon-india-2-2026',
+        rating_score: 7.2,
+        rating_basis: 'design',
+        rating_confidence: 'low',
+        status: 'executive-action',
+      },
+    ])
+
+    expect(
+      db
+        .prepare(
+          `SELECT score
+           FROM policy_scores
+           WHERE policy_id = 'semicon-india-2-2026'
+             AND dimension_id = 'effectiveness'`,
+        )
+        .get(),
+    ).toEqual({ score: null })
+    expect(
+      db
+        .prepare(
+          `SELECT COUNT(*) AS count
+           FROM claims
+           WHERE policy_id = 'semicon-india-programme-2021'`,
+        )
+        .get(),
+    ).toEqual({ count: 7 })
+    expect(
+      db
+        .prepare(
+          `SELECT question, as_of_date
+           FROM curated_answers
+           WHERE id = 'india-semiconductor-credit'`,
+        )
+        .get(),
+    ).toEqual({
+      question: 'Does Modi deserve more credit for India semiconductor push?',
+      as_of_date: '2026-07-29',
     })
   })
 
@@ -996,9 +1074,9 @@ describe('research database integrity', () => {
         }>
       ).map((row) => [row.key, row.value]),
     )
-    expect(metadata.knowledge_cutoff).toBe('2026-07-26')
+    expect(metadata.knowledge_cutoff).toBe('2026-07-29')
     expect(metadata.editorial_reviewed_through).toBe('2026-07-26')
-    expect(metadata.source_roster_version).toBe('source-roster-v0.12')
+    expect(metadata.source_roster_version).toBe('source-roster-v0.13')
     expect(metadata.source_rubric_version).toBe('source-v0.2')
     expect(Number(metadata.latest_world_bank_period)).toBeGreaterThanOrEqual(2024)
     expect(Number(metadata.latest_vdem_period)).toBeGreaterThanOrEqual(2024)
@@ -1080,7 +1158,7 @@ describe('research database integrity', () => {
     }>
     expect(unpublishedClaims).toEqual([])
     expect(batches).toContainEqual({
-      source_roster_version: 'source-roster-v0.12',
+      source_roster_version: 'source-roster-v0.13',
       review_status: 'published',
     })
     expect(
@@ -1168,6 +1246,19 @@ describe('research database integrity', () => {
     ).toEqual({
       candidates_found: 29,
       rejected_records: 6,
+      review_status: 'published',
+    })
+    expect(
+      db
+        .prepare(
+          `SELECT candidates_found, rejected_records, review_status
+           FROM ingestion_batches
+           WHERE id = 'india-semiconductor-history-and-rating-2026-07-29'`,
+        )
+        .get(),
+    ).toEqual({
+      candidates_found: 24,
+      rejected_records: 3,
       review_status: 'published',
     })
   })

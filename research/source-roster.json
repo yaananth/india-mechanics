@@ -1,6 +1,6 @@
 {
-  "version": "source-roster-v0.12",
-  "updatedAt": "2026-07-26",
+  "version": "source-roster-v0.13",
+  "updatedAt": "2026-07-29",
   "rule": "Web search discovers candidates. Only reviewed source items enter the published database.",
   "sources": [
     {
@@ -466,6 +466,76 @@
       "domains": ["mfat.govt.nz"],
       "roles": ["treaty-text", "signature-status", "trade-statistics"],
       "ratingCeiling": 5
+    },
+    {
+      "id": "meity",
+      "name": "Ministry of Electronics and Information Technology",
+      "domains": ["meity.gov.in"],
+      "roles": ["electronics-policy", "semiconductors", "programme-documents", "procurement"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "india-semiconductor-mission",
+      "name": "India Semiconductor Mission",
+      "domains": ["ism.gov.in", "portal.ism.gov.in"],
+      "roles": ["semiconductor-schemes", "project-status", "programme-guidance"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "computer-history-museum",
+      "name": "Computer History Museum",
+      "domains": ["computerhistory.org"],
+      "roles": ["technology-history", "company-archives", "oral-history"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "fisd-ris",
+      "name": "Forum for Indian Science Diplomacy and RIS",
+      "domains": ["fisd.in", "ris.org.in"],
+      "roles": ["science-policy-history", "expert-case-studies"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "mint",
+      "name": "Mint",
+      "domains": ["livemint.com"],
+      "roles": ["business-reporting", "policy-chronology", "investment"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "carnegie",
+      "name": "Carnegie Endowment for International Peace",
+      "domains": ["carnegieendowment.org", "assets.carnegieendowment.org"],
+      "roles": ["technology-policy", "strategic-industry", "independent-analysis"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "micron",
+      "name": "Micron Technology",
+      "domains": ["micron.com", "investors.micron.com"],
+      "roles": ["corporate-production-status", "investment", "customers"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "tata-electronics",
+      "name": "Tata Electronics and Tata Group",
+      "domains": ["tataelectronics.com", "tata.com"],
+      "roles": ["corporate-project-status", "technology-partnerships", "construction"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "economic-times",
+      "name": "Economic Times",
+      "domains": ["economictimes.indiatimes.com", "manufacturing.economictimes.indiatimes.com"],
+      "roles": ["business-reporting", "investment", "project-status"],
+      "ratingCeiling": 3
+    },
+    {
+      "id": "the-register",
+      "name": "The Register",
+      "domains": ["theregister.com"],
+      "roles": ["technology-reporting", "industry-history"],
+      "ratingCeiling": 3
     },
     {
       "id": "oec",

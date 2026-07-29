@@ -7,6 +7,12 @@ import {
   policies,
   sources,
 } from '../server/seed-data/catalog.ts'
+import {
+  semiconductorClaims,
+  semiconductorEvents,
+  semiconductorPolicies,
+  semiconductorSources,
+} from '../server/seed-data/semiconductors.ts'
 
 type HeardClaim = {
   id: string
@@ -49,11 +55,15 @@ const [heardClaims, queryTemplates] = await Promise.all([
 ])
 
 const errors: string[] = []
-const sourceById = new Map(sources.map((source) => [source.id, source]))
-const eventIds = new Set(events.map((event) => event.id))
-const policyIds = new Set(policies.map((policy) => policy.id))
+const allSources = [...sources, ...semiconductorSources]
+const allEvents = [...events, ...semiconductorEvents]
+const allPolicies = [...policies, ...semiconductorPolicies]
+const allClaims = [...claims, ...semiconductorClaims]
+const sourceById = new Map(allSources.map((source) => [source.id, source]))
+const eventIds = new Set(allEvents.map((event) => event.id))
+const policyIds = new Set(allPolicies.map((policy) => policy.id))
 const leaderTermIds = new Set(leaderTerms.map((term) => term.id))
-const claimById = new Map(claims.map((claim) => [claim.id, claim]))
+const claimById = new Map(allClaims.map((claim) => [claim.id, claim]))
 const recordIds = new Set<string>()
 
 if (heardClaims.queryTemplateVersion !== queryTemplates.version) {

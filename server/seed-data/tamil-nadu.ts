@@ -338,7 +338,7 @@ export const tamilNaduSources: SourceSeed[] = [
     id: 'tn-electronics-policy-2020',
     title: 'Tamil Nadu Electronics Hardware Manufacturing Policy 2020',
     publisher: 'Government of Tamil Nadu',
-    url: 'https://sipcotweb.tn.gov.in/uploads/policy/12/Policy.pdf',
+    url: 'https://storage.investingintamilnadu.com/Guidance/Uploads/Documents/tn_electronics_hardware_manufacturing_policy.pdf',
     sourceType: 'official-policy',
     reliability: 5,
     ratingReason:
@@ -347,7 +347,7 @@ export const tamilNaduSources: SourceSeed[] = [
     limitations:
       'Later exports also reflect Union incentives, global supply chains, inherited clusters, and private investment.',
     publishedDate: '2020-09-07',
-    accessedDate: reviewedAt,
+    accessedDate: '2026-07-29',
   },
   {
     id: 'tn-medical-admission-act-2020',

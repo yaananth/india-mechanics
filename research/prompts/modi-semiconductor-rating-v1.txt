@@ -1,0 +1,60 @@
+India Mechanics semiconductor evidence rating prompt, version 1
+
+Subject: Narendra Modi as Prime Minister of India, 2014-present.
+
+Use the same six components and published cross-PM standard:
+
+- observed outcomes;
+- durable reforms;
+- inclusion;
+- crisis and security;
+- institutions and liberties;
+- integrity and execution.
+
+Current component scores before this review:
+
+- outcomes 7.7;
+- reforms 7.4;
+- inclusion 6.5;
+- crisis 6.4;
+- institutions 4.5;
+- integrity and execution 5.9.
+
+New evidence to assess:
+
+1. The India Semiconductor Mission was approved in December 2021 with a
+   Rs 76,000 crore incentive framework.
+2. By July 2026, twelve approved manufacturing projects represented about
+   Rs 1.64 lakh crore of project investment and three plants had entered
+   commercial production.
+3. Micron Sanand and CG Semi are real commercial assembly, packaging, and test
+   production. They are not front-end wafer fabrication.
+4. Tata Dholera and the high-volume Tata Assam facility remain under
+   construction. Planned capacity, projected jobs, local value, yields,
+   customers, and exports are not completed outcomes.
+5. Semicon 2.0 was approved on July 15, 2026 with a separate
+   Rs 1,27,500 crore six-year programme envelope.
+6. The Taloja 80,000-wafers-per-month and Assam 48-million-chips-per-day
+   figures are planned capacity, not current production.
+7. Fairchild seriously considered India in the mid-1960s, but the precise
+   Robert Noyce visit, complete-blueprint, and fifty-office details in the viral
+   narrative are not established by the reviewed historical record.
+8. SCL created real public semiconductor capability; its 1989 fire and slow
+   recovery were severe.
+9. UPA-era Intel policy delay was a real execution failure. The 2007 policy and
+   2014 commercial-fab approvals also existed but did not produce an operating
+   fab.
+
+Rules:
+
+- Credit verified plant delivery and durable policy architecture.
+- Do not count project approval, planned capacity, projected jobs, or a newly
+  approved programme as observed outcomes.
+- Do not change unrelated inclusion, crisis, or institutional scores without
+  component-specific evidence.
+- Do not count semiconductor capability in both the main crisis score and a
+  separate security specialist score.
+- Preserve earlier-government credit and failures under the same standard.
+- Return a generic rating, recommended component scores, a balanced rating
+  using weights 30%, 20%, 15%, 10%, 15%, and 10%, and a standardized rating
+  using weights 25%, 20%, 15%, 15%, 15%, and 10%.

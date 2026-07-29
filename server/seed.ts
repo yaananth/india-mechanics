@@ -111,14 +111,23 @@ import {
   securitySpecialistDimensions,
   securitySpecialistTopics,
 } from './seed-data/security.ts'
+import {
+  semiconductorClaims,
+  semiconductorCuratedAnswers,
+  semiconductorEventAssessments,
+  semiconductorEvents,
+  semiconductorPolicies,
+  semiconductorPolicyScores,
+  semiconductorSources,
+} from './seed-data/semiconductors.ts'
 import type {
   BillDocumentExtractSeed,
   IndicatorObservationSeed,
   PolicyRegisterSeed,
 } from './types.ts'
 
-export const seedVersion = '2026-07-26.1'
-const sourceRosterVersion = 'source-roster-v0.12'
+export const seedVersion = '2026-07-29.1'
+const sourceRosterVersion = 'source-roster-v0.13'
 const allJurisdictions = [
   ...jurisdictions,
   ...andhraJurisdictions,
@@ -141,6 +150,7 @@ const allSources = [
   ...sources,
   ...developmentSources,
   ...securitySources,
+  ...semiconductorSources,
   ...andhraSources,
   ...tamilNaduSources,
   ...crimeSafetySources,
@@ -149,6 +159,7 @@ const allPolicies = [
   ...policies,
   ...developmentPolicies,
   ...securityPolicies,
+  ...semiconductorPolicies,
   ...andhraPolicies,
   ...tamilNaduPolicies,
 ]
@@ -156,6 +167,7 @@ const allPolicyScores = [
   ...policyScores,
   ...developmentPolicyScores,
   ...securityPolicyScores,
+  ...semiconductorPolicyScores,
   ...andhraPolicyScores,
   ...tamilNaduPolicyScores,
 ]
@@ -163,6 +175,7 @@ const allEvents = [
   ...events,
   ...developmentEvents,
   ...securityEvents,
+  ...semiconductorEvents,
   ...andhraEvents,
   ...tamilNaduEvents,
   ...crimeSafetyEvents,
@@ -171,6 +184,7 @@ const allEventAssessments = [
   ...eventAssessments,
   ...developmentEventAssessments,
   ...securityEventAssessments,
+  ...semiconductorEventAssessments,
   ...andhraEventAssessments,
   ...tamilNaduEventAssessments,
   ...crimeSafetyEventAssessments,
@@ -179,6 +193,7 @@ const allClaims = [
   ...claims,
   ...developmentClaims,
   ...securityClaims,
+  ...semiconductorClaims,
   ...andhraClaims,
   ...tamilNaduClaims,
   ...crimeSafetyClaims,
@@ -208,6 +223,7 @@ const allBudgetPoints = [
 ]
 const allCuratedAnswers = [
   ...curatedAnswers,
+  ...semiconductorCuratedAnswers,
   ...andhraCuratedAnswers,
   ...tamilNaduCuratedAnswers,
   ...crimeSafetyCuratedAnswers,
@@ -1449,6 +1465,25 @@ function insertRows(
     'published',
     metadata.generated_at,
     'Advanced reviewed cutoffs through July 26, refreshed World Bank, V-Dem, and Sansad data, added one bill and official-text explanation, reviewed the National Song bill and BHAVYA industrial policies, updated the NEET crisis with ministerial resignation and a reform task force, added Andhra Pradesh population-policy analysis and Tamil Nadu fiscal-white-paper accountability, and preserved the NCRB 2024 table-access gap without changing PM or CM ratings.',
+  )
+  db.prepare(
+    `INSERT INTO ingestion_batches
+      (id, source_roster_version, query_scope, run_at, agent_model,
+       candidates_found, rejected_records, reviewer, review_status,
+       published_at, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).run(
+    'india-semiconductor-history-and-rating-2026-07-29',
+    sourceRosterVersion,
+    'India semiconductor history, missed investment opportunities, SCL, Intel, commercial production, India Semiconductor Mission 1.0 and Semicon 2.0, and PM-rating treatment',
+    metadata.generated_at,
+    'Codex with two research sidecars and five independent rating replications',
+    24,
+    3,
+    'India Mechanics semiconductor evidence review',
+    'published',
+    metadata.generated_at,
+    'Published separate historical and current semiconductor policies, corrected the viral Fairchild, Intel, Taloja, Assam, and investment-number claims, credited operating commercial assembly and test plants, kept front-end fabrication and projected capacity provisional, raised Modi durable-reform and execution components without changing the rounded 6.7 headline, and preserved credit for earlier SCL and UPA policy attempts.',
   )
 }
 

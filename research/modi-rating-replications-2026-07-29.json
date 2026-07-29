@@ -1,0 +1,207 @@
+{
+  "subject": "Narendra Modi as Prime Minister of India, 2014-present",
+  "asOfDate": "2026-07-29",
+  "promptHash": "sha256:0199f3800dd7f81ea3a2cb1e4feb0a08b67ce1f17d865bdc980e380ed0596974",
+  "previousWebsite": {
+    "rating": 6.7,
+    "componentScores": {
+      "outcomes": 7.7,
+      "reforms": 7.4,
+      "inclusion": 6.5,
+      "crisis": 6.4,
+      "institutions": 4.5,
+      "integrity": 5.9
+    }
+  },
+  "website": {
+    "rating": 6.7,
+    "componentScores": {
+      "outcomes": 7.7,
+      "reforms": 7.6,
+      "inclusion": 6.5,
+      "crisis": 6.4,
+      "institutions": 4.5,
+      "integrity": 6.0
+    },
+    "sourceUrls": [
+      "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1781723",
+      "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2284806",
+      "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2247814&lang=1&reg=3",
+      "https://investors.micron.com/news-releases/news-release-details/micron-celebrates-opening-indias-first-semiconductor-assembly",
+      "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2281174&lang=1&reg=3",
+      "https://www.tataelectronics.com/semiconductor-assembly-and-test",
+      "https://www.tata.com/newsroom/business/tata-electronics-asml-semiconductor-ecosystem",
+      "https://carnegieendowment.org/research/2025/10/indias-semiconductor-mission-the-story-so-far",
+      "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2284784&lang=1&reg=48",
+      "https://indianexpress.com/article/business/cabinet-semiconductor-mission-2-0-10787705/",
+      "https://utminers.utep.edu/asinghal/Articles%20and%20Chapters/SinghalRogers_Hightech.pdf",
+      "https://fisd.in/sites/default/files/Publication/FISD%20Case%20Study_Ashok%20Parthasarthy-min.pdf",
+      "https://www.livemint.com/Industry/Qj3qmsZ0URbESb8xU4zjqO/India8217s-slow-policy-puts-off-Intel-China-Vietnam-eme.html",
+      "https://www.pib.gov.in/newsite/PrintRelease.aspx?relid=103682"
+    ]
+  },
+  "evidenceRefresh": {
+    "date": "2026-07-29",
+    "previousRating": 6.7,
+    "revisedRating": 6.7,
+    "reason": "The semiconductor review added previously missing credit for a durable national mission and verified commercial assembly and test production. Five evidence-aware replications supported higher reforms and execution components, but four of five retained a rounded 6.7 balanced rating because front-end fabrication, sustained yields, audited jobs, local value, customers, and exports remain incomplete."
+  },
+  "publishedProfiles": [
+    {
+      "id": "balanced",
+      "score": 6.7,
+      "weights": {
+        "outcomes": 0.30,
+        "reforms": 0.20,
+        "inclusion": 0.15,
+        "crisis": 0.10,
+        "institutions": 0.15,
+        "integrity": 0.10
+      }
+    },
+    {
+      "id": "development",
+      "score": 7.1,
+      "weights": {
+        "outcomes": 0.40,
+        "reforms": 0.25,
+        "inclusion": 0.15,
+        "crisis": 0.10,
+        "institutions": 0.05,
+        "integrity": 0.05
+      }
+    },
+    {
+      "id": "human-capability",
+      "score": 6.7,
+      "weights": {
+        "outcomes": 0.30,
+        "reforms": 0.10,
+        "inclusion": 0.35,
+        "crisis": 0.10,
+        "institutions": 0.10,
+        "integrity": 0.05
+      }
+    },
+    {
+      "id": "governance",
+      "score": 6.1,
+      "weights": {
+        "outcomes": 0.10,
+        "reforms": 0.15,
+        "inclusion": 0.10,
+        "crisis": 0.15,
+        "institutions": 0.30,
+        "integrity": 0.20
+      }
+    }
+  ],
+  "interpretation": "These five replications apply one evidence packet and one disclosed rubric. They test consistency, not independent scholarly truth. The controlling publication decision raises the semiconductor-relevant components while retaining the rounded headline and preserving incomplete outcomes.",
+  "runs": [
+    {
+      "id": "semiconductor-replication-1",
+      "genericRating": 6.7,
+      "standardizedRating": 6.7,
+      "componentScores": {
+        "outcomes": 7.7,
+        "reforms": 7.6,
+        "inclusion": 6.5,
+        "crisis": 6.4,
+        "institutions": 4.5,
+        "integrity": 6.0
+      },
+      "confidence": "medium",
+      "sourceUrls": [
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1781723",
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2284806",
+        "https://investors.micron.com/news-releases/news-release-details/micron-celebrates-opening-indias-first-semiconductor-assembly",
+        "https://www.tataelectronics.com/semiconductor-assembly-and-test",
+        "https://carnegieendowment.org/research/2025/10/indias-semiconductor-mission-the-story-so-far"
+      ]
+    },
+    {
+      "id": "semiconductor-replication-2",
+      "genericRating": 6.7,
+      "standardizedRating": 6.6,
+      "componentScores": {
+        "outcomes": 7.7,
+        "reforms": 7.5,
+        "inclusion": 6.5,
+        "crisis": 6.4,
+        "institutions": 4.5,
+        "integrity": 5.9
+      },
+      "confidence": "medium",
+      "sourceUrls": [
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1781723",
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2281174&lang=1&reg=3",
+        "https://www.tata.com/newsroom/business/tata-electronics-asml-semiconductor-ecosystem",
+        "https://www.livemint.com/Industry/Qj3qmsZ0URbESb8xU4zjqO/India8217s-slow-policy-puts-off-Intel-China-Vietnam-eme.html",
+        "https://www.pib.gov.in/newsite/PrintRelease.aspx?relid=103682"
+      ]
+    },
+    {
+      "id": "semiconductor-replication-3",
+      "genericRating": 6.8,
+      "standardizedRating": 6.7,
+      "componentScores": {
+        "outcomes": 7.8,
+        "reforms": 7.6,
+        "inclusion": 6.5,
+        "crisis": 6.4,
+        "institutions": 4.5,
+        "integrity": 6.0
+      },
+      "confidence": "medium",
+      "sourceUrls": [
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2247814&lang=1&reg=3",
+        "https://investors.micron.com/news-releases/news-release-details/micron-celebrates-opening-indias-first-semiconductor-assembly",
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2281174&lang=1&reg=3",
+        "https://www.tata.com/newsroom/business/tata-electronics-asml-semiconductor-ecosystem",
+        "https://carnegieendowment.org/research/2025/10/indias-semiconductor-mission-the-story-so-far"
+      ]
+    },
+    {
+      "id": "semiconductor-replication-4",
+      "genericRating": 6.7,
+      "standardizedRating": 6.6,
+      "componentScores": {
+        "outcomes": 7.7,
+        "reforms": 7.5,
+        "inclusion": 6.5,
+        "crisis": 6.4,
+        "institutions": 4.5,
+        "integrity": 6.0
+      },
+      "confidence": "medium",
+      "sourceUrls": [
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2284806",
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2284784&lang=1&reg=48",
+        "https://www.tataelectronics.com/semiconductor-assembly-and-test",
+        "https://utminers.utep.edu/asinghal/Articles%20and%20Chapters/SinghalRogers_Hightech.pdf",
+        "https://fisd.in/sites/default/files/Publication/FISD%20Case%20Study_Ashok%20Parthasarthy-min.pdf"
+      ]
+    },
+    {
+      "id": "semiconductor-replication-5",
+      "genericRating": 6.7,
+      "standardizedRating": 6.7,
+      "componentScores": {
+        "outcomes": 7.8,
+        "reforms": 7.6,
+        "inclusion": 6.5,
+        "crisis": 6.4,
+        "institutions": 4.5,
+        "integrity": 5.9
+      },
+      "confidence": "medium",
+      "sourceUrls": [
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1781723",
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2284806",
+        "https://www.tata.com/newsroom/business/tata-electronics-asml-semiconductor-ecosystem",
+        "https://www.livemint.com/Industry/Qj3qmsZ0URbESb8xU4zjqO/India8217s-slow-policy-puts-off-Intel-China-Vietnam-eme.html",
+        "https://www.pib.gov.in/newsite/PrintRelease.aspx?relid=103682"
+      ]
+    }
+  ]
+}

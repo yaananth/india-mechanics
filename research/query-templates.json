@@ -1,5 +1,5 @@
 {
-  "version": "query-templates-v0.7",
+  "version": "query-templates-v0.8",
   "templates": [
     {
       "id": "full-refresh",
@@ -152,6 +152,18 @@
         "site:{partnerGovernmentDomain} {agreement} entry into force",
         "site:oec.world India {partner} bilateral trade",
         "{agreement} preference utilisation adjustment costs independent analysis"
+      ]
+    },
+    {
+      "id": "semiconductor-industrial-policy",
+      "lane": "strategic-technology",
+      "queries": [
+        "site:pib.gov.in OR site:meity.gov.in OR site:ism.gov.in {semiconductorProgramme} approval project status commercial production",
+        "site:{companyDomain} {semiconductorFacility} construction production capacity customer shipment",
+        "site:carnegieendowment.org OR site:csis.org India semiconductor mission incentives outcomes risks",
+        "India {historicalSemiconductorClaim} archive academic history",
+        "India semiconductor fab assembly test planned capacity versus current output",
+        "India semiconductor subsidy jobs domestic value yields exports independent analysis"
       ]
     }
   ]

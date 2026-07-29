@@ -21,6 +21,7 @@ const caaReviewedDate = '2026-07-24'
 const heardClaimReviewedDate = '2026-07-24'
 const sanitationReviewedDate = '2026-07-24'
 const refreshReviewedDate = '2026-07-26'
+const semiconductorReviewedDate = '2026-07-29'
 
 export const sources: SourceSeed[] = [
   {
@@ -135,7 +136,7 @@ export const sources: SourceSeed[] = [
     id: 'pm-bhavya-industrial-parks-2026',
     title: 'Cabinet approves Bharat Audyogik Vikas Yojana (BHAVYA)',
     publisher: 'Prime Minister’s Office, Government of India',
-    url: 'https://www.pmindia.gov.in/en/news_updates/cabinet-approves-bharat-audyogik-vikas-yojana-bhavya/',
+    url: 'https://www.pmindia.gov.in/en/news_updates/cabinet-approves-a-new-era-of-plug-and-play-industrial-development-through-bharat-audyogik-vikas-yojna-bhavya/',
     sourceType: 'official-cabinet-decision',
     reliability: 5,
     ratingReason:
@@ -145,14 +146,14 @@ export const sources: SourceSeed[] = [
     limitations:
       'Cabinet objectives and projected jobs are not demonstrated implementation or outcome results.',
     publishedDate: '2026-03-18',
-    accessedDate: refreshReviewedDate,
+    accessedDate: semiconductorReviewedDate,
   },
   {
     id: 'pm-bhavya-rasayan-2026',
     title:
       'Cabinet approves BHAVYA Rasayan scheme for world-class chemical parks',
     publisher: 'Prime Minister’s Office, Government of India',
-    url: 'https://www.pmindia.gov.in/en/news_updates/cabinet-approves-bharat-audyogik-vikas-yojana-rasayan-bhavya-scheme-to-promote-establishment-of-world-class-chemical-parks-in-india/',
+    url: 'https://www.pmindia.gov.in/en/news_updates/cabinet-approves-scheme-of-chemical-parks-bharat-audyogik-vikas-yojana-rasayan-bhavya-rasayan/',
     sourceType: 'official-cabinet-decision',
     reliability: 5,
     ratingReason:
@@ -162,7 +163,7 @@ export const sources: SourceSeed[] = [
     limitations:
       'Projected investment, jobs, import substitution, and environmental performance remain unobserved.',
     publishedDate: '2026-07-24',
-    accessedDate: refreshReviewedDate,
+    accessedDate: semiconductorReviewedDate,
   },
   {
     id: 'cse-industrial-estates-guidelines',
@@ -2364,8 +2365,8 @@ export const leaderTerms: LeaderTermSeed[] = [
     ratingScore: 6.7,
     ratingConfidence: 'medium',
     ratingSummary:
-      'Large poverty and basic-service gains, including the Swachh Bharat rural-sanitation expansion, major road growth, digital systems, stronger operational security, a lower registered murder rate, and a broader trade-agreement strategy; reduced by job quality, uneven inclusion, cybercrime and justice gaps, crisis response, political-finance transparency, border and prevention failures, safety and execution gaps, and institutional decline. Balanced estimate 6.7/10; alternative weighting lenses span 6.0-7.1.',
-    assessmentAsOf: '2026-07-24',
+      'Large poverty and basic-service gains, including the Swachh Bharat rural-sanitation expansion, major road growth, digital systems, commercial semiconductor assembly and test production, stronger operational security, a lower registered murder rate, and a broader trade-agreement strategy; reduced by job quality, uneven inclusion, cybercrime and justice gaps, crisis response, political-finance transparency, border and prevention failures, safety and execution gaps, and institutional decline. Balanced estimate 6.7/10; alternative weighting lenses span 6.1-7.1.',
+    assessmentAsOf: semiconductorReviewedDate,
     sourceIds: [
       'pm-india-current',
       'eci-2024',
@@ -2392,6 +2393,11 @@ export const leaderTerms: LeaderTermSeed[] = [
       'nfhs-4-india-sanitation',
       'nfhs-5-india-sanitation',
       'world-bank-sbm-icr-2023',
+      'pib-semicon-india-2021',
+      'pib-semiconductor-status-2026',
+      'micron-sanand-commercial-2026',
+      'pib-cg-semi-commercial-2026',
+      'tata-asml-dholera-2026',
     ],
   },
 ]
@@ -2456,7 +2462,7 @@ const componentScores: Record<string, number[]> = {
   'gujral-1997': [5.4, 6.0, 5.5, 6.8, 6.0, 5.8],
   'vajpayee-1998': [7.5, 8.0, 6.5, 6.8, 6.2, 6.5],
   'manmohan-2004': [8.0, 7.5, 8.0, 6.2, 7.0, 5.5],
-  'modi-2014': [7.7, 7.4, 6.5, 6.4, 4.5, 5.9],
+  'modi-2014': [7.7, 7.6, 6.5, 6.4, 4.5, 6.0],
 }
 
 const scoreRationales: Record<string, string[]> = {
@@ -2573,12 +2579,12 @@ const scoreRationales: Record<string, string[]> = {
     'Major corruption scandals and perceived policy paralysis reduce the integrity score.',
   ],
   'modi-2014': [
-    'Monetary and multidimensional poverty fell substantially while roads, rural sanitation, electricity, other basic services, formalisation, and aggregate output expanded; survey definitions, state delivery, inherited programmes, and job quality limit exclusive attribution.',
-    'GST, insolvency reform, digital public infrastructure, Swachh Bharat delivery systems, highway investment, and a broader trade-agreement strategy endure; IBC delay, Bharatmala cost control, sanitation slippage and waste-treatment gaps, safety, and execution problems prevent a higher score.',
+    'Monetary and multidimensional poverty fell substantially while roads, rural sanitation, electricity, other basic services, formalisation, commercial semiconductor assembly and test production, and aggregate output expanded; survey definitions, state delivery, inherited programmes, unfinished front-end fabrication, and job quality limit exclusive attribution.',
+    'GST, insolvency reform, digital public infrastructure, Swachh Bharat delivery systems, highway investment, the India Semiconductor Mission, and a broader trade-agreement strategy endure; IBC delay, Bharatmala cost control, sanitation slippage and waste-treatment gaps, unfinished fab outcomes, safety, and execution problems prevent a higher score.',
     'Poverty and public-service access improved materially, with rural sanitation creating broad dignity and health benefits; productive-job quality, nutrition, gender, regional, earnings, minority-inclusion, water, and service-quality gaps prevent a high score.',
     'LWE and most Northeast security indicators, retaliation capacity, vaccination, defence capability, and a lower registered murder rate are strengths; violent crime, women and child safety, cybercrime, Uri, Pulwama, Pahalgam, Galwan, the lockdown, pandemic mortality uncertainty, Manipur, and conflict response keep the combined record mixed-positive.',
     'Independent indices show material democratic deterioration, while the competitive 2024 election and electoral-bonds judgment show electoral and judicial checks still imposed meaningful limits.',
-    'Central execution and national crime-data and cyber-coordination systems are strengths; electoral bonds, transparency gaps, concentration of power, project-control failures, uneven criminal-justice outcomes, and the bounded demonetisation penalty reduce the score.',
+    'Central execution, operating semiconductor assembly and test plants, and national crime-data and cyber-coordination systems are strengths; electoral bonds, transparency gaps, concentration of power, project-control failures, unfinished front-end fab outcomes, uneven criminal-justice outcomes, and the bounded demonetisation penalty reduce the score.',
   ],
 }
 
@@ -2594,31 +2600,29 @@ export const leaderScores: LeaderScoreSeed[] = Object.entries(componentScores).f
 
 export const leaderRatingAudits = [
   {
-    id: 'modi-rating-methodology-review-2026-07-24',
+    id: 'modi-rating-methodology-review-2026-07-29',
     termId: 'modi-2014',
     runCount: 5,
-    genericMean: 6.28,
-    standardizedMean: 6.22,
-    standardDeviation: 0.07,
-    minimum: 6.1,
-    maximum: 6.3,
+    genericMean: 6.72,
+    standardizedMean: 6.66,
+    standardDeviation: 0.05,
+    minimum: 6.6,
+    maximum: 6.7,
     previousRating: 6.7,
     revisedRating: 6.7,
     promptHash:
-      'sha256:60951df18bdb3970896eccaba4f1c9f8e5ff30ade58a70975cbcf9ee51c27cbc',
+      'sha256:0199f3800dd7f81ea3a2cb1e4feb0a08b67ce1f17d865bdc980e380ed0596974',
     status: 'stable',
-    reviewedAt: '2026-07-24',
+    reviewedAt: semiconductorReviewedDate,
     consensusSources: [
-      'worldbank.org',
-      'v-dem.net',
-      'freedomhouse.org',
-      'hrw.org',
-      'imf.org',
-      'morth.gov.in',
-      'commerce.gov.in',
+      'pib.gov.in',
+      'investors.micron.com',
+      'tata.com',
+      'tataelectronics.com',
+      'carnegieendowment.org',
     ],
     notes:
-      'Five standardized replications produced a narrow 6.1-6.3 range and a 6.22 mean. The published 6.7 sits 0.48 points above that mean but remains inside the declared stability threshold because the final evidence review gives more explicit credit to measured development, delivery, and security evidence while retaining institutional and execution penalties. The July 24 sanitation review makes Swachh Bharat credit explicit but does not raise the overall score because rural sanitation was already included in the 7.7 outcomes and 6.5 inclusion components; adding it again would double-count the same basic-service gain. Demonetisation remains bounded at roughly 0.05-0.20 balanced points, and the separate security assessment exposes both the stronger operational result and the lower rights-adjusted result.',
+      'Five semiconductor evidence replications produced a narrow standardized 6.6-6.7 range and a 6.66 mean. Four of five retained a rounded 6.7 balanced result. The publication raises durable reforms from 7.4 to 7.6 and integrity and execution from 5.9 to 6.0 because a dedicated mission produced operating commercial assembly and test plants and a credible fab pipeline. Outcomes remain 7.7 because front-end fabrication, sustained yields, audited jobs, domestic value, customers, and exports remain incomplete. Planned Taloja and Assam capacity receives no outcome credit, and semiconductor capability is not counted again in the main crisis score.',
   },
 ] satisfies import('../types.ts').LeaderRatingAuditSeed[]
 
