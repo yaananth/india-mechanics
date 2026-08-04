@@ -2534,7 +2534,7 @@ export function createApp(db: DatabaseSync) {
     }))
     response.json({
       version:
-        'progress-v0.1|leader-v0.2|security-v0.1|public-safety-v0.1|bill-v0.1',
+        'progress-v0.1|leader-v0.2|security-v0.1|public-safety-v0.1|infrastructure-v0.1|bill-v0.1',
       progress: {
         purpose:
           'A transparent diagnostic lens, not an official statistic or causal ranking.',

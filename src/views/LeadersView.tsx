@@ -3,6 +3,7 @@ import {
   CheckCircle2,
   ChevronRight,
   CircleHelp,
+  Factory,
   Scale,
   ShieldCheck,
   UsersRound,
@@ -128,6 +129,25 @@ export function LeadersView({
   const comparedLeaders = compareIds
     .map((id) => leaders.find((leader) => leader.id === id))
     .filter((leader): leader is LeaderTerm => Boolean(leader))
+  const infrastructureComparisons = leaders
+    .map((leader) => {
+      const assessment = leader.specialistAssessments.find(
+        (candidate) => candidate.topicId === 'infrastructure-capacity',
+      )
+      return assessment ? { leader, assessment } : null
+    })
+    .filter(
+      (
+        row,
+      ): row is {
+        leader: LeaderTerm
+        assessment: LeaderTerm['specialistAssessments'][number]
+      } => Boolean(row),
+    )
+    .sort(
+      (left, right) =>
+        right.assessment.operationalScore - left.assessment.operationalScore,
+    )
 
   const toggleCompare = (leaderId: string) => {
     setCompareIds((current) => {
@@ -217,6 +237,54 @@ export function LeadersView({
           </ResponsiveContainer>
         </div>
       </section>
+
+      {infrastructureComparisons.length > 0 && (
+        <section className="infrastructure-specialist-comparison">
+          <div className="section-heading">
+            <div>
+              <span className="section-label">Physical development</span>
+              <h2>Infrastructure buildout, scored separately</h2>
+            </div>
+            <Factory size={18} aria-hidden="true" />
+          </div>
+          <p>
+            Broad development also includes poverty, jobs, inclusion, crises and
+            institutions. This specialist comparison isolates modern physical
+            and productive capacity using one rubric for the long Vajpayee,
+            Manmohan Singh and Modi terms.
+          </p>
+          <div className="infrastructure-specialist-comparison__grid">
+            {infrastructureComparisons.map(({ leader, assessment }) => (
+              <button
+                type="button"
+                key={assessment.id}
+                onClick={() => onSelectTerm(leader.id)}
+              >
+                <span>
+                  <strong>{leader.person.name}</strong>
+                  <small>
+                    {formatYear(leader.startDate)}–{formatYear(leader.endDate)}
+                  </small>
+                </span>
+                <span>
+                  <small>{assessment.operationalLabel}</small>
+                  <strong>{assessment.operationalScore.toFixed(1)}</strong>
+                </span>
+                <span>
+                  <small>{assessment.adjustedLabel}</small>
+                  <strong>{assessment.adjustedScore.toFixed(1)}</strong>
+                </span>
+                <ChevronRight size={16} aria-hidden="true" />
+              </button>
+            ))}
+          </div>
+          <small className="infrastructure-specialist-comparison__note">
+            Capacity additions are adjusted for inherited projects, shared
+            Union-state-private delivery, utilisation, maintenance, safety,
+            staffing, cost and sustainability.
+          </small>
+        </section>
+      )}
 
       <section className="leader-workspace">
         <div className="leader-table" role="list" aria-label={`${officeLabel} terms`}>
@@ -372,16 +440,42 @@ export function LeadersView({
               </section>
             )}
 
-            {selected.specialistAssessments.map((assessment) => (
-              <section
-                key={assessment.id}
-                className="leader-specialist-assessment"
-              >
+            {selected.specialistAssessments.map((assessment) => {
+              const isPublicSafety = assessment.topicId === 'public-safety'
+              const isInfrastructure =
+                assessment.topicId === 'infrastructure-capacity'
+              const SpecialistIcon = isInfrastructure ? Factory : ShieldCheck
+              const operationalCopy = isPublicSafety
+                ? 'Serious harm, reporting-sensitive safety, investigation, justice, and cyber resilience.'
+                : isInfrastructure
+                  ? 'Scale and pace of transport, energy, social and industrial capacity added.'
+                  : 'Capability, prevention, borders, internal conflict, and strategic autonomy.'
+              const adjustedCopy = isPublicSafety
+                ? 'The same record with reporting access, charge-sheeting, conviction, pendency, and federal responsibility emphasized.'
+                : isInfrastructure
+                  ? 'The same buildout with utilisation, maintenance, safety, staffing, cost and sustainability emphasized.'
+                  : 'The same record with civilian protection, due process, proportionality, and remedies included.'
+              const operationalWeightLabel = isPublicSafety
+                ? 'Recorded outcomes'
+                : isInfrastructure
+                  ? 'Buildout'
+                  : 'Operational'
+              const adjustedWeightLabel = isPublicSafety
+                ? 'system-adjusted'
+                : isInfrastructure
+                  ? 'quality-adjusted'
+                  : 'rights-adjusted'
+
+              return (
+                <section
+                  key={assessment.id}
+                  className="leader-specialist-assessment"
+                >
                 <header>
                   <div>
                     <span className="section-label">Specialist assessment</span>
                     <h3>
-                      <ShieldCheck size={17} aria-hidden="true" />
+                      <SpecialistIcon size={17} aria-hidden="true" />
                       {assessment.topicName}
                     </h3>
                   </div>
@@ -394,20 +488,12 @@ export function LeadersView({
                   <div>
                     <small>{assessment.operationalLabel}</small>
                     <strong>{assessment.operationalScore.toFixed(1)}/10</strong>
-                    <span>
-                      {assessment.topicId === 'public-safety'
-                        ? 'Serious harm, reporting-sensitive safety, investigation, justice, and cyber resilience.'
-                        : 'Capability, prevention, borders, internal conflict, and strategic autonomy.'}
-                    </span>
+                    <span>{operationalCopy}</span>
                   </div>
                   <div>
                     <small>{assessment.adjustedLabel}</small>
                     <strong>{assessment.adjustedScore.toFixed(1)}/10</strong>
-                    <span>
-                      {assessment.topicId === 'public-safety'
-                        ? 'The same record with reporting access, charge-sheeting, conviction, pendency, and federal responsibility emphasized.'
-                        : 'The same record with civilian protection, due process, proportionality, and remedies included.'}
-                    </span>
+                    <span>{adjustedCopy}</span>
                   </div>
                 </div>
                 <p className="leader-specialist-assessment__method">
@@ -424,13 +510,9 @@ export function LeadersView({
                         <span style={{ width: `${component.score * 10}%` }} />
                       </div>
                       <small>
-                        {assessment.topicId === 'public-safety'
-                          ? 'Recorded outcomes'
-                          : 'Operational'}{' '}
+                        {operationalWeightLabel}{' '}
                         {Math.round(component.operationalWeight * 100)}% ·
-                        {assessment.topicId === 'public-safety'
-                          ? 'system-adjusted'
-                          : 'rights-adjusted'}{' '}
+                        {adjustedWeightLabel}{' '}
                         {Math.round(component.adjustedWeight * 100)}%
                       </small>
                       <p>{component.rationale}</p>
@@ -443,7 +525,8 @@ export function LeadersView({
                   <SourceLinks sources={assessment.sources} limit={5} />
                 </footer>
               </section>
-            ))}
+              )
+            })}
 
             {selected.ratingAudit && (
               <section className="leader-rating-audit">

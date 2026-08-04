@@ -67,6 +67,12 @@ Interpretation rules:
     assembly, packaging, and test. Planned plant capacity is not current output,
     and public incentive envelopes must not be added to project investment when
     they finance part of the same projects.
+22. `Development` is a broad PM lens, not a construction-only score.
+    `infrastructure-capacity` separately reports buildout scale and
+    quality-adjusted capacity for eligible modern PM terms.
+23. For infrastructure, distinguish stock, capacity, annual flow, connections,
+    registrations, approvals, construction, operation, utilisation, and measured
+    outcomes. Preserve predecessor, state, public-enterprise, and private credit.
 
 Repository maintenance and latest-data workflow are documented in:
 - AGENTS.md

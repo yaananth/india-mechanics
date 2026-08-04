@@ -356,6 +356,64 @@ describe('research database integrity', () => {
     expect(missing).toEqual([])
   })
 
+  it('publishes one infrastructure rubric for comparable modern PM terms', () => {
+    const rows = db
+      .prepare(
+        `SELECT a.term_id,
+                ROUND(
+                  SUM(s.score * d.operational_weight) /
+                  SUM(d.operational_weight),
+                  1
+                ) AS buildout_score,
+                ROUND(
+                  SUM(s.score * d.adjusted_weight) /
+                  SUM(d.adjusted_weight),
+                  1
+                ) AS adjusted_score,
+                COUNT(*) AS component_count
+         FROM leader_specialist_assessments a
+         JOIN leader_specialist_scores s ON s.assessment_id = a.id
+         JOIN leader_specialist_dimensions d ON d.id = s.dimension_id
+         WHERE a.topic_id = 'infrastructure-capacity'
+         GROUP BY a.term_id
+         ORDER BY buildout_score DESC`,
+      )
+      .all()
+
+    expect(rows).toEqual([
+      {
+        term_id: 'modi-2014',
+        buildout_score: 8.1,
+        adjusted_score: 7.8,
+        component_count: 5,
+      },
+      {
+        term_id: 'manmohan-2004',
+        buildout_score: 7.5,
+        adjusted_score: 7.3,
+        component_count: 5,
+      },
+      {
+        term_id: 'vajpayee-1998',
+        buildout_score: 7.3,
+        adjusted_score: 7.1,
+        component_count: 5,
+      },
+    ])
+    expect(
+      db
+        .prepare(
+          `SELECT question, verdict, as_of_date
+           FROM curated_answers
+           WHERE id = 'modi-infrastructure-development'`,
+        )
+        .get(),
+    ).toMatchObject({
+      question: 'Is Modi better at development and infrastructure?',
+      as_of_date: '2026-08-04',
+    })
+  })
+
   it('reproduces the disclosed BJP and Congress term-rating comparison', () => {
     const summary = db
       .prepare(
@@ -1074,9 +1132,9 @@ describe('research database integrity', () => {
         }>
       ).map((row) => [row.key, row.value]),
     )
-    expect(metadata.knowledge_cutoff).toBe('2026-07-29')
+    expect(metadata.knowledge_cutoff).toBe('2026-08-04')
     expect(metadata.editorial_reviewed_through).toBe('2026-07-26')
-    expect(metadata.source_roster_version).toBe('source-roster-v0.13')
+    expect(metadata.source_roster_version).toBe('source-roster-v0.14')
     expect(metadata.source_rubric_version).toBe('source-v0.2')
     expect(Number(metadata.latest_world_bank_period)).toBeGreaterThanOrEqual(2024)
     expect(Number(metadata.latest_vdem_period)).toBeGreaterThanOrEqual(2024)
@@ -1158,7 +1216,7 @@ describe('research database integrity', () => {
     }>
     expect(unpublishedClaims).toEqual([])
     expect(batches).toContainEqual({
-      source_roster_version: 'source-roster-v0.13',
+      source_roster_version: 'source-roster-v0.14',
       review_status: 'published',
     })
     expect(
@@ -1259,6 +1317,19 @@ describe('research database integrity', () => {
     ).toEqual({
       candidates_found: 24,
       rejected_records: 3,
+      review_status: 'published',
+    })
+    expect(
+      db
+        .prepare(
+          `SELECT candidates_found, rejected_records, review_status
+           FROM ingestion_batches
+           WHERE id = 'modi-infrastructure-buildout-2026-08-04'`,
+        )
+        .get(),
+    ).toEqual({
+      candidates_found: 26,
+      rejected_records: 2,
       review_status: 'published',
     })
   })

@@ -15,9 +15,9 @@ export const leaderRatingProfiles = [
   },
   {
     id: 'development',
-    name: 'Development first',
+    name: 'Broad development',
     description:
-      'Prioritises material outcomes, durable reforms, infrastructure, productivity, and poverty reduction.',
+      'Prioritises material outcomes, durable reforms, inclusion, productivity, poverty reduction, and crisis resilience. Physical construction has a separate specialist score.',
     weights: {
       outcomes: 0.4,
       reforms: 0.25,

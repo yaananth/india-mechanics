@@ -1,6 +1,6 @@
 {
-  "version": "source-roster-v0.13",
-  "updatedAt": "2026-07-29",
+  "version": "source-roster-v0.14",
+  "updatedAt": "2026-08-04",
   "rule": "Web search discovers candidates. Only reviewed source items enter the published database.",
   "sources": [
     {
@@ -536,6 +536,69 @@
       "domains": ["theregister.com"],
       "roles": ["technology-reporting", "industry-history"],
       "ratingCeiling": 3
+    },
+    {
+      "id": "cea",
+      "name": "Central Electricity Authority",
+      "domains": ["cea.nic.in"],
+      "roles": ["installed-capacity", "generation", "transmission", "power-system-statistics"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "pngrb",
+      "name": "Petroleum and Natural Gas Regulatory Board",
+      "domains": ["pngrb.gov.in"],
+      "roles": ["city-gas", "gas-pipelines", "connections", "capacity-utilisation"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "iea",
+      "name": "International Energy Agency",
+      "domains": ["iea.org"],
+      "roles": ["energy-markets", "generation", "grid-integration", "independent-analysis"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "india-water-portal",
+      "name": "India Water Portal",
+      "domains": ["indiawaterportal.org"],
+      "roles": ["water-functionality", "service-quality", "independent-analysis"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "tracxn",
+      "name": "Tracxn",
+      "domains": ["tracxn.com"],
+      "roles": ["startup-funding", "private-market-data", "ecosystem-analysis"],
+      "ratingCeiling": 3
+    },
+    {
+      "id": "nmc",
+      "name": "National Medical Commission",
+      "domains": ["nmc.org.in"],
+      "roles": ["medical-colleges", "medical-seats", "regulatory-capacity"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "ministry-steel",
+      "name": "Ministry of Steel",
+      "domains": ["steel.gov.in"],
+      "roles": ["steel-capacity", "production", "utilisation", "trade"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "worldsteel",
+      "name": "World Steel Association",
+      "domains": ["worldsteel.org"],
+      "roles": ["steel-production", "international-comparison", "industry-statistics"],
+      "ratingCeiling": 4
+    },
+    {
+      "id": "sipri",
+      "name": "Stockholm International Peace Research Institute",
+      "domains": ["sipri.org"],
+      "roles": ["arms-transfers", "defence-imports", "defence-exports", "methodology"],
+      "ratingCeiling": 4
     },
     {
       "id": "oec",

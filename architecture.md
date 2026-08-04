@@ -1,6 +1,6 @@
 # India Mechanics Architecture
 
-Last updated: 2026-07-29
+Last updated: 2026-08-04
 
 This document is the operating map for the India Mechanics research system. It
 describes where data comes from, how evidence becomes a published record, how
@@ -89,6 +89,7 @@ server/seed-data/budgets.ts             reviewed budgets, allocations, and ratin
 server/seed-data/security.ts            all-PM national-security assessment lane
 server/seed-data/crime-safety.ts        crime, justice, cyber, and current-news lane
 server/seed-data/semiconductors.ts       cross-term semiconductor history and policy lane
+server/seed-data/infrastructure-capacity.ts modern infrastructure and productive-capacity specialist lane
 server/seed-data/andhra-pradesh.ts      post-split AP state and CM corpus
 server/seed-data/tamil-nadu.ts          modern Tamil Nadu state and CM corpus
 server/seed-data/research-metadata.ts   knowledge and review cutoffs
@@ -276,6 +277,59 @@ The July 29 rating review raised Modi's durable-reforms component from 7.4 to
 replications still produced a rounded 6.7 balanced rating. The national-security
 strategic-autonomy component rose from 7.6 to 7.8 without counting the same
 evidence again in the general crisis score.
+
+### Infrastructure and productive-capacity lane
+
+`server/seed-data/infrastructure-capacity.ts` answers a narrower question than
+the broad-development PM profile: how much modern transport, energy, utility,
+health-training, industrial, digital, and strategic capacity was created, and
+how usable and durable was it?
+
+The specialist comparison currently covers the three long modern infrastructure
+cycles with reviewable evidence across every dimension:
+
+- Vajpayee 1998-2004;
+- Manmohan Singh 2004-14; and
+- Modi 2014-present.
+
+It publishes two formula-derived results:
+
+```text
+Buildout scale
+  30% transport and logistics
+  25% energy and household utilities
+  15% health and human-capacity infrastructure
+  20% industrial and strategic capacity
+  10% delivery quality, utilisation, and sustainability
+
+Quality-adjusted capacity
+  20% transport and logistics
+  20% energy and household utilities
+  20% health and human-capacity infrastructure
+  15% industrial and strategic capacity
+  25% delivery quality, utilisation, and sustainability
+```
+
+The August 4 review publishes Modi at 8.1 buildout and 7.8 adjusted,
+Manmohan Singh at 7.5 and 7.3, and Vajpayee at 7.3 and 7.1. Three independent
+replications used the same rubric and remained stable.
+
+The lane never treats all current stock as exclusive PM output:
+
+- DFCs, metros, PMGSY, gas pipelines, power reforms, and other projects retain
+  origin, finance, land, contracting, state, public-enterprise, and private
+  credit;
+- installed capacity is separated from generation and utilisation;
+- connections are separated from active, affordable, safe, reliable service;
+- annual flows such as cargo, coal production, and defence exports are not
+  labelled infrastructure stock;
+- legal designation, programme recognition, approval, construction, operation,
+  and measured outcomes remain separate statuses.
+
+The broad-development profile remains broader than this specialist score. It
+also includes poverty, employment, inclusion, human outcomes, crises,
+institutions, liberties, and execution. The infrastructure score is therefore
+shown beside the PM rating and is never added mechanically to it.
 
 ### Published state modules
 
@@ -1123,6 +1177,8 @@ The current automated suite checks:
 - weighted CM score consistency;
 - the same national-security formula for every rated PM term;
 - the same public-safety formula for every term with a complete evidence window;
+- the same infrastructure formula for each eligible long modern PM term,
+  including stock-versus-flow and inherited-project controls;
 - at least one claim and one event, policy, or budget record for every rated PM term;
 - explicit knowledge cutoffs;
 - 1945 timeline and protest/communal-violence coverage;

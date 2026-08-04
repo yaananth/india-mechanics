@@ -1,0 +1,281 @@
+{
+  "batchId": "modi-infrastructure-buildout-2026-08-04",
+  "rosterVersion": "source-roster-v0.14",
+  "jurisdictionId": "india",
+  "lane": "infrastructure-capacity",
+  "topic": "Post-2014 infrastructure buildout infographic, current stock and flow data, quality caveats, attribution, and cross-PM specialist scoring",
+  "fromDate": "1998-03-19",
+  "throughDate": "2026-08-04",
+  "reviewer": "India Mechanics infrastructure and productive-capacity review with three sector audits and three scoring replications",
+  "queries": [
+    "India infrastructure built after 2014 infographic fact check",
+    "India transport infrastructure 2014 2026 highways DFC rail metro ports waterways airports",
+    "India power solar transmission gas pipelines PNG tap water 2014 2026",
+    "India medical colleges MBBS seats AIIMS steel coal startups defence exports 2014 2026",
+    "India infrastructure utilisation quality safety maintenance cost inherited projects"
+  ],
+  "candidates": [
+    {
+      "id": "economic-survey-infrastructure-2025-26",
+      "url": "https://www.indiabudget.gov.in/economicsurvey/doc/eschapter/echap09.pdf",
+      "sourceRegistryId": "india-budget",
+      "sourceClass": "official",
+      "independenceGroup": "finance-ministry",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-dfc-completion-2026",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2280139",
+      "sourceRegistryId": "pib",
+      "sourceClass": "official",
+      "independenceGroup": "railways-ministry",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-transport-capacity-2026",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2270740&lang=1&reg=3",
+      "sourceRegistryId": "pib",
+      "sourceClass": "official",
+      "independenceGroup": "transport-ministries",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-metro-capacity-2026",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2270745&lang=1&reg=3",
+      "sourceRegistryId": "pib",
+      "sourceClass": "official",
+      "independenceGroup": "housing-ministry",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-rail-electrification-2026",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2276592&reg=3&lang=1",
+      "sourceRegistryId": "pib",
+      "sourceClass": "official",
+      "independenceGroup": "railways-ministry",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-airports-capacity-2026",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2280985&reg=3&lang=1",
+      "sourceRegistryId": "pib",
+      "sourceClass": "official",
+      "independenceGroup": "civil-aviation-ministry",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "world-bank-dfc-financing-2014",
+      "url": "https://www.worldbank.org/en/news/press-release/2014/12/11/sign-billion-agreeement-eastern-dedicated-freight-corridtor",
+      "sourceRegistryId": "world-bank",
+      "sourceClass": "multilateral",
+      "independenceGroup": "world-bank",
+      "ratingInputs": {"controllingRecord":false,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":true,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "prs-roads-analysis-2026",
+      "url": "https://prsindia.org/budgets/parliament/demand-for-grants-2026-27-analysis-road-transport-and-highways",
+      "sourceRegistryId": "prs",
+      "sourceClass": "independent-national",
+      "independenceGroup": "prs",
+      "ratingInputs": {"controllingRecord":false,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":true,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "cea-installed-capacity-june-2026",
+      "url": "https://cea.nic.in/wp-content/uploads/installed/2026/06/Website_June.pdf",
+      "sourceRegistryId": "cea",
+      "sourceClass": "official",
+      "independenceGroup": "cea",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pngrb-city-gas-may-2026",
+      "url": "https://pngrb.gov.in/data-bank/20260531-CGD-MIS-Report.pdf",
+      "sourceRegistryId": "pngrb",
+      "sourceClass": "official",
+      "independenceGroup": "pngrb",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-jjm-july-2026",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2290048",
+      "sourceRegistryId": "pib",
+      "sourceClass": "official",
+      "independenceGroup": "jal-shakti-ministry",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "india-water-portal-jjm-functionality-2026",
+      "url": "https://www.indiawaterportal.org/drinking-water/from-coverage-to-functionality-reviewing-indias-national-assessment-of-rural-tap-water-services",
+      "sourceRegistryId": "india-water-portal",
+      "sourceClass": "independent-national",
+      "independenceGroup": "india-water-portal",
+      "ratingInputs": {"controllingRecord":false,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":true,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pngrb-gas-pipelines-april-2026",
+      "url": "https://pngrb.gov.in/data-bank/20260430-NGPL-MIS-Report.pdf",
+      "sourceRegistryId": "pngrb",
+      "sourceClass": "official",
+      "independenceGroup": "pngrb",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "cea-transmission-june-2026",
+      "url": "https://cea.nic.in/wp-content/uploads/transmission/2026/06/Growth_Summary_Transmission_Line.pdf",
+      "sourceRegistryId": "cea",
+      "sourceClass": "official",
+      "independenceGroup": "cea",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "iea-electricity-midyear-2026",
+      "url": "https://www.iea.org/reports/electricity-mid-year-update-2026",
+      "sourceRegistryId": "iea",
+      "sourceClass": "independent-international",
+      "independenceGroup": "iea",
+      "ratingInputs": {"controllingRecord":false,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":true,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-startups-june-2026",
+      "url": "https://www.pib.gov.in/PressNoteDetails.aspx?ModuleId=3&NoteId=158887&id=158887",
+      "sourceRegistryId": "pib",
+      "sourceClass": "official",
+      "independenceGroup": "dpiit",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "tracxn-india-funding-2025",
+      "url": "https://tracxn.com/d/insights/market-reports/india-tech-annual-funding-report-2025/__pvsyFahv-Ilo6lB2JbwcePNNWOdgWGMsVyntzEVDIn0",
+      "sourceRegistryId": "tracxn",
+      "sourceClass": "independent-market-data",
+      "independenceGroup": "tracxn",
+      "ratingInputs": {"controllingRecord":false,"primaryDirect":true,"namedEvidence":true,"transparentMethod":false,"independent":true,"stableArchive":false,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 3,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-aiims-status-2026",
+      "url": "https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/jan/doc202611749801.pdf",
+      "sourceRegistryId": "pib",
+      "sourceClass": "official",
+      "independenceGroup": "health-ministry",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "sansad-aiims-vacancies-2026",
+      "url": "https://sansad.in/getFile/annex/270/AU1239_qrCogd.pdf?source=pqars",
+      "sourceRegistryId": "sansad",
+      "sourceClass": "official",
+      "independenceGroup": "sansad",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "nmc-seat-matrix-2026",
+      "url": "https://www.nmc.org.in/MCIRest/open/getDocument?path=%2FDocuments%2FPublic%2FPortal%2FLatestNews%2FPublicNotice_Merged_seatmatrix_Secretary_covering.pdf",
+      "sourceRegistryId": "nmc",
+      "sourceClass": "official",
+      "independenceGroup": "nmc",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "steel-capacity-april-2026",
+      "url": "https://steel.gov.in/sites/default/files/2026-05/An%20Overview%20of%20Steel%20Sector%20for%20the%20month%20of%20April%2C%202026.pdf",
+      "sourceRegistryId": "ministry-steel",
+      "sourceClass": "official",
+      "independenceGroup": "steel-ministry",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "worldsteel-figures-2025",
+      "url": "https://worldsteel.org/data/world-steel-in-figures/world-steel-in-figures-2025/",
+      "sourceRegistryId": "worldsteel",
+      "sourceClass": "independent-industry",
+      "independenceGroup": "worldsteel",
+      "ratingInputs": {"controllingRecord":false,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":true,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-coal-production-2026",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2293366&lang=1&reg=48",
+      "sourceRegistryId": "pib",
+      "sourceClass": "official",
+      "independenceGroup": "coal-ministry",
+      "ratingInputs": {"controllingRecord":true,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":false,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "sipri-arms-transfers-2025",
+      "url": "https://www.sipri.org/sites/default/files/2026-03/fs_2603_at_2025.pdf",
+      "sourceRegistryId": "sipri",
+      "sourceClass": "independent-international",
+      "independenceGroup": "sipri",
+      "ratingInputs": {"controllingRecord":false,"primaryDirect":true,"namedEvidence":true,"transparentMethod":true,"independent":true,"stableArchive":true,"anonymous":false,"partisan":false,"brokenProvenance":false},
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "indian-matrix-infrastructure-post",
+      "url": "https://x.com/indianmatrix/status/2084637912864268676",
+      "sourceRegistryId": null,
+      "sourceClass": "social-media",
+      "independenceGroup": "indian-matrix",
+      "ratingInputs": {"controllingRecord":false,"primaryDirect":false,"namedEvidence":false,"transparentMethod":false,"independent":false,"stableArchive":false,"anonymous":false,"partisan":true,"brokenProvenance":true},
+      "rating": 1,
+      "reviewStatus": "rejected",
+      "rejectionReason": "The infographic is the submitted claim, not proof. It cites only PIB and media reports generically, publishes no row-level URLs or formula notes, and mixes stock, flow, connections, registrations and approvals."
+    },
+    {
+      "id": "indian-matrix-instagram-account",
+      "url": "https://www.instagram.com/indianmatrix/",
+      "sourceRegistryId": null,
+      "sourceClass": "social-media",
+      "independenceGroup": "indian-matrix",
+      "ratingInputs": {"controllingRecord":false,"primaryDirect":false,"namedEvidence":false,"transparentMethod":false,"independent":false,"stableArchive":false,"anonymous":false,"partisan":true,"brokenProvenance":true},
+      "rating": 1,
+      "reviewStatus": "rejected",
+      "rejectionReason": "A social account is not standalone evidence and provides no inspectable row-level methodology for the submitted infographic."
+    }
+  ]
+}

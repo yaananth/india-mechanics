@@ -1,5 +1,5 @@
 {
-  "methodologyVersion": "leader-v0.2|security-v0.1",
+  "methodologyVersion": "leader-v0.2|security-v0.1|infrastructure-v0.1",
   "reviewedAt": "2026-07-24",
   "reviewPromptHash": "sha256:89a3e279ae2044e4f81de22936c00fe06388fbcde0de4f01b6138e1617446da7",
   "purpose": "Publish more than one defensible PM rating while keeping every result tied to the same evidence judgments.",
@@ -17,7 +17,7 @@
   "alternativeProfiles": [
     {
       "id": "development",
-      "definition": "Prioritises material outcomes, durable productive capacity, infrastructure, productivity, and poverty reduction.",
+      "definition": "Prioritises broad material outcomes, durable reform, inclusion, productivity, poverty reduction, and crisis resilience. Physical infrastructure has a separate specialist rubric.",
       "weights": {
         "outcomes": 0.40,
         "reforms": 0.25,

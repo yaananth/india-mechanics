@@ -1,5 +1,5 @@
 {
-  "version": "query-templates-v0.8",
+  "version": "query-templates-v0.9",
   "templates": [
     {
       "id": "full-refresh",
@@ -164,6 +164,18 @@
         "India {historicalSemiconductorClaim} archive academic history",
         "India semiconductor fab assembly test planned capacity versus current output",
         "India semiconductor subsidy jobs domestic value yields exports independent analysis"
+      ]
+    },
+    {
+      "id": "infrastructure-stock-audit",
+      "lane": "infrastructure-capacity",
+      "queries": [
+        "site:{officialDomain} India {infrastructureMetric} 2014 2026 capacity length connections",
+        "site:{regulatorDomain} India {infrastructureMetric} baseline current utilisation",
+        "site:cag.gov.in India {infrastructureProgramme} audit cost delay maintenance",
+        "site:worldbank.org OR site:iea.org India {infrastructureMetric} outcomes quality",
+        "India {infrastructureMetric} current stock versus annual flow definition",
+        "India {infrastructureProgramme} inherited project approval finance construction commissioning"
       ]
     }
   ]

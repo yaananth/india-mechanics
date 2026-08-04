@@ -21,7 +21,7 @@ describe('read API', () => {
   it('returns an overview with source cutoffs and a current PM', async () => {
     const response = await request(app).get('/api/overview')
     expect(response.status).toBe(200)
-    expect(response.body.knowledge.cutoff).toBe('2026-07-29')
+    expect(response.body.knowledge.cutoff).toBe('2026-08-04')
     expect(response.body.knowledge.editorialReviewedThrough).toBe('2026-07-26')
     expect(response.body.knowledge.billRegisterAsOfDate).toBe('2026-07-26')
     expect(response.body.knowledge.timelineStarts).toBe('1945-01-01')
@@ -608,7 +608,7 @@ describe('read API', () => {
         (component: { id: string }) => component.id === 'integrity',
       ),
     ).toMatchObject({ score: 6 })
-    expect(response.body.specialistAssessments).toHaveLength(2)
+    expect(response.body.specialistAssessments).toHaveLength(3)
     expect(response.body.specialistAssessments).toContainEqual(
       expect.objectContaining({
         topicId: 'national-security',
@@ -625,7 +625,78 @@ describe('read API', () => {
         status: 'reviewed',
       }),
     )
+    expect(response.body.specialistAssessments).toContainEqual(
+      expect.objectContaining({
+        topicId: 'infrastructure-capacity',
+        operationalScore: 8.1,
+        adjustedScore: 7.8,
+        status: 'reviewed',
+      }),
+    )
     expect(response.body.sources.length).toBeGreaterThanOrEqual(12)
+  })
+
+  it('separates broad development from infrastructure buildout', async () => {
+    const [answer, leaders] = await Promise.all([
+      request(app).get('/api/search').query({
+        jurisdiction: 'india',
+        q: 'modi better in developing',
+      }),
+      request(app).get('/api/leaders').query({ jurisdiction: 'india' }),
+    ])
+
+    expect(answer.status).toBe(200)
+    expect(answer.body.answer).toMatchObject({
+      id: 'modi-infrastructure-development',
+      confidence: 'high',
+      asOfDate: '2026-08-04',
+    })
+    expect(answer.body.answer.verdict).toContain('8.1')
+    expect(answer.body.answer.verdict).toContain('not a blanket development')
+    expect(
+      answer.body.answer.claims.map((claim: { id: string }) => claim.id),
+    ).toEqual(
+      expect.arrayContaining([
+        'modi-transport-buildout-scale',
+        'modi-energy-utilities-buildout',
+        'infrastructure-infographic-specific-corrections',
+        'infrastructure-rating-no-double-count',
+      ]),
+    )
+
+    const infrastructureScores = Object.fromEntries(
+      leaders.body
+        .filter((leader: { id: string }) =>
+          ['vajpayee-1998', 'manmohan-2004', 'modi-2014'].includes(leader.id),
+        )
+        .map(
+          (leader: {
+            id: string
+            specialistAssessments: Array<{
+              topicId: string
+              operationalScore: number
+              adjustedScore: number
+            }>
+          }) => {
+            const assessment = leader.specialistAssessments.find(
+              (candidate) =>
+                candidate.topicId === 'infrastructure-capacity',
+            )
+            return [
+              leader.id,
+              {
+                buildout: assessment?.operationalScore,
+                adjusted: assessment?.adjustedScore,
+              },
+            ]
+          },
+        ),
+    )
+    expect(infrastructureScores).toEqual({
+      'vajpayee-1998': { buildout: 7.3, adjusted: 7.1 },
+      'manmohan-2004': { buildout: 7.5, adjusted: 7.3 },
+      'modi-2014': { buildout: 8.1, adjusted: 7.8 },
+    })
   })
 
   it('fact-checks the semiconductor narrative and publishes cross-term policy credit', async () => {
@@ -840,13 +911,14 @@ describe('read API', () => {
       request(app).get('/api/openapi.json'),
     ])
     expect(methodology.status).toBe(200)
+    expect(methodology.body.version).toContain('infrastructure-v0.1')
     expect(methodology.body.biasControls.length).toBeGreaterThanOrEqual(4)
     expect(methodology.body.corroborationRules.communalViolence).toContain(
       'independent national reporting',
     )
     expect(methodology.body.budgetEvaluation.dimensions).toHaveLength(5)
     expect(methodology.body.leaderEvaluation.profiles).toHaveLength(4)
-    expect(methodology.body.specialistEvaluations).toHaveLength(2)
+    expect(methodology.body.specialistEvaluations).toHaveLength(3)
     expect(methodology.body.specialistEvaluations).toContainEqual(
       expect.objectContaining({
         id: 'national-security',
@@ -861,6 +933,16 @@ describe('read API', () => {
         adjustedLabel: 'Reporting-and-justice adjusted',
         dimensions: expect.arrayContaining([
           expect.objectContaining({ id: 'safety-justice-delivery' }),
+        ]),
+      }),
+    )
+    expect(methodology.body.specialistEvaluations).toContainEqual(
+      expect.objectContaining({
+        id: 'infrastructure-capacity',
+        operationalLabel: 'Buildout scale',
+        adjustedLabel: 'Quality-adjusted capacity',
+        dimensions: expect.arrayContaining([
+          expect.objectContaining({ id: 'infrastructure-quality' }),
         ]),
       }),
     )

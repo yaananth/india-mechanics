@@ -128,6 +128,7 @@ server/seed-data/catalog.ts           national core corpus
 server/seed-data/security.ts          national-security lane
 server/seed-data/crime-safety.ts      crime, justice, and current-signal lane
 server/seed-data/semiconductors.ts     semiconductor history and industrial-policy lane
+server/seed-data/infrastructure-capacity.ts infrastructure and productive-capacity scorecard
 server/seed-data/andhra-pradesh.ts    post-split AP corpus
 server/seed-data/tamil-nadu.ts        modern Tamil Nadu and CM corpus
 server/seed-data/budgets.ts           budget records and ratings
@@ -151,6 +152,13 @@ separates planned capacity from operating production, and publishes distinct
 ratings for India Semiconductor Mission 1.0 and Semicon 2.0. Its reviewed answer
 also discloses how semiconductor evidence changes PM component scores even when
 the rounded headline does not change.
+
+The infrastructure lane distinguishes broad development from physical
+buildout. It applies one disclosed rubric to the long Vajpayee, Manmohan Singh,
+and Modi infrastructure cycles, publishes both raw buildout and a
+quality-adjusted result, and prevents stock, annual flows, project approvals,
+connections, inherited projects, and shared state/private delivery from being
+collapsed into one political number.
 
 Every government Bill has a plain-language explanation. The UI distinguishes
 register-derived summaries, official-text reviews, and independent assessments.

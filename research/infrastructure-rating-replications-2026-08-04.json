@@ -1,0 +1,117 @@
+{
+  "subject": "Infrastructure and productive capacity across the Vajpayee, Manmohan Singh, and Modi terms",
+  "asOfDate": "2026-08-04",
+  "weights": {
+    "buildout": {
+      "transport": 0.30,
+      "energy": 0.25,
+      "humanCapacity": 0.15,
+      "industrial": 0.20,
+      "quality": 0.10
+    },
+    "adjusted": {
+      "transport": 0.20,
+      "energy": 0.20,
+      "humanCapacity": 0.20,
+      "industrial": 0.15,
+      "quality": 0.25
+    }
+  },
+  "website": {
+    "vajpayee-1998": {
+      "scores": {
+        "transport": 7.9,
+        "energy": 7.1,
+        "humanCapacity": 6.5,
+        "industrial": 7.4,
+        "quality": 6.9
+      },
+      "buildout": 7.3,
+      "adjusted": 7.1
+    },
+    "manmohan-2004": {
+      "scores": {
+        "transport": 7.7,
+        "energy": 7.5,
+        "humanCapacity": 8.1,
+        "industrial": 7.2,
+        "quality": 6.3
+      },
+      "buildout": 7.5,
+      "adjusted": 7.3
+    },
+    "modi-2014": {
+      "scores": {
+        "transport": 8.7,
+        "energy": 8.5,
+        "humanCapacity": 7.6,
+        "industrial": 7.9,
+        "quality": 6.8
+      },
+      "buildout": 8.1,
+      "adjusted": 7.8
+    }
+  },
+  "runs": [
+    {
+      "id": "transport-led-replication",
+      "terms": {
+        "vajpayee-1998": {
+          "scores": {"transport": 8.0, "energy": 7.3, "humanCapacity": 6.8, "industrial": 7.5, "quality": 6.9},
+          "buildout": 7.4,
+          "adjusted": 7.3
+        },
+        "manmohan-2004": {
+          "scores": {"transport": 8.0, "energy": 7.3, "humanCapacity": 8.3, "industrial": 7.2, "quality": 6.4},
+          "buildout": 7.6,
+          "adjusted": 7.4
+        },
+        "modi-2014": {
+          "scores": {"transport": 8.8, "energy": 8.4, "humanCapacity": 7.5, "industrial": 7.9, "quality": 6.8},
+          "buildout": 8.1,
+          "adjusted": 7.8
+        }
+      }
+    },
+    {
+      "id": "energy-led-replication",
+      "terms": {
+        "vajpayee-1998": {
+          "scores": {"transport": 8.2, "energy": 7.4, "humanCapacity": 6.5, "industrial": 7.3, "quality": 6.8},
+          "buildout": 7.4,
+          "adjusted": 7.2
+        },
+        "manmohan-2004": {
+          "scores": {"transport": 7.4, "energy": 7.7, "humanCapacity": 8.2, "industrial": 7.3, "quality": 6.1},
+          "buildout": 7.4,
+          "adjusted": 7.3
+        },
+        "modi-2014": {
+          "scores": {"transport": 8.8, "energy": 8.9, "humanCapacity": 7.6, "industrial": 8.0, "quality": 6.9},
+          "buildout": 8.3,
+          "adjusted": 8.0
+        }
+      }
+    },
+    {
+      "id": "social-industrial-replication",
+      "terms": {
+        "vajpayee-1998": {
+          "scores": {"transport": 7.4, "energy": 6.7, "humanCapacity": 6.3, "industrial": 7.3, "quality": 7.0},
+          "buildout": 7.0,
+          "adjusted": 6.9
+        },
+        "manmohan-2004": {
+          "scores": {"transport": 7.6, "energy": 7.3, "humanCapacity": 7.7, "industrial": 7.1, "quality": 6.3},
+          "buildout": 7.3,
+          "adjusted": 7.2
+        },
+        "modi-2014": {
+          "scores": {"transport": 8.5, "energy": 8.2, "humanCapacity": 7.7, "industrial": 7.9, "quality": 6.6},
+          "buildout": 8.0,
+          "adjusted": 7.7
+        }
+      }
+    }
+  ]
+}

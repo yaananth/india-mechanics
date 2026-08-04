@@ -1640,6 +1640,84 @@ a.icon-button {
   height: 320px;
 }
 
+.infrastructure-specialist-comparison {
+  padding: 30px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.infrastructure-specialist-comparison > .section-heading > svg {
+  color: var(--green);
+}
+
+.infrastructure-specialist-comparison > p {
+  max-width: 760px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.infrastructure-specialist-comparison__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 15px;
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.infrastructure-specialist-comparison__grid button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 74px 92px 18px;
+  align-items: center;
+  min-height: 76px;
+  padding: 12px 13px;
+  color: inherit;
+  border: 0;
+  border-right: 1px solid var(--line);
+  background: white;
+  text-align: left;
+  gap: 10px;
+}
+
+.infrastructure-specialist-comparison__grid button:last-child {
+  border-right: 0;
+}
+
+.infrastructure-specialist-comparison__grid button:hover {
+  background: var(--surface);
+}
+
+.infrastructure-specialist-comparison__grid button > span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.infrastructure-specialist-comparison__grid button > span > strong {
+  font-size: 10px;
+}
+
+.infrastructure-specialist-comparison__grid button > span:not(:first-child) > strong {
+  margin-top: 3px;
+  font-family: var(--serif);
+  font-size: 20px;
+}
+
+.infrastructure-specialist-comparison__grid small {
+  color: var(--muted);
+  font-size: 7px;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.infrastructure-specialist-comparison__note {
+  display: block;
+  margin-top: 9px;
+  color: var(--faint);
+  font-size: 8px;
+  line-height: 1.45;
+}
+
 .leader-workspace {
   display: grid;
   grid-template-columns: minmax(480px, 0.9fr) minmax(480px, 1.1fr);
@@ -5996,6 +6074,19 @@ a.icon-button {
 
   .leader-workspace {
     grid-template-columns: 1fr;
+  }
+
+  .infrastructure-specialist-comparison__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .infrastructure-specialist-comparison__grid button {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .infrastructure-specialist-comparison__grid button:last-child {
+    border-bottom: 0;
   }
 
   .leader-detail {

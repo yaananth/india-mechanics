@@ -5,6 +5,7 @@ import { andhraSources } from '../server/seed-data/andhra-pradesh.ts'
 import { developmentSources } from '../server/seed-data/development-trade.ts'
 import { securitySources } from '../server/seed-data/security.ts'
 import { semiconductorSources } from '../server/seed-data/semiconductors.ts'
+import { infrastructureCapacitySources } from '../server/seed-data/infrastructure-capacity.ts'
 import { tamilNaduSources } from '../server/seed-data/tamil-nadu.ts'
 
 const allSources = [
@@ -12,6 +13,7 @@ const allSources = [
   ...developmentSources,
   ...securitySources,
   ...semiconductorSources,
+  ...infrastructureCapacitySources,
   ...andhraSources,
   ...tamilNaduSources,
   ...crimeSafetySources,
@@ -96,6 +98,7 @@ async function checkSource(
     if (
       errorName === 'AbortError' ||
       causeCode === 'UNABLE_TO_VERIFY_LEAF_SIGNATURE' ||
+      causeCode === 'UNABLE_TO_GET_ISSUER_CERT_LOCALLY' ||
       causeCode === 'CERT_HAS_EXPIRED' ||
       causeCode === 'SELF_SIGNED_CERT_IN_CHAIN' ||
       causeCode === 'ECONNRESET' ||
@@ -103,7 +106,8 @@ async function checkSource(
       causeCode === 'UND_ERR_CONNECT_TIMEOUT' ||
       causeCode === 'ENOTFOUND' ||
       causeCode === 'EAI_AGAIN' ||
-      causeCode === 'ECONNREFUSED'
+      causeCode === 'ECONNREFUSED' ||
+      (error instanceof TypeError && error.message === 'fetch failed')
     ) {
       return {
         id: source.id,
@@ -113,7 +117,9 @@ async function checkSource(
         detail:
           errorName === 'AbortError'
             ? 'Request timed out'
-            : `Transport verification blocked (${causeCode})`,
+            : causeCode
+              ? `Transport verification blocked (${causeCode})`
+              : 'Transport verification failed without a stable HTTP response',
       }
     }
     return {

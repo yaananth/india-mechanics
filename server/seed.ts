@@ -120,14 +120,22 @@ import {
   semiconductorPolicyScores,
   semiconductorSources,
 } from './seed-data/semiconductors.ts'
+import {
+  infrastructureCapacityAnswers,
+  infrastructureCapacityAssessments,
+  infrastructureCapacityClaims,
+  infrastructureCapacityDimensions,
+  infrastructureCapacitySources,
+  infrastructureCapacityTopics,
+} from './seed-data/infrastructure-capacity.ts'
 import type {
   BillDocumentExtractSeed,
   IndicatorObservationSeed,
   PolicyRegisterSeed,
 } from './types.ts'
 
-export const seedVersion = '2026-07-29.1'
-const sourceRosterVersion = 'source-roster-v0.13'
+export const seedVersion = '2026-08-04.1'
+const sourceRosterVersion = 'source-roster-v0.14'
 const allJurisdictions = [
   ...jurisdictions,
   ...andhraJurisdictions,
@@ -151,6 +159,7 @@ const allSources = [
   ...developmentSources,
   ...securitySources,
   ...semiconductorSources,
+  ...infrastructureCapacitySources,
   ...andhraSources,
   ...tamilNaduSources,
   ...crimeSafetySources,
@@ -194,6 +203,7 @@ const allClaims = [
   ...developmentClaims,
   ...securityClaims,
   ...semiconductorClaims,
+  ...infrastructureCapacityClaims,
   ...andhraClaims,
   ...tamilNaduClaims,
   ...crimeSafetyClaims,
@@ -224,6 +234,7 @@ const allBudgetPoints = [
 const allCuratedAnswers = [
   ...curatedAnswers,
   ...semiconductorCuratedAnswers,
+  ...infrastructureCapacityAnswers,
   ...andhraCuratedAnswers,
   ...tamilNaduCuratedAnswers,
   ...crimeSafetyCuratedAnswers,
@@ -231,14 +242,17 @@ const allCuratedAnswers = [
 const allSpecialistTopics = [
   ...securitySpecialistTopics,
   ...crimeSafetySpecialistTopics,
+  ...infrastructureCapacityTopics,
 ]
 const allSpecialistDimensions = [
   ...securitySpecialistDimensions,
   ...crimeSafetySpecialistDimensions,
+  ...infrastructureCapacityDimensions,
 ]
 const allSpecialistAssessments = [
   ...securitySpecialistAssessments,
   ...crimeSafetySpecialistAssessments,
+  ...infrastructureCapacityAssessments,
   ...tamilNaduSpecialistAssessments,
 ]
 const defaultDatabasePath = fileURLToPath(
@@ -1484,6 +1498,25 @@ function insertRows(
     'published',
     metadata.generated_at,
     'Published separate historical and current semiconductor policies, corrected the viral Fairchild, Intel, Taloja, Assam, and investment-number claims, credited operating commercial assembly and test plants, kept front-end fabrication and projected capacity provisional, raised Modi durable-reform and execution components without changing the rounded 6.7 headline, and preserved credit for earlier SCL and UPA policy attempts.',
+  )
+  db.prepare(
+    `INSERT INTO ingestion_batches
+      (id, source_roster_version, query_scope, run_at, agent_model,
+       candidates_found, rejected_records, reviewer, review_status,
+       published_at, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).run(
+    'modi-infrastructure-buildout-2026-08-04',
+    sourceRosterVersion,
+    'Post-2014 transport, energy, household utilities, health capacity, industrial capacity, infographic methodology, and cross-PM infrastructure scoring',
+    metadata.generated_at,
+    'Codex with three independent sector audits and three scoring replications',
+    26,
+    2,
+    'India Mechanics infrastructure and productive-capacity review',
+    'published',
+    metadata.generated_at,
+    'Fact-checked the 22-row post-2014 infrastructure infographic, corrected port, renewable, tap-water, startup, flow-versus-stock, and inherited-project claims, added a same-standard specialist rubric for the long Vajpayee, Manmohan, and Modi infrastructure cycles, and published Modi at 8.1 buildout and 7.8 quality-adjusted without changing the balanced PM rating.',
   )
 }
 
