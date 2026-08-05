@@ -108,6 +108,27 @@ particular deployment is already current. A release is crawler-ready only after
 the compact endpoint, human HTML fallback, `robots.txt`, and `sitemap.xml` are
 verified at the canonical origin.
 
+### Source-aware AI discussion
+
+The top application shell exposes a current-page **Discuss with AI** action.
+`src/ai-discussion.ts` builds a self-contained prompt from navigation state,
+jurisdiction, selected entity, evidence endpoints, research cutoffs, and the
+methodology version. `src/components/AiDiscussionDialog.tsx` lets the reader edit
+the question, inspect the prompt, open the included evidence routes, and copy it
+locally. The application does not send that prompt to an AI vendor.
+
+The prompt treats India Mechanics as an editorial index and synthesis layer. It
+requires claim-level citations to underlying sources, distinguishes official
+or interested-party records from independent outcome evidence, preserves
+qualifiers and evidence gaps, and forbids causal attribution from office timing
+alone. It also discloses compact-document omissions.
+
+Source presentation follows the same contract. The reliability marker evaluates
+an individual source item for a stated use; it does not encode political
+agreement or evidentiary role. Compact source links show document titles. The
+source ledger exposes publisher, source type, author when recorded, publication
+and access dates, rating rationale, best use, and limitations.
+
 ## 3. Repository map
 
 ```text

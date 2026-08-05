@@ -251,6 +251,35 @@ the parliamentary register.
 - A release is not crawler-ready until plain non-JavaScript fetches verify the
   leader deep link, compact JSON and Markdown, robots, sitemap, and cutoff.
 
+## AI discussion prompts and source presentation
+
+- The top-level “Discuss with AI” action must copy a self-contained prompt for
+  the current page and selected entity, not a generic partisan question.
+- Include the current page, `llms.txt`, metadata, methodology, page-specific
+  evidence endpoints, jurisdiction source ledger, knowledge cutoff, editorial
+  review date, and methodology version.
+- Tell the receiving model to cite attached underlying source URLs beside the
+  claims they support. India Mechanics may be cited for its editorial score or
+  compilation, not as a replacement for the legislation, judgment, dataset,
+  official record, corporate disclosure, or independent analysis.
+- A reliability marker describes the individual source item’s fitness for a
+  stated use. It is not the source’s evidentiary role, political agreement, a
+  universal truth score, or proof that a policy worked.
+- Source chips must identify the document, not only the publisher. The source
+  ledger must expose publisher, source type, author when recorded, publication
+  and access dates, reliability rationale, best use, and limitation.
+- Official and interested-party sources establish only what they directly
+  record or claim. Outcome, causality, execution quality, institutional effect,
+  and government-performance judgments require suitable independent evidence
+  or an explicit evidence gap.
+- Preserve claim-level scope. A term-level or policy-level source list does not
+  automatically support every statement in that record.
+- The copied prompt must preserve qualifiers, disagreements, confidence,
+  assessment dates, cutoffs, shared attribution, and compact-record omission
+  counts.
+- Copying is local clipboard work. Do not transmit the prompt or page data to an
+  AI vendor until the user chooses where to paste it.
+
 ## Verification
 
 - `npm test`

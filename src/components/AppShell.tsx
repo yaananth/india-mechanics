@@ -7,6 +7,7 @@ import {
   Landmark,
   MapPin,
   Menu,
+  MessageSquareText,
   ScrollText,
   Search,
   ShieldCheck,
@@ -64,6 +65,7 @@ export function AppShell({
   onJurisdictionChange,
   onSearchOpen,
   onMethodologyOpen,
+  onAiDiscussionOpen,
   knowledge,
   children,
 }: {
@@ -74,6 +76,7 @@ export function AppShell({
   onJurisdictionChange: (jurisdictionId: string) => void
   onSearchOpen: () => void
   onMethodologyOpen: () => void
+  onAiDiscussionOpen: () => void
   knowledge: Overview['knowledge']
   children: ReactNode
 }) {
@@ -169,6 +172,19 @@ export function AppShell({
           <div className="header-actions">
             <button
               type="button"
+              className="ai-discuss-trigger"
+              onClick={onAiDiscussionOpen}
+              title="Discuss this page with AI"
+              aria-label="Discuss this page with AI"
+            >
+              <MessageSquareText size={17} aria-hidden="true" />
+              <span className="ai-discuss-trigger__long">
+                Discuss with AI
+              </span>
+              <span className="ai-discuss-trigger__short">Discuss</span>
+            </button>
+            <button
+              type="button"
               className="icon-button"
               onClick={onMethodologyOpen}
               title="Methodology"
@@ -195,6 +211,14 @@ export function AppShell({
           Political status checked{' '}
           <strong>{knowledge.politicalStatusChecked}</strong>
         </span>
+        <button
+          type="button"
+          className="ai-discuss-mobile"
+          onClick={onAiDiscussionOpen}
+        >
+          <MessageSquareText size={15} aria-hidden="true" />
+          Discuss with AI
+        </button>
       </div>
 
       <main id="main-content" className="app-main">

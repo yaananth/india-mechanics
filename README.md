@@ -139,6 +139,16 @@ routes, the compact endpoint, and the HTML fallback as a publication contract;
 a deployment should not be described as crawler-ready until all four are
 verified on the canonical origin.
 
+The website header also exposes **Discuss with AI**. It builds a copyable prompt
+from the current page and selected record, including the correct evidence APIs,
+cutoffs, methodology version, and source-discipline rules. Copying does not send
+data to an AI service; the reader chooses where to paste it.
+
+The prompt instructs receiving models to cite underlying sources rather than the
+India Mechanics synthesis alone, distinguish official records from independent
+impact evidence, preserve limitations and qualifiers, and treat ratings as
+editorial judgments rather than objective facts.
+
 ## Technology
 
 - React, TypeScript, Vite, and Recharts

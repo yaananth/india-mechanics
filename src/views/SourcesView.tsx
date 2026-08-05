@@ -8,7 +8,7 @@ import {
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import type { Jurisdiction, Overview, Source } from '../types.ts'
-import { sentenceCase } from '../utils.ts'
+import { formatDate, sentenceCase } from '../utils.ts'
 import { SourceRating } from '../components/common.tsx'
 
 export function SourcesView({
@@ -49,9 +49,9 @@ export function SourcesView({
           </span>
           <h1>Trust is scoped, not assumed</h1>
           <p>
-            Each source has a reliability marker for provenance and fitness for
-            a specific use. An official source can prove what government did
-            without proving the policy worked.
+            Each source has a reliability marker for its stated use, plus
+            provenance, best use, and limitations. Reliability is not the
+            source’s role, political agreement, or a universal truth score.
           </p>
         </div>
         <div className="view-header__stat">
@@ -63,11 +63,12 @@ export function SourcesView({
       <section className="source-rubric">
         <div>
           <span className="section-label">Reliability rubric</span>
-          <h2>Green means direct and fit for the stated claim</h2>
+          <h2>Green means strongest fit for the stated use</h2>
           <p>
             The emphasized dot moves from red to green as reliability improves.
-            This describes evidence quality, not whether a source supports a
-            preferred political conclusion.
+            Source type explains whether the record is official, independent,
+            academic, corporate, or another evidence class. A strong official
+            record can establish an action or number without proving impact.
           </p>
           <button type="button" className="text-command" onClick={onMethodologyOpen}>
             Open full rubric
@@ -154,8 +155,8 @@ export function SourcesView({
             <option value={1}>Any reviewed source</option>
             <option value={2}>Limited or stronger</option>
             <option value={3}>Context or stronger</option>
-            <option value={4}>Strong or direct</option>
-            <option value={5}>Direct only</option>
+            <option value={4}>Strong or authoritative</option>
+            <option value={5}>Authoritative for stated use</option>
           </select>
         </label>
         <label>
@@ -174,8 +175,8 @@ export function SourcesView({
 
       <section className="source-table" aria-label="Source ledger">
         <div className="source-table__header" aria-hidden="true">
-          <span>Reliability</span>
-          <span>Source</span>
+          <span>Reliability for use</span>
+          <span>Source and provenance</span>
           <span>Best used for</span>
           <span>Limitation</span>
           <span />
@@ -187,6 +188,13 @@ export function SourcesView({
               <strong>{source.title}</strong>
               <span>
                 {source.publisher} · {sentenceCase(source.sourceType)}
+              </span>
+              {source.author && <span>By {source.author}</span>}
+              <span className="source-table__dates">
+                {source.publishedDate
+                  ? `Published ${formatDate(source.publishedDate)}`
+                  : 'Publication date not listed'}
+                {' · '}Accessed {formatDate(source.accessedDate)}
               </span>
               <small>{source.ratingReason}</small>
             </div>

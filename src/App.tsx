@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import './App.css'
 import { api } from './api.ts'
+import type { AiDiscussionContext } from './ai-discussion.ts'
+import { AiDiscussionDialog } from './components/AiDiscussionDialog.tsx'
 import { AppShell } from './components/AppShell.tsx'
 import { ErrorState, LoadingState } from './components/common.tsx'
 import { MethodologyDialog } from './components/MethodologyDialog.tsx'
@@ -47,6 +49,160 @@ type AppData = {
   methodology: Methodology
 }
 
+function aiDiscussionContext(
+  data: AppData,
+  navigation: NavigationState,
+  selectedAnswer: CuratedAnswer,
+): AiDiscussionContext {
+  const jurisdiction = data.overview.jurisdiction
+  const apiUrl = (path: string) =>
+    new URL(path, window.location.origin).toString()
+  const pageUrl = new URL(
+    navigationHref(navigation, window.location.href),
+    window.location.origin,
+  ).toString()
+  let topicLabel = `${jurisdiction.shortName} overview`
+  let evidenceLinks: AiDiscussionContext['evidenceLinks'] = []
+
+  if (navigation.view === 'overview') {
+    topicLabel = selectedAnswer.question
+    evidenceLinks = [
+      {
+        label: 'Selected question and claims',
+        url: apiUrl(
+          `/api/questions/${encodeURIComponent(selectedAnswer.id)}`,
+        ),
+      },
+      {
+        label: 'Jurisdiction overview',
+        url: apiUrl(
+          `/api/overview?jurisdiction=${encodeURIComponent(jurisdiction.id)}`,
+        ),
+      },
+    ]
+  } else if (navigation.view === 'timeline') {
+    const event = data.events.find(
+      (candidate) => candidate.id === navigation.eventId,
+    )
+    topicLabel = event?.title ?? `${jurisdiction.shortName} timeline`
+    evidenceLinks = [
+      {
+        label: 'Timeline records',
+        url: apiUrl(
+          `/api/events?jurisdiction=${encodeURIComponent(jurisdiction.id)}`,
+        ),
+      },
+    ]
+  } else if (navigation.view === 'leaders') {
+    const leader = data.leaders.find(
+      (candidate) => candidate.id === navigation.termId,
+    )
+    topicLabel = leader
+      ? `${leader.person.name}, ${leader.office.shortName} term`
+      : `${jurisdiction.shortName} leader terms`
+    evidenceLinks = [
+      {
+        label: 'Compact leader scorecard',
+        url: apiUrl(
+          `/api/llm/leaders/${encodeURIComponent(navigation.termId)}`,
+        ),
+      },
+    ]
+  } else if (navigation.view === 'policies') {
+    if (navigation.policyMode === 'register' && navigation.billId) {
+      topicLabel = `Parliamentary bill ${navigation.billId}`
+      evidenceLinks = [
+        {
+          label: 'Bill record and explanation',
+          url: apiUrl(
+            `/api/bills/${encodeURIComponent(navigation.billId)}?jurisdiction=${encodeURIComponent(jurisdiction.id)}`,
+          ),
+        },
+      ]
+    } else {
+      const policy = data.policies.find(
+        (candidate) => candidate.id === navigation.policyId,
+      )
+      topicLabel = policy?.title ?? `${jurisdiction.shortName} policies`
+      evidenceLinks = [
+        {
+          label: 'Policy evidence record',
+          url: apiUrl(
+            `/api/policies/${encodeURIComponent(navigation.policyId)}?jurisdiction=${encodeURIComponent(jurisdiction.id)}`,
+          ),
+        },
+      ]
+    }
+  } else if (navigation.view === 'budgets') {
+    const budget = data.budgets.find(
+      (candidate) => candidate.id === navigation.budgetId,
+    )
+    topicLabel = budget?.title ?? `${jurisdiction.shortName} budgets`
+    evidenceLinks = [
+      {
+        label: 'Budget evidence record',
+        url: apiUrl(
+          `/api/budgets/${encodeURIComponent(navigation.budgetId)}?jurisdiction=${encodeURIComponent(jurisdiction.id)}`,
+        ),
+      },
+    ]
+  } else if (navigation.view === 'safety') {
+    topicLabel = `${jurisdiction.shortName} crime, public safety, and justice`
+    evidenceLinks = [
+      {
+        label: 'Safety indicator definitions',
+        url: apiUrl(
+          `/api/indicators?jurisdiction=${encodeURIComponent(jurisdiction.id)}`,
+        ),
+      },
+      {
+        label: 'Current and historical safety events',
+        url: apiUrl(
+          `/api/events?jurisdiction=${encodeURIComponent(jurisdiction.id)}`,
+        ),
+      },
+    ]
+  } else if (navigation.view === 'indicators') {
+    const indicator = data.indicators.find(
+      (candidate) => candidate.id === navigation.indicatorId,
+    )
+    topicLabel = indicator?.name ?? `${jurisdiction.shortName} indicator`
+    evidenceLinks = [
+      {
+        label: 'Indicator series and term comparisons',
+        url: apiUrl(
+          `/api/indicators/${encodeURIComponent(navigation.indicatorId)}/series?jurisdiction=${encodeURIComponent(jurisdiction.id)}`,
+        ),
+      },
+    ]
+  } else if (navigation.view === 'sources') {
+    topicLabel = `${jurisdiction.shortName} source quality and evidence`
+  }
+
+  evidenceLinks.push({
+    label: 'Jurisdiction source ledger',
+    url: apiUrl(
+      `/api/sources?jurisdiction=${encodeURIComponent(jurisdiction.id)}`,
+    ),
+  })
+  evidenceLinks = evidenceLinks.filter(
+    (link, index, all) =>
+      all.findIndex((candidate) => candidate.url === link.url) === index,
+  )
+
+  return {
+    pageUrl,
+    jurisdictionName: jurisdiction.name,
+    topicLabel,
+    knowledgeCutoff: data.overview.knowledge.cutoff,
+    editorialReviewedThrough:
+      data.overview.knowledge.editorialReviewedThrough,
+    methodologyVersion: data.methodology.version,
+    evidenceLinks,
+    defaultQuestion: `What does the published evidence show about ${topicLabel}? Explain achievements, concerns, attribution, uncertainty, and what evidence would change the conclusion.`,
+  }
+}
+
 function App() {
   const [data, setData] = useState<AppData | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -56,6 +212,7 @@ function App() {
   )
   const [searchOpen, setSearchOpen] = useState(false)
   const [methodologyOpen, setMethodologyOpen] = useState(false)
+  const [aiDiscussionOpen, setAiDiscussionOpen] = useState(false)
   const [selectedAnswer, setSelectedAnswer] = useState<CuratedAnswer | null>(null)
 
   const updateNavigation = useCallback(
@@ -341,6 +498,12 @@ function App() {
     )
   }
 
+  const discussionContext = aiDiscussionContext(
+    data,
+    navigation,
+    selectedAnswer,
+  )
+
   return (
     <>
       <a className="skip-link" href="#main-content">
@@ -354,6 +517,7 @@ function App() {
         onJurisdictionChange={handleJurisdictionChange}
         onSearchOpen={() => setSearchOpen(true)}
         onMethodologyOpen={() => setMethodologyOpen(true)}
+        onAiDiscussionOpen={() => setAiDiscussionOpen(true)}
         knowledge={data.overview.knowledge}
       >
         {navigation.view === 'overview' && (
@@ -484,6 +648,11 @@ function App() {
         open={methodologyOpen}
         methodology={data.methodology}
         onClose={() => setMethodologyOpen(false)}
+      />
+      <AiDiscussionDialog
+        open={aiDiscussionOpen}
+        context={discussionContext}
+        onClose={() => setAiDiscussionOpen(false)}
       />
     </>
   )

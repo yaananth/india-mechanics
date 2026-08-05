@@ -6,6 +6,7 @@ import {
   ShieldX,
 } from 'lucide-react'
 import type { Confidence, Source } from '../types.ts'
+import { sentenceCase } from '../utils.ts'
 
 export function ConfidenceMark({
   confidence,
@@ -36,7 +37,7 @@ export function SourceRating({
   compact?: boolean
 }) {
   const level = Math.max(1, Math.min(5, Math.round(rating)))
-  const labels = ['Weak', 'Limited', 'Context', 'Strong', 'Direct']
+  const labels = ['Weak', 'Limited', 'Context', 'Strong', 'Authoritative']
   const label = labels[level - 1]
 
   return (
@@ -74,10 +75,11 @@ export function SourceLinks({
           href={source.url}
           target="_blank"
           rel="noreferrer"
-          title={`${source.ratingReason} Limitation: ${source.limitations}`}
+          aria-label={`Open source: ${source.title} (${source.publisher})`}
+          title={`${source.publisher} · ${sentenceCase(source.sourceType)}. Best used for: ${source.bestFor} Reliability rationale: ${source.ratingReason} Limitation: ${source.limitations}`}
         >
           <SourceRating rating={source.reliability} compact />
-          <span>{source.publisher}</span>
+          <span>{source.title}</span>
           <ExternalLink size={12} aria-hidden="true" />
         </a>
       ))}
