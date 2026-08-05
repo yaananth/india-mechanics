@@ -27,7 +27,7 @@ export const defaultNavigation: NavigationState = {
   policyMode: 'reviews',
   budgetId: 'budget-2026-27-capex-consolidation',
   indicatorId: 'life-expectancy',
-  showEditorial: false,
+  showEditorial: true,
 }
 
 const viewIds = new Set<ViewId>([
@@ -80,7 +80,7 @@ export function parseNavigation(input: string | URL): NavigationState {
     budgetId: optionalParam(params, 'budget') ?? defaultNavigation.budgetId,
     indicatorId:
       optionalParam(params, 'indicator') ?? defaultNavigation.indicatorId,
-    showEditorial: optionalParam(params, 'layer') === 'editorial',
+    showEditorial: optionalParam(params, 'layer') !== 'facts',
   }
 }
 
@@ -122,7 +122,7 @@ export function navigationHref(
   if (state.view === 'indicators') {
     if (state.indicatorId) params.set('indicator', state.indicatorId)
   }
-  if (state.showEditorial) params.set('layer', 'editorial')
+  params.set('layer', state.showEditorial ? 'editorial' : 'facts')
 
   const search = params.toString()
   return `${current.pathname}${search ? `?${search}` : ''}`

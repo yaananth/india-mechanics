@@ -139,7 +139,10 @@ function leaderDocument(
     }
     canonicalUrl.searchParams.set('view', 'leaders')
     canonicalUrl.searchParams.set('term', termId)
-    if (includeEditorial) canonicalUrl.searchParams.set('layer', 'editorial')
+    canonicalUrl.searchParams.set(
+      'layer',
+      includeEditorial ? 'editorial' : 'facts',
+    )
     const compactApiUrl = new URL(
       `/api/llm/leaders/${encodeURIComponent(termId)}`,
       canonicalOrigin,
@@ -271,7 +274,7 @@ function leaderDeepLinkResponse(
     snapshot,
     url.searchParams.get('term') ?? '',
     url.searchParams.get('jurisdiction'),
-    url.searchParams.get('layer') === 'editorial',
+    url.searchParams.get('layer') !== 'facts',
   )
   if (!document) {
     return textResponse(

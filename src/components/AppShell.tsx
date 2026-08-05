@@ -206,7 +206,7 @@ export function AppShell({
       <div className="research-status" aria-label="Research freshness">
         <span className="evidence-layer-status">
           <strong>
-            {showEditorial ? 'Editorial analysis enabled' : 'Facts and sources'}
+            {showEditorial ? 'Ratings + evidence' : 'Facts only'}
           </strong>
         </span>
         <span>
@@ -233,7 +233,7 @@ export function AppShell({
         </button>
         <label
           className="editorial-layer-toggle"
-          title="Show sourced scores, judgments, and accountability analysis"
+          title="Show published scores, judgments, and accountability analysis"
         >
           <input
             type="checkbox"
@@ -241,7 +241,7 @@ export function AppShell({
             onChange={(event) => onEditorialChange(event.target.checked)}
           />
           <span aria-hidden="true" />
-          <b>Editorial analysis</b>
+          <b>Ratings &amp; analysis</b>
         </label>
       </div>
 

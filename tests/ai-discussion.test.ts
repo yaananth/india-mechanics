@@ -6,13 +6,13 @@ import {
 
 const context: AiDiscussionContext = {
   pageUrl:
-    'https://india-mechanics.artfiesco.chatgpt.site/?view=policies&policy=swachh-bharat-gramin-2014',
+    'https://india-mechanics.artfiesco.chatgpt.site/?view=policies&policy=swachh-bharat-gramin-2014&layer=editorial',
   jurisdictionName: 'Republic of India',
   topicLabel: 'Swachh Bharat Mission (Gramin)',
   knowledgeCutoff: '2026-08-04',
   editorialReviewedThrough: '2026-07-26',
   methodologyVersion: 'leader-scorecard-v1',
-  displayLayer: 'facts-and-sources',
+  displayLayer: 'editorial-analysis',
   evidenceLinks: [
     {
       label: 'Policy record',
@@ -40,7 +40,9 @@ describe('AI discussion prompt', () => {
     expect(prompt).toContain('/api/methodology')
     expect(prompt).toContain('/api/policies/swachh-bharat-gramin-2014')
     expect(prompt).toContain('Published knowledge cutoff: 2026-08-04')
-    expect(prompt).toContain('Facts and sources (editorial scores hidden)')
+    expect(prompt).toContain(
+      'Ratings and evidence (editorial analysis enabled)',
+    )
     expect(prompt).toContain(
       'Did rural sanitation improve, and what remains uncertain?',
     )
@@ -54,5 +56,19 @@ describe('AI discussion prompt', () => {
     expect(buildAiDiscussionPrompt(context, '   ')).toContain(
       'What does the published evidence show about Swachh Bharat Mission (Gramin)?',
     )
+  })
+
+  it('preserves the explicit facts-only contract', () => {
+    const prompt = buildAiDiscussionPrompt(
+      {
+        ...context,
+        pageUrl:
+          'https://india-mechanics.artfiesco.chatgpt.site/?view=policies&policy=swachh-bharat-gramin-2014&layer=facts',
+        displayLayer: 'facts-and-sources',
+      },
+      'Summarize the records without a verdict.',
+    )
+    expect(prompt).toContain('Facts only (editorial scores hidden)')
+    expect(prompt).toContain('do not introduce hidden scores or verdicts')
   })
 })

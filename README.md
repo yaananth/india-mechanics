@@ -21,11 +21,12 @@ The project combines:
   post-bifurcation Andhra Pradesh, and modern Tamil Nadu from January 14,
   1969.
 
-This is both software and a public research record. **Facts and sources is the
-default display.** Scores, verdicts, accountability judgments, directional
-labels, and source-fitness ratings require the URL-backed Editorial analysis
-toggle. Editorial judgments remain versioned and reproducible; they are not
-presented as measured facts.
+This is both software and a public research record. The human website shows
+**Ratings and evidence by default**. Every score, verdict, accountability
+judgment, directional label, and source-fitness rating is explicitly marked as
+editorial, versioned, and reproducible rather than presented as measured fact.
+The URL-backed `layer=facts` view removes those judgments without hiding the
+underlying records and sources.
 
 ## Research principles
 
@@ -136,6 +137,16 @@ The editorial response adds the unified scorecard, category rationales, and
 specialist deep dives. It also publishes `citationReady`; a compact document
 with omitted claims or sources may display the editorial model output but must
 link to the full term record and must not be used for a score-only citation.
+
+Human leader links always serialize their layer explicitly:
+
+```text
+...?view=leaders&term=<term-id>&layer=editorial
+...?view=leaders&term=<term-id>&layer=facts
+```
+
+This intentional asymmetry keeps ratings visible to readers while preserving
+facts-first defaults for unqualified compact machine endpoints.
 
 The corresponding human deep-link contract is:
 

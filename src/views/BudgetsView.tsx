@@ -389,9 +389,12 @@ export function BudgetsView({
             </header>
 
             {showEditorial && (
-              <p className="budget-detail__summary">
-                <EditorialLabel /> {selected.ratingSummary}
-              </p>
+              <div className="budget-detail__summary">
+                <span className="assessment-question">Is it good or bad?</span>
+                <p>
+                  <EditorialLabel /> {selected.ratingSummary}
+                </p>
+              </div>
             )}
 
             <section className="budget-plain-language">

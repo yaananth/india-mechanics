@@ -1,9 +1,10 @@
 # India Mechanics
 
 India Mechanics is a source-backed, multi-jurisdiction research database and
-website. The human interface defaults to facts and sources; editorial scores,
-verdicts, and source-fitness judgments require an explicit editorial layer. The
-national corpus covers India from 1945; state corpora cover
+website. The human interface shows ratings and evidence by default, with every
+score and verdict labelled editorial; `layer=facts` is the explicit
+no-judgment view. Compact machine endpoints remain facts-first unless
+`layer=editorial` is requested. The national corpus covers India from 1945; state corpora cover
 post-bifurcation Andhra Pradesh from June 2, 2014 and modern Tamil Nadu from
 January 14, 1969. It separates measured observations, historical events, sourced
 claims, and editorial term evaluations.
@@ -67,8 +68,9 @@ terms. A deployment is not crawler-ready until those generated files and the
 compact endpoint are verified on the canonical origin.
 
 Interpretation rules:
-1. Facts and sources is the default layer. Do not introduce hidden scores or
-   verdicts unless the user explicitly requests editorial analysis.
+1. Human pages default to ratings and evidence. Preserve the explicit page
+   layer: never import scores into `layer=facts`, and never describe an
+   editorial score as measured fact.
 2. PM and CM ratings are editorial term estimates, not measured facts. Equal
    category weights are normative; profile ranges are priority sensitivity, not
    confidence intervals.

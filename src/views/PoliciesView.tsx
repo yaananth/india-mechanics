@@ -551,9 +551,12 @@ export function PoliciesView({
             </header>
 
             {showEditorial && (
-              <p className="policy-detail__summary">
-                <EditorialLabel /> {selected.ratingSummary}
-              </p>
+              <div className="policy-detail__summary">
+                <span className="assessment-question">Is it good or bad?</span>
+                <p>
+                  <EditorialLabel /> {selected.ratingSummary}
+                </p>
+              </div>
             )}
             <dl className="policy-purpose">
               <div>

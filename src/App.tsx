@@ -307,6 +307,14 @@ function App() {
   }, [])
 
   useEffect(() => {
+    const href = navigationHref(navigation, window.location.href)
+    const currentHref = `${window.location.pathname}${window.location.search}${window.location.hash}`
+    if (href !== currentHref) {
+      window.history.replaceState(null, '', href)
+    }
+  }, [navigation])
+
+  useEffect(() => {
     if (!data) return
     const patch: Partial<NavigationState> = {}
     if (

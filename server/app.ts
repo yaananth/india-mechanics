@@ -89,7 +89,10 @@ function leaderDocumentInput(
   }
   canonicalUrl.searchParams.set('view', 'leaders')
   canonicalUrl.searchParams.set('term', String(term.id))
-  if (includeEditorial) canonicalUrl.searchParams.set('layer', 'editorial')
+  canonicalUrl.searchParams.set(
+    'layer',
+    includeEditorial ? 'editorial' : 'facts',
+  )
   const compactApiUrl = new URL(
     `/api/llm/leaders/${encodeURIComponent(String(term.id))}`,
     CANONICAL_ORIGIN,
@@ -1961,8 +1964,10 @@ export function createApp(db: DatabaseSync) {
       jurisdictionMetadata,
       counts,
       publicationLayers: {
-        default: 'facts-and-sources',
-        editorialOptIn: 'layer=editorial',
+        humanDefault: 'ratings-and-evidence',
+        factsOnly: 'layer=facts',
+        compactLeaderDefault: 'facts-and-sources',
+        compactEditorial: 'layer=editorial',
       },
       claimSourceRoleCoverage,
       editorialPolicy:

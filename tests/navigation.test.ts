@@ -7,27 +7,30 @@ import {
 } from '../src/navigation.ts'
 
 describe('shareable navigation URLs', () => {
-  it('uses the clean root URL for the default overview', () => {
+  it('makes the default ratings layer explicit in the overview URL', () => {
     expect(
       navigationHref(defaultNavigation, 'https://example.test/'),
-    ).toBe('/')
+    ).toBe('/?layer=editorial')
     expect(parseNavigation('https://example.test/')).toEqual(defaultNavigation)
   })
 
   it('serializes every primary view with its selected record', () => {
     const cases: Array<[Partial<NavigationState>, string]> = [
-      [{ answerId: 'india-heading' }, '/?answer=india-heading'],
+      [
+        { answerId: 'india-heading' },
+        '/?answer=india-heading&layer=editorial',
+      ],
       [
         { view: 'timeline', eventId: 'manipur-violence-2023' },
-        '/?view=timeline&event=manipur-violence-2023',
+        '/?view=timeline&event=manipur-violence-2023&layer=editorial',
       ],
       [
         { view: 'leaders', termId: 'manmohan-2004' },
-        '/?view=leaders&term=manmohan-2004',
+        '/?view=leaders&term=manmohan-2004&layer=editorial',
       ],
       [
         { view: 'policies', policyId: 'income-tax-act-2025' },
-        '/?view=policies&policy=income-tax-act-2025',
+        '/?view=policies&policy=income-tax-act-2025&layer=editorial',
       ],
       [
         {
@@ -35,18 +38,18 @@ describe('shareable navigation URLs', () => {
           policyMode: 'register',
           billId: 'sansad-bill-2025',
         },
-        '/?view=policies&mode=register&bill=sansad-bill-2025',
+        '/?view=policies&mode=register&bill=sansad-bill-2025&layer=editorial',
       ],
       [
         { view: 'budgets', budgetId: 'budget-1997-98-dream' },
-        '/?view=budgets&budget=budget-1997-98-dream',
+        '/?view=budgets&budget=budget-1997-98-dream&layer=editorial',
       ],
       [
         { view: 'indicators', indicatorId: 'official-exchange-rate' },
-        '/?view=indicators&indicator=official-exchange-rate',
+        '/?view=indicators&indicator=official-exchange-rate&layer=editorial',
       ],
-      [{ view: 'safety' }, '/?view=safety'],
-      [{ view: 'sources' }, '/?view=sources'],
+      [{ view: 'safety' }, '/?view=safety&layer=editorial'],
+      [{ view: 'sources' }, '/?view=sources&layer=editorial'],
     ]
 
     for (const [patch, expected] of cases) {
@@ -69,7 +72,7 @@ describe('shareable navigation URLs', () => {
         },
         'https://example.test/india/?old=value#section',
       ),
-    ).toBe('/india/?view=leaders&term=rao-1991')
+    ).toBe('/india/?view=leaders&term=rao-1991&layer=editorial')
   })
 
   it('keeps the selected jurisdiction in every shareable state URL', () => {
@@ -81,7 +84,7 @@ describe('shareable navigation URLs', () => {
     }
     const href = navigationHref(state, 'https://example.test/')
     expect(href).toBe(
-      '/?jurisdiction=andhra-pradesh&view=leaders&term=ap-naidu-2024',
+      '/?jurisdiction=andhra-pradesh&view=leaders&term=ap-naidu-2024&layer=editorial',
     )
     expect(parseNavigation(href)).toEqual(state)
 
@@ -96,7 +99,7 @@ describe('shareable navigation URLs', () => {
       'https://example.test/',
     )
     expect(tamilNaduHref).toBe(
-      '/?jurisdiction=tamil-nadu&view=leaders&term=tn-vijay-2026',
+      '/?jurisdiction=tamil-nadu&view=leaders&term=tn-vijay-2026&layer=editorial',
     )
     expect(parseNavigation(tamilNaduHref)).toEqual(tamilNaduState)
   })
@@ -135,6 +138,20 @@ describe('shareable navigation URLs', () => {
       billId: 'sansad-bill-2025-08-11',
     }
     const href = navigationHref(state, 'https://example.test/')
+    expect(parseNavigation(href)).toEqual(state)
+  })
+
+  it('serializes and parses the explicit facts-only layer', () => {
+    const state: NavigationState = {
+      ...defaultNavigation,
+      showEditorial: false,
+      view: 'budgets',
+      budgetId: 'budget-1997-98-dream',
+    }
+    const href = navigationHref(state, 'https://example.test/')
+    expect(href).toBe(
+      '/?view=budgets&budget=budget-1997-98-dream&layer=facts',
+    )
     expect(parseNavigation(href)).toEqual(state)
   })
 })

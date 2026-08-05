@@ -53,9 +53,10 @@ export function MethodologyDialog({
             <section>
               <h3>Measured records vs editorial analysis</h3>
               <p>
-                Facts and sources is the default display. Dates, laws,
-                observations, units, methods, source records, limitations, and
-                evidence gaps remain visible without composite judgments.
+                The normal website view shows published ratings together with
+                their evidence. Facts-only mode removes composite judgments
+                while preserving dates, laws, observations, units, methods,
+                source records, limitations, and evidence gaps.
               </p>
               <p>
                 Scores, verdicts, category judgments, responsibility analysis,
@@ -69,8 +70,8 @@ export function MethodologyDialog({
                   Current display:{' '}
                   <strong>
                     {showEditorial
-                      ? 'Editorial analysis enabled'
-                      : 'Facts and sources'}
+                      ? 'Ratings and evidence'
+                      : 'Facts only'}
                   </strong>
                 </span>
               </div>

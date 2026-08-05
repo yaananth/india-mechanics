@@ -34,14 +34,27 @@ assert.match(
   /^text\/html/,
 )
 assert.match(leaderHtml.body, /<h1>Narendra Modi/)
-assert.match(leaderHtml.body, /Facts and sources/)
-assert.doesNotMatch(leaderHtml.body, /Editorial overall/)
+assert.match(leaderHtml.body, /Editorial overall/)
+assert.match(leaderHtml.body, /Development and economy/)
+assert.match(leaderHtml.body, /provisional/)
 assert.match(leaderHtml.body, /Sources/)
 assert.match(leaderHtml.body, /application\/ld\+json/)
 assert.match(leaderHtml.body, /rel="canonical"/)
+assert.match(leaderHtml.body, /layer=editorial/)
 assert.match(leaderHtml.body, /api\/llm\/leaders\/modi-2014/)
 assert.ok(Buffer.byteLength(leaderHtml.body) > 5_000)
 assert.ok(Buffer.byteLength(leaderHtml.body) < 100_000)
+
+const leaderFactsHtml = await fetchText(
+  '/?view=leaders&term=modi-2014&layer=facts',
+  {
+    headers: { accept: 'text/html' },
+  },
+)
+assert.equal(leaderFactsHtml.response.status, 200)
+assert.match(leaderFactsHtml.body, /Facts and sources/)
+assert.doesNotMatch(leaderFactsHtml.body, /Editorial overall/)
+assert.match(leaderFactsHtml.body, /layer=facts/)
 
 const compact = await fetchText('/api/llm/leaders/modi-2014')
 assert.equal(compact.response.status, 200)
@@ -137,6 +150,8 @@ const leaderIds = Object.values(snapshot.jurisdictionData).flatMap(
 for (const termId of leaderIds) {
   assert.match(sitemap.body, new RegExp(`term=${termId}(?:&amp;|<)`))
 }
+assert.match(sitemap.body, /layer=editorial/)
+assert.doesNotMatch(sitemap.body, /layer=facts/)
 
 console.log(
   `Verified crawler HTML, compact JSON/Markdown, robots, and sitemap for ${leaderIds.length} leader terms.`,

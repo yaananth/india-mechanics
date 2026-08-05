@@ -66,9 +66,11 @@ the parliamentary register.
 
 ## Source rules
 
-- Facts and sources is the default human and compact-machine display. Scores,
-  verdicts, directional labels, accountability judgments, and source-fitness
-  markers require the explicit editorial layer.
+- Ratings and evidence is the default human display. Every score, verdict,
+  directional label, accountability judgment, and source-fitness marker must
+  remain explicitly editorial. `layer=facts` is the shareable facts-only human
+  view. Compact machine endpoints remain facts-first unless
+  `layer=editorial` is explicitly requested.
 - A 5/5 official source controls the official fact it records; it does not
   automatically prove that the government’s interpretation or claimed impact is true.
 - Score the individual source item, not the publisher. A well-reported article
@@ -310,7 +312,7 @@ the parliamentary register.
 - E2E in the bundled Browser plugin at desktop and mobile widths:
   search, timeline filters, PM selection/comparison, indicator changes, source
   filters, methodology, API links, and cutoff visibility.
-- Verify facts-first and `layer=editorial` states separately. Compact JSON,
+- Verify `layer=facts` and `layer=editorial` states separately. Compact JSON,
   Markdown, crawler HTML, and the human deep link must agree on whether
   editorial fields are included, and must expose omission IDs and full-record
   links.

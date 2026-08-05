@@ -111,13 +111,14 @@ function sitemapLocation(
   }
   if (view) url.searchParams.set('view', view)
   if (item) url.searchParams.set(item.key, item.id)
+  url.searchParams.set('layer', 'editorial')
   return url.toString()
 }
 
 function sitemapXml(
   jurisdictionEntries: Array<[string, Awaited<ReturnType<typeof buildJurisdictionSnapshot>>]>,
 ) {
-  const locations = new Set<string>([`${canonicalOrigin}/`])
+  const locations = new Set<string>([sitemapLocation('india')])
   for (const [jurisdictionId, data] of jurisdictionEntries) {
     locations.add(sitemapLocation(jurisdictionId))
     for (const leader of data.leaders) {

@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react'
 
 export const EditorialLayerContext = createContext({
-  showEditorial: false,
+  showEditorial: true,
 })
 
 export function useEditorialLayer() {

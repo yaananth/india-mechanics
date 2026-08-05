@@ -22,10 +22,12 @@ India Mechanics must let a human or agent answer questions such as:
 - How current is the evidence?
 
 The product is not a neutral oracle. No historical synthesis or scoring system
-can be free of judgment. The default human and compact-machine surfaces therefore
-show facts and sources first. Editorial scores, verdicts, directional labels,
-accountability judgments, and source-fitness ratings require an explicit
-`layer=editorial` state. The project makes that judgment inspectable:
+can be free of judgment. The human interface therefore shows ratings together
+with evidence by default, while marking every judgment as editorial. An explicit
+`layer=facts` state removes scores, verdicts, directional labels,
+accountability judgments, and source-fitness ratings. Compact machine endpoints
+remain facts-first unless `layer=editorial` is requested. The project makes
+that judgment inspectable:
 
 1. observations, events, claims, and ratings are different record types;
 2. every claim and event has provenance;
@@ -93,6 +95,12 @@ scorecard, category rationales, and nested specialist deep dives. Its
 `citationReady` flag remains false when the bounded claim/source bundle is
 incomplete. Both representations link to the full term API.
 
+Human leader URLs always serialize an explicit layer. The canonical and sitemap
+representation is `layer=editorial`; the alternative no-judgment
+representation is `layer=facts`. Initial crawler HTML, React hydration, compact
+API alternates, page metadata, and copied URLs must agree for the resolved
+layer. URL state takes precedence over any local preference.
+
 The human HTML fallback is:
 
 ```text
@@ -125,8 +133,8 @@ methodology version. `src/components/AiDiscussionDialog.tsx` lets the reader edi
 the question, inspect the prompt, open the included evidence routes, and copy it
 locally. The application does not send that prompt to an AI vendor.
 
-The prompt treats India Mechanics as a facts-first source index with an optional
-editorial synthesis layer. It
+The prompt treats India Mechanics as a source index with a visible editorial
+synthesis layer in the normal human view and a facts-only alternative. It
 requires claim-level citations to underlying sources, distinguishes official
 or interested-party records from independent outcome evidence, preserves
 qualifiers and evidence gaps, and forbids causal attribution from office timing
@@ -1083,9 +1091,9 @@ overall.
 
 Every number in this section is a sourced editorial estimate. Equal one-sixth
 weights are a normative value choice, not a measured property of government
-performance. The facts-first UI hides this section. Editorial mode publishes
-the alternative profile minimum and maximum as priority sensitivity, not as a
-confidence interval.
+performance. Facts-only mode hides this section. The normal ratings-and-evidence
+view publishes the alternative profile minimum and maximum as priority
+sensitivity, not as a confidence interval.
 
 Ongoing terms are always `provisional`; completed terms are `retrospective`.
 Each term also publishes claim counts, claim-source-link counts, classified-role
