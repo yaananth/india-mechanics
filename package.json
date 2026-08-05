@@ -27,7 +27,7 @@
     "policy:audit": "tsx scripts/audit-policy-funnel.ts",
     "claims:audit": "tsx scripts/audit-heard-claims.ts",
     "research:audit": "npm run policy:audit && npm run claims:audit",
-    "rating:audit": "tsx scripts/compare-leader-rating-runs.ts research/modi-rating-replications-2026-07-29.json && tsx scripts/compare-infrastructure-rating-runs.ts",
+    "rating:audit": "tsx scripts/compare-leader-rating-runs.ts research/modi-rating-replications-2026-07-29.json 6.5 && tsx scripts/compare-infrastructure-rating-runs.ts",
     "build": "tsc -b && vite build",
     "build:sites": "npm run build && tsx scripts/generate-sites-snapshot.ts && vite build --config vite.sites.config.ts",
     "lint": "oxlint",

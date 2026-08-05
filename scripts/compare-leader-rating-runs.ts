@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
-const componentWeights = {
+const replicationWeights = {
   outcomes: 0.25,
   reforms: 0.2,
   inclusion: 0.15,
@@ -10,7 +10,16 @@ const componentWeights = {
   integrity: 0.1,
 } as const
 
-type ComponentId = keyof typeof componentWeights
+const legacyBalancedProfileWeights = {
+  outcomes: 0.3,
+  reforms: 0.2,
+  inclusion: 0.15,
+  crisis: 0.1,
+  institutions: 0.15,
+  integrity: 0.1,
+} as const
+
+type ComponentId = keyof typeof replicationWeights
 
 type RatingRun = {
   id: string
@@ -48,12 +57,22 @@ function assertScore(value: number, label: string) {
   }
 }
 
-function weightedScore(scores: Record<ComponentId, number>) {
-  return Object.entries(componentWeights).reduce(
+function weightedScore(
+  scores: Record<ComponentId, number>,
+  weights: Record<ComponentId, number>,
+) {
+  return Object.entries(weights).reduce(
     (total, [component, weight]) =>
       total + scores[component as ComponentId] * weight,
     0,
   )
+}
+
+function arithmeticMean(scores: Record<ComponentId, number>) {
+  const values = Object.keys(replicationWeights).map(
+    (component) => scores[component as ComponentId],
+  )
+  return values.reduce((total, value) => total + value, 0) / values.length
 }
 
 function round(value: number, digits = 2) {
@@ -96,7 +115,14 @@ function sourceDomain(url: string) {
 const inputPath = resolve(
   process.argv[2] ?? 'research/modi-rating-replications-2026-07-23.json',
 )
+const expectedCurrentHeadlineRating = Number(process.argv[3])
 const input = JSON.parse(await readFile(inputPath, 'utf8')) as AuditInput
+
+if (!Number.isFinite(expectedCurrentHeadlineRating)) {
+  throw new Error(
+    'Expected the current six-category headline rating as the second argument.',
+  )
+}
 
 if (input.runs.length !== 5) {
   throw new Error(`Expected exactly five runs, received ${input.runs.length}.`)
@@ -111,11 +137,14 @@ for (const run of input.runs) {
   assertScore(run.genericRating, `${run.id} generic rating`)
   assertScore(run.standardizedRating, `${run.id} standardized rating`)
 
-  for (const component of Object.keys(componentWeights) as ComponentId[]) {
+  for (const component of Object.keys(replicationWeights) as ComponentId[]) {
     assertScore(run.componentScores[component], `${run.id} ${component}`)
   }
 
-  const computed = round(weightedScore(run.componentScores), 1)
+  const computed = round(
+    weightedScore(run.componentScores, replicationWeights),
+    1,
+  )
   if (Math.abs(computed - run.standardizedRating) > 0.05) {
     throw new Error(
       `${run.id} standardized rating ${run.standardizedRating} does not match weighted score ${computed}.`,
@@ -128,7 +157,7 @@ const standardized = summarize(
   input.runs.map((run) => run.standardizedRating),
 )
 const componentSummary = Object.fromEntries(
-  (Object.keys(componentWeights) as ComponentId[]).map((component) => {
+  (Object.keys(replicationWeights) as ComponentId[]).map((component) => {
     const summary = summarize(
       input.runs.map((run) => run.componentScores[component]),
     )
@@ -167,12 +196,24 @@ const thresholds = {
   ...input.thresholds,
 }
 const websiteMeanDelta = round(input.website.rating - standardized.mean)
+const computedLegacyBalancedProfileScore = round(
+  weightedScore(input.website.componentScores, legacyBalancedProfileWeights),
+  1,
+)
+const currentArithmeticMean = round(
+  arithmeticMean(input.website.componentScores),
+  1,
+)
 const checks = {
   standardDeviation:
     standardized.standardDeviation <= thresholds.maximumStandardDeviation,
   range: standardized.range <= thresholds.maximumRange,
   websiteMeanDelta:
     Math.abs(websiteMeanDelta) <= thresholds.maximumWebsiteMeanDelta,
+  legacyBalancedProfile:
+    Math.abs(input.website.rating - computedLegacyBalancedProfileScore) <= 0.05,
+  currentArithmeticMean:
+    Math.abs(currentArithmeticMean - expectedCurrentHeadlineRating) <= 0.05,
 }
 
 const report = {
@@ -180,12 +221,22 @@ const report = {
   asOfDate: input.asOfDate,
   promptHash: input.promptHash,
   runCount: input.runs.length,
-  websiteRating: input.website.rating,
-  previousWebsiteRating: input.previousWebsite?.rating ?? null,
+  historicalReplicationArtifact: {
+    asOfDate: input.asOfDate,
+    legacyBalancedProfileScore: input.website.rating,
+    previousLegacyBalancedProfileScore:
+      input.previousWebsite?.rating ?? null,
+  },
+  currentPublishedScorecard: {
+    aggregation: 'arithmetic-mean',
+    categoryCount: Object.keys(replicationWeights).length,
+    score: currentArithmeticMean,
+    expectedScore: expectedCurrentHeadlineRating,
+  },
   generic,
   standardized: {
     ...standardized,
-    websiteMeanDelta,
+    legacyBalancedProfileMeanDelta: websiteMeanDelta,
   },
   componentSummary,
   sourceConsensus: {

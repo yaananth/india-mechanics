@@ -83,6 +83,57 @@ export type ComponentScore = {
   rationale: string
 }
 
+export type SpecialistAssessment = {
+  id: string
+  topicId: string
+  topicName: string
+  topicDescription: string
+  methodology: string
+  operationalLabel: string
+  operationalScore: number
+  adjustedLabel: string
+  adjustedScore: number
+  confidence: Confidence
+  status: 'reviewed' | 'provisional'
+  summary: string
+  assessmentAsOf: string
+  componentScores: Array<{
+    id: string
+    name: string
+    operationalWeight: number
+    adjustedWeight: number
+    description: string
+    score: number
+    rationale: string
+  }>
+  sources: Source[]
+}
+
+export type LeaderScorecardCategory = {
+  id: string
+  name: string
+  description: string
+  score: number | null
+  rationale: string | null
+  confidence: Confidence | null
+  status: 'reviewed' | 'not-assessed'
+  assessmentAsOf: string | null
+  methodology: string
+  deepDives: SpecialistAssessment[]
+}
+
+export type LeaderScorecard = {
+  version: string
+  aggregation: 'arithmetic-mean'
+  formula: string
+  missingCategoryRule: string
+  specialistRule: string
+  overallScore: number | null
+  scoredCategoryCount: number
+  totalCategoryCount: number
+  categories: LeaderScorecardCategory[]
+}
+
 export type LeaderTerm = {
   id: string
   startDate: string
@@ -90,6 +141,7 @@ export type LeaderTerm = {
   isActing: boolean
   mandateLabel: string | null
   ratingScore: number | null
+  legacyWeightedScore: number | null
   ratingConfidence: Confidence | null
   ratingSummary: string
   assessmentAsOf: string
@@ -117,31 +169,8 @@ export type LeaderTerm = {
     weights: Record<string, number>
     isCanonical: boolean
   }>
-  specialistAssessments: Array<{
-    id: string
-    topicId: string
-    topicName: string
-    topicDescription: string
-    methodology: string
-    operationalLabel: string
-    operationalScore: number
-    adjustedLabel: string
-    adjustedScore: number
-    confidence: Confidence
-    status: 'reviewed' | 'provisional'
-    summary: string
-    assessmentAsOf: string
-    componentScores: Array<{
-      id: string
-      name: string
-      operationalWeight: number
-      adjustedWeight: number
-      description: string
-      score: number
-      rationale: string
-    }>
-    sources: Source[]
-  }>
+  specialistAssessments: SpecialistAssessment[]
+  scorecard: LeaderScorecard
   claims: Claim[]
   sourceIds: string[]
   sources: Source[]
@@ -629,6 +658,18 @@ export type Methodology = {
       description: string
       weights: Record<string, number>
       isCanonical: boolean
+    }>
+  }
+  leaderScorecard: {
+    version: string
+    aggregation: 'arithmetic-mean'
+    formula: string
+    missingCategoryRule: string
+    specialistRule: string
+    categories: Array<{
+      id: string
+      name: string
+      description: string
     }>
   }
   specialistEvaluations: Array<{

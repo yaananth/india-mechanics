@@ -756,7 +756,7 @@ export const infrastructureCapacityClaims: ClaimSeed[] = [
     leaderTermId: 'modi-2014',
     title: 'Broad development and physical buildout answer different questions',
     body:
-      'The site’s broad-development profile also includes poverty, inclusion, jobs, crisis performance and some institutional and execution evidence. The infrastructure specialist isolates physical and productive capacity, where Modi scores 8.1 for buildout and ranks above Manmohan Singh at 7.5 and Vajpayee at 7.3.',
+      'The universal Development and economy category also includes poverty, jobs, services and material living standards. Its infrastructure deep dive isolates physical and productive capacity, where Modi scores 8.1 for buildout and ranks above Manmohan Singh at 7.5 and Vajpayee at 7.3.',
     stance: 'context',
     category: 'methodology',
     confidence: 'high',
@@ -774,7 +774,7 @@ export const infrastructureCapacityClaims: ClaimSeed[] = [
     leaderTermId: 'modi-2014',
     title: 'The new specialist score makes credit visible without double-counting it',
     body:
-      'Roads, electricity, sanitation, digital systems and productive capacity were already inputs to Modi’s 7.7 outcomes and 7.6 reforms components. Publishing an 8.1 infrastructure-buildout score clarifies the strength; adding it mechanically to the 6.7 balanced rating would count the same evidence twice.',
+      'Roads, electricity, sanitation, digital systems and productive capacity are already inputs to Modi’s 7.7 Development and economy and 7.6 Reform and state capacity categories. The 8.1 infrastructure-buildout deep dive makes that strength inspectable; adding it again to the 6.5 overall would count the same evidence twice.',
     stance: 'context',
     category: 'methodology',
     confidence: 'high',

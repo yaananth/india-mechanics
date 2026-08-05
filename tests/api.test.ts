@@ -390,8 +390,22 @@ describe('read API', () => {
     expect(current.body).toMatchObject({
       id: 'tn-vijay-2026',
       ratingScore: null,
+      legacyWeightedScore: null,
       ratingProfiles: [],
       specialistAssessments: [],
+      scorecard: {
+        overallScore: null,
+        scoredCategoryCount: 0,
+        totalCategoryCount: 6,
+        categories: expect.arrayContaining([
+          expect.objectContaining({
+            id: 'outcomes',
+            score: null,
+            status: 'not-assessed',
+            deepDives: [],
+          }),
+        ]),
+      },
     })
   })
 
@@ -564,7 +578,52 @@ describe('read API', () => {
   it('returns the transparent Modi scorecard and methodology review', async () => {
     const response = await request(app).get('/api/leaders/modi-2014')
     expect(response.status).toBe(200)
-    expect(response.body.ratingScore).toBe(6.7)
+    expect(response.body.ratingScore).toBe(6.5)
+    expect(response.body.legacyWeightedScore).toBe(6.7)
+    expect(response.body.scorecard).toMatchObject({
+      version: 'leader-scorecard-v1',
+      aggregation: 'arithmetic-mean',
+      overallScore: 6.5,
+      scoredCategoryCount: 6,
+      totalCategoryCount: 6,
+    })
+    expect(response.body.scorecard.formula).toContain('arithmetic mean')
+    expect(response.body.scorecard.categories).toHaveLength(6)
+    expect(
+      response.body.scorecard.categories.map(
+        (category: { id: string }) => category.id,
+      ),
+    ).toEqual([
+      'outcomes',
+      'reforms',
+      'inclusion',
+      'crisis',
+      'institutions',
+      'integrity',
+    ])
+    expect(
+      response.body.scorecard.categories.find(
+        (category: { id: string }) => category.id === 'crisis',
+      ),
+    ).toMatchObject({
+      name: 'Security and crisis response',
+      score: 6.4,
+      deepDives: expect.arrayContaining([
+        expect.objectContaining({ topicId: 'national-security' }),
+        expect.objectContaining({ topicId: 'public-safety' }),
+      ]),
+    })
+    expect(
+      response.body.scorecard.categories.find(
+        (category: { id: string }) => category.id === 'outcomes',
+      ),
+    ).toMatchObject({
+      name: 'Development and economy',
+      score: 7.7,
+      deepDives: [
+        expect.objectContaining({ topicId: 'infrastructure-capacity' }),
+      ],
+    })
     expect(
       response.body.ratingProfiles.map(
         (profile: { id: string; score: number }) => ({
@@ -747,7 +806,7 @@ describe('read API', () => {
       confidence: 'high',
       asOfDate: '2026-07-29',
     })
-    expect(answer.body.answer.verdict).toContain('6.72')
+    expect(answer.body.answer.verdict).toContain('6.5/10')
     expect(
       answer.body.answer.claims.some(
         (claim: { id: string }) => claim.id === 'fairchild-india-viral-claim',
@@ -918,6 +977,26 @@ describe('read API', () => {
     )
     expect(methodology.body.budgetEvaluation.dimensions).toHaveLength(5)
     expect(methodology.body.leaderEvaluation.profiles).toHaveLength(4)
+    expect(methodology.body.leaderScorecard).toMatchObject({
+      version: 'leader-scorecard-v1',
+      aggregation: 'arithmetic-mean',
+      categories: expect.arrayContaining([
+        expect.objectContaining({
+          id: 'outcomes',
+          name: 'Development and economy',
+        }),
+        expect.objectContaining({
+          id: 'crisis',
+          name: 'Security and crisis response',
+        }),
+      ]),
+    })
+    expect(methodology.body.leaderScorecard.formula).toContain(
+      'arithmetic mean',
+    )
+    expect(methodology.body.leaderScorecard.specialistRule).toContain(
+      'not added again',
+    )
     expect(methodology.body.specialistEvaluations).toHaveLength(3)
     expect(methodology.body.specialistEvaluations).toContainEqual(
       expect.objectContaining({
@@ -1116,7 +1195,8 @@ describe('read API', () => {
       }),
     )
 
-    expect(leader.body.ratingScore).toBe(7.3)
+    expect(leader.body.ratingScore).toBe(7)
+    expect(leader.body.legacyWeightedScore).toBe(7.3)
     expect(
       leader.body.componentScores.find(
         (component: { id: string }) => component.id === 'crisis',

@@ -2624,7 +2624,7 @@ export const tamilNaduCuratedAnswers: CuratedAnswerSeed[] = [
     shortAnswer:
       'The strongest evidence-backed records are specialised rather than absolute: MGR on school meals and inclusion; Karunanidhi governments on technology, welfare, health and social policy; Jayalalithaa governments on water regulation, food access and delivery but with major integrity and flood-governance costs; EPS on medical access and electronics but with the Thoothukudi failure; Stalin on a broad capability and infrastructure agenda with fiscal, road-safety, justice and enforcement limits.',
     verdict:
-      'Published balanced estimates are term-specific: MGR 1980-85 at 7.0, Jayalalithaa 1991-96 at 6.0, Karunanidhi 1996-2001 at 6.9, Jayalalithaa 2002-06 at 6.4, Karunanidhi 2006-11 at 6.5, Jayalalithaa 2011-14 at 6.4, Jayalalithaa 2015-16 at 5.8, EPS 2017-21 at 6.2, and Stalin 2021-26 at 7.0. Vijay is not rated.',
+      'Published six-category arithmetic means are term-specific: MGR 1980-85 at 6.9, Jayalalithaa 1991-96 at 5.8, Karunanidhi 1996-2001 at 6.7, Jayalalithaa 2002-06 at 6.2, Karunanidhi 2006-11 at 6.3, Jayalalithaa 2011-14 at 6.1, Jayalalithaa 2015-16 at 5.5, EPS 2017-21 at 6.0, and Stalin 2021-26 at 6.8. Vijay is not rated.',
     confidence: 'medium',
     asOfDate: reviewedAt,
     claimSections: [

@@ -2,6 +2,11 @@ import express from 'express'
 import type { DatabaseSync } from 'node:sqlite'
 import { calculateProgress, calculateProgressHistory } from './progress.ts'
 import { leaderRatingProfiles, profileScore } from './rating-profiles.ts'
+import {
+  buildLeaderScorecard,
+  leaderScorecardCategories,
+  leaderScorecardVersion,
+} from './leader-scorecards.ts'
 import { specialistScore } from './specialist-ratings.ts'
 
 const DEFAULT_JURISDICTION = 'india'
@@ -370,13 +375,35 @@ function getLeaderTerms(db: DatabaseSync, jurisdictionId: string) {
         sources: getSourcesByIds(db, specialistSourceIds),
       }
     })
+    const ratingProfiles =
+      componentScores.length > 0
+        ? leaderRatingProfiles.map((profile) => ({
+            id: profile.id,
+            name: profile.name,
+            description: profile.description,
+            score: profileScore(scoreByDimension, profile),
+            weights: profile.weights,
+            isCanonical: profile.id === 'balanced',
+          }))
+        : []
+    const scorecard = buildLeaderScorecard({
+      componentScores,
+      specialistAssessments,
+      confidence: row.rating_confidence
+        ? String(row.rating_confidence)
+        : null,
+      assessmentAsOf: String(row.assessment_as_of),
+    })
+    const legacyWeightedScore =
+      ratingProfiles.find((profile) => profile.id === 'balanced')?.score ?? null
     return {
       id: termId,
       startDate: row.start_date,
       endDate: row.end_date,
       isActing: Boolean(row.is_acting),
       mandateLabel: row.mandate_label,
-      ratingScore: row.rating_score,
+      ratingScore: scorecard.overallScore,
+      legacyWeightedScore,
       ratingConfidence: row.rating_confidence,
       ratingSummary: row.rating_summary,
       assessmentAsOf: row.assessment_as_of,
@@ -398,18 +425,9 @@ function getLeaderTerms(db: DatabaseSync, jurisdictionId: string) {
           }
         : null,
       componentScores,
-      ratingProfiles:
-        componentScores.length > 0
-          ? leaderRatingProfiles.map((profile) => ({
-              id: profile.id,
-              name: profile.name,
-              description: profile.description,
-              score: profileScore(scoreByDimension, profile),
-              weights: profile.weights,
-              isCanonical: profile.id === 'balanced',
-            }))
-          : [],
+      ratingProfiles,
       specialistAssessments,
+      scorecard,
       claims: (
         claimStatement.all(termId) as unknown as Array<{ id: string }>
       )
@@ -2534,7 +2552,7 @@ export function createApp(db: DatabaseSync) {
     }))
     response.json({
       version:
-        'progress-v0.1|leader-v0.2|security-v0.1|public-safety-v0.1|infrastructure-v0.1|bill-v0.1',
+        'progress-v0.1|leader-v0.3|leader-scorecard-v1|security-v0.1|public-safety-v0.1|infrastructure-v0.1|bill-v0.1',
       progress: {
         purpose:
           'A transparent diagnostic lens, not an official statistic or causal ranking.',
@@ -2548,9 +2566,9 @@ export function createApp(db: DatabaseSync) {
       },
       leaderEvaluation: {
         purpose:
-          'An evidence-led editorial estimate that forces achievements, concerns, starting conditions, and institutional costs into the same frame.',
+          'Legacy weighted lenses retained for transparency and backward compatibility.',
         formula:
-          'Balanced profile: 30% observed outcomes, 20% durable reforms, 15% inclusion, 10% crisis and security, 15% institutions and liberties, and 10% integrity and execution. The weighted sum is rounded to one decimal. Acting and ultra-short terms are not rated.',
+          'These profiles reweight the same six universal category judgments. They no longer determine the headline overall score.',
         dimensions: leaderDimensions,
         profiles: leaderRatingProfiles.map((profile) => ({
           id: profile.id,
@@ -2559,6 +2577,17 @@ export function createApp(db: DatabaseSync) {
           weights: profile.weights,
           isCanonical: profile.id === 'balanced',
         })),
+      },
+      leaderScorecard: {
+        version: leaderScorecardVersion,
+        aggregation: 'arithmetic-mean',
+        formula:
+          'Overall = arithmetic mean of the six universal category scores. Each category contributes one-sixth.',
+        missingCategoryRule:
+          'Rated PM and CM terms require all six universal categories. Missing specialist deep dives remain N/A and do not change the overall.',
+        specialistRule:
+          'Infrastructure, national-security, and public-safety assessments expand their parent category and are not added again.',
+        categories: leaderScorecardCategories,
       },
       specialistEvaluations: specialistTopics,
       policyEvaluation: {

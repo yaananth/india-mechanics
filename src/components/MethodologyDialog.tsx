@@ -77,86 +77,94 @@ export function MethodologyDialog({
             </section>
 
             <section>
-              <h3>Leader-term evaluations</h3>
-              <p>{methodology.leaderEvaluation.purpose}</p>
-              <p>{methodology.leaderEvaluation.formula}</p>
+              <h3>PM and CM scorecards</h3>
+              <p>{methodology.leaderScorecard.formula}</p>
               <div className="weight-list weight-list--compact">
-                {methodology.leaderEvaluation.dimensions.map((dimension) => (
-                  <div key={dimension.id}>
+                {methodology.leaderScorecard.categories.map((category) => (
+                  <div key={category.id}>
                     <span>
-                      <strong>{dimension.name}</strong>
-                      <small>{dimension.description}</small>
+                      <strong>{category.name}</strong>
+                      <small>{category.description}</small>
                     </span>
-                    <b>{Math.round(dimension.weight * 100)}%</b>
+                    <b>1/6</b>
                   </div>
-                ))}
-              </div>
-              <h4 className="subsection-heading">Published scorecard lenses</h4>
-              <div className="leader-profile-methods">
-                {methodology.leaderEvaluation.profiles.map((profile) => (
-                  <article
-                    key={profile.id}
-                    className={profile.isCanonical ? 'is-canonical' : undefined}
-                  >
-                    <header>
-                      <strong>{profile.name}</strong>
-                      <small>
-                        {profile.isCanonical ? 'Headline score' : 'Alternative lens'}
-                      </small>
-                    </header>
-                    <p>{profile.description}</p>
-                    <span>
-                      {Object.entries(profile.weights)
-                        .filter(([, weight]) => weight > 0)
-                        .map(
-                          ([dimension, weight]) =>
-                            `${Math.round(weight * 100)}% ${
-                              leaderDimensionNames[dimension] ?? dimension
-                            }`,
-                        )
-                        .join(' + ')}
-                    </span>
-                  </article>
                 ))}
               </div>
               <div className="method-note">
                 <Scale size={17} aria-hidden="true" />
                 <span>
-                  All four lenses use the same evidence scores. Each weighted sum
-                  is rounded to one decimal. The lens range shows sensitivity to
-                  priorities, not statistical uncertainty, and policy scores are
-                  not line-item additions to a head-of-government score.
+                  {methodology.leaderScorecard.missingCategoryRule}{' '}
+                  {methodology.leaderScorecard.specialistRule}
                 </span>
               </div>
+              <details className="methodology-disclosure">
+                <summary>Legacy weighting lenses</summary>
+                <div>
+                  <p>{methodology.leaderEvaluation.purpose}</p>
+                  <p>{methodology.leaderEvaluation.formula}</p>
+                  <div className="leader-profile-methods">
+                    {methodology.leaderEvaluation.profiles.map((profile) => (
+                      <article key={profile.id}>
+                        <header>
+                          <strong>{profile.name}</strong>
+                          <small>Historical lens</small>
+                        </header>
+                        <p>{profile.description}</p>
+                        <span>
+                          {Object.entries(profile.weights)
+                            .filter(([, weight]) => weight > 0)
+                            .map(
+                              ([dimension, weight]) =>
+                                `${Math.round(weight * 100)}% ${
+                                  leaderDimensionNames[dimension] ?? dimension
+                                }`,
+                            )
+                            .join(' + ')}
+                        </span>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              </details>
             </section>
 
-            {methodology.specialistEvaluations.map((topic) => (
-              <section key={topic.id}>
-                <h3>{topic.name}</h3>
-                <p>{topic.description}</p>
-                <p>{topic.methodology}</p>
-                <div className="weight-list weight-list--specialist">
-                  {topic.dimensions.map((dimension) => (
-                    <div key={dimension.id}>
-                      <span>
-                        <strong>{dimension.name}</strong>
-                        <small>{dimension.description}</small>
-                      </span>
-                      <span>
-                        <b>
-                          {Math.round(dimension.operationalWeight * 100)}%
-                        </b>
-                        <small>{topic.operationalLabel}</small>
-                      </span>
-                      <span>
-                        <b>{Math.round(dimension.adjustedWeight * 100)}%</b>
-                        <small>{topic.adjustedLabel}</small>
-                      </span>
+            <section>
+              <h3>Specialist deep dives</h3>
+              <p>
+                These assessments sit inside the related universal category.
+                They explain a subject in more detail and are not added again
+                to the overall score.
+              </p>
+              {methodology.specialistEvaluations.map((topic) => (
+                <details key={topic.id} className="methodology-disclosure">
+                  <summary>{topic.name}</summary>
+                  <div>
+                    <p>{topic.description}</p>
+                    <p>{topic.methodology}</p>
+                    <div className="weight-list weight-list--specialist">
+                      {topic.dimensions.map((dimension) => (
+                        <div key={dimension.id}>
+                          <span>
+                            <strong>{dimension.name}</strong>
+                            <small>{dimension.description}</small>
+                          </span>
+                          <span>
+                            <b>
+                              {Math.round(dimension.operationalWeight * 100)}%
+                            </b>
+                            <small>{topic.operationalLabel}</small>
+                          </span>
+                          <span>
+                            <b>{Math.round(dimension.adjustedWeight * 100)}%</b>
+                            <small>{topic.adjustedLabel}</small>
+                          </span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </section>
-            ))}
+                  </div>
+                </details>
+              ))}
+            </section>
 
             <section>
               <h3>Policy and bill evaluations</h3>

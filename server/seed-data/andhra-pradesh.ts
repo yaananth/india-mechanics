@@ -557,7 +557,6 @@ export const andhraLeaderTerms: LeaderTermSeed[] = [
     startDate: '2014-06-08',
     endDate: '2019-05-29',
     mandateLabel: 'First government of post-split Andhra Pradesh, 2014-2019',
-    ratingScore: 6.9,
     ratingConfidence: 'medium',
     ratingSummary:
       'Strong new-state institution building, growth, rural-road delivery, improving murder and IPC-conviction signals, broader infrastructure ambition, and Hudhud response; reduced by Amaravati concentration, fiscal pressure, incomplete capital delivery, mixed violent-crime direction, and uneven inclusion.',
@@ -583,7 +582,6 @@ export const andhraLeaderTerms: LeaderTermSeed[] = [
     startDate: '2019-05-30',
     endDate: '2024-06-11',
     mandateLabel: 'YSRCP government, 2019-2024',
-    ratingScore: 6.3,
     ratingConfidence: 'medium',
     ratingSummary:
       'Large welfare and local-service-delivery expansion with household-service, poverty, rural-connectivity, lower recorded violent crime, and high IPC charge-sheeting; reduced by fiscal and off-budget risk, weak capital expenditure, very low sensitive-crime and cyber convictions, capital-city uncertainty, and institutional concentration.',
@@ -614,7 +612,6 @@ export const andhraLeaderTerms: LeaderTermSeed[] = [
     partyId: 'tdp',
     startDate: '2024-06-12',
     mandateLabel: 'TDP-Jana Sena-BJP alliance government, 2024-present',
-    ratingScore: 6.6,
     ratingConfidence: 'low',
     ratingSummary:
       'A provisional early-term assessment: renewed capital investment, documented road-rehabilitation and PMGSY delivery, a large 2026-27 capital plan, and encouraging but unvalidated 2025 police signals; debt, road safety, execution capacity, and the absence of post-term NCRB crime data limit confidence.',

@@ -2105,7 +2105,6 @@ export const leaderTerms: LeaderTermSeed[] = [
     startDate: '1947-08-15',
     endDate: '1964-05-27',
     mandateLabel: 'Founding governments, 1947–1964',
-    ratingScore: 7.3,
     ratingConfidence: 'medium',
     ratingSummary:
       'Strong on democratic institution-building, science, and state capacity; marked down for the 1962 security failure and a development model that later required substantial reform.',
@@ -2134,7 +2133,6 @@ export const leaderTerms: LeaderTermSeed[] = [
     startDate: '1964-06-09',
     endDate: '1966-01-11',
     mandateLabel: '1964–1966',
-    ratingScore: 7.2,
     ratingConfidence: 'low',
     ratingSummary:
       'Credited for calm crisis leadership and agricultural emphasis, with low confidence because the tenure lasted only nineteen months.',
@@ -2163,7 +2161,6 @@ export const leaderTerms: LeaderTermSeed[] = [
     startDate: '1966-01-24',
     endDate: '1977-03-24',
     mandateLabel: '1966–1977',
-    ratingScore: 6.4,
     ratingConfidence: 'medium',
     ratingSummary:
       'Major agricultural, banking, and geopolitical achievements are offset heavily by the Emergency and severe damage to civil liberties and institutional restraints.',
@@ -2178,7 +2175,6 @@ export const leaderTerms: LeaderTermSeed[] = [
     startDate: '1977-03-24',
     endDate: '1979-07-28',
     mandateLabel: 'Janata government',
-    ratingScore: 5.8,
     ratingConfidence: 'medium',
     ratingSummary:
       'Important democratic repair after the Emergency, but limited policy durability and coalition instability.',
@@ -2193,7 +2189,6 @@ export const leaderTerms: LeaderTermSeed[] = [
     startDate: '1979-07-28',
     endDate: '1980-01-14',
     mandateLabel: 'Minority government',
-    ratingScore: 4.9,
     ratingConfidence: 'low',
     ratingSummary:
       'A strong agrarian political voice, but the government never faced Parliament and had too little time to establish a durable record.',
@@ -2208,7 +2203,6 @@ export const leaderTerms: LeaderTermSeed[] = [
     startDate: '1980-01-14',
     endDate: '1984-10-31',
     mandateLabel: '1980 mandate',
-    ratingScore: 5.6,
     ratingConfidence: 'medium',
     ratingSummary:
       'Restored governmental stability, but escalating centralisation and the Punjab crisis ended in deep institutional and human costs.',
@@ -2223,7 +2217,6 @@ export const leaderTerms: LeaderTermSeed[] = [
     startDate: '1984-10-31',
     endDate: '1989-12-02',
     mandateLabel: '1984 mandate',
-    ratingScore: 5.9,
     ratingConfidence: 'medium',
     ratingSummary:
       'Advanced technology, telecom, and administrative modernisation, but reform momentum weakened amid conflict and corruption allegations.',
@@ -2238,7 +2231,6 @@ export const leaderTerms: LeaderTermSeed[] = [
     startDate: '1989-12-02',
     endDate: '1990-11-10',
     mandateLabel: 'National Front government',
-    ratingScore: 5.8,
     ratingConfidence: 'low',
     ratingSummary:
       'Expanded representation through Mandal implementation and foregrounded corruption, but social conflict and coalition collapse limited governance.',
@@ -2253,7 +2245,6 @@ export const leaderTerms: LeaderTermSeed[] = [
     startDate: '1990-11-10',
     endDate: '1991-06-21',
     mandateLabel: 'Minority government',
-    ratingScore: 4.7,
     ratingConfidence: 'low',
     ratingSummary:
       'Managed an acute political and external-payments crisis with very weak parliamentary support; too short-lived for durable reform.',
@@ -2268,7 +2259,6 @@ export const leaderTerms: LeaderTermSeed[] = [
     startDate: '1991-06-21',
     endDate: '1996-05-16',
     mandateLabel: '1991 minority government',
-    ratingScore: 7.4,
     ratingConfidence: 'medium',
     ratingSummary:
       'Exceptional economic reform and strategic adaptation under crisis conditions, reduced by the Babri Masjid failure and integrity concerns.',
@@ -2296,7 +2286,6 @@ export const leaderTerms: LeaderTermSeed[] = [
     startDate: '1996-06-01',
     endDate: '1997-04-21',
     mandateLabel: 'United Front government',
-    ratingScore: 5.6,
     ratingConfidence: 'low',
     ratingSummary:
       'Maintained reform continuity and federal coalition governance, but had limited time and political authority.',
@@ -2311,7 +2300,6 @@ export const leaderTerms: LeaderTermSeed[] = [
     startDate: '1997-04-21',
     endDate: '1998-03-19',
     mandateLabel: 'United Front government',
-    ratingScore: 5.9,
     ratingConfidence: 'low',
     ratingSummary:
       'A constructive regional foreign-policy doctrine and coalition restraint, with little time for domestic policy durability.',
@@ -2326,7 +2314,6 @@ export const leaderTerms: LeaderTermSeed[] = [
     startDate: '1998-03-19',
     endDate: '2004-05-22',
     mandateLabel: 'NDA governments, 1998–2004',
-    ratingScore: 7.2,
     ratingConfidence: 'medium',
     ratingSummary:
       'Strong infrastructure, telecom, coalition management, and strategic policy; marked down for communal violence and uneven inclusion.',
@@ -2341,7 +2328,6 @@ export const leaderTerms: LeaderTermSeed[] = [
     startDate: '2004-05-22',
     endDate: '2014-05-26',
     mandateLabel: 'UPA governments, 2004–2014',
-    ratingScore: 7.3,
     ratingConfidence: 'medium',
     ratingSummary:
       'High growth and durable rights-based welfare and transparency reforms, offset by second-term governance drift, inflation, and corruption scandals.',
@@ -2362,10 +2348,9 @@ export const leaderTerms: LeaderTermSeed[] = [
     partyId: 'bjp',
     startDate: '2014-05-26',
     mandateLabel: 'NDA governments, 2014–present',
-    ratingScore: 6.7,
     ratingConfidence: 'medium',
     ratingSummary:
-      'Large poverty and basic-service gains, including the Swachh Bharat rural-sanitation expansion, major road growth, digital systems, commercial semiconductor assembly and test production, stronger operational security, a lower registered murder rate, and a broader trade-agreement strategy; reduced by job quality, uneven inclusion, cybercrime and justice gaps, crisis response, political-finance transparency, border and prevention failures, safety and execution gaps, and institutional decline. Balanced estimate 6.7/10; alternative weighting lenses span 6.1-7.1.',
+      'Large poverty and basic-service gains, including the Swachh Bharat rural-sanitation expansion, major road growth, digital systems, commercial semiconductor assembly and test production, stronger operational security, a lower registered murder rate, and a broader trade-agreement strategy; reduced by job quality, uneven inclusion, cybercrime and justice gaps, crisis response, political-finance transparency, border and prevention failures, safety and execution gaps, and institutional decline. The unified six-category scorecard averages to 6.5/10.',
     assessmentAsOf: semiconductorReviewedDate,
     sourceIds: [
       'pm-india-current',
@@ -2405,35 +2390,35 @@ export const leaderTerms: LeaderTermSeed[] = [
 export const evaluationDimensions = [
   {
     id: 'outcomes',
-    name: 'Observed outcomes',
+    name: 'Development and economy',
     weight: 0.3,
     description:
-      'Direction and durability of economic, human-development, and basic-service outcomes during and shortly after the term.',
+      'Economic direction, poverty, jobs, services, material living standards, and observed national or state outcomes.',
   },
   {
     id: 'reforms',
-    name: 'Durable reforms',
+    name: 'Reform and state capacity',
     weight: 0.2,
     description:
-      'Institutional or policy changes that survived the administration and improved state capacity.',
+      'Durable policy, institutional, administrative, digital, regulatory, and delivery-system improvements.',
   },
   {
     id: 'inclusion',
-    name: 'Inclusion',
+    name: 'Human development and inclusion',
     weight: 0.15,
     description:
-      'Distributional reach across income, caste, gender, geography, and access to public goods.',
+      'Health, education, access, opportunity, distribution, gender, region, caste, community, and the social floor.',
   },
   {
     id: 'crisis',
-    name: 'Crisis and security',
+    name: 'Security and crisis response',
     weight: 0.1,
     description:
-      'Performance under wars, economic shocks, disasters, public-health emergencies, and internal conflict.',
+      'War, terrorism, public safety, disasters, public health, internal conflict, prevention, and emergency response.',
   },
   {
     id: 'institutions',
-    name: 'Institutions and liberties',
+    name: 'Institutions and rights',
     weight: 0.15,
     description:
       'Respect for elections, federalism, courts, media, civil liberties, opposition, and checks on executive power.',
@@ -7998,11 +7983,11 @@ export const claims: ClaimSeed[] = [
     jurisdictionId: 'india',
     title: 'The published term averages are effectively close',
     body:
-      'Using this site’s current balanced PM-term estimates, the simple mean is 6.90 for BJP-led rated terms and 6.76 for Congress-led terms. Weighting by days in office through July 24, 2026 gives 6.83 for BJP and 6.88 for Congress.',
+      'Using this site’s current six-category PM-term scorecards, the simple mean is 6.70 for BJP-led rated terms and 6.56 for Congress-led terms. Weighting by days in office through August 5, 2026 gives 6.63 for BJP and 6.65 for Congress.',
     stance: 'context',
     category: 'methodology',
     confidence: 'high',
-    asOfDate: '2026-07-24',
+    asOfDate: '2026-08-05',
     sourceIds: ['pm-india-current', 'pm-india-former'],
   },
   {
@@ -9162,7 +9147,7 @@ export const claims: ClaimSeed[] = [
     jurisdictionId: 'india',
     title: 'The previous full government term scored higher overall but lower on operational security',
     body:
-      'Using the same published rubric, Manmohan Singh’s 2004-2014 term scores 7.3 balanced versus 6.7 for Modi’s 2014-present term. Modi leads the separate operational-security assessment 7.0 to 6.1, while Manmohan’s record scores higher on inclusion, institutions, and the full-period observed-outcomes assessment.',
+      'Using the same six-category arithmetic mean, Manmohan Singh’s 2004-2014 term scores 7.0 versus 6.5 for Modi’s 2014-present term. Modi leads the operational-security deep dive 7.0 to 6.1, while Manmohan’s record scores higher on human development and inclusion, institutions and rights, and the full-period development-and-economy assessment.',
     stance: 'context',
     category: 'government-change',
     confidence: 'medium',
@@ -9221,7 +9206,7 @@ export const curatedAnswers: CuratedAnswerSeed[] = [
     shortAnswer:
       'Not an automatic yes. India has a credible case for electoral change or much stronger checks because jobs quality, institutions, transparency, social cohesion, Manipur, and some prevention and border failures remain serious. Continuity also has a credible case because infrastructure, delivery capacity, poverty and basic-service gains, digital systems, operational security, defence capability, and trade strategy are real strengths.',
     verdict:
-      'Editorial opinion: there is a conditional case for constitutional electoral change, not a blanket “must replace now” verdict. The previous Manmohan Singh term scores higher overall on this site, 7.3 versus Modi’s 6.7, while Modi is stronger on operational security, 7.0 versus 6.1, and has clearer recent infrastructure and delivery strengths. Change is preferable only if a credible alternative can preserve those strengths while materially improving jobs, institutions, social cohesion, transparency, and accountability. Without that credible offer, stronger coalition, parliamentary, judicial, media, and federal checks on the current government may be the lower-risk correction.',
+      'Editorial opinion: there is a conditional case for constitutional electoral change, not a blanket “must replace now” verdict. The previous Manmohan Singh term scores higher on the same six-category scorecard, 7.0 versus Modi’s 6.5, while Modi is stronger on the operational-security deep dive, 7.0 versus 6.1, and has clearer recent infrastructure and delivery strengths. Change is preferable only if a credible alternative can preserve those strengths while materially improving jobs, institutions, social cohesion, transparency, and accountability. Without that credible offer, stronger coalition, parliamentary, judicial, media, and federal checks on the current government may be the lower-risk correction.',
     confidence: 'medium',
     asOfDate: '2026-07-24',
     claimSections: [

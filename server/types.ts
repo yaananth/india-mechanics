@@ -69,7 +69,6 @@ export type LeaderTermSeed = {
   isActing?: boolean
   governmentName?: string
   mandateLabel?: string
-  ratingScore?: number
   ratingConfidence?: Confidence
   ratingSummary: string
   assessmentAsOf: string

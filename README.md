@@ -34,7 +34,8 @@ visible, versioned, and reproducible; they are not presented as measured facts.
 4. **Uncertainty stays visible.** Sparse surveys, disputed counts, provisional
    budgets, and developing stories remain qualified.
 5. **Same rubric, same office.** Rated PM and CM terms use the same six general
-   dimensions. Specialist assessments use a published topic rubric.
+   categories and equal-weight arithmetic mean. Specialist assessments use a
+   published topic rubric but do not add another category to the overall.
 6. **Registered crime is not victimization.** Murder and violent-crime rates,
    reporting-sensitive FIR rates, investigation, conviction, and news signals
    are shown separately.
@@ -45,6 +46,45 @@ visible, versioned, and reproducible; they are not presented as measured facts.
 
 Read [architecture.md](./architecture.md) for the complete model and
 [AGENTS.md](./AGENTS.md) for the research and verification contract.
+
+## Unified PM/CM scorecard
+
+Every government is presented as one scorecard section for one office term.
+Ratings belong to the term, not permanently to the person. Prime Ministers and
+Chief Ministers use the same architecture and the same six 0-10 core
+categories:
+
+1. Development and economy
+2. Reform and state capacity
+3. Human development and inclusion
+4. Security and crisis response
+5. Institutions and rights
+6. Integrity and execution
+
+Each category contributes exactly one-sixth. The headline overall is the
+arithmetic mean of all six category scores, rounded to one decimal:
+
+```text
+overall = (category 1 + category 2 + category 3
+         + category 4 + category 5 + category 6) / 6
+```
+
+A term with any missing core category is `Not rated`; missing evidence is not
+converted to zero, imputed, or silently redistributed across the other
+categories.
+
+Infrastructure, national security, and public safety are specialist deep dives.
+They appear inside the core category they explain, such as infrastructure under
+Development and economy or public safety under Security and crisis response.
+Their operational and adjusted results remain visible, but they are excluded
+from the overall arithmetic mean. This prevents the same evidence from being
+counted twice and prevents leaders with more researched specialist lanes from
+receiving a different denominator.
+
+The older balanced, development-first, human-capability-first, and
+governance-first weighted profiles, along with their replication audits, are
+retained as **legacy sensitivity and research-history outputs**. They no longer
+determine the headline leader score.
 
 ## Technology
 
@@ -122,7 +162,8 @@ server/schema.ts                      relational schema
 server/seed.ts                        deterministic database build
 server/app.ts                         read-only API
 server/progress.ts                    progress-index calculations
-server/rating-profiles.ts             balanced and alternative leader lenses
+server/leader-scorecards.ts           current equal-category PM/CM scorecard
+server/rating-profiles.ts             legacy weighted sensitivity lenses
 server/specialist-ratings.ts          specialist-score arithmetic
 server/seed-data/catalog.ts           national core corpus
 server/seed-data/security.ts          national-security lane
@@ -184,6 +225,25 @@ For a new or refreshed evidence lane:
 The process is designed for either a human researcher or an agent. It does not
 depend on a private prompt history, local notes, or undocumented knowledge held
 by the current maintainer.
+
+### Adding a new office term
+
+Treat a new PM or CM term as a localized addition, not a reason to rewrite every
+historical scorecard:
+
+1. Add the office-term chronology, mandate, party, jurisdiction, start date, and
+   direct official sources.
+2. Create one term scorecard section using the same six universal categories.
+3. Publish an overall only after all six categories have reviewable evidence
+   and rationales; otherwise keep the term visibly `Not rated`.
+4. Add only the specialist deep dives supported by a complete, comparable
+   evidence window and nest them under their parent category.
+5. Update the new term's sources, claims, accountability records, review cutoff,
+   and ingestion batch.
+6. Revisit older terms only when new controlling evidence or a declared
+   methodology migration warrants a source-backed change.
+7. Run the standard seed, tests, lint, build, source, and Browser verification
+   gates before publication.
 
 ## Crime and current-news updates
 

@@ -1,6 +1,6 @@
 # India Mechanics Architecture
 
-Last updated: 2026-08-04
+Last updated: 2026-08-05
 
 This document is the operating map for the India Mechanics research system. It
 describes where data comes from, how evidence becomes a published record, how
@@ -81,7 +81,8 @@ server/schema.ts                        SQLite DDL
 server/seed.ts                          deterministic DB build
 server/progress.ts                      Country Progress calculations
 server/scoring.ts                       normalization and aggregation math
-server/rating-profiles.ts               balanced and alternative leader lenses
+server/leader-scorecards.ts             current equal-category PM/CM scorecard
+server/rating-profiles.ts               legacy weighted sensitivity lenses
 server/specialist-ratings.ts            specialist-topic weighted scoring
 server/app.ts                           read API
 server/seed-data/catalog.ts             reviewed sources, terms, events, claims
@@ -206,10 +207,29 @@ because one person can have multiple materially different governments.
 Acting and ultra-short terms can remain `Not rated`. This is preferable to false
 precision.
 
+Each office term has one scorecard section. Prime Minister and Chief Minister
+terms use the same six universal categories, the same 0-10 scale, and the same
+equal-weight arithmetic mean. A term is rated only when all six core categories
+have reviewable scores and rationales. One missing core category makes the
+overall `Not rated`; the system does not substitute zero, impute a neutral
+value, or redistribute the missing share.
+
 ### Specialist evaluation
 
-A specialist evaluation is a disclosed topic rubric attached to an eligible
-office term. National security currently uses five dimensions and publishes:
+A specialist evaluation is a disclosed deep-dive rubric attached to an eligible
+office term and nested under its parent core category:
+
+- infrastructure and productive capacity expands Development and economy;
+- national security expands Security and crisis response for PM terms; and
+- public safety expands Security and crisis response where a comparable
+  evidence window exists.
+
+Specialist operational and adjusted results are excluded from the six-category
+overall. They explain and stress-test a parent judgment; they are not a seventh
+category or an extra weight. This prevents double-counting and prevents research
+coverage from changing a leader's denominator.
+
+National security currently uses five dimensions and publishes:
 
 - an operational-security result; and
 - a rights-adjusted result that includes civilian protection, due process, and
@@ -217,8 +237,11 @@ office term. National security currently uses five dimensions and publishes:
 
 The same national-security rubric is applied to every rated Prime Minister term.
 It is not applied to Chief Ministers because interstate war, border defence, and
-national strategic autonomy are outside a state government’s constitutional
-authority. Chief Ministers still use the same six-part general leader rubric.
+national strategic autonomy are outside a state government's constitutional
+authority. This office-specific absence does not make the CM scorecard
+incomplete because national security is a nested deep dive, not a core category.
+The CM's Security and crisis response category instead assesses matters within
+the state office's authority and shared constitutional context.
 
 Public safety uses five different dimensions: lethal and violent harm, women and
 child safety, reporting and investigation, justice delivery, and cybercrime
@@ -232,12 +255,12 @@ evidence window. The current AP and Tamil Nadu terms are deliberately unscored
 because the latest downloadable NCRB data are for 2023, before either term
 began.
 
-Public safety informs the general crisis and integrity rationales but is not
-added again as a second headline rating. PM attribution is bounded because police
-and public order are primarily state subjects. CM attribution is larger but
-remains shared with courts, prosecution, Union law and platforms, local
-administration, financial institutions, reporting behavior, and social
-conditions.
+Public safety informs the Security and crisis response and Integrity and
+execution rationales but is not added again to the overall. PM attribution is
+bounded because police and public order are primarily state subjects. CM
+attribution is larger but remains shared with courts, prosecution, Union law and
+platforms, local administration, financial institutions, reporting behavior,
+and social conditions.
 
 ### Strategic-technology semiconductor lane
 
@@ -272,9 +295,11 @@ Current-output rules are strict:
 - projected jobs, domestic value, yields, customers, and exports remain
   prospective until observed.
 
-The July 29 rating review raised Modi's durable-reforms component from 7.4 to
-7.6 and integrity and execution from 5.9 to 6.0. Five evidence-aware
-replications still produced a rounded 6.7 balanced rating. The national-security
+The July 29 legacy rating review raised Modi's durable-reforms component from
+7.4 to 7.6 and integrity and execution from 5.9 to 6.0. Five evidence-aware
+replications produced a rounded 6.7 under the then-headline balanced profile.
+That weighted profile and audit remain historical methodology receipts; the
+current headline is the equal-category arithmetic mean. The national-security
 strategic-autonomy component rose from 7.6 to 7.8 without counting the same
 evidence again in the general crisis score.
 
@@ -326,10 +351,10 @@ The lane never treats all current stock as exclusive PM output:
 - legal designation, programme recognition, approval, construction, operation,
   and measured outcomes remain separate statuses.
 
-The broad-development profile remains broader than this specialist score. It
-also includes poverty, employment, inclusion, human outcomes, crises,
-institutions, liberties, and execution. The infrastructure score is therefore
-shown beside the PM rating and is never added mechanically to it.
+The Development and economy core category remains broader than this specialist
+score and includes the term's material outcome record beyond physical stock.
+The infrastructure deep dive is nested under that category and is never added
+mechanically to the six-category overall.
 
 ### Published state modules
 
@@ -342,8 +367,8 @@ office terms separate from national data and from other states.
 - **Tamil Nadu** begins on January 14, 1969, when the Madras State name-change
   law took effect. It publishes the complete in-scope CM chronology through
   C. Joseph Vijay taking office on May 10, 2026.
-- Tamil Nadu rates nine substantial historical terms with the same six-component
-  CM rubric. Acting, very short, evidence-poor, and the current roughly
+- Tamil Nadu rates nine substantial historical terms with the same six-category
+  equal-mean CM rubric. Acting, very short, evidence-poor, and the current roughly
   75-day-old term remain unscored.
 - Tamil Nadu's latest fully reviewed budgets are 2019-20, 2021-22, and 2025-26.
   No future or unreviewed 2026-27 full-budget proposal is fabricated for the
@@ -478,7 +503,7 @@ office: Chief Minister of Andhra Pradesh
 The published AP corpus contains:
 
 - three CM terms: Naidu 2014-19, Jagan 2019-24, and Naidu 2024-present;
-- the same six-component leader formula used for PM terms;
+- the same six-category equal-mean leader formula used for PM terms;
 - ten post-split accountability events;
 - eight reviewed state policies, including a cross-term rural-road record and
   a design-only population-management initiative;
@@ -507,7 +532,7 @@ office: Chief Minister of Tamil Nadu
 The published Tamil Nadu corpus contains:
 
 - twenty-four in-scope CM terms, including acting and short transitions;
-- nine rated substantial terms using the same six-component formula;
+- nine rated substantial terms using the same six-category equal-mean formula;
 - an explicitly unscored Vijay government beginning May 10, 2026;
 - fourteen accountability events and fifteen reviewed policies;
 - three reviewed budgets, with no fabricated current-government budget rating;
@@ -945,25 +970,50 @@ demographics, and data lags also affect the result.
 
 ## 12. Prime Minister and Chief Minister evaluation
 
-Each rated term receives six 0–10 component judgments:
+### One term, one scorecard
 
-| Component | Weight |
+Each PM or CM office term receives its own scorecard section. Scores attach to
+the term rather than the person, so separate governments led by the same person
+can have different evidence, rationales, confidence, and results.
+
+Both offices use the same six 0-10 core categories:
+
+| Core category | Share of overall |
 | --- | ---: |
-| Observed outcomes | 30% |
-| Durable reforms | 20% |
-| Inclusion | 15% |
-| Crisis and security | 10% |
-| Institutions and liberties | 15% |
-| Integrity and execution | 10% |
+| Development and economy | 1/6 |
+| Reform and state capacity | 1/6 |
+| Human development and inclusion | 1/6 |
+| Security and crisis response | 1/6 |
+| Institutions and rights | 1/6 |
+| Integrity and execution | 1/6 |
 
-Published score:
+Headline overall:
 
 ```text
-sum(component score * component weight)
+(development and economy
+ + reform and state capacity
+ + human development and inclusion
+ + security and crisis response
+ + institutions and rights
+ + integrity and execution) / 6
 ```
 
-The database test allows only rounding-level variance between components and the
-published estimate.
+The arithmetic mean is rounded to one decimal. The database and API tests allow
+only rounding-level variance between the six categories and the published
+overall.
+
+### Completeness rule
+
+A rated term requires all six core categories. If any category lacks sufficient
+reviewable evidence, the overall is `null` and the UI displays `Not rated`.
+Missing categories remain missing: they are never scored as zero, assigned a
+neutral placeholder, inferred from a specialist lane, or reweighted onto the
+available categories.
+
+This rule applies identically to PM and CM terms. The evidence and attribution
+inside Security and crisis response differ by constitutional authority, but the
+category itself is universal. National border defence is not projected onto a
+CM; state public order is not treated as exclusively controlled by a PM.
 
 Evaluation safeguards:
 
@@ -972,20 +1022,43 @@ Evaluation safeguards:
 - institutional damage can offset material gains;
 - achievements and concerns are both required for reviewed current-government
   answers;
-- short and acting terms are not forced into a score;
+- short, acting, new, and evidence-poor terms are not forced into a score;
 - score changes require rationale and source changes.
 
-Four published lenses recalculate the same six components:
+### Specialist deep dives
+
+Specialist assessments are nested within the relevant core category:
+
+| Specialist topic | Parent category |
+| --- | --- |
+| Infrastructure and productive capacity | Development and economy |
+| National security and strategic autonomy | Security and crisis response |
+| Crime, public safety, and justice delivery | Security and crisis response |
+
+They retain their disclosed subcomponents, operational score, adjusted score,
+confidence, evidence window, and sources. Neither specialist result enters the
+overall arithmetic mean. The parent category already incorporates the relevant
+evidence at the general scorecard level, so adding the specialist again would
+double-count it. A missing specialist deep dive is `N/A`, not a missing core
+category.
+
+### Legacy weighted profiles and audits
+
+Four older profiles recalculate the same six category judgments with different
+weights:
 
 - balanced;
 - development first;
 - human capability first;
 - governance first.
 
-The balanced result is the headline. The displayed lens range is a
-priority-sensitivity range, not a confidence interval.
+These are retained as **legacy sensitivity outputs** for transparency,
+backward compatibility, and interpretation of historical replication audits.
+The balanced result is no longer the headline and the profile range is not a
+confidence interval. Historical audit artifacts remain unchanged and must be
+read under the methodology version they evaluated.
 
-National security is additionally published for all rated PM terms using:
+For example, national security is published for rated PM terms using:
 
 ```text
 Operational =
@@ -1001,6 +1074,28 @@ Rights-adjusted =
 + 15% strategic autonomy and capability
 + 20% rule-of-law and civilian safeguards
 ```
+
+Those formulas produce specialist deep-dive results only; they do not alter the
+one-sixth share of Security and crisis response.
+
+### Localized new-term workflow
+
+Adding a newly elected or appointed PM or CM is a localized publication change:
+
+1. Add the new office-term record, official chronology, mandate, party,
+   jurisdiction, and direct sources.
+2. Create one new term scorecard section with the six universal categories.
+3. Keep the overall `Not rated` until every core category has reviewable
+   evidence and a source-backed rationale.
+4. Add only specialist deep dives with a complete, comparable evidence window,
+   nesting each under its parent category.
+5. Add term-specific claims, events, accountability, sources, ingestion batch,
+   and cutoff updates.
+6. Do not recalculate historical terms merely because a new term began. Change
+   an older score only for new controlling evidence, a corrected record, or an
+   explicit versioned methodology migration.
+7. Run database seeding, formula and API tests, lint, build, source checks, and
+   desktop/mobile Browser verification before publication.
 
 ## 13. Policy and bill evaluation
 
@@ -1173,8 +1268,8 @@ The current automated suite checks:
 
 - normalization and aggregation behavior;
 - source coverage for every event and claim;
-- weighted PM score consistency;
-- weighted CM score consistency;
+- six-category arithmetic-mean PM score consistency;
+- six-category arithmetic-mean CM score consistency;
 - the same national-security formula for every rated PM term;
 - the same public-safety formula for every term with a complete evidence window;
 - the same infrastructure formula for each eligible long modern PM term,

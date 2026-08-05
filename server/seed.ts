@@ -4,7 +4,7 @@ import { DatabaseSync } from 'node:sqlite'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { deriveBillExplanation } from './bill-explanations.ts'
 import { applySchema } from './schema.ts'
-import { leaderRatingProfiles, profileScore } from './rating-profiles.ts'
+import { leaderScorecardOverall } from './leader-scorecards.ts'
 import {
   andhraBudgetAllocations,
   andhraBudgetPoints,
@@ -134,7 +134,7 @@ import type {
   PolicyRegisterSeed,
 } from './types.ts'
 
-export const seedVersion = '2026-08-04.1'
+export const seedVersion = '2026-08-05.1'
 const sourceRosterVersion = 'source-roster-v0.14'
 const allJurisdictions = [
   ...jurisdictions,
@@ -526,17 +526,9 @@ function insertRows(
     termScores[score.dimensionId] = score.score
     scoreByTerm.set(score.termId, termScores)
   }
-  const balancedProfile = leaderRatingProfiles.find(
-    (profile) => profile.id === 'balanced',
-  )
-  if (!balancedProfile) {
-    throw new Error('Balanced leader rating profile missing.')
-  }
   for (const row of allLeaderTerms) {
     const termScores = scoreByTerm.get(row.id)
-    const calculatedRating = termScores
-      ? profileScore(termScores, balancedProfile)
-      : null
+    const calculatedRating = leaderScorecardOverall(termScores)
     termInsert.run(
       row.id,
       row.officeId,
@@ -1517,6 +1509,29 @@ function insertRows(
     'published',
     metadata.generated_at,
     'Fact-checked the 22-row post-2014 infrastructure infographic, corrected port, renewable, tap-water, startup, flow-versus-stock, and inherited-project claims, added a same-standard specialist rubric for the long Vajpayee, Manmohan, and Modi infrastructure cycles, and published Modi at 8.1 buildout and 7.8 quality-adjusted without changing the balanced PM rating.',
+  )
+  db.prepare(
+    `INSERT INTO ingestion_batches
+      (id, source_roster_version, query_scope, run_at, agent_model,
+       candidates_found, rejected_records, reviewer, review_status,
+       published_at, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).run(
+    'unified-leader-scorecards-2026-08-05',
+    sourceRosterVersion,
+    'All published Prime Minister and Chief Minister terms across India, Andhra Pradesh, and Tamil Nadu; unified six-category scorecard architecture and presentation',
+    metadata.generated_at,
+    'Codex with independent data, methodology, and interface audits',
+    allLeaderTerms.length,
+    allLeaderTerms.length -
+      allLeaderTerms.filter(
+        (term) =>
+          leaderScorecardOverall(scoreByTerm.get(term.id)) !== null,
+      ).length,
+    'India Mechanics leader-scorecard methodology review',
+    'published',
+    metadata.generated_at,
+    'Replaced the public weighted headline with the arithmetic mean of the same six universal categories for every PM and CM term, nested infrastructure, national-security, and public-safety studies under their parent categories to prevent double-counting, preserved legacy weighted results only for historical transparency, and consolidated each term into one expandable evidence-and-source section.',
   )
 }
 

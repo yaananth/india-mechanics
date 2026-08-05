@@ -1024,9 +1024,9 @@ export const semiconductorClaims: ClaimSeed[] = [
     leaderTermId: 'modi-2014',
     eventId: 'commercial-semiconductor-production-2026',
     policyId: 'semicon-india-programme-2021',
-    title: 'Semiconductor evidence raises component credit without changing the rounded headline',
+    title: 'Semiconductor evidence raises category credit inside the unified scorecard',
     body:
-      'Five evidence-aware rating replications supported raising durable reforms from 7.4 to 7.6 and integrity and execution from 5.9 to 6.0. Outcomes remain 7.7 because current production is mostly assembly and test and the front-end fab is unfinished. The balanced weighted result rises from 6.67 to 6.72 and still rounds to 6.7/10.',
+      'Five evidence-aware rating replications supported raising reform and state capacity from 7.4 to 7.6 and integrity and execution from 5.9 to 6.0. Development and economy remains 7.7 because current production is mostly assembly and test and the front-end fab is unfinished. The current unified overall is the equal six-category mean, 6.5/10; semiconductor evidence is visible inside the relevant categories and is not added again.',
     stance: 'context',
     category: 'methodology',
     confidence: 'high',
@@ -1060,7 +1060,7 @@ export const semiconductorCuratedAnswers: CuratedAnswerSeed[] = [
     shortAnswer:
       'Yes, Modi deserves substantial and previously missing credit for turning semiconductor policy into operating commercial plants and a credible fab pipeline. But the viral story overstates the Fairchild details and treats planned Taloja, Assam, and Dholera capacity as current output.',
     verdict:
-      'Sector verdict: the Modi government has the strongest commercial semiconductor execution record of any Indian government so far. ISM 1.0 scores 7.5/10 retrospectively and Semicon 2.0 scores 7.2/10 on design only. The new evidence raises Modi durable reforms from 7.4 to 7.6 and integrity and execution from 5.9 to 6.0; the balanced PM estimate rises from 6.67 to 6.72 and therefore remains 6.7/10 when rounded. A higher headline needs qualified Dholera wafers, sustained Assam output, actual jobs, domestic value, yields, customers, exports, and evidence that the subsidy-supported ecosystem is competitive.',
+      'Sector verdict: the Modi government has the strongest commercial semiconductor execution record of any Indian government so far. ISM 1.0 scores 7.5/10 retrospectively and Semicon 2.0 scores 7.2/10 on design only. The evidence raises Modi’s reform and state-capacity category to 7.6 and integrity and execution to 6.0. The unified PM score remains a separate equal average across all six categories, currently 6.5/10. A higher sector or overall judgment needs qualified Dholera wafers, sustained Assam output, actual jobs, domestic value, yields, customers, exports, and evidence that the subsidy-supported ecosystem is competitive.',
     confidence: 'high',
     asOfDate: reviewedAt,
     claimSections: [

@@ -170,26 +170,31 @@ describe('research database integrity', () => {
     expect(unsourcedClaims).toEqual([])
   })
 
-  it('keeps published leader estimates aligned with the disclosed weights', () => {
+  it('keeps published leader estimates aligned with the six-category arithmetic mean', () => {
     const rows = db
       .prepare(
         `SELECT t.id, t.rating_score,
-                SUM(s.score * d.weight) AS weighted_score
+                AVG(s.score) AS arithmetic_mean,
+                COUNT(*) AS category_count
          FROM leader_terms t
          JOIN leader_term_scores s ON s.term_id = t.id
-         JOIN evaluation_dimensions d ON d.id = s.dimension_id
          WHERE t.rating_score IS NOT NULL
          GROUP BY t.id`,
       )
       .all() as unknown as Array<{
       id: string
       rating_score: number
-      weighted_score: number
+      arithmetic_mean: number
+      category_count: number
     }>
     expect(rows.length).toBeGreaterThan(10)
     for (const row of rows) {
       expect(
-        Math.abs(row.rating_score - row.weighted_score),
+        row.category_count,
+        `${row.id} must have all six categories`,
+      ).toBe(6)
+      expect(
+        Math.abs(row.rating_score - row.arithmetic_mean),
         `${row.id} rating differs from component formula`,
       ).toBeLessThanOrEqual(0.051)
     }
@@ -211,7 +216,7 @@ describe('research database integrity', () => {
       )
       .get()
     expect(term).toEqual({
-      rating_score: 6.7,
+      rating_score: 6.5,
       rating_confidence: 'medium',
     })
     expect(audit).toEqual({
@@ -423,18 +428,18 @@ describe('research database integrity', () => {
                 ROUND(
                   SUM(
                     lt.rating_score *
-                    (julianday(COALESCE(lt.end_date, '2026-07-26')) -
+                    (julianday(COALESCE(lt.end_date, '2026-08-05')) -
                      julianday(lt.start_date))
                   ) /
                   SUM(
-                    julianday(COALESCE(lt.end_date, '2026-07-26')) -
+                    julianday(COALESCE(lt.end_date, '2026-08-05')) -
                     julianday(lt.start_date)
                   ),
                   2
                 ) AS day_weighted_average,
                 ROUND(
                   SUM(
-                    julianday(COALESCE(lt.end_date, '2026-07-26')) -
+                    julianday(COALESCE(lt.end_date, '2026-08-05')) -
                     julianday(lt.start_date)
                   ) / 365.2425,
                   1
@@ -451,15 +456,15 @@ describe('research database integrity', () => {
       {
         party: 'BJP',
         terms: 2,
-        simple_average: 6.9,
-        day_weighted_average: 6.83,
-        rated_years: 18.3,
+        simple_average: 6.7,
+        day_weighted_average: 6.63,
+        rated_years: 18.4,
       },
       {
         party: 'INC',
         terms: 7,
-        simple_average: 6.76,
-        day_weighted_average: 6.88,
+        simple_average: 6.56,
+        day_weighted_average: 6.65,
         rated_years: 54.3,
       },
     ])
@@ -606,7 +611,7 @@ describe('research database integrity', () => {
       policy_id: 'pakistan-flood-relief-2010',
       leader_term_id: 'manmohan-2004',
     })
-    expect(leader.rating_score).toBe(7.3)
+    expect(leader.rating_score).toBe(7)
     expect(leader.score).toBe(6.2)
     expect(leader.rationale).toContain('post-26/11 institutions')
   })
@@ -1368,7 +1373,7 @@ describe('state and Chief Minister extensibility', () => {
         id: 'ap-naidu-2014',
         start_date: '2014-06-08',
         end_date: '2019-05-29',
-        rating_score: 6.9,
+        rating_score: 6.8,
         name: 'N. Chandrababu Naidu',
         short_name: 'Chief Minister',
       },
@@ -1376,7 +1381,7 @@ describe('state and Chief Minister extensibility', () => {
         id: 'ap-jagan-2019',
         start_date: '2019-05-30',
         end_date: '2024-06-11',
-        rating_score: 6.3,
+        rating_score: 6.1,
         name: 'Y. S. Jagan Mohan Reddy',
         short_name: 'Chief Minister',
       },
@@ -1384,7 +1389,7 @@ describe('state and Chief Minister extensibility', () => {
         id: 'ap-naidu-2024',
         start_date: '2024-06-12',
         end_date: null,
-        rating_score: 6.6,
+        rating_score: 6.5,
         name: 'N. Chandrababu Naidu',
         short_name: 'Chief Minister',
       },
