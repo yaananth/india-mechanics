@@ -759,6 +759,7 @@ export const infrastructureCapacityClaims: ClaimSeed[] = [
       'The universal Development and economy category also includes poverty, jobs, services and material living standards. Its infrastructure deep dive isolates physical and productive capacity, where Modi scores 8.1 for buildout and ranks above Manmohan Singh at 7.5 and Vajpayee at 7.3.',
     stance: 'context',
     category: 'methodology',
+    claimLayer: 'editorial',
     confidence: 'high',
     asOfDate: reviewedAt,
     sourceIds: [
@@ -777,6 +778,7 @@ export const infrastructureCapacityClaims: ClaimSeed[] = [
       'Roads, electricity, sanitation, digital systems and productive capacity are already inputs to Modi’s 7.7 Development and economy and 7.6 Reform and state capacity categories. The 8.1 infrastructure-buildout deep dive makes that strength inspectable; adding it again to the 6.5 overall would count the same evidence twice.',
     stance: 'context',
     category: 'methodology',
+    claimLayer: 'editorial',
     confidence: 'high',
     asOfDate: reviewedAt,
     sourceIds: [

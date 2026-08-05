@@ -191,8 +191,10 @@ CREATE TABLE IF NOT EXISTS events (
 CREATE TABLE IF NOT EXISTS event_sources (
   event_id TEXT NOT NULL REFERENCES events(id) ON DELETE CASCADE,
   source_id TEXT NOT NULL REFERENCES sources(id),
-  evidence_role TEXT NOT NULL DEFAULT 'supports'
-    CHECK (evidence_role IN ('controls', 'supports', 'disputes', 'context')),
+  evidence_role TEXT NOT NULL DEFAULT 'unspecified'
+    CHECK (evidence_role IN (
+      'unspecified', 'controls', 'supports', 'disputes', 'context'
+    )),
   locator TEXT,
   PRIMARY KEY (event_id, source_id)
 );
@@ -279,8 +281,10 @@ CREATE TABLE IF NOT EXISTS policies (
 CREATE TABLE IF NOT EXISTS policy_sources (
   policy_id TEXT NOT NULL REFERENCES policies(id) ON DELETE CASCADE,
   source_id TEXT NOT NULL REFERENCES sources(id),
-  evidence_role TEXT NOT NULL DEFAULT 'supports'
-    CHECK (evidence_role IN ('controls', 'supports', 'disputes', 'context')),
+  evidence_role TEXT NOT NULL DEFAULT 'unspecified'
+    CHECK (evidence_role IN (
+      'unspecified', 'controls', 'supports', 'disputes', 'context'
+    )),
   locator TEXT,
   PRIMARY KEY (policy_id, source_id)
 );
@@ -397,8 +401,10 @@ CREATE TABLE IF NOT EXISTS budgets (
 CREATE TABLE IF NOT EXISTS budget_sources (
   budget_id TEXT NOT NULL REFERENCES budgets(id) ON DELETE CASCADE,
   source_id TEXT NOT NULL REFERENCES sources(id),
-  evidence_role TEXT NOT NULL DEFAULT 'supports'
-    CHECK (evidence_role IN ('controls', 'supports', 'disputes', 'context')),
+  evidence_role TEXT NOT NULL DEFAULT 'unspecified'
+    CHECK (evidence_role IN (
+      'unspecified', 'controls', 'supports', 'disputes', 'context'
+    )),
   locator TEXT,
   PRIMARY KEY (budget_id, source_id)
 );
@@ -445,6 +451,8 @@ CREATE TABLE IF NOT EXISTS claims (
   body TEXT NOT NULL,
   stance TEXT NOT NULL CHECK (stance IN ('achievement', 'concern', 'context', 'mixed')),
   category TEXT NOT NULL,
+  claim_layer TEXT NOT NULL DEFAULT 'mixed'
+    CHECK (claim_layer IN ('factual', 'mixed', 'editorial')),
   confidence TEXT NOT NULL CHECK (confidence IN ('low', 'medium', 'high')),
   as_of_date TEXT NOT NULL,
   review_status TEXT NOT NULL DEFAULT 'published'
@@ -461,9 +469,12 @@ CREATE TABLE IF NOT EXISTS claims (
 CREATE TABLE IF NOT EXISTS claim_sources (
   claim_id TEXT NOT NULL REFERENCES claims(id) ON DELETE CASCADE,
   source_id TEXT NOT NULL REFERENCES sources(id),
-  evidence_role TEXT NOT NULL DEFAULT 'supports'
-    CHECK (evidence_role IN ('controls', 'supports', 'disputes', 'context')),
+  evidence_role TEXT NOT NULL DEFAULT 'unspecified'
+    CHECK (evidence_role IN (
+      'unspecified', 'controls', 'supports', 'disputes', 'context'
+    )),
   locator TEXT,
+  claim_specific_limitation TEXT,
   extraction_method TEXT,
   reported_value REAL,
   reported_unit TEXT,

@@ -1,4 +1,23 @@
 export type Confidence = 'low' | 'medium' | 'high'
+export type ClaimLayer = 'factual' | 'mixed' | 'editorial'
+
+export type EvidenceRole =
+  | 'unspecified'
+  | 'controls'
+  | 'supports'
+  | 'disputes'
+  | 'context'
+
+export type ClaimSourceRefSeed = {
+  sourceId: string
+  evidenceRole?: EvidenceRole
+  locator?: string
+  claimSpecificLimitation?: string
+  extractionMethod?: string
+  reportedValue?: number
+  reportedUnit?: string
+  reportedAt?: string
+}
 
 export type SourceSeed = {
   id: string
@@ -204,9 +223,11 @@ export type ClaimSeed = {
   body: string
   stance: 'achievement' | 'concern' | 'context' | 'mixed'
   category: string
+  claimLayer?: ClaimLayer
   confidence: Confidence
   asOfDate: string
-  sourceIds: string[]
+  sourceIds?: string[]
+  sourceRefs?: ClaimSourceRefSeed[]
 }
 
 export type PolicySeed = {

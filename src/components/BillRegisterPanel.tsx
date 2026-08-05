@@ -17,6 +17,7 @@ import {
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { api } from '../api.ts'
 import type { BillRecord, BillRegisterResponse } from '../types.ts'
+import { useEditorialLayer } from '../editorial-layer-context.ts'
 import { formatDate } from '../utils.ts'
 import { LoadingState, SourceLinks } from './common.tsx'
 
@@ -61,9 +62,11 @@ function billDocuments(bill: BillRecord) {
   ].filter((entry): entry is [string, string] => Boolean(entry[1]))
 }
 
-function evidenceLabel(bill: BillRecord) {
+function evidenceLabel(bill: BillRecord, showEditorial: boolean) {
   if (bill.explanation.evidenceBasis === 'independent-review') {
-    return 'Independently assessed'
+    return showEditorial
+      ? 'Independently assessed'
+      : 'Independent review available'
   }
   if (bill.explanation.evidenceBasis === 'official-text') {
     return 'Official text read'
@@ -71,8 +74,8 @@ function evidenceLabel(bill: BillRecord) {
   return 'Register-derived'
 }
 
-function reviewLabel(bill: BillRecord) {
-  if (bill.assessment) return 'Rated'
+function reviewLabel(bill: BillRecord, showEditorial: boolean) {
+  if (bill.assessment) return showEditorial ? 'Rated' : 'Reviewed'
   if (bill.explanation.evidenceBasis === 'official-text') return 'Text read'
   return 'Explained'
 }
@@ -89,6 +92,7 @@ export function BillRegisterPanel({
   ) => void
   onOpenPolicy: (policyId: string) => void
 }) {
+  const { showEditorial } = useEditorialLayer()
   const [query, setQuery] = useState('')
   const [status, setStatus] = useState('all')
   const [ministry, setMinistry] = useState('all')
@@ -205,9 +209,9 @@ export function BillRegisterPanel({
             government bills
           </h2>
           <p>
-            Every record explains the proposal, who may be affected, and the
-            main upside and downside to examine. Numerical ratings remain
-            separate and require an evidence review.
+            {showEditorial
+              ? 'Every record explains the proposal, who may be affected, and the main upside and downside to examine. Numerical ratings remain separate and require an evidence review.'
+              : 'Every record shows parliamentary status, proposal text, affected groups, official rationale, documents, and sources. Benefits, risks, and verdicts remain in Editorial analysis.'}
           </p>
         </div>
         {response && (
@@ -216,10 +220,12 @@ export function BillRegisterPanel({
               <strong>{response.explained.toLocaleString('en-IN')}</strong>
               <span>plain-language explanations</span>
             </div>
-            <div>
-              <strong>{response.reviewed}</strong>
-              <span>linked ratings</span>
-            </div>
+            {showEditorial && (
+              <div>
+                <strong>{response.reviewed}</strong>
+                <span>linked ratings</span>
+              </div>
+            )}
           </div>
         )}
       </header>
@@ -281,7 +287,9 @@ export function BillRegisterPanel({
             }
           >
             <option value="all">Discovered and reviewed</option>
-            <option value="reviewed">Linked to a rating</option>
+            <option value="reviewed">
+              {showEditorial ? 'Linked to a rating' : 'Independent review available'}
+            </option>
             <option value="discovered">Not yet reviewed</option>
           </select>
         </label>
@@ -345,7 +353,7 @@ export function BillRegisterPanel({
                   <span
                     className={`bill-review-state bill-review-state--${bill.reviewStatus}`}
                   >
-                    {reviewLabel(bill)}
+                    {reviewLabel(bill, showEditorial)}
                   </span>
                   <ChevronRight size={16} aria-hidden="true" />
                 </button>
@@ -373,7 +381,7 @@ export function BillRegisterPanel({
                   <span
                     className={`bill-review-state bill-review-state--${selected.reviewStatus}`}
                   >
-                    {evidenceLabel(selected)}
+                    {evidenceLabel(selected, showEditorial)}
                   </span>
                 </header>
 
@@ -460,7 +468,7 @@ export function BillRegisterPanel({
                     <div>
                       <span>What it proposes</span>
                       <small>
-                        {evidenceLabel(selected)} ·{' '}
+                        {evidenceLabel(selected, showEditorial)} ·{' '}
                         {selected.explanation.specificity.replace('-', ' ')}
                       </small>
                     </div>
@@ -486,7 +494,7 @@ export function BillRegisterPanel({
                   </ul>
                 </section>
 
-                <section className="bill-detail__tradeoffs">
+                {showEditorial && <section className="bill-detail__tradeoffs">
                   <div>
                     <CheckCircle2 size={17} aria-hidden="true" />
                     <span>
@@ -501,9 +509,9 @@ export function BillRegisterPanel({
                       <p>{selected.explanation.potentialRisks}</p>
                     </span>
                   </div>
-                </section>
+                </section>}
 
-                <section
+                {showEditorial && <section
                   id="bill-verdict"
                   className={`bill-detail__verdict ${
                     selected.assessment ? 'is-rated' : 'is-unrated'
@@ -553,7 +561,7 @@ export function BillRegisterPanel({
                       </span>
                     </div>
                   )}
-                </section>
+                </section>}
 
                 {documents.length > 0 && (
                   <section className="bill-detail__documents">

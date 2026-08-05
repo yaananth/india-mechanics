@@ -36,6 +36,7 @@ import { BudgetsView } from './views/BudgetsView.tsx'
 import { SafetyView } from './views/SafetyView.tsx'
 import { SourcesView } from './views/SourcesView.tsx'
 import { TimelineView } from './views/TimelineView.tsx'
+import { EditorialLayerProvider } from './editorial-layer.tsx'
 
 type AppData = {
   jurisdictions: Jurisdiction[]
@@ -104,7 +105,9 @@ function aiDiscussionContext(
       {
         label: 'Compact leader scorecard',
         url: apiUrl(
-          `/api/llm/leaders/${encodeURIComponent(navigation.termId)}`,
+          `/api/llm/leaders/${encodeURIComponent(navigation.termId)}${
+            navigation.showEditorial ? '?layer=editorial' : ''
+          }`,
         ),
       },
     ]
@@ -198,8 +201,13 @@ function aiDiscussionContext(
     editorialReviewedThrough:
       data.overview.knowledge.editorialReviewedThrough,
     methodologyVersion: data.methodology.version,
+    displayLayer: navigation.showEditorial
+      ? 'editorial-analysis'
+      : 'facts-and-sources',
     evidenceLinks,
-    defaultQuestion: `What does the published evidence show about ${topicLabel}? Explain achievements, concerns, attribution, uncertainty, and what evidence would change the conclusion.`,
+    defaultQuestion: navigation.showEditorial
+      ? `What does the published evidence show about ${topicLabel}? Explain achievements, concerns, attribution, uncertainty, and what evidence would change the conclusion.`
+      : `Summarize the verified records about ${topicLabel}. Separate measured facts from mixed sourced claims, identify source disagreements and limitations, and explain attribution and evidence gaps without adding a verdict.`,
   }
 }
 
@@ -505,7 +513,7 @@ function App() {
   )
 
   return (
-    <>
+    <EditorialLayerProvider showEditorial={navigation.showEditorial}>
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>
@@ -518,6 +526,10 @@ function App() {
         onSearchOpen={() => setSearchOpen(true)}
         onMethodologyOpen={() => setMethodologyOpen(true)}
         onAiDiscussionOpen={() => setAiDiscussionOpen(true)}
+        showEditorial={navigation.showEditorial}
+        onEditorialChange={(showEditorial) =>
+          updateNavigation({ showEditorial })
+        }
         knowledge={data.overview.knowledge}
       >
         {navigation.view === 'overview' && (
@@ -654,7 +666,7 @@ function App() {
         context={discussionContext}
         onClose={() => setAiDiscussionOpen(false)}
       />
-    </>
+    </EditorialLayerProvider>
   )
 }
 

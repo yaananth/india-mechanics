@@ -10,6 +10,7 @@ import { useMemo, useState } from 'react'
 import type { Jurisdiction, Overview, Source } from '../types.ts'
 import { formatDate, sentenceCase } from '../utils.ts'
 import { SourceRating } from '../components/common.tsx'
+import { useEditorialLayer } from '../editorial-layer-context.ts'
 
 export function SourcesView({
   sources,
@@ -22,6 +23,7 @@ export function SourcesView({
   knowledge: Overview['knowledge']
   jurisdiction: Jurisdiction
 }) {
+  const { showEditorial } = useEditorialLayer()
   const leaderLabel = jurisdiction.level === 'country' ? 'PMs' : 'CMs'
   const [minimumRating, setMinimumRating] = useState(1)
   const [sourceType, setSourceType] = useState('all')
@@ -31,7 +33,7 @@ export function SourcesView({
   )
   const filtered = sources.filter(
     (source) =>
-      source.reliability >= minimumRating &&
+      (!showEditorial || source.reliability >= minimumRating) &&
       (sourceType === 'all' || source.sourceType === sourceType),
   )
   const distribution = [5, 4, 3, 2, 1].map((rating) => ({
@@ -49,9 +51,9 @@ export function SourcesView({
           </span>
           <h1>Trust is scoped, not assumed</h1>
           <p>
-            Each source has a reliability marker for its stated use, plus
-            provenance, best use, and limitations. Reliability is not the
-            source’s role, political agreement, or a universal truth score.
+            {showEditorial
+              ? 'Each source has an editorial fitness marker for its stated use, plus provenance, best use, and limitations. Fitness is not the source’s role, political agreement, or a universal truth score.'
+              : 'Each source exposes its publisher, document type, publication and access dates, best use, and limitations. Editorial fitness judgments remain hidden.'}
           </p>
         </div>
         <div className="view-header__stat">
@@ -60,36 +62,45 @@ export function SourcesView({
         </div>
       </header>
 
-      <section className="source-rubric">
+      <section
+        className={`source-rubric ${showEditorial ? '' : 'is-facts'}`}
+      >
         <div>
-          <span className="section-label">Reliability rubric</span>
-          <h2>Green means strongest fit for the stated use</h2>
+          <span className="section-label">
+            {showEditorial ? 'Editorial source-fitness rubric' : 'Source provenance'}
+          </span>
+          <h2>
+            {showEditorial
+              ? 'Green means strongest fit for the stated use'
+              : 'Read the document role, best use, and limitation'}
+          </h2>
           <p>
-            The emphasized dot moves from red to green as reliability improves.
-            Source type explains whether the record is official, independent,
-            academic, corporate, or another evidence class. A strong official
-            record can establish an action or number without proving impact.
+            {showEditorial
+              ? 'The emphasized dot moves from red to green as the editorial source-fitness judgment improves. It is not a fact, political endorsement, or source role.'
+              : 'Source type explains whether the record is official, independent, academic, corporate, or another evidence class. An official record can establish an action or number without proving impact.'}
           </p>
           <button type="button" className="text-command" onClick={onMethodologyOpen}>
             Open full rubric
             <ExternalLink size={14} aria-hidden="true" />
           </button>
         </div>
-        <div className="source-distribution" aria-label="Sources by reliability">
-          {distribution.map((item) => (
-            <div key={item.rating}>
-              <SourceRating rating={item.rating} />
-              <span className="source-distribution__bar" aria-hidden="true">
-                <i
-                  style={{
-                    width: `${(item.count / Math.max(...distribution.map((row) => row.count), 1)) * 100}%`,
-                  }}
-                />
-              </span>
-              <strong>{item.count}</strong>
-            </div>
-          ))}
-        </div>
+        {showEditorial && (
+          <div className="source-distribution" aria-label="Sources by reliability">
+            {distribution.map((item) => (
+              <div key={item.rating}>
+                <SourceRating rating={item.rating} />
+                <span className="source-distribution__bar" aria-hidden="true">
+                  <i
+                    style={{
+                      width: `${(item.count / Math.max(...distribution.map((row) => row.count), 1)) * 100}%`,
+                    }}
+                  />
+                </span>
+                <strong>{item.count}</strong>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       <section className="machine-access">
@@ -98,8 +109,9 @@ export function SourcesView({
           <h2>Use the same records as the interface</h2>
           <p>
             Read-only JSON exposes the reviewed corpus, current cutoffs,
-            methodology, and API contract without changing the underlying
-            research.
+            methodology, and API contract. Full exports contain explicitly
+            named factual records and editorial fields; the compact leader
+            endpoint defaults to facts and sources.
           </p>
         </div>
         <nav className="machine-access__links" aria-label="Research API links">
@@ -145,20 +157,22 @@ export function SourcesView({
       </section>
 
       <section className="filter-bar" aria-label="Source filters">
-        <label>
-          <Filter size={15} aria-hidden="true" />
-          <span>Minimum reliability</span>
-          <select
-            value={minimumRating}
-            onChange={(event) => setMinimumRating(Number(event.target.value))}
-          >
-            <option value={1}>Any reviewed source</option>
-            <option value={2}>Limited or stronger</option>
-            <option value={3}>Context or stronger</option>
-            <option value={4}>Strong or authoritative</option>
-            <option value={5}>Authoritative for stated use</option>
-          </select>
-        </label>
+        {showEditorial && (
+          <label>
+            <Filter size={15} aria-hidden="true" />
+            <span>Minimum editorial source fitness</span>
+            <select
+              value={minimumRating}
+              onChange={(event) => setMinimumRating(Number(event.target.value))}
+            >
+              <option value={1}>Any reviewed source</option>
+              <option value={2}>Limited or stronger</option>
+              <option value={3}>Context or stronger</option>
+              <option value={4}>Strong or authoritative</option>
+              <option value={5}>Authoritative for stated use</option>
+            </select>
+          </label>
+        )}
         <label>
           <span>Source type</span>
           <select value={sourceType} onChange={(event) => setSourceType(event.target.value)}>
@@ -173,9 +187,12 @@ export function SourcesView({
         <span className="filter-bar__result">{filtered.length} shown</span>
       </section>
 
-      <section className="source-table" aria-label="Source ledger">
+      <section
+        className={`source-table ${showEditorial ? '' : 'is-facts'}`}
+        aria-label="Source ledger"
+      >
         <div className="source-table__header" aria-hidden="true">
-          <span>Reliability for use</span>
+          {showEditorial && <span>Editorial source fitness</span>}
           <span>Source and provenance</span>
           <span>Best used for</span>
           <span>Limitation</span>
@@ -183,7 +200,7 @@ export function SourcesView({
         </div>
         {filtered.map((source) => (
           <article key={source.id}>
-            <SourceRating rating={source.reliability} />
+            {showEditorial && <SourceRating rating={source.reliability} />}
             <div className="source-table__identity">
               <strong>{source.title}</strong>
               <span>
@@ -196,7 +213,7 @@ export function SourcesView({
                   : 'Publication date not listed'}
                 {' · '}Accessed {formatDate(source.accessedDate)}
               </span>
-              <small>{source.ratingReason}</small>
+              {showEditorial && <small>{source.ratingReason}</small>}
             </div>
             <p>{source.bestFor}</p>
             <p>{source.limitations}</p>

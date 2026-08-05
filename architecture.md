@@ -22,16 +22,20 @@ India Mechanics must let a human or agent answer questions such as:
 - How current is the evidence?
 
 The product is not a neutral oracle. No historical synthesis or scoring system
-can be free of judgment. The project instead makes judgment inspectable:
+can be free of judgment. The default human and compact-machine surfaces therefore
+show facts and sources first. Editorial scores, verdicts, directional labels,
+accountability judgments, and source-fitness ratings require an explicit
+`layer=editorial` state. The project makes that judgment inspectable:
 
 1. observations, events, claims, and ratings are different record types;
 2. every claim and event has provenance;
-3. source fitness and limitations are explicit;
-4. time and knowledge cutoffs are visible;
-5. missing data remains missing;
-6. scores disclose their components and weights;
-7. contested evidence can be represented as contested;
-8. agents can retrieve the same evidence as the UI through JSON.
+3. claim-level source role, provenance, best use, and limitations are explicit;
+4. every claim has an authored `factual`, `mixed`, or `editorial` layer;
+5. time and knowledge cutoffs are visible;
+6. missing data remains missing;
+7. scores disclose their components and weights;
+8. contested evidence can be represented as contested;
+9. agents can retrieve the same evidence as the UI through JSON.
 
 ## 2. Runtime architecture
 
@@ -79,11 +83,15 @@ The compact leader endpoint is:
 https://india-mechanics.artfiesco.chatgpt.site/api/llm/leaders/<term-id>
 ```
 
-It is the bounded retrieval representation for one office term. Its contract
-includes term and jurisdiction identity, dates, the unified six-category
-scorecard, overall and confidence, category rationales, nested specialist deep
-dives, bounded source records, omission counts, assessment date, and relevant
-cutoff metadata.
+It is the bounded facts-first representation for one office term. Its default
+contract includes term and jurisdiction identity, dates, claims, claim-level
+source relationships, bounded source records, every omitted claim/source ID,
+and relevant cutoff metadata. Editorial scores and source-fitness judgments are
+omitted. Factual and mixed claims retain a visible claim-layer label;
+editorial-only claims are omitted. `?layer=editorial` adds the unified
+scorecard, category rationales, and nested specialist deep dives. Its
+`citationReady` flag remains false when the bounded claim/source bundle is
+incomplete. Both representations link to the full term API.
 
 The human HTML fallback is:
 
@@ -117,17 +125,24 @@ methodology version. `src/components/AiDiscussionDialog.tsx` lets the reader edi
 the question, inspect the prompt, open the included evidence routes, and copy it
 locally. The application does not send that prompt to an AI vendor.
 
-The prompt treats India Mechanics as an editorial index and synthesis layer. It
+The prompt treats India Mechanics as a facts-first source index with an optional
+editorial synthesis layer. It
 requires claim-level citations to underlying sources, distinguishes official
 or interested-party records from independent outcome evidence, preserves
 qualifiers and evidence gaps, and forbids causal attribution from office timing
 alone. It also discloses compact-document omissions.
 
-Source presentation follows the same contract. The reliability marker evaluates
+Source presentation follows the same contract. Claim disclosures expose the
+relationship role, document title, publisher, type, publication date, best use,
+general limitation, claim locator, and claim-specific limitation when recorded.
+Legacy links with no reviewed role are labelled `unspecified`; the system does
+not infer that they support a claim. The optional reliability marker evaluates
 an individual source item for a stated use; it does not encode political
-agreement or evidentiary role. Compact source links show document titles. The
-source ledger exposes publisher, source type, author when recorded, publication
-and access dates, rating rationale, best use, and limitations.
+agreement or evidentiary role.
+
+Public claim selectors require `review_status = 'published'`. Draft,
+reviewing, rejected, and superseded claims stay out of human pages, compact
+documents, and exports until a dedicated correction/history surface exists.
 
 ## 3. Repository map
 
@@ -1066,6 +1081,22 @@ The arithmetic mean is rounded to one decimal. The database and API tests allow
 only rounding-level variance between the six categories and the published
 overall.
 
+Every number in this section is a sourced editorial estimate. Equal one-sixth
+weights are a normative value choice, not a measured property of government
+performance. The facts-first UI hides this section. Editorial mode publishes
+the alternative profile minimum and maximum as priority sensitivity, not as a
+confidence interval.
+
+Ongoing terms are always `provisional`; completed terms are `retrospective`.
+Each term also publishes claim counts, claim-source-link counts, classified-role
+counts, unique-source counts, source-type counts, and the latest source access
+date. These are evidence-density facts and do not raise a score automatically.
+
+Fixed-window comparisons, subperiod scores, and category-specific raise/lower
+thresholds are not yet published. The API and UI disclose those missing methods
+instead of implying completed-term and ongoing-term symmetry or formal
+falsifiability.
+
 ### Completeness rule
 
 A rated term requires all six core categories. If any category lacks sufficient
@@ -1253,23 +1284,23 @@ the same contract.
 
 Eight responsive views use the same jurisdiction-scoped API:
 
-1. **Overview**: current direction, progress score, uncertainty, reviewed
-   questions, leader strip, and recent events.
+1. **Overview**: measured evidence areas, reviewed claims, leader terms, and
+   recent events; optional progress model and reviewed synthesis.
 2. **Timeline**: category and date filters with expandable provenance,
    PM/CM and party filters, governing-term identity, decision quality, PM/Union
    and state/local roles, responsible actors, positives, and lessons.
-3. **Prime Ministers / Chief Ministers**: all terms, same-rubric comparison graph, detailed
-   component reasons and claims.
-4. **Policies**: office-term-linked policy inventory, status filters,
-   five-part ratings, benefits, risks, and evidence gaps.
+3. **Prime Ministers / Chief Ministers**: all terms, sourced claims, claim-level
+   provenance, and evidence density; optional same-rubric score comparison.
+4. **Policies**: office-term-linked policy inventory, status filters, purpose,
+   sourced evidence, and record sources; optional five-part ratings.
 5. **Budgets**: jurisdiction budgets, allocations, fiscal frame, strengths, and
    delivery risks.
 6. **Crime & Safety**: harm, reporting-sensitive rates, investigation, justice,
    cybercrime, public-safety term scorecards, and current news signals.
 7. **Indicators**: raw graph, latest value, office-term change, goalposts, and
    source fitness.
-8. **Sources**: reliability distribution, filters, limitations, and agent data
-   access.
+8. **Sources**: provenance, source type, best use, limitations, and agent data
+   access; optional editorial source-fitness distribution.
 
 Desktop uses a compact top navigation with a jurisdiction selector. Mobile uses
 a stable bottom navigation, compact jurisdiction selector, full-screen search,
@@ -1393,6 +1424,12 @@ This is a strong foundation, not an exhaustive history.
 - the 2021 Census delay limits current demographic analysis;
 - state results still hide district and community differences;
 - the current PM scores have one editorial pass, not an external review panel;
+- most legacy claim-source links still have `unspecified` evidence roles and
+  must be classified claim by claim rather than bulk-labelled as support;
+- most legacy claims are conservatively labelled `mixed`; expanding the
+  authored factual/editorial classification is a continuing review task;
+- fixed-window leader comparisons, subperiod scores, and explicit category
+  falsification thresholds are not yet published;
 - Andhra Pradesh and Tamil Nadu are published at state level; all other states
   remain absent;
 - AP and Tamil Nadu policy, event, and budget coverage are reviewed starting

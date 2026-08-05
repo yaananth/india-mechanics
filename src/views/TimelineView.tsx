@@ -22,6 +22,7 @@ import {
   SourceLinks,
 } from '../components/common.tsx'
 import { GovernmentIdentity } from '../components/GovernmentIdentity.tsx'
+import { useEditorialLayer } from '../editorial-layer-context.ts'
 
 const responsibilityLevelLabel = (level: number) =>
   level >= 5
@@ -51,6 +52,7 @@ export function TimelineView({
   knowledge: Overview['knowledge']
   jurisdiction: Jurisdiction
 }) {
+  const { showEditorial } = useEditorialLayer()
   const officeLabel =
     jurisdiction.level === 'country' ? 'Prime Minister' : 'Chief Minister'
   const unmappedLabel =
@@ -327,10 +329,14 @@ export function TimelineView({
                         {event.endDate ? ` – ${formatDate(event.endDate)}` : ''}
                       </dd>
                     </div>
-                    <div>
-                      <dt>Why it matters</dt>
-                      <dd>{event.significance}</dd>
-                    </div>
+                    {showEditorial && (
+                      <div>
+                        <dt>Editorial significance</dt>
+                        <dd>
+                          <EditorialLabel /> {event.significance}
+                        </dd>
+                      </div>
+                    )}
                     <div className="timeline-event__government-fact">
                       <dt>{officeLabel} / party</dt>
                       <dd>
@@ -357,7 +363,7 @@ export function TimelineView({
                     </div>
                   </dl>
 
-                  {event.accountability && (
+                  {showEditorial && event.accountability && (
                     <section className="event-accountability">
                       <header className="event-accountability__header">
                         <div>
@@ -483,7 +489,9 @@ export function TimelineView({
                     <section className="event-related-policies">
                       <h4>
                         <ScrollText size={16} aria-hidden="true" />
-                        Related policy assessment
+                        {showEditorial
+                          ? 'Related policy assessment'
+                          : 'Related policy record'}
                       </h4>
                       <div>
                         {event.relatedPolicies.map((policy) => (
@@ -496,7 +504,7 @@ export function TimelineView({
                               <strong>{policy.shortTitle}</strong>
                               <small>{policy.title}</small>
                             </span>
-                            <b>{policy.ratingScore}/10</b>
+                            {showEditorial && <b>{policy.ratingScore}/10</b>}
                           </button>
                         ))}
                       </div>

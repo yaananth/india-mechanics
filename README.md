@@ -10,18 +10,22 @@ The project combines:
 
 - a searchable timeline with PM/CM and party attribution, filters, and
   political and administrative accountability;
-- transparent Prime Minister and Chief Minister term ratings;
+- optional, explicitly editorial Prime Minister and Chief Minister term ratings;
 - policy, bill, and budget evaluations;
 - raw indicator charts and a disclosed Country/State Progress Index;
 - a Crime & Safety view that separates harm, reporting, investigation, justice,
   and current news signals;
-- source-level reliability, limitations, review dates, and knowledge cutoffs;
+- claim-level provenance, source roles, limitations, review dates, and knowledge
+  cutoffs;
 - a jurisdiction-native model that currently publishes India,
   post-bifurcation Andhra Pradesh, and modern Tamil Nadu from January 14,
   1969.
 
-This is both software and a public research record. Editorial judgments are
-visible, versioned, and reproducible; they are not presented as measured facts.
+This is both software and a public research record. **Facts and sources is the
+default display.** Scores, verdicts, accountability judgments, directional
+labels, and source-fitness ratings require the URL-backed Editorial analysis
+toggle. Editorial judgments remain versioned and reproducible; they are not
+presented as measured facts.
 
 ## Research principles
 
@@ -33,13 +37,18 @@ visible, versioned, and reproducible; they are not presented as measured facts.
    not proof that the leader caused it.
 4. **Uncertainty stays visible.** Sparse surveys, disputed counts, provisional
    budgets, and developing stories remain qualified.
-5. **Same rubric, same office.** Rated PM and CM terms use the same six general
+5. **Claims declare their layer.** Every sourced claim is authored as
+   `factual`, `mixed`, or `editorial`. Facts-first pages label factual and mixed
+   claims and withhold editorial-only claims; public APIs exclude unpublished
+   and superseded material.
+6. **Same rubric, same office.** Rated PM and CM terms use the same six general
    categories and equal-weight arithmetic mean. Specialist assessments use a
    published topic rubric but do not add another category to the overall.
-6. **Registered crime is not victimization.** Murder and violent-crime rates,
+   Equal weights are a normative editorial choice, not an empirical law.
+7. **Registered crime is not victimization.** Murder and violent-crime rates,
    reporting-sensitive FIR rates, investigation, conviction, and news signals
    are shown separately.
-7. **State boundaries matter.** Andhra Pradesh observations begin after
+8. **State boundaries matter.** Andhra Pradesh observations begin after
    June 2, 2014; undivided-state data are not silently assigned to the successor
    state. Tamil Nadu is explicitly anchored to the January 14, 1969 effective
    renaming of Madras State.
@@ -47,7 +56,7 @@ visible, versioned, and reproducible; they are not presented as measured facts.
 Read [architecture.md](./architecture.md) for the complete model and
 [AGENTS.md](./AGENTS.md) for the research and verification contract.
 
-## Unified PM/CM scorecard
+## Optional PM/CM editorial scorecard
 
 Every government is presented as one scorecard section for one office term.
 Ratings belong to the term, not permanently to the person. Prime Ministers and
@@ -72,6 +81,13 @@ overall = (category 1 + category 2 + category 3
 A term with any missing core category is `Not rated`; missing evidence is not
 converted to zero, imputed, or silently redistributed across the other
 categories.
+
+The overall, every category score, and every specialist score are sourced
+editorial judgments. Ongoing terms are marked provisional. Each term publishes
+evidence counts and claim-source-role completeness. The alternative weighting
+profiles are shown as normative sensitivity, never as a statistical confidence
+interval. Fixed-window comparisons, subperiod scores, and category-specific
+falsification thresholds are not yet published and remain explicit limitations.
 
 Infrastructure, national security, and public safety are specialist deep dives.
 They appear inside the core category they explain, such as infrastructure under
@@ -107,12 +123,19 @@ For one leader term, the compact retrieval route contract is:
 https://india-mechanics.artfiesco.chatgpt.site/api/llm/leaders/<term-id>
 ```
 
-It must return the term identity and jurisdiction, dates, unified six-category
-scorecard, overall and confidence, category rationales, nested specialist deep
-dives, bounded source records, omission counts, assessment date, and relevant
-cutoff metadata. Consumers must still preserve the published caveats: ratings
-are editorial term estimates, specialist scores are not added to the overall,
-and observed change during a term does not prove leader causation.
+That default response is facts-first: identity, dates, explicitly labelled
+factual or mixed sourced claims, claim-level source roles, provenance,
+limitations, omission IDs, and cutoff metadata. It omits editorial-only claims,
+scores, and source-fitness judgments. The optional editorial document is:
+
+```text
+https://india-mechanics.artfiesco.chatgpt.site/api/llm/leaders/<term-id>?layer=editorial
+```
+
+The editorial response adds the unified scorecard, category rationales, and
+specialist deep dives. It also publishes `citationReady`; a compact document
+with omitted claims or sources may display the editorial model output but must
+link to the full term record and must not be used for a score-only citation.
 
 The corresponding human deep-link contract is:
 

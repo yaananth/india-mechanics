@@ -116,10 +116,11 @@ export const api = {
   search: (
     query: string,
     jurisdictionId: string,
+    includeEditorial: boolean,
     signal?: AbortSignal,
   ) =>
     apiFetch<SearchResponse>(
-      `/api/search?jurisdiction=${encodeURIComponent(jurisdictionId)}&q=${encodeURIComponent(query)}`,
+      `/api/search?jurisdiction=${encodeURIComponent(jurisdictionId)}&q=${encodeURIComponent(query)}${includeEditorial ? '&layer=editorial' : ''}`,
       signal,
     ),
 }

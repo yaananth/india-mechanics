@@ -170,6 +170,66 @@ describe('research database integrity', () => {
     expect(unsourcedClaims).toEqual([])
   })
 
+  it('preserves legacy links as unspecified while retaining authored claim provenance', () => {
+    const roles = db
+      .prepare(
+        `SELECT evidence_role, COUNT(*) AS count
+         FROM claim_sources
+         GROUP BY evidence_role`,
+      )
+      .all()
+    const populated = db
+      .prepare(
+        `SELECT
+           SUM(locator IS NOT NULL) AS locators,
+           SUM(claim_specific_limitation IS NOT NULL) AS specific_limitations,
+           SUM(extraction_method IS NOT NULL) AS extraction_methods,
+           SUM(reported_value IS NOT NULL) AS reported_values,
+           SUM(reported_unit IS NOT NULL) AS reported_units,
+           SUM(reported_at IS NOT NULL) AS reported_dates
+         FROM claim_sources`,
+      )
+      .get()
+
+    expect(roles).toEqual([
+      {
+        evidence_role: 'controls',
+        count: 1,
+      },
+      expect.objectContaining({
+        evidence_role: 'unspecified',
+      }),
+    ])
+    expect(populated).toEqual({
+      locators: 1,
+      specific_limitations: 1,
+      extraction_methods: 1,
+      reported_values: 1,
+      reported_units: 1,
+      reported_dates: 1,
+    })
+    expect(
+      db
+        .prepare(
+          `SELECT evidence_role, locator, claim_specific_limitation,
+                  extraction_method, reported_value, reported_unit, reported_at
+           FROM claim_sources
+           WHERE claim_id = 'bharatmala-corridor-delivery'`,
+        )
+        .get(),
+    ).toEqual({
+      evidence_role: 'controls',
+      locator:
+        'Bharatmala Pariyojana progress status reported through November 2025.',
+      claim_specific_limitation:
+        'The official completion figure does not by itself establish net-new road length, quality, safety, cost control, or utilization.',
+      extraction_method: 'manual-reviewed-summary',
+      reported_value: 21597,
+      reported_unit: 'km completed',
+      reported_at: '2025-11-30',
+    })
+  })
+
   it('keeps published leader estimates aligned with the six-category arithmetic mean', () => {
     const rows = db
       .prepare(

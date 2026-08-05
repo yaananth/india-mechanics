@@ -1,6 +1,7 @@
 import { Scale, X } from 'lucide-react'
 import type { Methodology } from '../types.ts'
 import { SourceRating } from './common.tsx'
+import { useEditorialLayer } from '../editorial-layer-context.ts'
 
 const leaderDimensionNames: Record<string, string> = {
   outcomes: 'outcomes',
@@ -20,6 +21,7 @@ export function MethodologyDialog({
   methodology: Methodology | null
   onClose: () => void
 }) {
+  const { showEditorial } = useEditorialLayer()
   if (!open) return null
 
   return (
@@ -48,6 +50,32 @@ export function MethodologyDialog({
 
         {methodology && (
           <div className="methodology-dialog__body">
+            <section>
+              <h3>Measured records vs editorial analysis</h3>
+              <p>
+                Facts and sources is the default display. Dates, laws,
+                observations, units, methods, source records, limitations, and
+                evidence gaps remain visible without composite judgments.
+              </p>
+              <p>
+                Scores, verdicts, category judgments, responsibility analysis,
+                and source-fitness markers are optional sourced editorial
+                interpretations. They are not official rankings, measured
+                facts, or causal estimates.
+              </p>
+              <div className="method-note">
+                <Scale size={17} aria-hidden="true" />
+                <span>
+                  Current display:{' '}
+                  <strong>
+                    {showEditorial
+                      ? 'Editorial analysis enabled'
+                      : 'Facts and sources'}
+                  </strong>
+                </span>
+              </div>
+            </section>
+
             <section>
               <h3>Country and State Progress Index</h3>
               <p>{methodology.progress.purpose}</p>
@@ -79,6 +107,7 @@ export function MethodologyDialog({
             <section>
               <h3>PM and CM scorecards</h3>
               <p>{methodology.leaderScorecard.formula}</p>
+              <p>{methodology.leaderScorecard.normativeWeightNote}</p>
               <div className="weight-list weight-list--compact">
                 {methodology.leaderScorecard.categories.map((category) => (
                   <div key={category.id}>
@@ -97,6 +126,14 @@ export function MethodologyDialog({
                   {methodology.leaderScorecard.specialistRule}
                 </span>
               </div>
+              <div className="method-note">
+                <Scale size={17} aria-hidden="true" />
+                <span>
+                  {methodology.leaderScorecard.ongoingTermRule}{' '}
+                  {methodology.leaderScorecard.comparabilityLimit}
+                </span>
+              </div>
+              <p>{methodology.leaderScorecard.falsifierStatus}</p>
               <details className="methodology-disclosure">
                 <summary>Legacy weighting lenses</summary>
                 <div>
@@ -208,7 +245,7 @@ export function MethodologyDialog({
                   .sort(([left], [right]) => Number(right) - Number(left))
                   .map(([rating, description]) => (
                     <div key={rating}>
-                      <SourceRating rating={Number(rating)} />
+                      <SourceRating rating={Number(rating)} force />
                       <span>{description}</span>
                     </div>
                   ))}

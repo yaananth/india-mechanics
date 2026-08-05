@@ -66,6 +66,9 @@ the parliamentary register.
 
 ## Source rules
 
+- Facts and sources is the default human and compact-machine display. Scores,
+  verdicts, directional labels, accountability judgments, and source-fitness
+  markers require the explicit editorial layer.
 - A 5/5 official source controls the official fact it records; it does not
   automatically prove that the government’s interpretation or claimed impact is true.
 - Score the individual source item, not the publisher. A well-reported article
@@ -84,6 +87,17 @@ the parliamentary register.
   and modelled.
 - Store direct URLs, publisher, publication date, access date, best use,
   limitation, and reliability rationale.
+- Every displayed claim must expose its claim ID and claim-specific source
+  relationships. Never infer `supports` for a legacy link; leave the role
+  `unspecified` until a reviewer classifies it.
+- Every claim has an authored `claim_layer`: `factual`, `mixed`, or
+  `editorial`. Never infer this from keywords, stance, or reuse in an answer.
+  Facts-first surfaces may show factual and mixed sourced claims only when the
+  layer is visible beside the claim; editorial-only claims require the
+  editorial layer.
+- Public APIs and exports return only `review_status = 'published'` claims.
+  Candidate, rejected, reviewing, and superseded records require a separate
+  audit/history surface.
 - Never cite social media as standalone proof. It may lead to a source.
 - Do not store or republish copyrighted article bodies; retain metadata, bounded
   claim summaries, locators, hashes where appropriate, and links.
@@ -95,6 +109,13 @@ the parliamentary register.
 - Ratings belong to `leader_terms`, not people.
 - Acting and ultra-short terms may remain unscored.
 - Every rated term uses the six component dimensions and published weights.
+- Equal category weights are a normative editorial choice. Publish alternative
+  profile ranges as priority sensitivity, never as a confidence interval.
+- Every ongoing term score is provisional. Disclose that fixed-window
+  comparison, subperiod scoring, and category-specific falsification thresholds
+  are unavailable until they are actually researched and published.
+- Publish evidence-density counts separately from confidence and score. More
+  sources do not mechanically raise a rating.
 - A rating change requires component-score changes, rationale changes, and
   supporting source changes. Bump the methodology version for a formula change.
 - Never treat movement during a term as proof that the leader caused it.
@@ -289,3 +310,7 @@ the parliamentary register.
 - E2E in the bundled Browser plugin at desktop and mobile widths:
   search, timeline filters, PM selection/comparison, indicator changes, source
   filters, methodology, API links, and cutoff visibility.
+- Verify facts-first and `layer=editorial` states separately. Compact JSON,
+  Markdown, crawler HTML, and the human deep link must agree on whether
+  editorial fields are included, and must expose omission IDs and full-record
+  links.

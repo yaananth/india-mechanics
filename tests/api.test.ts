@@ -1,4 +1,7 @@
 import { DatabaseSync } from 'node:sqlite'
+import { copyFileSync, unlinkSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import request from 'supertest'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { createApp } from '../server/app.ts'
@@ -67,6 +70,7 @@ describe('read API', () => {
       request(app).get('/api/search').query({
         jurisdiction: 'andhra-pradesh',
         q: 'how is andhra doing',
+        layer: 'editorial',
       }),
     ])
 
@@ -237,6 +241,7 @@ describe('read API', () => {
       request(app).get('/api/search').query({
         jurisdiction: 'tamil-nadu',
         q: 'how is tamil nadu doing',
+        layer: 'editorial',
       }),
     ])
 
@@ -373,6 +378,7 @@ describe('read API', () => {
       request(app).get('/api/search').query({
         jurisdiction: 'tamil-nadu',
         q: 'crime in tamil nadu',
+        layer: 'editorial',
       }),
       request(app)
         .get('/api/leaders/tn-vijay-2026')
@@ -448,6 +454,7 @@ describe('read API', () => {
       request(app).get('/api/search').query({
         jurisdiction: 'india',
         q: 'is crime getting better in india',
+        layer: 'editorial',
       }),
       request(app)
         .get('/api/indicators/crime-murder-rate/series')
@@ -458,6 +465,7 @@ describe('read API', () => {
       request(app).get('/api/search').query({
         jurisdiction: 'andhra-pradesh',
         q: 'crime in andhra pradesh',
+        layer: 'editorial',
       }),
     ])
 
@@ -488,10 +496,17 @@ describe('read API', () => {
   })
 
   it('answers the constitutional regime-change question with both cases', async () => {
-    const response = await request(app).get('/api/search').query({
-      jurisdiction: 'india',
-      q: 'as of now do we need regime change',
-    })
+    const [response, factsResponse] = await Promise.all([
+      request(app).get('/api/search').query({
+        jurisdiction: 'india',
+        q: 'as of now do we need regime change',
+        layer: 'editorial',
+      }),
+      request(app).get('/api/search').query({
+        jurisdiction: 'india',
+        q: 'as of now do we need regime change',
+      }),
+    ])
     expect(response.status).toBe(200)
     expect(response.body.answer.id).toBe('regime-change-now')
     const sections = new Set(
@@ -507,6 +522,66 @@ describe('read API', () => {
           claim.id === 'regime-change-previous-term-comparison',
       ),
     ).toBe(true)
+    expect(factsResponse.body.answer).toBeNull()
+    expect(
+      factsResponse.body.results.some(
+        (item: { id: string }) =>
+          item.id === 'regime-change-previous-term-comparison',
+      ),
+    ).toBe(false)
+  })
+
+  it('keeps non-published claims out of public leader, policy, export, and compact responses', async () => {
+    const databaseCopy = join(
+      tmpdir(),
+      `india-mechanics-public-claims-${process.pid}-${Date.now()}.sqlite`,
+    )
+    copyFileSync(ensureDatabase(), databaseCopy)
+    const mutableDb = new DatabaseSync(databaseCopy)
+    try {
+      const insert = mutableDb.prepare(
+        `INSERT INTO claims
+          (id, jurisdiction_id, leader_term_id, policy_id, title, body, stance,
+           category, claim_layer, confidence, as_of_date, review_status,
+           sensitivity, knowledge_cutoff)
+         VALUES (?, 'india', 'modi-2014', 'gst-2017', ?, ?, 'context',
+                 'test', 'mixed', 'low', '2026-08-05', ?, 'standard',
+                 '2026-08-05')`,
+      )
+      for (const status of ['candidate', 'rejected', 'superseded']) {
+        insert.run(
+          `test-private-${status}`,
+          `Private ${status} claim`,
+          `This ${status} claim must not be public.`,
+          status,
+        )
+      }
+      const isolatedApp = createApp(mutableDb)
+      const [leader, policy, exportResponse, compact] = await Promise.all([
+        request(isolatedApp)
+          .get('/api/leaders/modi-2014')
+          .query({ jurisdiction: 'india' }),
+        request(isolatedApp)
+          .get('/api/policies/gst-2017')
+          .query({ jurisdiction: 'india' }),
+        request(isolatedApp)
+          .get('/api/export')
+          .query({ jurisdiction: 'india' }),
+        request(isolatedApp).get('/api/llm/leaders/modi-2014'),
+      ])
+      const serialized = JSON.stringify([
+        leader.body,
+        policy.body,
+        exportResponse.body,
+        compact.body,
+      ])
+      expect(serialized).not.toContain('test-private-candidate')
+      expect(serialized).not.toContain('test-private-rejected')
+      expect(serialized).not.toContain('test-private-superseded')
+    } finally {
+      mutableDb.close()
+      unlinkSync(databaseCopy)
+    }
   })
 
   it('removes the old partisan-style curated questions', async () => {
@@ -530,6 +605,7 @@ describe('read API', () => {
     const response = await request(app).get('/api/search').query({
       jurisdiction: 'india',
       q: 'rupee dollar',
+      layer: 'editorial',
     })
     expect(response.status).toBe(200)
     expect(response.body.answer).toMatchObject({
@@ -548,6 +624,7 @@ describe('read API', () => {
       request(app).get('/api/search').query({
         jurisdiction: 'india',
         q: '38.7 to 95.6 toilet coverage',
+        layer: 'editorial',
       }),
       request(app).get('/api/policies/swachh-bharat-gramin-2014'),
     ])
@@ -582,12 +659,31 @@ describe('read API', () => {
     expect(response.body.legacyWeightedScore).toBe(6.7)
     expect(response.body.scorecard).toMatchObject({
       version: 'leader-scorecard-v1',
+      recordType: 'sourced-editorial-assessment',
+      assessmentStatus: 'provisional',
+      termStatus: 'ongoing',
       aggregation: 'arithmetic-mean',
       overallScore: 6.5,
       scoredCategoryCount: 6,
       totalCategoryCount: 6,
     })
     expect(response.body.scorecard.formula).toContain('arithmetic mean')
+    expect(response.body.scorecard.weightsAreNormative).toBe(true)
+    expect(response.body.scorecard.normativeSensitivity).toMatchObject({
+      minimum: 6.1,
+      maximum: 7.1,
+    })
+    expect(response.body.scorecard.evidenceDensity).toMatchObject({
+      claimCount: expect.any(Number),
+      claimSourceLinkCount: expect.any(Number),
+      classifiedClaimSourceLinkCount: 1,
+      uniqueSourceCount: expect.any(Number),
+    })
+    expect(
+      response.body.scorecard.evidenceDensity.claimSourceLinkCount,
+    ).toBeGreaterThan(0)
+    expect(response.body.scorecard.comparisonLimit).toContain('ongoing-term')
+    expect(response.body.scorecard.falsifiersPublished).toBe(false)
     expect(response.body.scorecard.categories).toHaveLength(6)
     expect(
       response.body.scorecard.categories.map(
@@ -668,6 +764,30 @@ describe('read API', () => {
       ),
     ).toMatchObject({ score: 6 })
     expect(response.body.specialistAssessments).toHaveLength(3)
+    expect(
+      response.body.claims.every(
+        (claim: { reviewStatus: string }) =>
+          claim.reviewStatus === 'published',
+      ),
+    ).toBe(true)
+    expect(
+      response.body.claims.find(
+        (claim: { id: string }) =>
+          claim.id === 'bharatmala-corridor-delivery',
+      ),
+    ).toMatchObject({
+      claimLayer: 'factual',
+      sourceRefs: [
+        {
+          sourceId: 'morth-year-end-2025',
+          evidenceRole: 'controls',
+          extractionMethod: 'manual-reviewed-summary',
+          reportedValue: 21597,
+          reportedUnit: 'km completed',
+          reportedAt: '2025-11-30',
+        },
+      ],
+    })
     expect(response.body.specialistAssessments).toContainEqual(
       expect.objectContaining({
         topicId: 'national-security',
@@ -693,6 +813,30 @@ describe('read API', () => {
       }),
     )
     expect(response.body.sources.length).toBeGreaterThanOrEqual(12)
+    const claim = response.body.claims.find(
+      (candidate: { id: string }) =>
+        candidate.id === 'modi-infrastructure-digital',
+    )
+    expect(claim).toMatchObject({
+      reviewStatus: 'published',
+      sensitivity: 'standard',
+      reviewedAt: '2026-07-23',
+      knowledgeCutoff: '2026-07-23',
+      supersedesClaimId: null,
+      correctionNote: null,
+    })
+    expect(claim.sourceRefs[0]).toMatchObject({
+      evidenceRole: 'unspecified',
+      locator: null,
+      claimSpecificLimitation: null,
+      extractionMethod: null,
+      reportedValue: null,
+      reportedUnit: null,
+      reportedAt: null,
+      source: expect.objectContaining({
+        id: claim.sourceRefs[0].sourceId,
+      }),
+    })
   })
 
   it('separates broad development from infrastructure buildout', async () => {
@@ -700,6 +844,7 @@ describe('read API', () => {
       request(app).get('/api/search').query({
         jurisdiction: 'india',
         q: 'modi better in developing',
+        layer: 'editorial',
       }),
       request(app).get('/api/leaders').query({ jurisdiction: 'india' }),
     ])
@@ -765,6 +910,7 @@ describe('read API', () => {
       request(app).get('/api/search').query({
         jurisdiction: 'india',
         q: 'did modi build semiconductor industry',
+        layer: 'editorial',
       }),
       request(app).get('/api/events'),
       request(app).get('/api/leaders/modi-2014'),
@@ -979,6 +1125,8 @@ describe('read API', () => {
     expect(methodology.body.leaderEvaluation.profiles).toHaveLength(4)
     expect(methodology.body.leaderScorecard).toMatchObject({
       version: 'leader-scorecard-v1',
+      recordType: 'sourced-editorial-assessment',
+      weightsAreNormative: true,
       aggregation: 'arithmetic-mean',
       categories: expect.arrayContaining([
         expect.objectContaining({
@@ -996,6 +1144,9 @@ describe('read API', () => {
     )
     expect(methodology.body.leaderScorecard.specialistRule).toContain(
       'not added again',
+    )
+    expect(methodology.body.leaderScorecard.comparabilityLimit).toContain(
+      'Fixed-window',
     )
     expect(methodology.body.specialistEvaluations).toHaveLength(3)
     expect(methodology.body.specialistEvaluations).toContainEqual(
@@ -1043,6 +1194,18 @@ describe('read API', () => {
     expect(exportResponse.body.budgets).toHaveLength(17)
     expect(exportResponse.body.bills).toHaveLength(4408)
     expect(exportResponse.body.sources.length).toBeGreaterThan(20)
+    const exportedClaim = exportResponse.body.leaders
+      .find((leader: { id: string }) => leader.id === 'modi-2014')
+      .claims.find(
+        (claim: { id: string }) =>
+          claim.id === 'modi-infrastructure-digital',
+      )
+    expect(exportedClaim.sourceRefs[0]).toMatchObject({
+      evidenceRole: 'unspecified',
+      locator: null,
+      claimSpecificLimitation: null,
+      reportedAt: null,
+    })
     expect(openapi.body.openapi).toBe('3.1.0')
   })
 

@@ -16,10 +16,11 @@ import type {
   Overview,
   SpecialistAssessment,
 } from '../types.ts'
+import { useEditorialLayer } from '../editorial-layer-context.ts'
 import { formatDate, formatYear } from '../utils.ts'
 import {
+  ClaimSources,
   ConfidenceMark,
-  EditorialLabel,
   SourceLinks,
   SourceRating,
 } from '../components/common.tsx'
@@ -165,6 +166,7 @@ export function LeadersView({
   onSelectTerm: (termId: string) => void
   knowledge: Overview['knowledge']
 }) {
+  const { showEditorial } = useEditorialLayer()
   const rated = useMemo(
     () =>
       leaders.filter(
@@ -248,24 +250,37 @@ export function LeadersView({
             All {officeLabel} terms · evidence checked{' '}
             {knowledge.cutoff}
           </span>
-          <h1>{officePlural}, one scorecard each</h1>
+          <h1>
+            {showEditorial
+              ? `${officePlural}, one scorecard each`
+              : `${officePlural} and their terms`}
+          </h1>
           <p>
-            Every overall is the simple average of the same six categories.
-            Open any term for evidence, deep dives, sources and methodology.
+            {showEditorial
+              ? 'Every overall is the simple average of the same six categories. Open any term for evidence, deep dives, sources and methodology.'
+              : 'Office dates, parties, sourced claims, and source limitations are shown without leader scores or report-card labels.'}
           </p>
         </div>
         <div className="view-header__stat">
-          <strong>{rated.length}</strong>
-          <span>rated terms</span>
+          <strong>{showEditorial ? rated.length : leaders.length}</strong>
+          <span>{showEditorial ? 'rated terms' : 'office terms'}</span>
         </div>
       </header>
 
-      {comparedLeaders.length >= 2 && (
+      {showEditorial && comparedLeaders.length >= 2 && (
         <section className="leader-scorecard-comparison">
           <div className="section-heading">
             <div>
               <span className="section-label">Selected comparison</span>
               <h2>Same six categories, side by side</h2>
+              <span className="editorial-label">
+                Sourced editorial judgment
+              </span>
+              <p className="leader-comparison-caveat">
+                Ongoing terms are provisional and have less hindsight than
+                completed terms. No fixed-window or subperiod comparison is
+                published yet.
+              </p>
             </div>
             <span className="comparison-limit">
               <UsersRound size={15} aria-hidden="true" />
@@ -280,6 +295,12 @@ export function LeadersView({
                   {comparedLeaders.map((leader) => (
                     <th scope="col" key={leader.id}>
                       {leader.person.name}
+                      <small>
+                        {leader.scorecard.termStatus}
+                        {leader.scorecard.assessmentStatus === 'provisional'
+                          ? ' · provisional'
+                          : ''}
+                      </small>
                     </th>
                   ))}
                 </tr>
@@ -311,28 +332,42 @@ export function LeadersView({
         </section>
       )}
 
-      <div
-        className="leader-compare-status"
-        aria-live="polite"
-      >
-        {compareIds.length === 0
-          ? 'Select two terms to compare'
-          : compareIds.length === 1
-            ? 'Select one more term to compare'
-            : `${compareIds.length} selected for comparison`}
-      </div>
+      {showEditorial ? (
+        <div
+          className="leader-compare-status"
+          aria-live="polite"
+        >
+          {compareIds.length === 0
+            ? 'Select two terms to compare'
+            : compareIds.length === 1
+              ? 'Select one more term to compare'
+              : `${compareIds.length} selected for comparison`}
+        </div>
+      ) : (
+        <p className="leader-compare-status">
+          Editorial analysis available. Leader scores and comparisons are hidden.
+        </p>
+      )}
 
       <section className="leader-scorecards" aria-label={`${officeLabel} terms`}>
         {[...leaders].reverse().map((leader) => {
           const isOpen = openIds.includes(leader.id)
           const isCompared = compareIds.includes(leader.id)
           const overall = leader.scorecard.overallScore
-          const evidenceGroups = ['Achievements', 'Concerns', 'Context and limits']
+          const factsClaims = leader.claims.filter(
+            (claim) => claim.claimLayer !== 'editorial',
+          )
+          const evidenceGroups = (showEditorial
+            ? ['Achievements', 'Concerns', 'Context and limits']
+            : ['Sourced term evidence']
+          )
             .map((section) => ({
               section,
-              claims: leader.claims.filter(
-                (claim) => claimSection(claim.stance) === section,
-              ),
+              claims: showEditorial
+                ? leader.claims.filter(
+                    (claim) => claimSection(claim.stance) === section,
+                  )
+                : factsClaims,
             }))
             .filter((group) => group.claims.length > 0)
           const regionId = `leader-scorecard-body-${leader.id}`
@@ -343,17 +378,26 @@ export function LeadersView({
               key={leader.id}
               className={`leader-scorecard ${isOpen ? 'is-open' : ''}`}
             >
-              <div className="leader-scorecard__summary">
-                <label className="leader-scorecard__compare">
-                  <input
-                    type="checkbox"
-                    checked={isCompared}
-                    disabled={overall === null}
-                    aria-label={`Compare ${leader.person.name}`}
-                    onChange={() => toggleCompare(leader.id)}
-                  />
-                  <span>Compare</span>
-                </label>
+              <div
+                className="leader-scorecard__summary"
+                style={
+                  showEditorial
+                    ? undefined
+                    : { gridTemplateColumns: 'minmax(0, 1fr) 44px' }
+                }
+              >
+                {showEditorial && (
+                  <label className="leader-scorecard__compare">
+                    <input
+                      type="checkbox"
+                      checked={isCompared}
+                      disabled={overall === null}
+                      aria-label={`Compare ${leader.person.name}`}
+                      onChange={() => toggleCompare(leader.id)}
+                    />
+                    <span>Compare</span>
+                  </label>
+                )}
                 <div className="leader-scorecard__identity">
                   <strong>{leader.person.name}</strong>
                   <span>
@@ -362,11 +406,13 @@ export function LeadersView({
                     {leader.isActing ? ' · acting' : ''}
                   </span>
                 </div>
-                <div className="leader-scorecard__overall">
-                  <small>Overall</small>
-                  <strong>{overall === null ? 'NR' : overall.toFixed(1)}</strong>
-                  <span>{overall === null ? 'not rated' : '/10'}</span>
-                </div>
+                {showEditorial && (
+                  <div className="leader-scorecard__overall">
+                    <small>Overall</small>
+                    <strong>{overall === null ? 'NR' : overall.toFixed(1)}</strong>
+                    <span>{overall === null ? 'not rated' : '/10'}</span>
+                  </div>
+                )}
                 <button
                   type="button"
                   className="leader-scorecard__toggle"
@@ -394,41 +440,103 @@ export function LeadersView({
                         {formatDate(leader.endDate)}
                       </p>
                     </div>
-                    <div className="leader-scorecard__rating">
-                      <EditorialLabel />
-                      <strong>{overall?.toFixed(1) ?? 'NR'}</strong>
-                      <span>{overall === null ? 'not rated' : '/10'}</span>
-                      {leader.ratingConfidence && (
-                        <ConfidenceMark
-                          confidence={leader.ratingConfidence}
-                        />
-                      )}
-                    </div>
+                    {showEditorial && (
+                      <div className="leader-scorecard__rating">
+                        <span className="editorial-label">
+                          Sourced editorial judgment
+                        </span>
+                        <strong>{overall?.toFixed(1) ?? 'NR'}</strong>
+                        <span>{overall === null ? 'not rated' : '/10'}</span>
+                        {leader.ratingConfidence && (
+                          <ConfidenceMark
+                            confidence={leader.ratingConfidence}
+                          />
+                        )}
+                      </div>
+                    )}
                   </header>
 
-                  <p className="leader-scorecard__description">
-                    {leader.ratingSummary}
-                  </p>
+                  <div className="leader-scorecard__record-meta">
+                    <span>
+                      <strong>Term status</strong>
+                      {leader.scorecard.termStatus}
+                    </span>
+                    <span>
+                      <strong>Evidence record</strong>
+                      {leader.scorecard.evidenceDensity.claimCount} claims ·{' '}
+                      {leader.scorecard.evidenceDensity.uniqueSourceCount} unique
+                      sources
+                    </span>
+                    <span>
+                      <strong>Claim-source roles</strong>
+                      {
+                        leader.scorecard.evidenceDensity
+                          .classifiedClaimSourceLinkCount
+                      }
+                      /{leader.scorecard.evidenceDensity.claimSourceLinkCount}{' '}
+                      classified
+                    </span>
+                    {showEditorial && (
+                      <span>
+                        <strong>Assessment status</strong>
+                        {leader.scorecard.assessmentStatus}
+                      </span>
+                    )}
+                    {!showEditorial && (
+                      <span>
+                        <strong>Sources accessed through</strong>
+                        {leader.scorecard.evidenceDensity.latestSourceAccessDate
+                          ? formatDate(
+                              leader.scorecard.evidenceDensity
+                                .latestSourceAccessDate,
+                            )
+                          : 'Not recorded'}
+                      </span>
+                    )}
+                  </div>
 
-                  {overall !== null ? (
-                    <div className="leader-scorecard__categories">
-                      {leader.scorecard.categories.map((category) => (
-                        <CategorySection
-                          key={category.id}
-                          category={category}
-                        />
-                      ))}
-                    </div>
+                  {showEditorial ? (
+                    <p className="leader-scorecard__description">
+                      {leader.ratingSummary}
+                    </p>
                   ) : (
-                    <p className="not-rated-note">
-                      This term remains unrated because its duration or
-                      evidence window is too limited for all six categories.
+                    <p className="leader-scorecard__description">
+                      Editorial analysis available. Facts-first mode keeps the
+                      term record, sourced claims, and source limitations visible.
                     </p>
                   )}
 
+                  {showEditorial &&
+                    (overall !== null ? (
+                      <div className="leader-scorecard__categories">
+                        {leader.scorecard.categories.map((category) => (
+                          <CategorySection
+                            key={category.id}
+                            category={category}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="not-rated-note">
+                        This term remains unrated because its duration or
+                        evidence window is too limited for all six categories.
+                      </p>
+                    ))}
+
                   {evidenceGroups.length > 0 && (
                     <section className="leader-scorecard__evidence">
-                      <h3>Evidence and judgments</h3>
+                      <h3>
+                        {showEditorial
+                          ? 'Evidence and judgments'
+                          : 'Sourced term claims'}
+                      </h3>
+                      {!showEditorial && (
+                        <p className="not-rated-note">
+                          Factual and mixed claims are labelled in each source
+                          disclosure. They are not measurements or causal
+                          findings. Editorial-only claims remain hidden.
+                        </p>
+                      )}
                       <div>
                         {evidenceGroups.map((group) => (
                           <section key={group.section}>
@@ -437,10 +545,7 @@ export function LeadersView({
                               <article key={claim.id}>
                                 <strong>{claim.title}</strong>
                                 <p>{claim.body}</p>
-                                <SourceLinks
-                                  sources={claim.sources}
-                                  limit={4}
-                                />
+                                <ClaimSources claim={claim} />
                               </article>
                             ))}
                           </section>
@@ -449,10 +554,12 @@ export function LeadersView({
                     </section>
                   )}
 
-                  <details className="leader-scorecard__disclosure">
-                    <summary>How this score was calculated</summary>
-                    <div>
+                  {showEditorial && (
+                    <details className="leader-scorecard__disclosure">
+                      <summary>How this score was calculated</summary>
+                      <div>
                       <p>{leader.scorecard.formula}</p>
+                      <p>{leader.scorecard.normativeWeightNote}</p>
                       {overall !== null && (
                         <p>
                           For this term: (
@@ -466,6 +573,27 @@ export function LeadersView({
                         </p>
                       )}
                       <p>{leader.scorecard.specialistRule}</p>
+                      <p>{leader.scorecard.attributionRule}</p>
+                      <p>{leader.scorecard.comparisonLimit}</p>
+                      {leader.scorecard.normativeSensitivity.minimum !== null &&
+                        leader.scorecard.normativeSensitivity.maximum !==
+                          null && (
+                          <p>
+                            Published priority sensitivity:{' '}
+                            <strong>
+                              {leader.scorecard.normativeSensitivity.minimum.toFixed(
+                                1,
+                              )}
+                              –
+                              {leader.scorecard.normativeSensitivity.maximum.toFixed(
+                                1,
+                              )}
+                              /10
+                            </strong>
+                            . {leader.scorecard.normativeSensitivity.note}
+                          </p>
+                        )}
+                      <p>{leader.scorecard.falsifierNote}</p>
                       <small>
                         Methodology {leader.scorecard.version} · assessed{' '}
                         {leader.assessmentAsOf}
@@ -486,11 +614,12 @@ export function LeadersView({
                           <p>{leader.ratingAudit.notes}</p>
                         </details>
                       )}
-                    </div>
-                  </details>
+                      </div>
+                    </details>
+                  )}
 
                   <details className="leader-scorecard__disclosure">
-                    <summary>Sources and limitations</summary>
+                    <summary>Term-level sources and limitations</summary>
                     <div className="leader-scorecard__sources">
                       {leader.sources.map((source) => (
                         <article key={source.id}>
@@ -508,7 +637,7 @@ export function LeadersView({
                               compact
                             />
                           </div>
-                          <p>{source.ratingReason}</p>
+                          {showEditorial && <p>{source.ratingReason}</p>}
                           <p className="leader-scorecard__source-limit">
                             <strong>Limit:</strong> {source.limitations}
                           </p>

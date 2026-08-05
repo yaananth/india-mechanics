@@ -65,7 +65,8 @@ async function buildJurisdictionSnapshot(jurisdictionId: string) {
 
   const claims = db
     .prepare(
-      `SELECT id, title, body, stance, category, confidence, as_of_date,
+      `SELECT id, title, body, stance, category, claim_layer AS claimLayer,
+              confidence, as_of_date,
               leader_term_id, event_id, policy_id
        FROM claims
        WHERE jurisdiction_id = ? AND review_status = 'published'

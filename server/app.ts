@@ -71,6 +71,7 @@ function leaderDocumentInput(
   db: DatabaseSync,
   jurisdictionId: string,
   term: Record<string, unknown>,
+  includeEditorial: boolean,
 ) {
   const jurisdiction = db
     .prepare(
@@ -88,10 +89,17 @@ function leaderDocumentInput(
   }
   canonicalUrl.searchParams.set('view', 'leaders')
   canonicalUrl.searchParams.set('term', String(term.id))
+  if (includeEditorial) canonicalUrl.searchParams.set('layer', 'editorial')
   const compactApiUrl = new URL(
     `/api/llm/leaders/${encodeURIComponent(String(term.id))}`,
     CANONICAL_ORIGIN,
   )
+  if (includeEditorial) compactApiUrl.searchParams.set('layer', 'editorial')
+  const fullRecordUrl = new URL(
+    `/api/leaders/${encodeURIComponent(String(term.id))}`,
+    CANONICAL_ORIGIN,
+  )
+  fullRecordUrl.searchParams.set('jurisdiction', jurisdictionId)
 
   return {
     ...term,
@@ -103,6 +111,7 @@ function leaderDocumentInput(
     publication: {
       canonicalUrl: canonicalUrl.toString(),
       compactApiUrl: compactApiUrl.toString(),
+      fullRecordUrl: fullRecordUrl.toString(),
       methodologyUrl: `${CANONICAL_ORIGIN}/api/methodology`,
       llmsGuideUrl: `${CANONICAL_ORIGIN}/llms.txt`,
       knowledgeCutoff: metadata.knowledge_cutoff,
@@ -181,7 +190,13 @@ function getSourcesByIds(db: DatabaseSync, sourceIds: string[]) {
 function getClaim(db: DatabaseSync, claimId: string) {
   const claim = db
     .prepare(
-      `SELECT id, title, body, stance, category, confidence, as_of_date
+      `SELECT id, title, body, stance, category, claim_layer, confidence, as_of_date,
+              review_status, sensitivity, reviewer, reviewed_at,
+              knowledge_cutoff, supersedes_claim_id, correction_note,
+              EXISTS(
+                SELECT 1 FROM answer_claims
+                WHERE answer_claims.claim_id = claims.id
+              ) AS used_in_editorial_answer
        FROM claims WHERE id = ?`,
     )
     .get(claimId) as
@@ -191,25 +206,71 @@ function getClaim(db: DatabaseSync, claimId: string) {
         body: string
         stance: string
         category: string
+        claim_layer: string
         confidence: string
         as_of_date: string
+        review_status: string
+        sensitivity: string
+        reviewer: string | null
+        reviewed_at: string | null
+        knowledge_cutoff: string
+        supersedes_claim_id: string | null
+        correction_note: string | null
+        used_in_editorial_answer: number
       }
     | undefined
   if (!claim) return null
   const sourceRows = db
-    .prepare(`SELECT source_id FROM claim_sources WHERE claim_id = ?`)
-    .all(claimId) as unknown as Array<{ source_id: string }>
+    .prepare(
+      `SELECT source_id, evidence_role, locator, claim_specific_limitation,
+              extraction_method, reported_value, reported_unit, reported_at
+       FROM claim_sources
+       WHERE claim_id = ?
+       ORDER BY rowid`,
+    )
+    .all(claimId) as unknown as Array<{
+    source_id: string
+    evidence_role: string
+    locator: string | null
+    claim_specific_limitation: string | null
+    extraction_method: string | null
+    reported_value: number | null
+    reported_unit: string | null
+    reported_at: string | null
+  }>
   const sourceIds = sourceRows.map((row) => row.source_id)
+  const sources = getSourcesByIds(db, sourceIds)
+  const sourceById = new Map(sources.map((source) => [source.id, source]))
   return {
     id: claim.id,
     title: claim.title,
     body: claim.body,
     stance: claim.stance,
     category: claim.category,
+    claimLayer: claim.claim_layer,
     confidence: claim.confidence,
     asOfDate: claim.as_of_date,
+    reviewStatus: claim.review_status,
+    sensitivity: claim.sensitivity,
+    reviewer: claim.reviewer,
+    reviewedAt: claim.reviewed_at,
+    knowledgeCutoff: claim.knowledge_cutoff,
+    supersedesClaimId: claim.supersedes_claim_id,
+    correctionNote: claim.correction_note,
+    usedInEditorialAnswer: Boolean(claim.used_in_editorial_answer),
     sourceIds,
-    sources: getSourcesByIds(db, sourceIds),
+    sources,
+    sourceRefs: sourceRows.map((row) => ({
+      sourceId: row.source_id,
+      evidenceRole: row.evidence_role,
+      locator: row.locator,
+      claimSpecificLimitation: row.claim_specific_limitation,
+      extractionMethod: row.extraction_method,
+      reportedValue: row.reported_value,
+      reportedUnit: row.reported_unit,
+      reportedAt: row.reported_at,
+      source: sourceById.get(row.source_id) ?? null,
+    })),
   }
 }
 
@@ -234,9 +295,10 @@ function getAnswer(db: DatabaseSync, answerId: string) {
   if (!answer) return null
   const claimRows = db
     .prepare(
-      `SELECT claim_id, section, sort_order
-       FROM answer_claims
-       WHERE answer_id = ?
+      `SELECT link.claim_id, link.section, link.sort_order
+       FROM answer_claims link
+       JOIN claims claim ON claim.id = link.claim_id
+       WHERE link.answer_id = ? AND claim.review_status = 'published'
        ORDER BY section, sort_order`,
     )
     .all(answerId) as unknown as Array<{
@@ -246,6 +308,7 @@ function getAnswer(db: DatabaseSync, answerId: string) {
   }>
 
   return {
+    recordType: 'sourced-editorial-answer',
     id: answer.id,
     question: answer.question,
     aliases: JSON.parse(answer.aliases_json) as string[],
@@ -291,7 +354,10 @@ function getLeaderTerms(db: DatabaseSync, jurisdictionId: string) {
      ORDER BY d.rowid`,
   )
   const claimStatement = db.prepare(
-    `SELECT id FROM claims WHERE leader_term_id = ? ORDER BY stance, rowid`,
+    `SELECT id
+     FROM claims
+     WHERE leader_term_id = ? AND review_status = 'published'
+     ORDER BY stance, rowid`,
   )
   const sourceStatement = db.prepare(
     `SELECT source_id FROM term_sources WHERE term_id = ?`,
@@ -455,6 +521,31 @@ function getLeaderTerms(db: DatabaseSync, jurisdictionId: string) {
             isCanonical: profile.id === 'balanced',
           }))
         : []
+    const claims = (
+      claimStatement.all(termId) as unknown as Array<{ id: string }>
+    )
+      .map((claim) => getClaim(db, claim.id))
+      .filter((claim): claim is NonNullable<typeof claim> => Boolean(claim))
+    const sources = getSourcesByIds(db, sourceIds)
+    const evidenceSourceById = new Map(
+      [...sources, ...claims.flatMap((claim) => claim.sources)].map(
+        (source) => [source.id, source],
+      ),
+    )
+    const claimSourceLinks = claims.flatMap((claim) => claim.sourceRefs)
+    const sourceTypeCounts = [...evidenceSourceById.values()].reduce(
+      (counts, source) => {
+        counts[source.sourceType] = (counts[source.sourceType] ?? 0) + 1
+        return counts
+      },
+      {} as Record<string, number>,
+    )
+    const latestSourceAccessDate =
+      [...evidenceSourceById.values()]
+        .map((source) => source.accessedDate)
+        .filter(Boolean)
+        .sort()
+        .at(-1) ?? null
     const scorecard = buildLeaderScorecard({
       componentScores,
       specialistAssessments,
@@ -462,6 +553,24 @@ function getLeaderTerms(db: DatabaseSync, jurisdictionId: string) {
         ? String(row.rating_confidence)
         : null,
       assessmentAsOf: String(row.assessment_as_of),
+      startDate: String(row.start_date),
+      endDate: row.end_date ? String(row.end_date) : null,
+      ratingProfiles: ratingProfiles.map((profile) => ({
+        id: profile.id,
+        name: profile.name,
+        score: profile.score,
+      })),
+      evidenceDensity: {
+        claimCount: claims.length,
+        claimSourceLinkCount: claimSourceLinks.length,
+        classifiedClaimSourceLinkCount: claimSourceLinks.filter(
+          (sourceRef) => sourceRef.evidenceRole !== 'unspecified',
+        ).length,
+        uniqueSourceCount: evidenceSourceById.size,
+        termSourceCount: sources.length,
+        sourceTypeCounts,
+        latestSourceAccessDate,
+      },
     })
     const legacyWeightedScore =
       ratingProfiles.find((profile) => profile.id === 'balanced')?.score ?? null
@@ -497,13 +606,9 @@ function getLeaderTerms(db: DatabaseSync, jurisdictionId: string) {
       ratingProfiles,
       specialistAssessments,
       scorecard,
-      claims: (
-        claimStatement.all(termId) as unknown as Array<{ id: string }>
-      )
-        .map((claim) => getClaim(db, claim.id))
-        .filter(Boolean),
+      claims,
       sourceIds,
-      sources: getSourcesByIds(db, sourceIds),
+      sources,
       ratingAudit: audit
         ? {
             id: audit.id,
@@ -558,7 +663,10 @@ function getPolicies(db: DatabaseSync, jurisdictionId: string) {
      ORDER BY d.rowid`,
   )
   const claimStatement = db.prepare(
-    `SELECT id FROM claims WHERE policy_id = ? ORDER BY stance, rowid`,
+    `SELECT id
+     FROM claims
+     WHERE policy_id = ? AND review_status = 'published'
+     ORDER BY stance, rowid`,
   )
   const sourceStatement = db.prepare(
     `SELECT source_id FROM policy_sources WHERE policy_id = ?`,
@@ -1831,12 +1939,32 @@ export function createApp(db: DatabaseSync) {
         ).count,
       ]),
     )
+    const claimSourceRoleCoverage = db
+      .prepare(
+        `SELECT
+           COUNT(*) AS total,
+           SUM(CASE WHEN evidence_role = 'unspecified' THEN 1 ELSE 0 END)
+             AS unspecified,
+           SUM(CASE WHEN evidence_role != 'unspecified' THEN 1 ELSE 0 END)
+             AS classified
+         FROM claim_sources`,
+      )
+      .get() as {
+      total: number
+      unspecified: number
+      classified: number
+    }
     response.json({
       project: 'India Mechanics',
       scope: 'India, 1945 to present',
       metadata,
       jurisdictionMetadata,
       counts,
+      publicationLayers: {
+        default: 'facts-and-sources',
+        editorialOptIn: 'layer=editorial',
+      },
+      claimSourceRoleCoverage,
       editorialPolicy:
         'Measured observations, sourced claims, and editorial evaluations are separate record types.',
     })
@@ -2011,15 +2139,24 @@ export function createApp(db: DatabaseSync) {
       return
     }
     const document = buildCompactLeaderDocument(
-      leaderDocumentInput(db, jurisdictionId, term),
+      leaderDocumentInput(
+        db,
+        jurisdictionId,
+        term,
+        request.query.layer === 'editorial',
+      ),
+      {
+        includeEditorial: request.query.layer === 'editorial',
+      },
     )
-    const markdownUrl = `${document.publication.compactApiUrl}?format=markdown`
+    const markdownUrl = new URL(document.publication.compactApiUrl)
+    markdownUrl.searchParams.set('format', 'markdown')
     response.setHeader(
       'Link',
       [
         `<${document.publication.canonicalUrl}>; rel="canonical"`,
         `<${document.publication.compactApiUrl}>; rel="alternate"; type="application/json"`,
-        `<${markdownUrl}>; rel="alternate"; type="text/markdown"`,
+        `<${markdownUrl.toString()}>; rel="alternate"; type="text/markdown"`,
       ].join(', '),
     )
     response.setHeader('Cache-Control', 'public, max-age=60')
@@ -2274,6 +2411,7 @@ export function createApp(db: DatabaseSync) {
       request.query.jurisdiction ?? DEFAULT_JURISDICTION,
     )
     const query = String(request.query.q ?? '').trim().toLowerCase()
+    const includeEditorial = request.query.layer === 'editorial'
     if (query.length < 2) {
       response.json({ query, answer: null, results: [] })
       return
@@ -2299,6 +2437,37 @@ export function createApp(db: DatabaseSync) {
         .join(' AND ')
     const searchParams = (columns: string[]) =>
       tokens.flatMap((token) => columns.map(() => `%${token}%`))
+    const leaderSearchColumns = includeEditorial
+      ? ['p.name', 't.rating_summary', 't.mandate_label']
+      : ['p.name', 't.mandate_label']
+    const policySearchColumns = includeEditorial
+      ? [
+          'title',
+          'short_title',
+          'summary',
+          'intended_goal',
+          'policy_type',
+          'rating_summary',
+        ]
+      : ['title', 'short_title', 'summary', 'intended_goal', 'policy_type']
+    const budgetSearchColumns = includeEditorial
+      ? [
+          'title',
+          'short_title',
+          'fiscal_year',
+          'finance_minister',
+          'summary',
+          'plain_language',
+          'rating_summary',
+        ]
+      : [
+          'title',
+          'short_title',
+          'fiscal_year',
+          'finance_minister',
+          'summary',
+          'plain_language',
+        ]
     const answers = db
       .prepare(
         `SELECT id, question, aliases_json, short_answer
@@ -2367,18 +2536,18 @@ export function createApp(db: DatabaseSync) {
     const leaderResults = (
       db
         .prepare(
-          `SELECT t.id, p.name, t.rating_summary, t.start_date
+          `SELECT t.id, p.name, t.rating_summary, t.mandate_label, t.start_date
            FROM leader_terms t
            JOIN people p ON p.id = t.person_id
            JOIN offices o ON o.id = t.office_id
            WHERE o.jurisdiction_id = ?
-             AND ${searchClause(['p.name', 't.rating_summary', 't.mandate_label'])}
+             AND ${searchClause(leaderSearchColumns)}
            ORDER BY t.start_date DESC
            LIMIT 12`,
         )
         .all(
           jurisdictionId,
-          ...searchParams(['p.name', 't.rating_summary', 't.mandate_label']),
+          ...searchParams(leaderSearchColumns),
         ) as unknown as Array<
         Record<string, unknown>
       >
@@ -2386,7 +2555,7 @@ export function createApp(db: DatabaseSync) {
       type: 'leader',
       id: row.id,
       title: row.name,
-      subtitle: row.rating_summary,
+      subtitle: includeEditorial ? row.rating_summary : row.mandate_label,
       date: row.start_date,
     }))
 
@@ -2396,6 +2565,8 @@ export function createApp(db: DatabaseSync) {
           `SELECT id, title, body, as_of_date, leader_term_id, event_id, policy_id
            FROM claims
            WHERE jurisdiction_id = ?
+             AND review_status = 'published'
+             ${includeEditorial ? '' : "AND claim_layer != 'editorial'"}
              AND ${searchClause(['title', 'body', 'category', 'stance'])}
            ORDER BY rowid DESC
            LIMIT 12`,
@@ -2424,27 +2595,13 @@ export function createApp(db: DatabaseSync) {
                   COALESCE(introduced_date, enacted_date) AS policy_date
            FROM policies
            WHERE jurisdiction_id = ?
-             AND ${searchClause([
-               'title',
-               'short_title',
-               'summary',
-               'intended_goal',
-               'policy_type',
-               'rating_summary',
-             ])}
+             AND ${searchClause(policySearchColumns)}
            ORDER BY COALESCE(introduced_date, enacted_date) DESC
            LIMIT 12`,
         )
         .all(
           jurisdictionId,
-          ...searchParams([
-            'title',
-            'short_title',
-            'summary',
-            'intended_goal',
-            'policy_type',
-            'rating_summary',
-          ]),
+          ...searchParams(policySearchColumns),
         ) as unknown as Array<Record<string, unknown>>
     ).map((row) => ({
       type: 'policy',
@@ -2460,29 +2617,13 @@ export function createApp(db: DatabaseSync) {
           `SELECT id, title, fiscal_year, summary
            FROM budgets
            WHERE jurisdiction_id = ?
-             AND ${searchClause([
-               'title',
-               'short_title',
-               'fiscal_year',
-               'finance_minister',
-               'summary',
-               'plain_language',
-               'rating_summary',
-             ])}
+             AND ${searchClause(budgetSearchColumns)}
            ORDER BY fiscal_year DESC
            LIMIT 12`,
         )
         .all(
           jurisdictionId,
-          ...searchParams([
-            'title',
-            'short_title',
-            'fiscal_year',
-            'finance_minister',
-            'summary',
-            'plain_language',
-            'rating_summary',
-          ]),
+          ...searchParams(budgetSearchColumns),
         ) as unknown as Array<Record<string, unknown>>
     ).map((row) => ({
       type: 'budget',
@@ -2582,7 +2723,10 @@ export function createApp(db: DatabaseSync) {
 
     response.json({
       query,
-      answer: answerMatch ? getAnswer(db, answerMatch.id) : null,
+      answer:
+        includeEditorial && answerMatch
+          ? getAnswer(db, answerMatch.id)
+          : null,
       results: [
         ...indicatorResults,
         ...policyResults,
@@ -2696,9 +2840,19 @@ export function createApp(db: DatabaseSync) {
       },
       leaderScorecard: {
         version: leaderScorecardVersion,
+        recordType: 'sourced-editorial-assessment',
         aggregation: 'arithmetic-mean',
         formula:
           'Overall = arithmetic mean of the six universal category scores. Each category contributes one-sixth.',
+        weightsAreNormative: true,
+        normativeWeightNote:
+          'Equal category weights are an editorial value choice, not an empirical law. Alternative published profiles show priority sensitivity and are not confidence intervals.',
+        ongoingTermRule:
+          'Every ongoing PM or CM assessment is provisional because outcomes are incomplete.',
+        comparabilityLimit:
+          'Fixed-window and subperiod scores are not yet published. Completed and ongoing terms therefore have unequal hindsight, and long terms can compress distinct phases.',
+        falsifierStatus:
+          'Category-specific raise/lower thresholds are not yet published. Scores remain transparent editorial synthesis rather than formally falsifiable measurements.',
         missingCategoryRule:
           'Rated PM and CM terms require all six universal categories. Missing specialist deep dives remain N/A and do not change the overall.',
         specialistRule:

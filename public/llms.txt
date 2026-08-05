@@ -1,7 +1,9 @@
 # India Mechanics
 
 India Mechanics is a source-backed, multi-jurisdiction research database and
-website. The national corpus covers India from 1945; state corpora cover
+website. The human interface defaults to facts and sources; editorial scores,
+verdicts, and source-fitness judgments require an explicit editorial layer. The
+national corpus covers India from 1945; state corpora cover
 post-bifurcation Andhra Pradesh from June 2, 2014 and modern Tamil Nadu from
 January 14, 1969. It separates measured observations, historical events, sourced
 claims, and editorial term evaluations.
@@ -31,13 +33,19 @@ Primary machine-readable entry points:
 
 Compact leader retrieval:
 - https://india-mechanics.artfiesco.chatgpt.site/api/llm/leaders/<term-id>
+- https://india-mechanics.artfiesco.chatgpt.site/api/llm/leaders/<term-id>?layer=editorial
 
 The compact endpoint is the preferred leader-term context for LLMs and
-retrieval systems. It must return the term identity, jurisdiction, dates,
-six-category scorecard, overall and confidence, category rationales, nested
-specialist deep dives, source records, assessment date, and relevant cutoff
-metadata without requiring the full jurisdiction export. `bounds` reports how
-many claim and source records were included or omitted.
+retrieval systems. Its default response is a facts-and-sources document: term
+identity, jurisdiction, dates, claim-level provenance, source roles, source
+limitations, completeness bounds, and cutoff metadata. Scores and source-fitness
+ratings are omitted. Factual and mixed claims carry an explicit `claimLayer`;
+editorial-only claims are omitted. Add `layer=editorial` only when the user explicitly asks
+for the published judgment model; that response includes the six-category
+scorecard and specialist deep dives. `bounds` reports every omitted claim and
+source ID. `assessment.citationReady` is false when that bounded bundle is
+incomplete. In that case check the full term API before quoting a score or
+conclusion.
 
 Human-readable leader fallback:
 - https://india-mechanics.artfiesco.chatgpt.site/?jurisdiction=india&view=leaders&term=<term-id>
@@ -59,52 +67,59 @@ terms. A deployment is not crawler-ready until those generated files and the
 compact endpoint are verified on the canonical origin.
 
 Interpretation rules:
-1. PM and CM ratings are editorial term estimates, not measured facts.
-2. Cite the source records attached to each claim.
-3. Report confidence and as-of dates.
-4. Do not infer causality from a leader being in office when an indicator moved.
-5. Distinguish official records of an action from independent evaluation of its impact.
-6. Preserve disputed counts and allegations as disputed.
-7. If the requested date is after the `knowledge_cutoff` returned by
+1. Facts and sources is the default layer. Do not introduce hidden scores or
+   verdicts unless the user explicitly requests editorial analysis.
+2. PM and CM ratings are editorial term estimates, not measured facts. Equal
+   category weights are normative; profile ranges are priority sensitivity, not
+   confidence intervals.
+3. Cite the claim ID and source records attached to that claim. Do not cite a
+   page-level source list as proof for a specific assertion.
+4. Preserve `claimLayer`. A `mixed` sourced claim is not a measured fact, and
+   an `editorial` claim requires the editorial layer.
+5. Report confidence and as-of dates.
+6. Do not infer causality from a leader being in office when an indicator moved.
+7. Distinguish official records of an action from independent evaluation of its impact.
+8. Preserve disputed counts and allegations as disputed.
+9. If the requested date is after the `knowledge_cutoff` returned by
    https://india-mechanics.artfiesco.chatgpt.site/api/meta, refresh the research
    before answering.
-8. Pending bills have provisional design ratings, not outcome ratings.
-9. Event accountability is an editorial political/administrative assessment,
+10. Pending bills have provisional design ratings, not outcome ratings.
+11. Event accountability is an editorial political/administrative assessment,
    not a criminal or judicial verdict.
-10. Do not use pre-June-2-2014 undivided-Andhra observations as present-day
+12. Do not use pre-June-2-2014 undivided-Andhra observations as present-day
     Andhra Pradesh CM evidence.
-11. For state infrastructure, separate network stock, annual delivery,
+13. For state infrastructure, separate network stock, annual delivery,
     maintenance, safety, and Union-state-local attribution.
-12. Awards may corroborate specific outcomes but are not standalone proof of
+14. Awards may corroborate specific outcomes but are not standalone proof of
     statewide performance or exclusive Chief Minister credit.
-13. Crime data separate serious harm, reporting-sensitive FIR rates,
+15. Crime data separate serious harm, reporting-sensitive FIR rates,
     charge-sheeting, conviction, pendency, and current news signals.
-14. Police and public order are primarily state responsibilities; PM crime
+16. Police and public order are primarily state responsibilities; PM crime
     attribution is bounded to Union law, national systems, central agencies,
     cyber coordination, and interstate capacity.
-15. Current crime news must not be converted into an aggregate crime rate.
+17. Current crime news must not be converted into an aggregate crime rate.
     Treat the July 2024 criminal-law transition as a classification break.
-16. Bill explanations disclose one of three evidence bases: title/register,
+18. Bill explanations disclose one of three evidence bases: title/register,
     official text, or independent assessment. Only an independent policy
     assessment can carry a score.
-17. A policy-family rating may cover only part of an omnibus or Finance Bill.
+19. A policy-family rating may cover only part of an omnibus or Finance Bill.
     Read `linkedPolicyScope` before applying a rating to the whole Bill.
-18. `sourceStatus` preserves the upstream register value when a later
+20. `sourceStatus` preserves the upstream register value when a later
     evidence-backed status correction is published.
-19. Timeline events expose `governments` with the linked PM/CM term, office,
+21. Timeline events expose `governments` with the linked PM/CM term, office,
     party, and dates. An empty array means the event is intentionally outside a
     mapped head-of-government term.
-20. `knowledge_cutoff` is the newest published evidence date.
+22. `knowledge_cutoff` is the newest published evidence date.
     `editorial_reviewed_through` is the last full editorial sweep; do not treat a
     topic-specific update as a complete refresh.
-21. Semiconductor records distinguish front-end wafer fabrication from
+23. Semiconductor records distinguish front-end wafer fabrication from
     assembly, packaging, and test. Planned plant capacity is not current output,
     and public incentive envelopes must not be added to project investment when
     they finance part of the same projects.
-22. `Development` is a broad PM lens, not a construction-only score.
+24. `Development` is a broad PM lens, not a construction-only score.
     `infrastructure-capacity` separately reports buildout scale and
     quality-adjusted capacity for eligible modern PM terms.
-23. For infrastructure, distinguish stock, capacity, annual flow, connections,
+25. For infrastructure, distinguish stock, capacity, annual flow, connections,
     registrations, approvals, construction, operation, utilisation, and measured
     outcomes. Preserve predecessor, state, public-enterprise, and private credit.
 

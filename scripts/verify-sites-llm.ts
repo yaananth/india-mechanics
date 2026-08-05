@@ -34,7 +34,8 @@ assert.match(
   /^text\/html/,
 )
 assert.match(leaderHtml.body, /<h1>Narendra Modi/)
-assert.match(leaderHtml.body, /Development and economy/)
+assert.match(leaderHtml.body, /Facts and sources/)
+assert.doesNotMatch(leaderHtml.body, /Editorial overall/)
 assert.match(leaderHtml.body, /Sources/)
 assert.match(leaderHtml.body, /application\/ld\+json/)
 assert.match(leaderHtml.body, /rel="canonical"/)
@@ -51,14 +52,42 @@ assert.match(
 assert.ok(Buffer.byteLength(compact.body) < 50_000)
 const compactData = JSON.parse(compact.body) as {
   documentType: string
-  assessment: { categories: unknown[] }
+  documentLayer: string
+  assessment: { included: boolean; categories: unknown[] }
   publication: { knowledgeCutoff: string | null }
-  sources: Array<{ url: string }>
+  sources: Array<{ url: string; reliability: number | null }>
 }
-assert.equal(compactData.documentType, 'leader-term-scorecard')
-assert.equal(compactData.assessment.categories.length, 6)
+assert.equal(compactData.documentType, 'leader-term-evidence')
+assert.equal(compactData.documentLayer, 'facts-and-sources')
+assert.equal(compactData.assessment.included, false)
+assert.equal(compactData.assessment.categories.length, 0)
 assert.ok(compactData.publication.knowledgeCutoff)
 assert.ok(compactData.sources.some((source) => source.url.startsWith('https://')))
+assert.ok(compactData.sources.every((source) => source.reliability === null))
+
+const editorialCompact = await fetchText(
+  '/api/llm/leaders/modi-2014?layer=editorial',
+)
+assert.equal(editorialCompact.response.status, 200)
+const editorialData = JSON.parse(editorialCompact.body) as {
+  documentType: string
+  assessment: {
+    included: boolean
+    displayBlocked: boolean
+    citationReady: boolean
+    overallScore: number | null
+    categories: unknown[]
+  }
+}
+assert.equal(
+  editorialData.documentType,
+  'leader-term-editorial-assessment',
+)
+assert.equal(editorialData.assessment.included, true)
+assert.equal(editorialData.assessment.displayBlocked, false)
+assert.equal(editorialData.assessment.citationReady, false)
+assert.equal(editorialData.assessment.overallScore, 6.5)
+assert.equal(editorialData.assessment.categories.length, 6)
 
 const markdown = await fetchText(
   '/api/llm/leaders/modi-2014?format=markdown',
@@ -69,7 +98,8 @@ assert.match(
   /^text\/markdown/,
 )
 assert.match(markdown.body, /^# Narendra Modi/m)
-assert.match(markdown.body, /^## Scorecard/m)
+assert.match(markdown.body, /^## Evidence records/m)
+assert.doesNotMatch(markdown.body, /^## Editorial scorecard/m)
 assert.match(markdown.body, /^## Sources/m)
 
 const missing = await fetchText('/?view=leaders&term=not-a-real-term', {

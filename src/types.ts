@@ -52,10 +52,35 @@ export type Claim = {
   body: string
   stance: 'achievement' | 'concern' | 'context' | 'mixed'
   category: string
+  claimLayer: 'factual' | 'mixed' | 'editorial'
   confidence: Confidence
   asOfDate: string
+  reviewStatus: 'candidate' | 'reviewing' | 'published' | 'superseded' | 'rejected'
+  sensitivity: 'standard' | 'sensitive' | 'high-risk'
+  reviewer: string | null
+  reviewedAt: string | null
+  knowledgeCutoff: string
+  supersedesClaimId: string | null
+  correctionNote: string | null
+  usedInEditorialAnswer: boolean
   sourceIds: string[]
   sources: Source[]
+  sourceRefs: Array<{
+    sourceId: string
+    evidenceRole:
+      | 'unspecified'
+      | 'controls'
+      | 'supports'
+      | 'disputes'
+      | 'context'
+    locator: string | null
+    claimSpecificLimitation: string | null
+    extractionMethod: string | null
+    reportedValue: number | null
+    reportedUnit: string | null
+    reportedAt: string | null
+    source: Source | null
+  }>
 }
 
 export type AnswerClaim = Claim & {
@@ -64,6 +89,7 @@ export type AnswerClaim = Claim & {
 }
 
 export type CuratedAnswer = {
+  recordType: 'sourced-editorial-answer'
   id: string
   question: string
   aliases: string[]
@@ -124,10 +150,45 @@ export type LeaderScorecardCategory = {
 
 export type LeaderScorecard = {
   version: string
+  recordType: 'sourced-editorial-assessment'
+  assessmentStatus: 'retrospective' | 'provisional'
+  termStatus: 'completed' | 'ongoing'
+  assessmentWindow: {
+    startDate: string
+    endDate: string
+    dataThrough: string
+    fixedWindowComparisonPublished: boolean
+    subperiodScoresPublished: boolean
+  }
   aggregation: 'arithmetic-mean'
   formula: string
+  weightsAreNormative: boolean
+  normativeWeightNote: string
+  normativeSensitivity: {
+    minimum: number | null
+    maximum: number | null
+    profiles: Array<{
+      id: string
+      name: string
+      score: number
+    }>
+    note: string
+  }
   missingCategoryRule: string
   specialistRule: string
+  attributionRule: string
+  comparisonLimit: string
+  falsifiersPublished: boolean
+  falsifierNote: string
+  evidenceDensity: {
+    claimCount: number
+    claimSourceLinkCount: number
+    classifiedClaimSourceLinkCount: number
+    uniqueSourceCount: number
+    termSourceCount: number
+    sourceTypeCounts: Record<string, number>
+    latestSourceAccessDate: string | null
+  }
   overallScore: number | null
   scoredCategoryCount: number
   totalCategoryCount: number
@@ -662,8 +723,14 @@ export type Methodology = {
   }
   leaderScorecard: {
     version: string
+    recordType: 'sourced-editorial-assessment'
     aggregation: 'arithmetic-mean'
     formula: string
+    weightsAreNormative: boolean
+    normativeWeightNote: string
+    ongoingTermRule: string
+    comparabilityLimit: string
+    falsifierStatus: string
     missingCategoryRule: string
     specialistRule: string
     categories: Array<{

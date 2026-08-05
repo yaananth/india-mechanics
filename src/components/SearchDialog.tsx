@@ -13,6 +13,7 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { api } from '../api.ts'
 import type { CuratedAnswer, SearchResponse } from '../types.ts'
+import { useEditorialLayer } from '../editorial-layer-context.ts'
 import { ConfidenceMark, SourceLinks } from './common.tsx'
 
 const resultIcons = {
@@ -42,6 +43,7 @@ export function SearchDialog({
   onSelectAnswer: (answer: CuratedAnswer) => void
   onSelectResult: (item: SearchResponse['results'][number]) => void
 }) {
+  const { showEditorial } = useEditorialLayer()
   const [query, setQuery] = useState('')
   const [result, setResult] = useState<SearchResponse | null>(null)
   const [loading, setLoading] = useState(false)
@@ -63,7 +65,14 @@ export function SearchDialog({
     const timeout = window.setTimeout(async () => {
       setLoading(true)
       try {
-        setResult(await api.search(query, jurisdictionId, controller.signal))
+        setResult(
+          await api.search(
+            query,
+            jurisdictionId,
+            showEditorial,
+            controller.signal,
+          ),
+        )
       } catch (error) {
         if ((error as Error).name !== 'AbortError') {
           setResult({ query, answer: null, results: [] })
@@ -76,7 +85,7 @@ export function SearchDialog({
       controller.abort()
       window.clearTimeout(timeout)
     }
-  }, [jurisdictionId, open, query])
+  }, [jurisdictionId, open, query, showEditorial])
 
   useEffect(() => {
     if (!open) return
@@ -128,7 +137,11 @@ export function SearchDialog({
             <div className="search-prompts">
               <div className="search-prompts__heading">
                 <Sparkles size={17} aria-hidden="true" />
-                <span>Questions with reviewed answers</span>
+                <span>
+                  {showEditorial
+                    ? 'Questions with reviewed answers'
+                    : 'Suggested searches'}
+                </span>
               </div>
               {sampleQuestions.map((question) => (
                 <button
@@ -143,11 +156,11 @@ export function SearchDialog({
             </div>
           )}
 
-          {result?.answer && (
+          {showEditorial && result?.answer && (
             <article className="search-answer">
               <div className="search-answer__heading">
                 <div>
-                  <span className="answer-type">Reviewed answer</span>
+                  <span className="answer-type">Editorial reviewed answer</span>
                   <h2>{result.answer.question}</h2>
                 </div>
                 <ConfidenceMark confidence={result.answer.confidence} />
@@ -208,7 +221,10 @@ export function SearchDialog({
                     </span>
                     <span className="search-result__copy">
                       <strong>{item.title}</strong>
-                      <span>{item.subtitle}</span>
+                      {(showEditorial ||
+                        !['leader', 'policy', 'budget'].includes(item.type)) && (
+                        <span>{item.subtitle}</span>
+                      )}
                     </span>
                     <span className="search-result__date">{item.date.slice(0, 4)}</span>
                   </button>

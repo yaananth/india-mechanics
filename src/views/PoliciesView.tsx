@@ -15,12 +15,14 @@ import { useEffect, useMemo, useState } from 'react'
 import type { Jurisdiction, Overview, Policy } from '../types.ts'
 import { formatDate, sentenceCase } from '../utils.ts'
 import {
+  ClaimSources,
   ConfidenceMark,
   EditorialLabel,
   SourceLinks,
 } from '../components/common.tsx'
 import { BillRegisterPanel } from '../components/BillRegisterPanel.tsx'
 import { GovernmentIdentity } from '../components/GovernmentIdentity.tsx'
+import { useEditorialLayer } from '../editorial-layer-context.ts'
 
 const stanceMeta = {
   achievement: { label: 'Benefits and strengths', icon: CheckCircle2 },
@@ -101,6 +103,7 @@ export function PoliciesView({
   jurisdiction: Jurisdiction
   allowBillRegister: boolean
 }) {
+  const { showEditorial } = useEditorialLayer()
   const officeLabel =
     jurisdiction.level === 'country' ? 'Prime Minister' : 'Chief Minister'
   const effectiveMode = allowBillRegister ? mode : 'reviews'
@@ -173,16 +176,20 @@ export function PoliciesView({
               ? ` · official bill register refreshed ${knowledge.billRegisterAsOfDate}`
               : ''}
           </span>
-          <h1>Policies, judged on design and outcomes</h1>
+          <h1>
+            {showEditorial
+              ? 'Policies, judged on design and outcomes'
+              : 'Policy records, status and sources'}
+          </h1>
           <p>
-            Every score separates the problem a policy targeted, evidence that it
-            worked, implementation quality, rights and inclusion, and long-run
-            side effects.
+            {showEditorial
+              ? 'Every editorial score separates the problem a policy targeted, evidence that it worked, implementation quality, rights and inclusion, and long-run side effects.'
+              : 'Inspect what each policy intended, what it does, when it took effect, and the direct records supporting it.'}
           </p>
         </div>
         <div className="view-header__stat">
           <strong>{policies.length}</strong>
-          <span>rated policy assessments</span>
+          <span>{showEditorial ? 'rated policy assessments' : 'policy records'}</span>
         </div>
       </header>
 
@@ -190,7 +197,9 @@ export function PoliciesView({
         <ScrollText size={18} aria-hidden="true" />
         <span>
           <strong>Coverage is expanding.</strong>
-          Ratings cover high-impact policies.
+          {showEditorial
+            ? ' Editorial ratings cover high-impact policies.'
+            : ' Reviewed records cover selected high-impact policies.'}
           {allowBillRegister
             ? ' The official register preserves discovered government Bills separately; unreviewed does not mean good or bad.'
             : ' State legislation is added only after a source-backed design and outcome review.'}
@@ -206,7 +215,7 @@ export function PoliciesView({
           className={mode === 'reviews' ? 'is-active' : undefined}
           onClick={() => onModeChange('reviews')}
         >
-          Reviewed ratings
+          {showEditorial ? 'Reviewed ratings' : 'Reviewed records'}
         </button>
         <button
           type="button"
@@ -255,9 +264,9 @@ export function PoliciesView({
               <span>
                 <small>{policy.introducedDate?.slice(0, 4)}</small>
                 <strong>{policy.shortTitle}</strong>
-                <em>{policy.ratingSummary}</em>
+                {showEditorial && <em>{policy.ratingSummary}</em>}
               </span>
-              <b>{policy.ratingScore}/10</b>
+              {showEditorial && <b>Editorial {policy.ratingScore}/10</b>}
             </button>
           ))}
         </div>
@@ -294,12 +303,17 @@ export function PoliciesView({
                     ? `In force ${formatDate(policy.effectiveDate)}`
                     : `Reviewed ${formatDate(policy.assessmentAsOf)}`}
                 </small>
-                <b>{policy.ratingScore}/10</b>
-                <em>
-                  {policy.ratingBasis === 'design'
-                    ? 'Design only'
-                    : sentenceCase(policy.ratingConfidence)}
-                </em>
+                {showEditorial && (
+                  <>
+                    <b>Editorial {policy.ratingScore}/10</b>
+                    <em>
+                      Editorial ·{' '}
+                      {policy.ratingBasis === 'design'
+                        ? 'Design only'
+                        : sentenceCase(policy.ratingConfidence)}
+                    </em>
+                  </>
+                )}
               </button>
             ))}
           </div>
@@ -313,9 +327,12 @@ export function PoliciesView({
             <span className="section-label">Tax reform evolution</span>
             <h2>How India’s tax system changed</h2>
             <p>
-              Eleven structural milestones show what changed, who governed when it
-              changed, and how the evidence-based rating evolved. Annual slab and
-              rate updates remain in the Budget record.
+              Eleven structural milestones show what changed and who governed
+              when it changed.
+              {showEditorial
+                ? ' Editorial ratings show how the assessment evolved.'
+                : ''}{' '}
+              Annual slab and rate updates remain in the Budget record.
             </p>
           </div>
         </div>
@@ -358,22 +375,28 @@ export function PoliciesView({
                   {policy.party ? ` · ${policy.party.shortName}` : ''}
                 </small>
               </span>
-              <span className="tax-policy-score">
-                <b>{policy.ratingScore}/10</b>
-                <small>
-                  {policy.ratingBasis === 'design'
-                    ? 'Design only'
-                    : sentenceCase(policy.ratingConfidence)}
-                </small>
-              </span>
+              {showEditorial && (
+                <span className="tax-policy-score">
+                  <b>{policy.ratingScore}/10</b>
+                  <small>
+                    Editorial ·{' '}
+                    {policy.ratingBasis === 'design'
+                      ? 'Design only'
+                      : sentenceCase(policy.ratingConfidence)}
+                  </small>
+                </span>
+              )}
               <ChevronRight size={16} aria-hidden="true" />
             </button>
           ))}
         </div>
-        <p className="tax-evolution__note">
-          Ratings judge each reform against its own objective. They are not a
-          claim that the {officeLabel} alone caused every observed tax outcome.
-        </p>
+        {showEditorial && (
+          <p className="tax-evolution__note">
+            <EditorialLabel /> Ratings judge each reform against its own
+            objective. They are not a claim that the {officeLabel} alone caused
+            every observed tax outcome.
+          </p>
+        )}
         </section>
       )}
 
@@ -449,7 +472,7 @@ export function PoliciesView({
             <span>Policy</span>
             <span>{officeLabel} / party</span>
             <span>Status</span>
-            <span>Estimate</span>
+            <span>{showEditorial ? 'Editorial estimate' : 'Reviewed'}</span>
             <span />
           </div>
           {[...filtered].reverse().map((policy) => (
@@ -475,10 +498,16 @@ export function PoliciesView({
               <span className={`policy-status policy-status--${policy.status}`}>
                 {sentenceCase(policy.status)}
               </span>
-              <span className="policy-row__score">
-                <strong>{policy.ratingScore}</strong>
-                <small>/10</small>
-              </span>
+              {showEditorial ? (
+                <span className="policy-row__score">
+                  <strong>{policy.ratingScore}</strong>
+                  <small>/10</small>
+                </span>
+              ) : (
+                <span className="policy-row__score">
+                  <small>{formatDate(policy.assessmentAsOf)}</small>
+                </span>
+              )}
               <ChevronRight size={16} aria-hidden="true" />
             </button>
           ))}
@@ -503,22 +532,29 @@ export function PoliciesView({
                     : ''}
                 </p>
                 <small className="policy-rating-basis">
-                  {selected.ratingBasis === 'design'
-                    ? 'Provisional design rating; outcomes are not yet observable'
-                    : 'Retrospective rating using available outcome evidence'}
-                  {' · '}
-                  assessed {formatDate(selected.assessmentAsOf)}
+                  {showEditorial
+                    ? selected.ratingBasis === 'design'
+                      ? 'Editorial: provisional design rating; outcomes are not yet observable'
+                      : 'Editorial: retrospective rating using available outcome evidence'
+                    : 'Record reviewed'}
+                  {' · '}assessed {formatDate(selected.assessmentAsOf)}
                 </small>
               </div>
-              <div className="policy-detail__rating">
-                <EditorialLabel />
-                <strong>{selected.ratingScore}</strong>
-                <span>/10</span>
-                <ConfidenceMark confidence={selected.ratingConfidence} />
-              </div>
+              {showEditorial && (
+                <div className="policy-detail__rating">
+                  <EditorialLabel />
+                  <strong>{selected.ratingScore}</strong>
+                  <span>/10</span>
+                  <ConfidenceMark confidence={selected.ratingConfidence} />
+                </div>
+              )}
             </header>
 
-            <p className="policy-detail__summary">{selected.ratingSummary}</p>
+            {showEditorial && (
+              <p className="policy-detail__summary">
+                <EditorialLabel /> {selected.ratingSummary}
+              </p>
+            )}
             <dl className="policy-purpose">
               <div>
                 <dt>
@@ -536,10 +572,10 @@ export function PoliciesView({
               </div>
             </dl>
 
-            <section className="policy-components">
+            {showEditorial && <section className="policy-components">
               <h3>
                 <Scale size={17} aria-hidden="true" />
-                Component rating
+                Editorial component rating
               </h3>
               {selected.componentScores.map((component) => (
                 <div key={component.id} className="component-score">
@@ -561,44 +597,62 @@ export function PoliciesView({
                   <p>{component.rationale}</p>
                 </div>
               ))}
-            </section>
+            </section>}
 
             <section className="policy-evidence">
-              <h3>Evidence for and against</h3>
-              {(Object.keys(stanceMeta) as Array<keyof typeof stanceMeta>).map(
-                (stance) => {
-                  const matching = selected.claims.filter(
-                    (claim) => claim.stance === stance,
-                  )
-                  if (matching.length === 0) return null
-                  const meta = stanceMeta[stance]
-                  const Icon = meta.icon
-                  return (
-                    <div
-                      key={stance}
-                      className={`policy-evidence-group policy-evidence-group--${stance}`}
-                    >
-                      <h4>
-                        <Icon size={16} aria-hidden="true" />
-                        {meta.label}
-                      </h4>
-                      {matching.map((claim) => (
-                        <article
-                          key={claim.id}
-                          className={
-                            claim.category === 'evidence-gap'
-                              ? 'is-evidence-gap'
-                              : undefined
-                          }
-                        >
-                          <strong>{claim.title}</strong>
-                          <p>{claim.body}</p>
-                          <SourceLinks sources={claim.sources} limit={3} />
-                        </article>
-                      ))}
-                    </div>
-                  )
-                },
+              <h3>
+                {showEditorial
+                  ? 'Editorial evidence assessment'
+                  : 'Sourced policy evidence'}
+              </h3>
+              {showEditorial ? (
+                (Object.keys(stanceMeta) as Array<keyof typeof stanceMeta>).map(
+                  (stance) => {
+                    const matching = selected.claims.filter(
+                      (claim) => claim.stance === stance,
+                    )
+                    if (matching.length === 0) return null
+                    const meta = stanceMeta[stance]
+                    const Icon = meta.icon
+                    return (
+                      <div
+                        key={stance}
+                        className={`policy-evidence-group policy-evidence-group--${stance}`}
+                      >
+                        <h4>
+                          <Icon size={16} aria-hidden="true" />
+                          {meta.label}
+                        </h4>
+                        {matching.map((claim) => (
+                          <article
+                            key={claim.id}
+                            className={
+                              claim.category === 'evidence-gap'
+                                ? 'is-evidence-gap'
+                                : undefined
+                            }
+                          >
+                            <strong>{claim.title}</strong>
+                            <p>{claim.body}</p>
+                            <ClaimSources claim={claim} />
+                          </article>
+                        ))}
+                      </div>
+                    )
+                  },
+                )
+              ) : (
+                <div className="policy-evidence-group">
+                  {selected.claims
+                    .filter((claim) => claim.claimLayer !== 'editorial')
+                    .map((claim) => (
+                    <article key={claim.id}>
+                      <strong>{claim.title}</strong>
+                      <p>{claim.body}</p>
+                      <ClaimSources claim={claim} />
+                    </article>
+                    ))}
+                </div>
               )}
             </section>
 

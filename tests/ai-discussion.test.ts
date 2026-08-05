@@ -12,6 +12,7 @@ const context: AiDiscussionContext = {
   knowledgeCutoff: '2026-08-04',
   editorialReviewedThrough: '2026-07-26',
   methodologyVersion: 'leader-scorecard-v1',
+  displayLayer: 'facts-and-sources',
   evidenceLinks: [
     {
       label: 'Policy record',
@@ -39,6 +40,7 @@ describe('AI discussion prompt', () => {
     expect(prompt).toContain('/api/methodology')
     expect(prompt).toContain('/api/policies/swachh-bharat-gramin-2014')
     expect(prompt).toContain('Published knowledge cutoff: 2026-08-04')
+    expect(prompt).toContain('Facts and sources (editorial scores hidden)')
     expect(prompt).toContain(
       'Did rural sanitation improve, and what remains uncertain?',
     )

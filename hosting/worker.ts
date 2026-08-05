@@ -111,6 +111,7 @@ function leaderDocument(
   snapshot: SitesSnapshot,
   termId: string,
   requestedJurisdiction?: string | null,
+  includeEditorial = false,
 ): LeaderDocument | null {
   const jurisdictionEntries: Array<
     [string, JurisdictionSnapshot | undefined]
@@ -138,10 +139,17 @@ function leaderDocument(
     }
     canonicalUrl.searchParams.set('view', 'leaders')
     canonicalUrl.searchParams.set('term', termId)
+    if (includeEditorial) canonicalUrl.searchParams.set('layer', 'editorial')
     const compactApiUrl = new URL(
       `/api/llm/leaders/${encodeURIComponent(termId)}`,
       canonicalOrigin,
     )
+    if (includeEditorial) compactApiUrl.searchParams.set('layer', 'editorial')
+    const fullRecordUrl = new URL(
+      `/api/leaders/${encodeURIComponent(termId)}`,
+      canonicalOrigin,
+    )
+    fullRecordUrl.searchParams.set('jurisdiction', jurisdictionId)
 
     return buildCompactLeaderDocument({
       ...leader,
@@ -149,34 +157,43 @@ function leaderDocument(
       publication: {
         canonicalUrl: canonicalUrl.toString(),
         compactApiUrl: compactApiUrl.toString(),
+        fullRecordUrl: fullRecordUrl.toString(),
         methodologyUrl: `${canonicalOrigin}/api/methodology`,
         llmsGuideUrl: `${canonicalOrigin}/llms.txt`,
         knowledgeCutoff: metadata.knowledge_cutoff,
         editorialReviewedThrough: metadata.editorial_reviewed_through,
         methodologyVersion: metadata.methodology_version,
       },
-    })
+    }, { includeEditorial })
   }
   return null
 }
 
 function leaderLinkHeader(document: LeaderDocument) {
+  const markdownUrl = new URL(document.publication.compactApiUrl)
+  markdownUrl.searchParams.set('format', 'markdown')
   return [
     `<${document.publication.canonicalUrl}>; rel="canonical"`,
     `<${document.publication.compactApiUrl}>; rel="alternate"; type="application/json"`,
-    `<${document.publication.compactApiUrl}?format=markdown>; rel="alternate"; type="text/markdown"`,
+    `<${markdownUrl.toString()}>; rel="alternate"; type="text/markdown"`,
   ].join(', ')
 }
 
 function leaderJsonLd(document: LeaderDocument) {
+  const description =
+    document.assessment.included && !document.assessment.displayBlocked
+    ? document.assessment.summary
+    : `Sourced evidence records for the ${document.identity.leaderName} term, with claim-level provenance, limitations, and publication cutoffs.`
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'ProfilePage',
     name: `${document.identity.leaderName} — ${document.identity.officeName}`,
     url: document.publication.canonicalUrl,
-    dateModified: document.assessment.asOfDate,
+    dateModified:
+      document.assessment.asOfDate ??
+      document.publication.knowledgeCutoff,
     temporalCoverage: `${document.term.startDate}/${document.term.endDate ?? '..'}`,
-    description: document.assessment.summary,
+    description,
     mainEntity: {
       '@type': 'Person',
       name: document.identity.leaderName,
@@ -196,17 +213,28 @@ function leaderJsonLd(document: LeaderDocument) {
 }
 
 function decorateLeaderIndex(indexHtml: string, document: LeaderDocument) {
-  const title = `${document.identity.leaderName} ${document.term.startDate.slice(0, 4)}–${document.term.endDate?.slice(0, 4) ?? 'present'} scorecard | India Mechanics`
-  const description = metaDescription(document.assessment.summary)
+  const editorialVisible =
+    document.assessment.included && !document.assessment.displayBlocked
+  const recordLabel = editorialVisible
+    ? 'editorial scorecard'
+    : 'evidence record'
+  const title = `${document.identity.leaderName} ${document.term.startDate.slice(0, 4)}–${document.term.endDate?.slice(0, 4) ?? 'present'} ${recordLabel} | India Mechanics`
+  const description = metaDescription(
+    editorialVisible
+      ? document.assessment.summary
+      : `Sourced term evidence for ${document.identity.leaderName}, with claim-level provenance, source roles, limitations, and completeness bounds.`,
+  )
+  const markdownUrl = new URL(document.publication.compactApiUrl)
+  markdownUrl.searchParams.set('format', 'markdown')
   const headMetadata = [
     `<link rel="canonical" href="${escapeHtml(document.publication.canonicalUrl)}" />`,
     `<link rel="alternate" type="application/json" href="${escapeHtml(document.publication.compactApiUrl)}" />`,
-    `<link rel="alternate" type="text/markdown" href="${escapeHtml(document.publication.compactApiUrl)}?format=markdown" />`,
+    `<link rel="alternate" type="text/markdown" href="${escapeHtml(markdownUrl.toString())}" />`,
     `<meta property="og:title" content="${escapeHtml(title)}" />`,
     `<meta property="og:description" content="${escapeHtml(description)}" />`,
     `<meta property="og:url" content="${escapeHtml(document.publication.canonicalUrl)}" />`,
     `<script type="application/ld+json">${leaderJsonLd(document)}</script>`,
-    `<style>[data-document-type="leader-term-scorecard"]{max-width:960px;margin:0 auto;padding:32px 22px;font:16px/1.55 system-ui,sans-serif;color:#171914}[data-document-type="leader-term-scorecard"] h1,[data-document-type="leader-term-scorecard"] h2,[data-document-type="leader-term-scorecard"] h3{line-height:1.2}[data-document-type="leader-term-scorecard"] section{margin-top:28px}[data-document-type="leader-term-scorecard"] li{margin:12px 0}[data-document-type="leader-term-scorecard"] dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px}[data-document-type="leader-term-scorecard"] dd{margin:0}</style>`,
+    `<style>[data-document-type^="leader-term-"]{max-width:960px;margin:0 auto;padding:32px 22px;font:16px/1.55 system-ui,sans-serif;color:#171914}[data-document-type^="leader-term-"] h1,[data-document-type^="leader-term-"] h2,[data-document-type^="leader-term-"] h3{line-height:1.2}[data-document-type^="leader-term-"] section{margin-top:28px}[data-document-type^="leader-term-"] li{margin:12px 0}[data-document-type^="leader-term-"] dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px}[data-document-type^="leader-term-"] dd{margin:0}</style>`,
   ]
     .filter(Boolean)
     .join('')
@@ -243,6 +271,7 @@ function leaderDeepLinkResponse(
     snapshot,
     url.searchParams.get('term') ?? '',
     url.searchParams.get('jurisdiction'),
+    url.searchParams.get('layer') === 'editorial',
   )
   if (!document) {
     return textResponse(
@@ -305,7 +334,11 @@ function descendingDate(left: JsonRecord, right: JsonRecord) {
   return text(right.date).localeCompare(text(left.date))
 }
 
-function search(snapshot: JurisdictionSnapshot, rawQuery: string) {
+function search(
+  snapshot: JurisdictionSnapshot,
+  rawQuery: string,
+  includeEditorial: boolean,
+) {
   const query = rawQuery.trim().toLowerCase()
   const queryTokens = tokens(query)
   if (queryTokens.length === 0) {
@@ -367,7 +400,7 @@ function search(snapshot: JurisdictionSnapshot, rawQuery: string) {
           policy.summary,
           policy.intendedGoal,
           policy.policyType,
-          policy.ratingSummary,
+          includeEditorial ? policy.ratingSummary : '',
         ],
         queryTokens,
       ),
@@ -394,12 +427,24 @@ function search(snapshot: JurisdictionSnapshot, rawQuery: string) {
           (bill.explanation as JsonRecord | undefined)?.proposalSummary,
           (bill.explanation as JsonRecord | undefined)?.officialPurpose,
           (bill.explanation as JsonRecord | undefined)?.affectedGroups,
-          (bill.explanation as JsonRecord | undefined)?.potentialBenefits,
-          (bill.explanation as JsonRecord | undefined)?.potentialRisks,
-          (bill.assessment as JsonRecord | undefined)?.title,
-          (bill.assessment as JsonRecord | undefined)?.summary,
-          (bill.assessment as JsonRecord | undefined)?.intendedGoal,
-          (bill.assessment as JsonRecord | undefined)?.ratingSummary,
+          includeEditorial
+            ? (bill.explanation as JsonRecord | undefined)?.potentialBenefits
+            : '',
+          includeEditorial
+            ? (bill.explanation as JsonRecord | undefined)?.potentialRisks
+            : '',
+          includeEditorial
+            ? (bill.assessment as JsonRecord | undefined)?.title
+            : '',
+          includeEditorial
+            ? (bill.assessment as JsonRecord | undefined)?.summary
+            : '',
+          includeEditorial
+            ? (bill.assessment as JsonRecord | undefined)?.intendedGoal
+            : '',
+          includeEditorial
+            ? (bill.assessment as JsonRecord | undefined)?.ratingSummary
+            : '',
         ],
         queryTokens,
       ),
@@ -430,7 +475,7 @@ function search(snapshot: JurisdictionSnapshot, rawQuery: string) {
           budget.financeMinister,
           budget.summary,
           budget.plainLanguage,
-          budget.ratingSummary,
+          includeEditorial ? budget.ratingSummary : '',
         ],
         queryTokens,
       ),
@@ -450,7 +495,11 @@ function search(snapshot: JurisdictionSnapshot, rawQuery: string) {
     .filter((leader) => {
       const person = leader.person as JsonRecord
       return matchesTokens(
-        [person.name, leader.ratingSummary, leader.mandateLabel],
+        [
+          person.name,
+          includeEditorial ? leader.ratingSummary : '',
+          leader.mandateLabel,
+        ],
         queryTokens,
       )
     })
@@ -458,7 +507,9 @@ function search(snapshot: JurisdictionSnapshot, rawQuery: string) {
       type: 'leader',
       id: leader.id,
       title: (leader.person as JsonRecord).name,
-      subtitle: leader.ratingSummary,
+      subtitle: includeEditorial
+        ? leader.ratingSummary
+        : leader.mandateLabel,
       date: leader.startDate,
     }))
     .sort(descendingDate)
@@ -488,6 +539,10 @@ function search(snapshot: JurisdictionSnapshot, rawQuery: string) {
     .slice(0, 12)
 
   const claims = snapshot.claims
+    .filter(
+      (claim) =>
+        includeEditorial || text(claim.claimLayer) !== 'editorial',
+    )
     .filter((claim) =>
       matchesTokens(
         [claim.title, claim.body, claim.category, claim.stance],
@@ -508,7 +563,7 @@ function search(snapshot: JurisdictionSnapshot, rawQuery: string) {
 
   return {
     query,
-    answer: answer ?? null,
+    answer: includeEditorial ? answer ?? null : null,
     results: [
       ...indicators,
       ...policies,
@@ -607,6 +662,7 @@ async function apiResponse(
       snapshot,
       termId,
       url.searchParams.get('jurisdiction'),
+      url.searchParams.get('layer') === 'editorial',
     )
     if (!document) return json({ error: 'Leader term not found' }, 404)
     const format = (url.searchParams.get('format') ?? 'json').toLowerCase()
@@ -704,7 +760,13 @@ async function apiResponse(
     return answer ? json(answer) : json({ error: 'Answer not found' }, 404)
   }
   if (path === '/api/search') {
-    return json(search(jurisdiction, url.searchParams.get('q') ?? ''))
+    return json(
+      search(
+        jurisdiction,
+        url.searchParams.get('q') ?? '',
+        url.searchParams.get('layer') === 'editorial',
+      ),
+    )
   }
   if (path === '/api/bills') {
     return json(filteredBills(jurisdiction, url))

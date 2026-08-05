@@ -26,6 +26,7 @@ import {
   SourceLinks,
 } from '../components/common.tsx'
 import { GovernmentIdentity } from '../components/GovernmentIdentity.tsx'
+import { useEditorialLayer } from '../editorial-layer-context.ts'
 
 const pointMeta: Record<
   BudgetPoint['pointType'],
@@ -61,6 +62,7 @@ export function BudgetsView({
   knowledge: Overview['knowledge']
   jurisdiction: Jurisdiction
 }) {
+  const { showEditorial } = useEditorialLayer()
   const officeLabel =
     jurisdiction.level === 'country' ? 'Prime Minister' : 'Chief Minister'
   const budgetLabel =
@@ -169,7 +171,8 @@ export function BudgetsView({
       <header className="view-header">
         <div>
           <span className="freshness-line">
-            Budget assessments reviewed {knowledge.editorialReviewedThrough} ·
+            Budget {showEditorial ? 'assessments reviewed' : 'records checked'}{' '}
+            {knowledge.editorialReviewedThrough} ·
             fiscal-plan status checked {knowledge.politicalStatusChecked}
           </span>
           <h1>What each government chose to fund</h1>
@@ -221,11 +224,13 @@ export function BudgetsView({
                     : budget.plainLanguage}
                 </small>
               </span>
-              <span className="budget-current-strip__rating">
-                <EditorialLabel />
-                <b>{budget.ratingScore}/10</b>
-                <ConfidenceMark confidence={budget.ratingConfidence} compact />
-              </span>
+              {showEditorial && (
+                <span className="budget-current-strip__rating">
+                  <EditorialLabel />
+                  <b>{budget.ratingScore}/10</b>
+                  <ConfidenceMark confidence={budget.ratingConfidence} compact />
+                </span>
+              )}
               <ChevronRight size={17} aria-hidden="true" />
             </button>
           ))}
@@ -314,7 +319,7 @@ export function BudgetsView({
             <span>Fiscal year</span>
             <span>Budget</span>
             <span>{officeLabel} / party</span>
-            <span>Estimate</span>
+            <span>{showEditorial ? 'Editorial estimate' : 'Status'}</span>
             <span />
           </div>
           {filtered.map((budget) => (
@@ -337,10 +342,20 @@ export function BudgetsView({
                 party={budget.party}
                 compact
               />
-              <span className="budget-row__score">
-                <strong>{budget.ratingScore}</strong>
-                <small>/10</small>
-              </span>
+              {showEditorial ? (
+                <span className="budget-row__score">
+                  <strong>{budget.ratingScore}</strong>
+                  <small>/10</small>
+                </span>
+              ) : (
+                <span className="budget-row__score">
+                  <small>
+                    {budget.status === 'current'
+                      ? 'Current plan'
+                      : sentenceCase(budget.budgetKind)}
+                  </small>
+                </span>
+              )}
               <ChevronRight size={16} aria-hidden="true" />
             </button>
           ))}
@@ -363,15 +378,21 @@ export function BudgetsView({
                   {' · '}Finance Minister {selected.financeMinister}
                 </p>
               </div>
-              <div className="budget-detail__rating">
-                <EditorialLabel />
-                <strong>{selected.ratingScore}</strong>
-                <span>/10</span>
-                <ConfidenceMark confidence={selected.ratingConfidence} />
-              </div>
+              {showEditorial && (
+                <div className="budget-detail__rating">
+                  <EditorialLabel />
+                  <strong>{selected.ratingScore}</strong>
+                  <span>/10</span>
+                  <ConfidenceMark confidence={selected.ratingConfidence} />
+                </div>
+              )}
             </header>
 
-            <p className="budget-detail__summary">{selected.ratingSummary}</p>
+            {showEditorial && (
+              <p className="budget-detail__summary">
+                <EditorialLabel /> {selected.ratingSummary}
+              </p>
+            )}
 
             <section className="budget-plain-language">
               <div>
@@ -449,10 +470,11 @@ export function BudgetsView({
               </div>
             </section>
 
+            {showEditorial && (
             <section className="policy-components budget-components">
               <h3>
                 <Scale size={17} aria-hidden="true" />
-                Component rating
+                Editorial component rating
               </h3>
               {selected.componentScores.map((component) => (
                 <div key={component.id} className="component-score">
@@ -468,9 +490,12 @@ export function BudgetsView({
                 </div>
               ))}
             </section>
+            )}
 
             <section className="budget-evidence">
-              {(Object.keys(pointMeta) as BudgetPoint['pointType'][]).map(
+              {(Object.keys(pointMeta) as BudgetPoint['pointType'][])
+                .filter((pointType) => showEditorial || pointType === 'priority')
+                .map(
                 (pointType) => {
                   const points = selected.points.filter(
                     (point) => point.pointType === pointType,

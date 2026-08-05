@@ -1202,9 +1202,23 @@ export const developmentClaims: ClaimSeed[] = [
       'By November 2025, 21,597 km of the 26,425 km awarded Bharatmala and subsumed NHDP length had been completed.',
     stance: 'achievement',
     category: 'infrastructure',
+    claimLayer: 'factual',
     confidence: 'high',
     asOfDate: reviewedDate,
-    sourceIds: ['morth-year-end-2025'],
+    sourceRefs: [
+      {
+        sourceId: 'morth-year-end-2025',
+        evidenceRole: 'controls',
+        locator:
+          'Bharatmala Pariyojana progress status reported through November 2025.',
+        claimSpecificLimitation:
+          'The official completion figure does not by itself establish net-new road length, quality, safety, cost control, or utilization.',
+        extractionMethod: 'manual-reviewed-summary',
+        reportedValue: 21597,
+        reportedUnit: 'km completed',
+        reportedAt: '2025-11-30',
+      },
+    ],
   },
   {
     id: 'bharatmala-cost-and-delay',

@@ -130,11 +130,12 @@ import {
 } from './seed-data/infrastructure-capacity.ts'
 import type {
   BillDocumentExtractSeed,
+  ClaimSourceRefSeed,
   IndicatorObservationSeed,
   PolicyRegisterSeed,
 } from './types.ts'
 
-export const seedVersion = '2026-08-05.1'
+export const seedVersion = '2026-08-05.3'
 const sourceRosterVersion = 'source-roster-v0.14'
 const allJurisdictions = [
   ...jurisdictions,
@@ -656,7 +657,7 @@ function insertRows(
       row.assessmentAsOf,
     )
     for (const sourceId of row.sourceIds) {
-      policySourceInsert.run(row.id, sourceId, 'supports', null)
+      policySourceInsert.run(row.id, sourceId, 'unspecified', null)
     }
   }
 
@@ -820,7 +821,7 @@ function insertRows(
       row.assessmentAsOf,
     )
     for (const sourceId of row.sourceIds) {
-      budgetSourceInsert.run(row.id, sourceId, 'supports', null)
+      budgetSourceInsert.run(row.id, sourceId, 'unspecified', null)
     }
   }
 
@@ -903,7 +904,7 @@ function insertRows(
       row.confidence,
     )
     for (const sourceId of row.sourceIds) {
-      eventSourceInsert.run(row.id, sourceId, 'supports', null)
+      eventSourceInsert.run(row.id, sourceId, 'unspecified', null)
     }
     for (const termId of row.leaderTermIds ?? []) {
       eventTermInsert.run(row.id, termId)
@@ -952,15 +953,15 @@ function insertRows(
   const claimInsert = db.prepare(
     `INSERT INTO claims
       (id, jurisdiction_id, leader_term_id, event_id, policy_id, title, body, stance,
-       category, confidence, as_of_date, review_status, sensitivity, reviewer,
+       category, claim_layer, confidence, as_of_date, review_status, sensitivity, reviewer,
        reviewed_at, knowledge_cutoff, supersedes_claim_id, correction_note)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   )
   const claimSourceInsert = db.prepare(
     `INSERT INTO claim_sources
-      (claim_id, source_id, evidence_role, locator, extraction_method,
-       reported_value, reported_unit, reported_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      (claim_id, source_id, evidence_role, locator, claim_specific_limitation,
+       extraction_method, reported_value, reported_unit, reported_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   )
   for (const row of allClaims) {
     claimInsert.run(
@@ -973,6 +974,7 @@ function insertRows(
       row.body,
       row.stance,
       row.category,
+      row.claimLayer ?? 'mixed',
       row.confidence,
       row.asOfDate,
       'published',
@@ -985,16 +987,22 @@ function insertRows(
       null,
       null,
     )
-    for (const sourceId of row.sourceIds) {
+    const sourceRefs: ClaimSourceRefSeed[] =
+      row.sourceRefs ??
+      (row.sourceIds ?? []).map((sourceId) => ({
+        sourceId,
+      }))
+    for (const sourceRef of sourceRefs) {
       claimSourceInsert.run(
         row.id,
-        sourceId,
-        'supports',
-        null,
-        'reviewed-summary',
-        null,
-        null,
-        row.asOfDate,
+        sourceRef.sourceId,
+        sourceRef.evidenceRole ?? 'unspecified',
+        sourceRef.locator ?? null,
+        sourceRef.claimSpecificLimitation ?? null,
+        sourceRef.extractionMethod ?? null,
+        sourceRef.reportedValue ?? null,
+        sourceRef.reportedUnit ?? null,
+        sourceRef.reportedAt ?? null,
       )
     }
   }

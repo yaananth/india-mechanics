@@ -1029,6 +1029,7 @@ export const semiconductorClaims: ClaimSeed[] = [
       'Five evidence-aware rating replications supported raising reform and state capacity from 7.4 to 7.6 and integrity and execution from 5.9 to 6.0. Development and economy remains 7.7 because current production is mostly assembly and test and the front-end fab is unfinished. The current unified overall is the equal six-category mean, 6.5/10; semiconductor evidence is visible inside the relevant categories and is not added again.',
     stance: 'context',
     category: 'methodology',
+    claimLayer: 'editorial',
     confidence: 'high',
     asOfDate: reviewedAt,
     sourceIds: [

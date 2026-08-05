@@ -32,6 +32,7 @@ import {
   LoadingState,
   SourceLinks,
 } from '../components/common.tsx'
+import { useEditorialLayer } from '../editorial-layer-context.ts'
 
 type SafetyGroupId = 'harm' | 'reporting' | 'cyber' | 'justice'
 
@@ -119,6 +120,7 @@ export function SafetyView({
   onOpenLeader: (termId: string) => void
   onOpenEvent: (eventId: string) => void
 }) {
+  const { showEditorial } = useEditorialLayer()
   const [groupId, setGroupId] = useState<SafetyGroupId>('harm')
   const group =
     safetyGroups.find((candidate) => candidate.id === groupId) ?? safetyGroups[0]
@@ -207,14 +209,18 @@ export function SafetyView({
         <div className="safety-overview__headline">
           <span className="section-label">Latest comparable record</span>
           <h2>
-            {jurisdiction.level === 'country'
-              ? 'National direction is mixed'
-              : `${jurisdiction.shortName} harm and justice signals need separate reading`}
+            {showEditorial
+              ? jurisdiction.level === 'country'
+                ? 'National direction is mixed'
+                : `${jurisdiction.shortName} harm and justice signals need separate reading`
+              : `${jurisdiction.shortName} recorded harm and justice measures`}
           </h2>
           <p>
-            {jurisdiction.level === 'country'
-              ? 'The registered murder rate improved, violent crime rose and then levelled, and reporting-sensitive categories increased while cyber and justice outcomes remained uneven.'
-              : `Recorded harm, reporting-sensitive categories, investigation, convictions, cybercrime, and road safety are shown separately for ${jurisdiction.shortName}. A low FIR rate or high charge-sheeting rate is not treated as proof that people are safer.`}
+            {showEditorial
+              ? jurisdiction.level === 'country'
+                ? 'Editorial assessment: the registered murder rate improved, violent crime rose and then levelled, and reporting-sensitive categories increased while cyber and justice outcomes remained uneven.'
+                : `Editorial assessment: recorded harm, reporting-sensitive categories, investigation, convictions, cybercrime, and road safety are shown separately for ${jurisdiction.shortName}. A low FIR rate or high charge-sheeting rate is not treated as proof that people are safer.`
+              : `Murder, violent crime, reporting-sensitive registrations, investigation, convictions, cybercrime, and road safety are presented as separate measurements for ${jurisdiction.shortName}.`}
           </p>
         </div>
         <div className="safety-overview__stats">
@@ -261,8 +267,8 @@ export function SafetyView({
           <p>
             NCRB warns that e-FIRs, women help desks, awareness, access to police,
             legal change, and recording practice can increase reported cases. Murder
-            and violent crime receive more outcome weight; reporting-sensitive
-            categories remain contextual.
+            and violent crime are generally less sensitive to reporting access;
+            reporting-sensitive categories require separate interpretation.
           </p>
         </div>
         <span>2024 page checked: no downloadable records</span>
@@ -387,11 +393,14 @@ export function SafetyView({
                 </ResponsiveContainer>
               </div>
               <footer>
-                <span>
-                  {series.definition.direction === 'neutral'
-                    ? 'Context only; no automatic good or bad direction'
-                    : `${series.definition.direction === 'lower' ? 'Lower' : 'Higher'} is generally better, with reporting caveats`}
-                </span>
+                {showEditorial && (
+                  <span>
+                    Editorial direction:{' '}
+                    {series.definition.direction === 'neutral'
+                      ? 'no automatic good or bad direction'
+                      : `${series.definition.direction === 'lower' ? 'lower' : 'higher'} is generally better, with reporting caveats`}
+                  </span>
+                )}
                 <button
                   type="button"
                   className="text-command"
@@ -422,10 +431,12 @@ export function SafetyView({
         )}
       </section>
 
-      <section className="safety-assessment-section">
+      {showEditorial && <section className="safety-assessment-section">
         <div className="section-heading">
           <div>
-            <span className="section-label">{officeLabel} rating effect</span>
+            <span className="section-label">
+              Editorial {officeLabel} specialist rating effect
+            </span>
             <h2>Same public-safety rubric, bounded constitutional attribution</h2>
             <p>
               These specialist scores inform the shared crisis and execution
@@ -499,7 +510,7 @@ export function SafetyView({
             </article>
           )}
         </div>
-      </section>
+      </section>}
 
       <section className="safety-recent-signals">
         <div className="section-heading">
@@ -526,7 +537,8 @@ export function SafetyView({
               <strong>{event.title}</strong>
               <p>{event.summary}</p>
               <small>
-                {event.confidence} confidence · open accountability
+                {event.confidence} confidence ·{' '}
+                {showEditorial ? 'open editorial accountability' : 'open event record'}
               </small>
             </button>
           ))}

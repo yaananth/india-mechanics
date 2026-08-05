@@ -21,11 +21,11 @@ import type {
   Overview,
   ViewId,
 } from '../types.ts'
+import { useEditorialLayer } from '../editorial-layer-context.ts'
 import { formatYear } from '../utils.ts'
 import { AnswerPanel } from '../components/AnswerPanel.tsx'
 import {
   ConfidenceMark,
-  EditorialLabel,
   SourceLinks,
 } from '../components/common.tsx'
 
@@ -71,8 +71,9 @@ export function OverviewView({
   onLeaderSelect: (leaderId: string) => void
   onMethodologyOpen: () => void
 }) {
-  const ratedLeaders = leaders
-    .filter((leader) => leader.ratingScore !== null)
+  const { showEditorial } = useEditorialLayer()
+  const recentLeaders = leaders
+    .filter((leader) => !showEditorial || leader.ratingScore !== null)
     .slice(-4)
     .reverse()
   const score = overview.progress.overall
@@ -103,14 +104,22 @@ export function OverviewView({
             checked {overview.knowledge.politicalStatusChecked}
           </span>
           <h1>
-            {isCountry
-              ? 'How is India doing?'
-              : `How is ${overview.jurisdiction.shortName} doing since ${stateStartDate}?`}
+            {showEditorial
+              ? isCountry
+                ? 'How is India doing?'
+                : `How is ${overview.jurisdiction.shortName} doing since ${stateStartDate}?`
+              : isCountry
+                ? 'India’s measurable record since 1945'
+                : `${overview.jurisdiction.shortName} records since ${stateStartDate}`}
           </h1>
           <p>
-            {isCountry
-              ? 'India is more capable, connected, and materially secure than at independence. Progress is real but unbalanced: jobs, inclusion, institutional restraints, and environmental health trail the strongest gains.'
-              : `${stateIntroduction} Growth, services, welfare, fiscal pressure, infrastructure, safety, and institutional continuity are assessed inside that boundary.`}
+            {showEditorial
+              ? isCountry
+                ? 'India is more capable, connected, and materially secure than at independence. Progress is real but unbalanced: jobs, inclusion, institutional restraints, and environmental health trail the strongest gains.'
+                : `${stateIntroduction} Growth, services, welfare, fiscal pressure, infrastructure, safety, and institutional continuity are assessed inside that boundary.`
+              : isCountry
+                ? 'Measured indicators, political records, public decisions, and their sources are presented separately from optional editorial judgments.'
+                : `${stateIntroduction} Measured indicators and public records are shown separately from optional editorial judgments.`}
           </p>
         </div>
         <div className="overview-intro__actions">
@@ -125,132 +134,175 @@ export function OverviewView({
         <div className="section-heading">
           <div>
             <span className="section-label">
-              {isCountry ? 'Country Progress Index' : 'State Progress Index'}
+              {showEditorial
+                ? isCountry
+                  ? 'Country Progress Index'
+                  : 'State Progress Index'
+                : 'Measured record'}
             </span>
-            <h2>Progress is broad, not evenly distributed</h2>
+            <h2>
+              {showEditorial
+                ? 'Progress is broad, not evenly distributed'
+                : 'Areas covered by the public evidence'}
+            </h2>
           </div>
-          <button type="button" className="text-command" onClick={onMethodologyOpen}>
-            See the maths
-            <ArrowRight size={15} aria-hidden="true" />
-          </button>
+          {showEditorial && (
+            <button type="button" className="text-command" onClick={onMethodologyOpen}>
+              See the maths
+              <ArrowRight size={15} aria-hidden="true" />
+            </button>
+          )}
         </div>
 
-        <div className="progress-layout">
-          <div className="progress-score">
-            <div className="progress-score__dial" aria-label={`${score.score} out of 100`}>
-              <Gauge size={22} aria-hidden="true" />
-              <strong>{score.score}</strong>
-              <span>/100</span>
-            </div>
-            <div className="progress-score__copy">
-              <span>{overview.targetYear} central estimate</span>
-              <strong>
-                {score.lowerBound}–{score.upperBound}
-              </strong>
-              <small>uncertainty range</small>
-              <ConfidenceMark confidence={score.confidence} />
-            </div>
-          </div>
+        {showEditorial ? (
+          <>
+            <span className="editorial-label">
+              Composite model, not a measured statistic
+            </span>
+            <div className="progress-layout">
+              <div className="progress-score">
+                <div className="progress-score__dial" aria-label={`${score.score} out of 100`}>
+                  <Gauge size={22} aria-hidden="true" />
+                  <strong>{score.score}</strong>
+                  <span>/100</span>
+                </div>
+                <div className="progress-score__copy">
+                  <span>{overview.targetYear} central estimate</span>
+                  <strong>
+                    {score.lowerBound}–{score.upperBound}
+                  </strong>
+                  <small>uncertainty range</small>
+                  <ConfidenceMark confidence={score.confidence} />
+                </div>
+              </div>
 
+              <div className="dimension-list">
+                {overview.progress.dimensions.map((dimension) => (
+                  <div className="dimension-row" key={dimension.id}>
+                    <div className="dimension-row__heading">
+                      <span
+                        className="dimension-row__swatch"
+                        style={{ backgroundColor: dimension.color }}
+                      />
+                      <strong>{dimension.name}</strong>
+                      <span>{Math.round(dimension.weight * 100)}% weight</span>
+                      <ConfidenceMark confidence={dimension.confidence} compact />
+                      <b>{dimension.score ?? '—'}</b>
+                    </div>
+                    <div className="dimension-row__track" aria-hidden="true">
+                      <span
+                        style={{
+                          width: `${dimension.score ?? 0}%`,
+                          backgroundColor: dimension.color,
+                        }}
+                      />
+                    </div>
+                    <p>{dimension.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="progress-history">
+              <div className="chart-heading">
+                <div>
+                  <h3>Comparable progress snapshots</h3>
+                  <p>
+                    Fixed goalposts; missing dimensions lower coverage instead of
+                    being silently invented.
+                  </p>
+                </div>
+                <span>
+                  <Scale size={15} aria-hidden="true" />
+                  central estimate and range
+                </span>
+              </div>
+              <div className="chart-frame">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={overview.progressHistory}
+                    margin={{ top: 12, right: 16, bottom: 0, left: -14 }}
+                  >
+                    <CartesianGrid stroke="#e3e5e1" vertical={false} />
+                    <XAxis
+                      dataKey="year"
+                      tickLine={false}
+                      axisLine={false}
+                      tick={{ fill: '#65665f', fontSize: 12 }}
+                    />
+                    <YAxis
+                      domain={[0, 100]}
+                      ticks={[0, 25, 50, 75, 100]}
+                      tickLine={false}
+                      axisLine={false}
+                      tick={{ fill: '#65665f', fontSize: 12 }}
+                    />
+                    <Tooltip content={<ProgressTooltip />} />
+                    <Area
+                      type="monotone"
+                      dataKey="upperBound"
+                      stroke="none"
+                      fill="#dbe7e2"
+                      fillOpacity={0.75}
+                      connectNulls
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="lowerBound"
+                      stroke="none"
+                      fill="#ffffff"
+                      fillOpacity={1}
+                      connectNulls
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="score"
+                      stroke="#1f5f46"
+                      strokeWidth={2.5}
+                      fill="none"
+                      connectNulls
+                      dot={{ r: 3, fill: '#1f5f46', strokeWidth: 0 }}
+                      activeDot={{ r: 5, fill: '#1f5f46' }}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </>
+        ) : (
           <div className="dimension-list">
             {overview.progress.dimensions.map((dimension) => (
               <div className="dimension-row" key={dimension.id}>
-                <div className="dimension-row__heading">
+                <div
+                  className="dimension-row__heading"
+                  style={{ gridTemplateColumns: 'auto minmax(0, 1fr)' }}
+                >
                   <span
                     className="dimension-row__swatch"
                     style={{ backgroundColor: dimension.color }}
                   />
                   <strong>{dimension.name}</strong>
-                  <span>{Math.round(dimension.weight * 100)}% weight</span>
-                  <ConfidenceMark confidence={dimension.confidence} compact />
-                  <b>{dimension.score ?? '—'}</b>
-                </div>
-                <div className="dimension-row__track" aria-hidden="true">
-                  <span
-                    style={{
-                      width: `${dimension.score ?? 0}%`,
-                      backgroundColor: dimension.color,
-                    }}
-                  />
                 </div>
                 <p>{dimension.description}</p>
               </div>
             ))}
+            <p className="not-rated-note">
+              Editorial analysis available. Composite scores and modelled
+              comparisons are hidden in facts-first mode.
+            </p>
           </div>
-        </div>
-
-        <div className="progress-history">
-          <div className="chart-heading">
-            <div>
-              <h3>Comparable progress snapshots</h3>
-              <p>
-                Fixed goalposts; missing dimensions lower coverage instead of
-                being silently invented.
-              </p>
-            </div>
-            <span>
-              <Scale size={15} aria-hidden="true" />
-              central estimate and range
-            </span>
-          </div>
-          <div className="chart-frame">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart
-                data={overview.progressHistory}
-                margin={{ top: 12, right: 16, bottom: 0, left: -14 }}
-              >
-                <CartesianGrid stroke="#e3e5e1" vertical={false} />
-                <XAxis
-                  dataKey="year"
-                  tickLine={false}
-                  axisLine={false}
-                  tick={{ fill: '#65665f', fontSize: 12 }}
-                />
-                <YAxis
-                  domain={[0, 100]}
-                  ticks={[0, 25, 50, 75, 100]}
-                  tickLine={false}
-                  axisLine={false}
-                  tick={{ fill: '#65665f', fontSize: 12 }}
-                />
-                <Tooltip content={<ProgressTooltip />} />
-                <Area
-                  type="monotone"
-                  dataKey="upperBound"
-                  stroke="none"
-                  fill="#dbe7e2"
-                  fillOpacity={0.75}
-                  connectNulls
-                />
-                <Area
-                  type="monotone"
-                  dataKey="lowerBound"
-                  stroke="none"
-                  fill="#ffffff"
-                  fillOpacity={1}
-                  connectNulls
-                />
-                <Area
-                  type="monotone"
-                  dataKey="score"
-                  stroke="#1f5f46"
-                  strokeWidth={2.5}
-                  fill="none"
-                  connectNulls
-                  dot={{ r: 3, fill: '#1f5f46', strokeWidth: 0 }}
-                  activeDot={{ r: 5, fill: '#1f5f46' }}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+        )}
       </section>
 
       <section className="question-section">
         <div className="section-heading section-heading--questions">
           <div>
             <span className="section-label">Questions people ask</span>
-            <h2>Answers that keep both sides visible</h2>
+            <h2>
+              {showEditorial
+                ? 'Answers that keep both sides visible'
+                : 'Questions that require interpretation'}
+            </h2>
           </div>
           <div className="question-switcher" role="tablist" aria-label="Reviewed questions">
             {overview.questions.map((question) => (
@@ -273,24 +325,35 @@ export function OverviewView({
       <section className="leader-strip">
         <div className="section-heading">
           <div>
-            <span className="section-label">{officeLabel} evaluations</span>
-            <h2>Recent {officePlural.toLowerCase()}, one disclosed rubric</h2>
+            <span className="section-label">
+              {showEditorial ? `${officeLabel} evaluations` : `${officeLabel} terms`}
+            </span>
+            <h2>
+              {showEditorial
+                ? `Recent ${officePlural.toLowerCase()}, one disclosed rubric`
+                : `Recent ${officePlural.toLowerCase()} and parties`}
+            </h2>
           </div>
           <button
             type="button"
             className="text-command"
             onClick={() => onViewChange('leaders')}
           >
-            Compare all {officePlural}
+            {showEditorial ? `Compare all ${officePlural}` : `View all ${officePlural}`}
             <ArrowRight size={15} aria-hidden="true" />
           </button>
         </div>
         <div className="leader-strip__rows">
-          {ratedLeaders.map((leader) => (
+          {recentLeaders.map((leader) => (
             <button
               type="button"
               key={leader.id}
               className="leader-strip__row"
+              style={
+                showEditorial
+                  ? undefined
+                  : { gridTemplateColumns: '3px minmax(0, 1fr) auto' }
+              }
               onClick={() => onLeaderSelect(leader.id)}
             >
               <span
@@ -305,14 +368,20 @@ export function OverviewView({
                   {leader.party ? ` · ${leader.party.shortName}` : ''}
                 </span>
               </span>
-              <span className="leader-strip__summary">{leader.ratingSummary}</span>
-              <span className="leader-strip__rating">
-                <EditorialLabel />
-                <strong>{leader.ratingScore?.toFixed(1)}/10</strong>
-                {leader.ratingConfidence && (
-                  <ConfidenceMark confidence={leader.ratingConfidence} compact />
-                )}
-              </span>
+              {showEditorial && (
+                <>
+                  <span className="leader-strip__summary">{leader.ratingSummary}</span>
+                  <span className="leader-strip__rating">
+                    <span className="editorial-label">
+                      Sourced editorial judgment
+                    </span>
+                    <strong>{leader.ratingScore?.toFixed(1)}/10</strong>
+                    {leader.ratingConfidence && (
+                      <ConfidenceMark confidence={leader.ratingConfidence} compact />
+                    )}
+                  </span>
+                </>
+              )}
               <ChevronRight size={18} aria-hidden="true" />
             </button>
           ))}
@@ -323,7 +392,11 @@ export function OverviewView({
         <div className="section-heading">
           <div>
             <span className="section-label">Recent timeline</span>
-            <h2>Events that changed the direction</h2>
+            <h2>
+              {showEditorial
+                ? 'Events that changed the direction'
+                : 'Recent events in the public record'}
+            </h2>
           </div>
           <button
             type="button"
@@ -342,7 +415,7 @@ export function OverviewView({
                 {event.date.slice(0, 4)}
               </span>
               <h3>{event.title}</h3>
-              <p>{event.significance}</p>
+              <p>{showEditorial ? event.significance : event.summary}</p>
               <SourceLinks sources={event.sources} limit={1} />
             </article>
           ))}

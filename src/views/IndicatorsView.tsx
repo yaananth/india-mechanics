@@ -34,6 +34,7 @@ import {
   SourceLinks,
   SourceRating,
 } from '../components/common.tsx'
+import { useEditorialLayer } from '../editorial-layer-context.ts'
 
 function formatTermChange(
   change: IndicatorTermChange,
@@ -87,6 +88,7 @@ export function IndicatorsView({
   knowledge: Overview['knowledge']
   jurisdiction: Jurisdiction
 }) {
+  const { showEditorial } = useEditorialLayer()
   const officeLabel =
     jurisdiction.level === 'country' ? 'Prime Minister' : 'Chief Minister'
   const selectedId =
@@ -137,8 +139,9 @@ export function IndicatorsView({
           </span>
           <h1>{jurisdiction.shortName} in measurable trends</h1>
           <p>
-            Inspect the observations, units, revisions, normalization goalposts,
-            and source limitations behind every graph.
+            {showEditorial
+              ? 'Inspect the observations, units, revisions, normalization goalposts, and source limitations behind every graph.'
+              : 'Inspect the observations, units, revisions, methods, and source limitations behind every graph.'}
           </p>
         </div>
         <div className="view-header__stat">
@@ -233,11 +236,13 @@ export function IndicatorsView({
                     {currentTermChange && (
                       <small
                         className={
-                          currentTermChange.directionAssessment === 'improved'
-                            ? 'is-positive'
-                            : currentTermChange.directionAssessment === 'worsened'
-                              ? 'is-negative'
-                              : undefined
+                          showEditorial
+                            ? currentTermChange.directionAssessment === 'improved'
+                              ? 'is-positive'
+                              : currentTermChange.directionAssessment === 'worsened'
+                                ? 'is-negative'
+                                : undefined
+                            : undefined
                         }
                       >
                         {currentTermChange.absoluteChange > 0 ? (
@@ -261,7 +266,7 @@ export function IndicatorsView({
                         )}{' '}
                         {currentTermChange.baselineKind === 'before-term-start'
                           ? `from nearest pre-term data (${currentTermChange.baseline.period}); observed through ${currentTermChange.leader.name}'s term`
-                          : `since ${currentTermChange.baseline.period} under ${currentTermChange.leader.name}`}
+                          : `since ${currentTermChange.baseline.period} during ${currentTermChange.leader.name}'s term`}
                       </small>
                     )}
                   </div>
@@ -347,14 +352,18 @@ export function IndicatorsView({
                     </article>
                   </div>
 
-                  <ol>
-                    {series.comparison.explanation.map((explanation) => (
-                      <li key={explanation}>{explanation}</li>
-                    ))}
-                  </ol>
-                  <p className="currency-growth-conclusion">
-                    {series.comparison.conclusion}
-                  </p>
+                  {showEditorial && (
+                    <>
+                      <ol>
+                        {series.comparison.explanation.map((explanation) => (
+                          <li key={explanation}>{explanation}</li>
+                        ))}
+                      </ol>
+                      <p className="currency-growth-conclusion">
+                        Editorial synthesis: {series.comparison.conclusion}
+                      </p>
+                    </>
+                  )}
                   <SourceLinks sources={series.comparison.sources} limit={3} />
                 </section>
               )}
@@ -403,7 +412,7 @@ export function IndicatorsView({
                         boxShadow: '0 8px 24px rgba(24, 28, 24, .08)',
                       }}
                     />
-                    {series.definition.direction !== 'neutral' && (
+                    {showEditorial && series.definition.direction !== 'neutral' && (
                       <ReferenceLine
                         y={
                           series.definition.direction === 'higher'
@@ -449,7 +458,11 @@ export function IndicatorsView({
                 <div className="tenure-highlight">
                   {currentTermChange ? (
                     <article
-                      className={`tenure-card tenure-card--${currentTermChange.directionAssessment}`}
+                      className={
+                        showEditorial
+                          ? `tenure-card tenure-card--${currentTermChange.directionAssessment}`
+                          : 'tenure-card'
+                      }
                     >
                       <span className="section-label">Current {officeLabel}</span>
                       <h4>{currentTermChange.leader.name}</h4>
@@ -484,10 +497,9 @@ export function IndicatorsView({
                           )}
                         </strong>
                         <span>
-                          {sentenceCase(
-                            currentTermChange.directionAssessment,
-                          )}{' '}
-                          ·{' '}
+                          {showEditorial
+                            ? `${sentenceCase(currentTermChange.directionAssessment)} · `
+                            : 'Observed change · '}
                           {formatTermChange(
                             currentTermChange,
                             series.definition,
@@ -510,7 +522,11 @@ export function IndicatorsView({
 
                   {previousTermChange ? (
                     <article
-                      className={`tenure-card tenure-card--${previousTermChange.directionAssessment}`}
+                      className={
+                        showEditorial
+                          ? `tenure-card tenure-card--${previousTermChange.directionAssessment}`
+                          : 'tenure-card'
+                      }
                     >
                       <span className="section-label">Previous {officeLabel}</span>
                       <h4>{previousTermChange.leader.name}</h4>
@@ -545,10 +561,9 @@ export function IndicatorsView({
                           )}
                         </strong>
                         <span>
-                          {sentenceCase(
-                            previousTermChange.directionAssessment,
-                          )}{' '}
-                          ·{' '}
+                          {showEditorial
+                            ? `${sentenceCase(previousTermChange.directionAssessment)} · `
+                            : 'Observed change · '}
                           {formatTermChange(
                             previousTermChange,
                             series.definition,
@@ -581,7 +596,7 @@ export function IndicatorsView({
                     <span>Start → end</span>
                     <span>Total change</span>
                     <span>Per year</span>
-                    <span>Direction</span>
+                    <span>{showEditorial ? 'Editorial direction' : 'Interpretation'}</span>
                   </div>
                   {series.termChanges.map((termChange) => (
                     <div className="tenure-table__row" role="row" key={termChange.termId}>
@@ -639,9 +654,15 @@ export function IndicatorsView({
                         )}
                       </span>
                       <span
-                        className={`term-direction term-direction--${termChange.directionAssessment}`}
+                        className={
+                          showEditorial
+                            ? `term-direction term-direction--${termChange.directionAssessment}`
+                            : 'term-direction'
+                        }
                       >
-                        {sentenceCase(termChange.directionAssessment)}
+                        {showEditorial
+                          ? sentenceCase(termChange.directionAssessment)
+                          : 'Observed change'}
                       </span>
                     </div>
                   ))}
@@ -654,7 +675,7 @@ export function IndicatorsView({
               </section>
 
               <section className="indicator-audit">
-                <div>
+                {showEditorial && <div>
                   <h3>
                     {series.definition.scoreRole === 'context'
                       ? 'How to use this indicator'
@@ -714,18 +735,22 @@ export function IndicatorsView({
                       </div>
                     </dl>
                   )}
-                </div>
+                </div>}
                 <div className="indicator-source">
                   <h3>
                     <Database size={16} aria-hidden="true" />
                     Controlling source
                   </h3>
                   <a href={series.source.url} target="_blank" rel="noreferrer">
-                    <SourceRating rating={series.source.reliability} />
+                    {showEditorial && (
+                      <SourceRating rating={series.source.reliability} />
+                    )}
                     <strong>{series.source.title}</strong>
                     <span>{series.source.publisher}</span>
                   </a>
-                  <p>{series.source.ratingReason}</p>
+                  {showEditorial && (
+                    <p>Editorial source assessment: {series.source.ratingReason}</p>
+                  )}
                   <p className="source-limitation">
                     <Info size={14} aria-hidden="true" />
                     {series.source.limitations}

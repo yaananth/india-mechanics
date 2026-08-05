@@ -1,42 +1,63 @@
 import { CheckCircle2, CircleAlert, CircleDotDashed } from 'lucide-react'
+import { useEditorialLayer } from '../editorial-layer-context.ts'
 import type { CuratedAnswer } from '../types.ts'
-import { ConfidenceMark, SourceLinks } from './common.tsx'
+import { ClaimSources, ConfidenceMark } from './common.tsx'
 
 const sectionMeta = {
   achievement: {
-    label: 'Evidence for',
+    editorialLabel: 'Evidence for',
+    factsLabel: 'Supporting evidence',
     icon: CheckCircle2,
   },
   concern: {
-    label: 'Evidence against',
+    editorialLabel: 'Evidence against',
+    factsLabel: 'Contrary evidence',
     icon: CircleAlert,
   },
   context: {
-    label: 'Attribution limits',
+    editorialLabel: 'Attribution limits',
+    factsLabel: 'Context and attribution limits',
     icon: CircleDotDashed,
   },
 }
 
 export function AnswerPanel({ answer }: { answer: CuratedAnswer }) {
+  const { showEditorial } = useEditorialLayer()
   const groups = Object.entries(sectionMeta).map(([section, meta]) => ({
     section: section as keyof typeof sectionMeta,
     ...meta,
-    claims: answer.claims.filter((claim) => claim.section === section),
+    claims: answer.claims.filter(
+      (claim) =>
+        claim.section === section &&
+        (showEditorial || claim.claimLayer !== 'editorial'),
+    ),
   }))
 
   return (
     <article className="answer-panel">
       <header className="answer-panel__header">
         <div>
-          <span className="section-label">Reviewed answer</span>
+          <span className="section-label">
+            {showEditorial ? 'Reviewed answer' : 'Reviewed sourced claims'}
+          </span>
           <h2>{answer.question}</h2>
         </div>
         <div className="answer-panel__meta">
-          <ConfidenceMark confidence={answer.confidence} />
+          {showEditorial && <ConfidenceMark confidence={answer.confidence} />}
           <span>Checked {answer.asOfDate}</span>
         </div>
       </header>
-      <p className="answer-panel__summary">{answer.shortAnswer}</p>
+      {showEditorial ? (
+        <>
+          <span className="editorial-label">Sourced editorial judgment</span>
+          <p className="answer-panel__summary">{answer.shortAnswer}</p>
+        </>
+      ) : (
+        <p className="answer-panel__summary">
+          The verdict and confidence are withheld. The factual and mixed sourced
+          claims below are not measurements or proof of leader causation.
+        </p>
+      )}
 
       <div className="answer-columns">
         {groups
@@ -50,13 +71,13 @@ export function AnswerPanel({ answer }: { answer: CuratedAnswer }) {
               >
                 <h3>
                   <Icon size={17} aria-hidden="true" />
-                  {group.label}
+                  {showEditorial ? group.editorialLabel : group.factsLabel}
                 </h3>
                 {group.claims.map((claim) => (
                   <article key={claim.id} className="answer-claim">
                     <h4>{claim.title}</h4>
                     <p>{claim.body}</p>
-                    <SourceLinks sources={claim.sources} limit={2} />
+                    <ClaimSources claim={claim} />
                   </article>
                 ))}
               </section>
@@ -64,10 +85,12 @@ export function AnswerPanel({ answer }: { answer: CuratedAnswer }) {
           })}
       </div>
 
-      <footer className="answer-panel__verdict">
-        <strong>Bottom line</strong>
-        <span>{answer.verdict}</span>
-      </footer>
+      {showEditorial && (
+        <footer className="answer-panel__verdict">
+          <strong>Bottom line</strong>
+          <span>{answer.verdict}</span>
+        </footer>
+      )}
     </article>
   )
 }

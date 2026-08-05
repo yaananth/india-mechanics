@@ -160,9 +160,9 @@ export function AiDiscussionDialog({
           <div className="ai-discussion-source-note">
             <MessageSquareText size={18} aria-hidden="true" />
             <p>
-              A high reliability marker means strong fitness for the stated
-              use. It is not a political endorsement, a universal truth score,
-              or proof that a policy worked.
+              {context.displayLayer === 'editorial-analysis'
+                ? 'A high source-fitness marker means strong fitness for the stated use. It is not a political endorsement, a universal truth score, or proof that a policy worked.'
+                : 'Use source type, publication date, best use, and limitations to judge each record. Source-fitness ratings and political verdicts are omitted from this layer.'}
             </p>
           </div>
 

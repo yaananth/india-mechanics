@@ -66,6 +66,8 @@ export function AppShell({
   onSearchOpen,
   onMethodologyOpen,
   onAiDiscussionOpen,
+  showEditorial,
+  onEditorialChange,
   knowledge,
   children,
 }: {
@@ -77,6 +79,8 @@ export function AppShell({
   onSearchOpen: () => void
   onMethodologyOpen: () => void
   onAiDiscussionOpen: () => void
+  showEditorial: boolean
+  onEditorialChange: (showEditorial: boolean) => void
   knowledge: Overview['knowledge']
   children: ReactNode
 }) {
@@ -93,7 +97,10 @@ export function AppShell({
       : item,
   )
   return (
-    <div className="app-shell">
+    <div
+      className="app-shell"
+      data-editorial-layer={showEditorial ? 'on' : 'off'}
+    >
       <header className="app-header">
         <div className="app-header__inner">
           <button
@@ -197,6 +204,11 @@ export function AppShell({
       </header>
 
       <div className="research-status" aria-label="Research freshness">
+        <span className="evidence-layer-status">
+          <strong>
+            {showEditorial ? 'Editorial analysis enabled' : 'Facts and sources'}
+          </strong>
+        </span>
         <span>
           Latest reviewed evidence <strong>{knowledge.cutoff}</strong>
         </span>
@@ -219,6 +231,18 @@ export function AppShell({
           <MessageSquareText size={15} aria-hidden="true" />
           Discuss with AI
         </button>
+        <label
+          className="editorial-layer-toggle"
+          title="Show sourced scores, judgments, and accountability analysis"
+        >
+          <input
+            type="checkbox"
+            checked={showEditorial}
+            onChange={(event) => onEditorialChange(event.target.checked)}
+          />
+          <span aria-hidden="true" />
+          <b>Editorial analysis</b>
+        </label>
       </div>
 
       <main id="main-content" className="app-main">
