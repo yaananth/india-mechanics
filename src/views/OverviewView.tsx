@@ -92,6 +92,8 @@ export function OverviewView({
       ? `This state record begins on ${stateStartDate}, the appointed day for post-split Andhra Pradesh. It does not merge observations from the undivided state or present-day Telangana.`
       : overview.jurisdiction.id === 'tamil-nadu'
         ? `This state record begins on ${stateStartDate}, when the name Tamil Nadu formally took effect. Earlier Madras State records remain related history rather than being silently relabelled.`
+        : overview.jurisdiction.id === 'telangana'
+          ? `This state record begins on ${stateStartDate}, Telangana's appointed day under the Andhra Pradesh Reorganisation Act. It does not assign undivided-Andhra observations to Telangana or silently merge present-day Andhra Pradesh data.`
         : `This state record begins on ${stateStartDate}, its documented validity boundary. Earlier or differently bounded records are not silently merged into current-state comparisons.`
 
   return (

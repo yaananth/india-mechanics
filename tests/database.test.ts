@@ -506,7 +506,11 @@ describe('research database integrity', () => {
                 ) AS rated_years
          FROM leader_terms lt
          JOIN parties pa ON pa.id = lt.party_id
+         JOIN offices office ON office.id = lt.office_id
+         JOIN jurisdictions jurisdiction
+           ON jurisdiction.id = office.jurisdiction_id
          WHERE lt.rating_score IS NOT NULL
+           AND jurisdiction.level = 'country'
            AND pa.short_name IN ('BJP', 'INC')
          GROUP BY pa.short_name
          ORDER BY pa.short_name`,
@@ -1199,7 +1203,7 @@ describe('research database integrity', () => {
     )
     expect(metadata.knowledge_cutoff).toBe('2026-08-04')
     expect(metadata.editorial_reviewed_through).toBe('2026-07-26')
-    expect(metadata.source_roster_version).toBe('source-roster-v0.14')
+    expect(metadata.source_roster_version).toBe('source-roster-v0.15')
     expect(metadata.source_rubric_version).toBe('source-v0.2')
     expect(Number(metadata.latest_world_bank_period)).toBeGreaterThanOrEqual(2024)
     expect(Number(metadata.latest_vdem_period)).toBeGreaterThanOrEqual(2024)
@@ -1281,7 +1285,7 @@ describe('research database integrity', () => {
     }>
     expect(unpublishedClaims).toEqual([])
     expect(batches).toContainEqual({
-      source_roster_version: 'source-roster-v0.14',
+      source_roster_version: 'source-roster-v0.15',
       review_status: 'published',
     })
     expect(
@@ -1707,6 +1711,205 @@ describe('state and Chief Minister extensibility', () => {
         .get(),
     ).toEqual({
       candidates_found: 18,
+      review_status: 'published',
+    })
+  })
+
+  it('publishes post-formation Telangana with isolated CM, policy, budget, and indicator records', () => {
+    expect(
+      db
+        .prepare(
+          `SELECT level, parent_id, iso_code, valid_from, status
+           FROM jurisdictions
+           WHERE id = 'telangana'`,
+        )
+        .get(),
+    ).toEqual({
+      level: 'state',
+      parent_id: 'india',
+      iso_code: 'IN-TG',
+      valid_from: '2014-06-02',
+      status: 'published',
+    })
+
+    const metadata = Object.fromEntries(
+      (
+        db
+          .prepare(
+            `SELECT key, value
+             FROM jurisdiction_metadata
+             WHERE jurisdiction_id = 'telangana'`,
+          )
+          .all() as unknown as Array<{ key: string; value: string }>
+      ).map((row) => [row.key, row.value]),
+    )
+    expect(metadata).toMatchObject({
+      knowledge_cutoff: '2026-08-04',
+      editorial_reviewed_through: '2026-08-04',
+      political_status_checked: '2026-08-04',
+      indicator_as_of_date: '2026-08-04',
+      timeline_starts: '2014-06-02',
+    })
+
+    expect(
+      db
+        .prepare(
+          `SELECT t.id, t.start_date, t.end_date, t.rating_score,
+                  t.rating_confidence, person.name, party.short_name AS party
+           FROM leader_terms t
+           JOIN people person ON person.id = t.person_id
+           JOIN parties party ON party.id = t.party_id
+           WHERE t.office_id = 'telangana-chief-minister'
+           ORDER BY t.start_date`,
+        )
+        .all(),
+    ).toEqual([
+      {
+        id: 'ts-kcr-2014',
+        start_date: '2014-06-02',
+        end_date: '2018-12-12',
+        rating_score: 6.1,
+        rating_confidence: 'medium',
+        name: 'K. Chandrashekar Rao',
+        party: 'TRS/BRS',
+      },
+      {
+        id: 'ts-kcr-2018',
+        start_date: '2018-12-13',
+        end_date: '2023-12-06',
+        rating_score: 6.1,
+        rating_confidence: 'medium',
+        name: 'K. Chandrashekar Rao',
+        party: 'TRS/BRS',
+      },
+      {
+        id: 'ts-revanth-2023',
+        start_date: '2023-12-07',
+        end_date: null,
+        rating_score: 6.3,
+        rating_confidence: 'low',
+        name: 'A. Revanth Reddy',
+        party: 'INC',
+      },
+    ])
+
+    expect(
+      db
+        .prepare(
+          `SELECT
+             (SELECT COUNT(*) FROM events
+              WHERE jurisdiction_id = 'telangana') AS events,
+             (SELECT COUNT(*) FROM policies
+              WHERE jurisdiction_id = 'telangana') AS policies,
+             (SELECT COUNT(*) FROM budgets
+              WHERE jurisdiction_id = 'telangana') AS budgets,
+             (SELECT COUNT(*) FROM indicator_observations
+              WHERE jurisdiction_id = 'telangana') AS observations,
+             (SELECT COUNT(*) FROM curated_answers
+              WHERE jurisdiction_id = 'telangana') AS answers`,
+        )
+        .get(),
+    ).toEqual({
+      events: 9,
+      policies: 6,
+      budgets: 4,
+      observations: 35,
+      answers: 3,
+    })
+
+    expect(
+      db
+        .prepare(
+          `SELECT indicator_id, period
+           FROM indicator_observations
+           WHERE jurisdiction_id = 'telangana' AND period < 2014`,
+        )
+        .all(),
+    ).toEqual([])
+
+    expect(
+      db
+        .prepare(
+          `SELECT event.id
+           FROM events event
+           LEFT JOIN event_assessments assessment
+             ON assessment.event_id = event.id
+           LEFT JOIN event_responsibilities responsibility
+             ON responsibility.event_id = event.id
+           WHERE event.jurisdiction_id = 'telangana'
+           GROUP BY event.id
+           HAVING assessment.event_id IS NULL OR COUNT(responsibility.id) = 0`,
+        )
+        .all(),
+    ).toEqual([])
+
+    expect(
+      db
+        .prepare(
+          `SELECT period, value
+           FROM indicator_observations
+           WHERE jurisdiction_id = 'telangana'
+             AND indicator_id = 'ts-crime-cyber-registered-count'
+           ORDER BY period`,
+        )
+        .all(),
+    ).toEqual([
+      { period: 2020, value: 5024 },
+      { period: 2021, value: 10303 },
+      { period: 2022, value: 15297 },
+      { period: 2023, value: 18236 },
+      { period: 2024, value: 27230 },
+    ])
+
+    expect(
+      db
+        .prepare(
+          `SELECT rating_score, rating_confidence
+           FROM policies
+           WHERE id = 'ts-kaleshwaram-policy'`,
+        )
+        .get(),
+    ).toEqual({
+      rating_score: 3.7,
+      rating_confidence: 'high',
+    })
+
+    expect(
+      db
+        .prepare(
+          `SELECT status, rating_basis, rating_score, rating_confidence
+           FROM budgets
+           WHERE id = 'budget-ts-2026-27'`,
+        )
+        .get(),
+    ).toEqual({
+      status: 'current',
+      rating_basis: 'proposal',
+      rating_score: 5.9,
+      rating_confidence: 'low',
+    })
+
+    expect(
+      db
+        .prepare(
+          `SELECT id
+           FROM leader_specialist_assessments
+           WHERE term_id = 'ts-revanth-2023'`,
+        )
+        .get(),
+    ).toBeUndefined()
+
+    expect(
+      db
+        .prepare(
+          `SELECT candidates_found, rejected_records, review_status
+           FROM ingestion_batches
+           WHERE id = 'telangana-post-formation-2026-08-04'`,
+        )
+        .get(),
+    ).toEqual({
+      candidates_found: 24,
+      rejected_records: 0,
       review_status: 'published',
     })
   })

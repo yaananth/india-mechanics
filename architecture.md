@@ -180,6 +180,7 @@ server/seed-data/semiconductors.ts       cross-term semiconductor history and po
 server/seed-data/infrastructure-capacity.ts modern infrastructure and productive-capacity specialist lane
 server/seed-data/andhra-pradesh.ts      post-split AP state and CM corpus
 server/seed-data/tamil-nadu.ts          modern Tamil Nadu state and CM corpus
+server/seed-data/telangana.ts           post-formation Telangana state and CM corpus
 server/seed-data/research-metadata.ts   knowledge and review cutoffs
 server/seed-data/generated-indicators.json checked-in feed snapshot
 server/seed-data/generated-bills.json    checked-in Sansad government-bill snapshot
@@ -454,6 +455,9 @@ office terms separate from national data and from other states.
 - **Tamil Nadu** begins on January 14, 1969, when the Madras State name-change
   law took effect. It publishes the complete in-scope CM chronology through
   C. Joseph Vijay taking office on May 10, 2026.
+- **Telangana** begins on June 2, 2014 under the Andhra Pradesh Reorganisation
+  Act. It keeps all undivided-Andhra observations outside CM comparisons unless
+  a source provides a defensible territorial bridge.
 - Tamil Nadu rates nine substantial historical terms with the same six-category
   equal-mean CM rubric. Acting, very short, evidence-poor, and the current roughly
   75-day-old term remain unscored.
@@ -575,7 +579,7 @@ carry `jurisdiction=<id>`. Switching jurisdiction reloads a complete scoped
 bundle: overview, leaders, events, policies, budgets, indicators, answers, and
 sources.
 
-Two state modules are published. Post-bifurcation Andhra Pradesh demonstrates
+Three state modules are published. Post-bifurcation Andhra Pradesh demonstrates
 a successor-state boundary:
 
 ```text
@@ -626,6 +630,29 @@ The published Tamil Nadu corpus contains:
 - twenty-seven visible TN-coded indicators and seventy-three observations;
 - three reviewed state questions and a state-only source ledger;
 - one public-safety specialist assessment for the data-covered Stalin term.
+
+Post-formation Telangana uses the same successor-state isolation:
+
+```text
+jurisdiction id: telangana
+level: state
+parent: india
+ISO subdivision: IN-TG
+valid from: 2014-06-02
+office: Chief Minister of Telangana
+```
+
+The published Telangana corpus contains:
+
+- three CM terms: KCR 2014-18, KCR 2018-23, and Revanth Reddy 2023-present;
+- the same six-category equal-mean CM formula, with the current term marked
+  provisional;
+- nine accountability events and six reviewed policies;
+- four budgets, including the provisional 2026-27 proposal;
+- eighteen Telangana-coded indicators and thirty-five observations;
+- three reviewed questions and a state-only source ledger;
+- a cybercrime count series through 2024, kept contextual rather than treated
+  as a prevalence rate or automatic CM blame.
 
 Boundary rules:
 
@@ -1438,10 +1465,10 @@ This is a strong foundation, not an exhaustive history.
   authored factual/editorial classification is a continuing review task;
 - fixed-window leader comparisons, subperiod scores, and explicit category
   falsification thresholds are not yet published;
-- Andhra Pradesh and Tamil Nadu are published at state level; all other states
-  remain absent;
-- AP and Tamil Nadu policy, event, and budget coverage are reviewed starting
-  corpora, not exhaustive state archives;
+- Andhra Pradesh, Tamil Nadu, and Telangana are published at state level; all
+  other states remain absent;
+- AP, Tamil Nadu, and Telangana policy, event, and budget coverage are reviewed
+  starting corpora, not exhaustive state archives;
 - AP road evidence now covers network stock, annual PMGSY delivery through
   July 16, 2026, targeted access, maintenance, fatalities, and one CAG
   execution finding, but lacks a consistent independent annual road-condition
@@ -1454,6 +1481,9 @@ This is a strong foundation, not an exhaustive history.
   government has no published budget rating in this corpus as of July 24, 2026;
 - Tamil Nadu crime rates currently use the latest downloadable 2023 NCRB
   record, while road-safety evidence extends to calendar 2024;
+- Telangana currently publishes a verified cybercrime registration count
+  series through 2024; statewide murder, violent-crime, women/children,
+  charge-sheet, conviction, and pendency tables remain a review gap;
 - comparable crime trends currently stop at 2023; the official 2024 NCRB page
   exposes no downloadable records as of July 24, 2026;
 - current crime reporting is selective and is displayed as a provisional

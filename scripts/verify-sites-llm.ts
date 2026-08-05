@@ -115,6 +115,36 @@ assert.match(markdown.body, /^## Evidence records/m)
 assert.doesNotMatch(markdown.body, /^## Editorial scorecard/m)
 assert.match(markdown.body, /^## Sources/m)
 
+const telanganaCompact = await fetchText(
+  '/api/llm/leaders/ts-revanth-2023',
+)
+assert.equal(telanganaCompact.response.status, 200)
+const telanganaCompactData = JSON.parse(telanganaCompact.body) as {
+  identity: {
+    termId: string
+    leaderName: string
+    jurisdiction: { id: string; level: string }
+  }
+  publication: { knowledgeCutoff: string | null }
+}
+assert.equal(telanganaCompactData.identity.termId, 'ts-revanth-2023')
+assert.equal(telanganaCompactData.identity.leaderName, 'A. Revanth Reddy')
+assert.deepEqual(telanganaCompactData.identity.jurisdiction, {
+  id: 'telangana',
+  name: 'Telangana',
+  level: 'state',
+})
+assert.equal(telanganaCompactData.publication.knowledgeCutoff, '2026-08-04')
+
+const telanganaHtml = await fetchText(
+  '/?jurisdiction=telangana&view=leaders&term=ts-revanth-2023&layer=editorial',
+  { headers: { accept: 'text/html' } },
+)
+assert.equal(telanganaHtml.response.status, 200)
+assert.match(telanganaHtml.body, /A\. Revanth Reddy/)
+assert.match(telanganaHtml.body, /Editorial overall<\/dt><dd>6\.3\/10/)
+assert.match(telanganaHtml.body, /provisional/)
+
 const missing = await fetchText('/?view=leaders&term=not-a-real-term', {
   headers: { accept: 'text/html' },
 })
@@ -152,6 +182,7 @@ for (const termId of leaderIds) {
 }
 assert.match(sitemap.body, /layer=editorial/)
 assert.doesNotMatch(sitemap.body, /layer=facts/)
+assert.match(sitemap.body, /jurisdiction=telangana/)
 
 console.log(
   `Verified crawler HTML, compact JSON/Markdown, robots, and sitemap for ${leaderIds.length} leader terms.`,

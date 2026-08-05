@@ -65,7 +65,11 @@ const safetyGroups: Array<{
     label: 'Cybercrime',
     description:
       'Digital exposure, reporting portals, police classification, investigation, and offending all affect this series.',
-    suffixes: ['cyber-registered-rate', 'cyber-conviction-rate'],
+    suffixes: [
+      'cyber-registered-rate',
+      'cyber-registered-count',
+      'cyber-conviction-rate',
+    ],
   },
   {
     id: 'justice',
@@ -82,13 +86,15 @@ const safetyGroups: Array<{
 ]
 
 function safetyId(jurisdiction: Jurisdiction, suffix: string) {
+  const statePrefixes: Record<string, string> = {
+    'andhra-pradesh': 'ap-',
+    'tamil-nadu': 'tn-',
+    telangana: 'ts-',
+  }
   const prefix =
     jurisdiction.level === 'country'
       ? ''
-      : `${jurisdiction.id
-          .split('-')
-          .map((part) => part[0])
-          .join('')}-`
+      : (statePrefixes[jurisdiction.id] ?? `${jurisdiction.id}-`)
   return `${prefix}crime-${suffix}`
 }
 
@@ -122,8 +128,29 @@ export function SafetyView({
 }) {
   const { showEditorial } = useEditorialLayer()
   const [groupId, setGroupId] = useState<SafetyGroupId>('harm')
+  const availableGroupIds = useMemo(
+    () =>
+      new Set(
+        safetyGroups
+          .filter((candidate) =>
+            candidate.suffixes.some((suffix) =>
+              indicators.some(
+                (item) =>
+                  item.id === safetyId(jurisdiction, suffix) && item.latest,
+              ),
+            ),
+          )
+          .map((candidate) => candidate.id),
+      ),
+    [indicators, jurisdiction],
+  )
   const group =
-    safetyGroups.find((candidate) => candidate.id === groupId) ?? safetyGroups[0]
+    safetyGroups.find(
+      (candidate) =>
+        candidate.id === groupId && availableGroupIds.has(candidate.id),
+    ) ??
+    safetyGroups.find((candidate) => availableGroupIds.has(candidate.id)) ??
+    safetyGroups[0]
   const groupIndicators = useMemo(
     () =>
       group.suffixes
@@ -135,22 +162,29 @@ export function SafetyView({
         ),
     [group.suffixes, indicators, jurisdiction],
   )
-  const [selectedId, setSelectedId] = useState(
-    safetyId(jurisdiction, group.suffixes[0]),
-  )
+  const [selectedId, setSelectedId] = useState('')
   const [series, setSeries] = useState<IndicatorSeries | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const next = groupIndicators[0]?.id
-    if (next && !groupIndicators.some((item) => item.id === selectedId)) {
+    if (!next) {
+      setSelectedId('')
+      return
+    }
+    if (!groupIndicators.some((item) => item.id === selectedId)) {
       setSelectedId(next)
     }
   }, [groupIndicators, selectedId])
 
   useEffect(() => {
-    if (!selectedId) return
+    if (!selectedId) {
+      setSeries(null)
+      setError(null)
+      setLoading(false)
+      return
+    }
     const controller = new AbortController()
     setLoading(true)
     setError(null)
@@ -181,6 +215,12 @@ export function SafetyView({
   const latest = series?.observations.at(-1)
   const murder = latestValue(indicators, jurisdiction, 'murder-rate')
   const violent = latestValue(indicators, jurisdiction, 'violent-rate')
+  const latestSafetyPeriod = Math.max(
+    0,
+    ...indicators
+      .filter((indicator) => indicator.id.includes('crime-'))
+      .map((indicator) => indicator.latest?.period ?? 0),
+  )
   const officeLabel =
     jurisdiction.level === 'country' ? 'Prime Minister' : 'Chief Minister'
 
@@ -189,7 +229,8 @@ export function SafetyView({
       <header className="view-header">
         <div>
           <span className="freshness-line">
-            Comparable NCRB data through 2023 · reviewed{' '}
+            Reviewed public-safety data through{' '}
+            {latestSafetyPeriod || 'the latest available period'} · reviewed{' '}
             {knowledge.editorialReviewedThrough}
           </span>
           <h1>Crime and safety, without hiding reporting effects</h1>
@@ -200,8 +241,8 @@ export function SafetyView({
           </p>
         </div>
         <div className="view-header__stat">
-          <strong>2023</strong>
-          <span>latest downloadable NCRB year</span>
+          <strong>{latestSafetyPeriod || '—'}</strong>
+          <span>latest published safety observation</span>
         </div>
       </header>
 
@@ -271,7 +312,11 @@ export function SafetyView({
             reporting-sensitive categories require separate interpretation.
           </p>
         </div>
-        <span>2024 page checked: no downloadable records</span>
+        <span>
+          {latestSafetyPeriod >= 2024
+            ? `Latest reviewed safety observation: ${latestSafetyPeriod}`
+            : '2024 page checked: no downloadable comparable records'}
+        </span>
       </section>
 
       <section className="safety-data-section">
@@ -287,6 +332,7 @@ export function SafetyView({
               aria-selected={item.id === group.id}
               className={item.id === group.id ? 'is-active' : undefined}
               key={item.id}
+              disabled={!availableGroupIds.has(item.id)}
               onClick={() => setGroupId(item.id)}
             >
               {item.label}
@@ -503,9 +549,9 @@ export function SafetyView({
               <Gavel size={26} aria-hidden="true" />
               <h3>Not yet rateable</h3>
               <p>
-                The latest comparable NCRB data are for 2023, before this term
-                began. Current police and news signals remain visible below but do
-                not receive a numerical score yet.
+                The available comparable public-safety series is not complete
+                enough to support a numerical specialist score for this term.
+                Current police and news signals remain visible below.
               </p>
             </article>
           )}

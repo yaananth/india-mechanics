@@ -18,8 +18,8 @@ The project combines:
 - claim-level provenance, source roles, limitations, review dates, and knowledge
   cutoffs;
 - a jurisdiction-native model that currently publishes India,
-  post-bifurcation Andhra Pradesh, and modern Tamil Nadu from January 14,
-  1969.
+  post-bifurcation Andhra Pradesh, modern Tamil Nadu from January 14, 1969,
+  and post-formation Telangana from June 2, 2014.
 
 This is both software and a public research record. The human website shows
 **Ratings and evidence by default**. Every score, verdict, accountability
@@ -52,7 +52,8 @@ underlying records and sources.
 8. **State boundaries matter.** Andhra Pradesh observations begin after
    June 2, 2014; undivided-state data are not silently assigned to the successor
    state. Tamil Nadu is explicitly anchored to the January 14, 1969 effective
-   renaming of Madras State.
+   renaming of Madras State. Telangana also begins on June 2, 2014 and never
+   inherits undivided-Andhra observations without an explicit mapping.
 
 Read [architecture.md](./architecture.md) for the complete model and
 [AGENTS.md](./AGENTS.md) for the research and verification contract.
@@ -269,6 +270,7 @@ server/seed-data/semiconductors.ts     semiconductor history and industrial-poli
 server/seed-data/infrastructure-capacity.ts infrastructure and productive-capacity scorecard
 server/seed-data/andhra-pradesh.ts    post-split AP corpus
 server/seed-data/tamil-nadu.ts        modern Tamil Nadu and CM corpus
+server/seed-data/telangana.ts         post-formation Telangana and CM corpus
 server/seed-data/budgets.ts           budget records and ratings
 server/seed-data/generated-bills.json official Sansad register snapshot
 server/seed-data/generated-bill-documents.json official-PDF purpose cache
@@ -369,10 +371,11 @@ State additions require:
 - explicit Union/state/local attribution;
 - API, URL, desktop, and mobile tests.
 
-Use the Andhra Pradesh and Tamil Nadu implementations as reference patterns.
-Andhra Pradesh demonstrates a successor-state boundary break; Tamil Nadu
-demonstrates a naming-validity boundary with a much longer CM chronology. Do
-not project a present-day state identity backward without a documented mapping.
+Use the Andhra Pradesh, Tamil Nadu, and Telangana implementations as reference
+patterns. Andhra Pradesh and Telangana demonstrate successor-state boundary
+breaks; Tamil Nadu demonstrates a naming-validity boundary with a much longer
+CM chronology. Do not project a present-day state identity backward without a
+documented mapping.
 
 ## Canonical deployment and governance
 

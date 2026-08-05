@@ -147,9 +147,10 @@ describe('leader LLM documents', () => {
   })
 
   it('resolves state term IDs without requiring a jurisdiction query', async () => {
-    const response = await request(app).get(
-      '/api/llm/leaders/ap-naidu-2014',
-    )
+    const [response, telangana] = await Promise.all([
+      request(app).get('/api/llm/leaders/ap-naidu-2014'),
+      request(app).get('/api/llm/leaders/ts-revanth-2023'),
+    ])
     expect(response.status).toBe(200)
     expect(response.body).toMatchObject({
       identity: {
@@ -171,6 +172,26 @@ describe('leader LLM documents', () => {
     expect(
       await request(app).get('/api/llm/leaders/not-a-real-term'),
     ).toMatchObject({ status: 404 })
+    expect(telangana.status).toBe(200)
+    expect(telangana.body).toMatchObject({
+      identity: {
+        termId: 'ts-revanth-2023',
+        leaderName: 'A. Revanth Reddy',
+        jurisdiction: {
+          id: 'telangana',
+          level: 'state',
+        },
+      },
+      assessment: {
+        included: false,
+        status: 'provisional',
+        termStatus: 'ongoing',
+        overallScore: null,
+      },
+      publication: {
+        knowledgeCutoff: '2026-08-04',
+      },
+    })
   })
 
   it('bounds records, reports omissions, deduplicates sources, and escapes HTML', () => {

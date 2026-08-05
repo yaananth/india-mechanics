@@ -7,6 +7,7 @@ import { securitySources } from '../server/seed-data/security.ts'
 import { semiconductorSources } from '../server/seed-data/semiconductors.ts'
 import { infrastructureCapacitySources } from '../server/seed-data/infrastructure-capacity.ts'
 import { tamilNaduSources } from '../server/seed-data/tamil-nadu.ts'
+import { telanganaSources } from '../server/seed-data/telangana.ts'
 
 const allSources = [
   ...sources,
@@ -16,6 +17,7 @@ const allSources = [
   ...infrastructureCapacitySources,
   ...andhraSources,
   ...tamilNaduSources,
+  ...telanganaSources,
   ...crimeSafetySources,
   ...budgetSources,
 ]

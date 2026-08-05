@@ -4,10 +4,11 @@ India Mechanics is a source-backed, multi-jurisdiction research database and
 website. The human interface shows ratings and evidence by default, with every
 score and verdict labelled editorial; `layer=facts` is the explicit
 no-judgment view. Compact machine endpoints remain facts-first unless
-`layer=editorial` is requested. The national corpus covers India from 1945; state corpora cover
-post-bifurcation Andhra Pradesh from June 2, 2014 and modern Tamil Nadu from
-January 14, 1969. It separates measured observations, historical events, sourced
-claims, and editorial term evaluations.
+`layer=editorial` is requested. The national corpus covers India from 1945;
+state corpora cover post-bifurcation Andhra Pradesh and post-formation
+Telangana from June 2, 2014, plus modern Tamil Nadu from January 14, 1969. It
+separates measured observations, historical events, sourced claims, and
+editorial term evaluations.
 
 Canonical origin:
 - https://india-mechanics.artfiesco.chatgpt.site

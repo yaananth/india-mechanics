@@ -337,6 +337,142 @@ describe('read API', () => {
     ).toBe(true)
   })
 
+  it('publishes Telangana as an isolated post-formation state jurisdiction', async () => {
+    const [
+      jurisdictions,
+      overview,
+      leaders,
+      policies,
+      budgets,
+      events,
+      indicators,
+      sources,
+      answer,
+      cyber,
+    ] = await Promise.all([
+      request(app).get('/api/jurisdictions'),
+      request(app).get('/api/overview').query({ jurisdiction: 'telangana' }),
+      request(app).get('/api/leaders').query({ jurisdiction: 'telangana' }),
+      request(app).get('/api/policies').query({ jurisdiction: 'telangana' }),
+      request(app).get('/api/budgets').query({ jurisdiction: 'telangana' }),
+      request(app).get('/api/events').query({ jurisdiction: 'telangana' }),
+      request(app).get('/api/indicators').query({ jurisdiction: 'telangana' }),
+      request(app).get('/api/sources').query({ jurisdiction: 'telangana' }),
+      request(app).get('/api/search').query({
+        jurisdiction: 'telangana',
+        q: 'how is telangana doing',
+        layer: 'editorial',
+      }),
+      request(app)
+        .get('/api/indicators/ts-crime-cyber-registered-count/series')
+        .query({ jurisdiction: 'telangana' }),
+    ])
+
+    expect(jurisdictions.body).toContainEqual(
+      expect.objectContaining({
+        id: 'telangana',
+        level: 'state',
+        parentId: 'india',
+        isoCode: 'IN-TG',
+        validFrom: '2014-06-02',
+      }),
+    )
+    expect(overview.status).toBe(200)
+    expect(overview.body).toMatchObject({
+      jurisdictionId: 'telangana',
+      jurisdiction: {
+        id: 'telangana',
+        level: 'state',
+        validFrom: '2014-06-02',
+      },
+      currentTerm: {
+        id: 'ts-revanth-2023',
+        person: { name: 'A. Revanth Reddy' },
+        party: { shortName: 'INC' },
+        scorecard: {
+          assessmentStatus: 'provisional',
+          termStatus: 'ongoing',
+          overallScore: 6.3,
+        },
+      },
+      featuredAnswer: {
+        id: 'ts-progress-since-statehood',
+      },
+      knowledge: {
+        cutoff: '2026-08-04',
+        timelineStarts: '2014-06-02',
+      },
+    })
+    expect(leaders.body).toHaveLength(3)
+    expect(policies.body).toHaveLength(6)
+    expect(policies.body).toContainEqual(
+      expect.objectContaining({
+        id: 'ts-kaleshwaram-policy',
+        ratingScore: 3.7,
+        ratingConfidence: 'high',
+      }),
+    )
+    expect(budgets.body).toHaveLength(4)
+    expect(budgets.body).toContainEqual(
+      expect.objectContaining({
+        id: 'budget-ts-2026-27',
+        status: 'current',
+        ratingScore: 5.9,
+        ratingConfidence: 'low',
+      }),
+    )
+    expect(events.body).toHaveLength(9)
+    expect(
+      events.body.every(
+        (event: TimelineEvent) =>
+          event.date >= '2014-06-02' &&
+          event.accountability &&
+          event.governments.length > 0,
+      ),
+    ).toBe(true)
+    expect(indicators.body).toHaveLength(18)
+    expect(
+      indicators.body.every((indicator: { id: string }) =>
+        indicator.id.startsWith('ts-'),
+      ),
+    ).toBe(true)
+    expect(sources.body.length).toBeGreaterThanOrEqual(15)
+    expect(answer.body.answer).toMatchObject({
+      id: 'ts-progress-since-statehood',
+      confidence: 'medium',
+    })
+    expect(cyber.body).toMatchObject({
+      definition: {
+        id: 'ts-crime-cyber-registered-count',
+        direction: 'neutral',
+        scoreRole: 'context',
+      },
+      observations: [
+        { period: 2020, value: 5024 },
+        { period: 2021, value: 10303 },
+        { period: 2022, value: 15297 },
+        { period: 2023, value: 18236 },
+        { period: 2024, value: 27230 },
+      ],
+    })
+    expect(cyber.body.termChanges).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          termId: 'ts-kcr-2018',
+          directionAssessment: 'context',
+          baseline: { period: 2020, value: 5024, status: 'observed' },
+          endpoint: { period: 2023, value: 18236, status: 'observed' },
+        }),
+        expect.objectContaining({
+          termId: 'ts-revanth-2023',
+          directionAssessment: 'context',
+          baseline: { period: 2023, value: 18236, status: 'observed' },
+          endpoint: { period: 2024, value: 27230, status: 'observed' },
+        }),
+      ]),
+    )
+  })
+
   it('compares Tamil Nadu indicators by the closest observed CM data years', async () => {
     const response = await request(app)
       .get('/api/indicators/tn-real-nsdp-per-capita/series')

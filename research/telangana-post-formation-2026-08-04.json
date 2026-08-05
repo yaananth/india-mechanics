@@ -1,0 +1,349 @@
+{
+  "batchId": "telangana-post-formation-2026-08-04",
+  "rosterVersion": "source-roster-v0.15",
+  "lane": "state-assessment",
+  "throughDate": "2026-08-04",
+  "reviewer": "India Mechanics Telangana state review",
+  "candidates": [
+    {
+      "id": "ts-reorganisation-act-2014",
+      "url": "https://upload.indiacode.nic.in/view-casepdf?id=AC_CEN_5_5_00058_201406_1517807327989&type=act",
+      "sourceRegistryId": "india-code",
+      "sourceClass": "official",
+      "independenceGroup": "india-code",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ts-state-profile",
+      "url": "https://www.telangana.gov.in/about/state-profile/",
+      "sourceRegistryId": "telangana-government",
+      "sourceClass": "official",
+      "independenceGroup": "telangana-state-portal",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ts-cm-revanth-profile",
+      "url": "https://www.telangana.gov.in/government/chief-minister/",
+      "sourceRegistryId": "telangana-government",
+      "sourceClass": "official",
+      "independenceGroup": "telangana-current-office",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "eci-ts-2018",
+      "url": "https://www.eci.gov.in/eci-backend/public/all_files/full-statistical-reports/telangana/2018/Detailed_Results.pdf",
+      "sourceRegistryId": "eci",
+      "sourceClass": "official",
+      "independenceGroup": "eci-telangana-2018",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "eci-ts-2023",
+      "url": "https://results.eci.gov.in/AcResultGenDecNew2023/partywiseresult-S29.htm",
+      "sourceRegistryId": "eci",
+      "sourceClass": "official",
+      "independenceGroup": "eci-telangana-2023",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ts-budget-volumes",
+      "url": "https://finance.telangana.gov.in/budget-volumes.jsp",
+      "sourceRegistryId": "telangana-government",
+      "sourceClass": "official",
+      "independenceGroup": "telangana-finance",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ts-budget-2026-27",
+      "url": "https://pixelvidebudget.s3.ap-south-1.amazonaws.com/uploads/budget_books_public/1773980893_Budget_Speech_English_2026-27_1773980893_.pdf",
+      "sourceRegistryId": "telangana-government",
+      "sourceClass": "official",
+      "independenceGroup": "telangana-budget-2026",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ts-budget-2014-15",
+      "url": "https://finance.telangana.gov.in/PreviewPage.do?fileName=2014-15-English-Speech.pdf&filePath=donwloads-FM-Budget-Speech-2014-15",
+      "sourceRegistryId": "telangana-government",
+      "sourceClass": "official",
+      "independenceGroup": "telangana-budget-2014",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "prs-ts-budget-2018-19",
+      "url": "https://prsindia.org/budgets/states/telangana-budget-analysis-2018-19",
+      "sourceRegistryId": "prs",
+      "sourceClass": "independent-analysis",
+      "independenceGroup": "prs-telangana-budget-2018",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ts-budget-in-brief-2026-27",
+      "url": "https://www.telangana.gov.in/wp-content/uploads/2026/05/Budget-in-Brief.pdf",
+      "sourceRegistryId": "telangana-government",
+      "sourceClass": "official",
+      "independenceGroup": "telangana-budget-2026",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ts-seo-2023",
+      "url": "https://des.telangana.gov.in/publications/Telangana-Socio-Economic-Outlook-2023.pdf",
+      "sourceRegistryId": "telangana-government",
+      "sourceClass": "official-analysis",
+      "independenceGroup": "telangana-des",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "nfhs5-telangana",
+      "url": "https://dhsprogram.com/pubs/pdf/OF43/OF43.TG.pdf",
+      "sourceRegistryId": null,
+      "sourceClass": "official",
+      "independenceGroup": "nfhs-telangana",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "niti-ts-macro-fiscal-2025",
+      "url": "https://www.niti.gov.in/sites/default/files/2025-03/Macro-and-Fiscal-Landscape-of-the-State-of-Telangana.pdf",
+      "sourceRegistryId": "niti",
+      "sourceClass": "official-analysis",
+      "independenceGroup": "niti-state-fiscal",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "cag-ts-kaleshwaram-2024",
+      "url": "https://cag.gov.in/en/audit-report/details/119638",
+      "sourceRegistryId": "cag",
+      "sourceClass": "official-audit",
+      "independenceGroup": "cag-kaleshwaram",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ts-mission-bhagiratha",
+      "url": "https://missionbhagiratha.telangana.gov.in/",
+      "sourceRegistryId": "telangana-government",
+      "sourceClass": "official",
+      "independenceGroup": "mission-bhagiratha",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "ts-seeepc-2024",
+      "url": "https://www.des.telangana.gov.in/publications/SEEEPC/SEEEPC-IEWG%20Volume-1.pdf",
+      "sourceRegistryId": "telangana-government",
+      "sourceClass": "official-analysis",
+      "independenceGroup": "telangana-seeepc",
+      "ratingInputs": {
+        "controllingRecord": false,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": true,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 4,
+      "reviewStatus": "accepted"
+    },
+    {
+      "id": "pib-ts-cybercrime-2026",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2287039",
+      "sourceRegistryId": "ncrb",
+      "sourceClass": "official",
+      "independenceGroup": "mha-ncrb-cybercrime",
+      "ratingInputs": {
+        "controllingRecord": true,
+        "primaryDirect": true,
+        "namedEvidence": true,
+        "transparentMethod": true,
+        "independent": false,
+        "stableArchive": true,
+        "anonymous": false,
+        "partisan": false,
+        "brokenProvenance": false
+      },
+      "rating": 5,
+      "reviewStatus": "accepted"
+    }
+  ]
+}

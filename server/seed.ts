@@ -49,6 +49,27 @@ import {
   tamilNaduSpecialistAssessments,
 } from './seed-data/tamil-nadu.ts'
 import {
+  telanganaBudgetAllocations,
+  telanganaBudgetPoints,
+  telanganaBudgets,
+  telanganaBudgetScores,
+  telanganaClaims,
+  telanganaCuratedAnswers,
+  telanganaEventAssessments,
+  telanganaEvents,
+  telanganaIndicatorDefinitions,
+  telanganaIndicatorObservations,
+  telanganaJurisdictions,
+  telanganaLeaderScores,
+  telanganaLeaderTerms,
+  telanganaOffices,
+  telanganaParties,
+  telanganaPeople,
+  telanganaPolicies,
+  telanganaPolicyScores,
+  telanganaSources,
+} from './seed-data/telangana.ts'
+import {
   claims,
   curatedAnswers,
   evaluationDimensions,
@@ -135,25 +156,43 @@ import type {
   PolicyRegisterSeed,
 } from './types.ts'
 
-export const seedVersion = '2026-08-05.3'
-const sourceRosterVersion = 'source-roster-v0.14'
+export const seedVersion = '2026-08-05.4'
+const sourceRosterVersion = 'source-roster-v0.15'
 const allJurisdictions = [
   ...jurisdictions,
   ...andhraJurisdictions,
   ...tamilNaduJurisdictions,
+  ...telanganaJurisdictions,
 ]
-const allOffices = [...offices, ...andhraOffices, ...tamilNaduOffices]
-const allPeople = [...people, ...andhraPeople, ...tamilNaduPeople]
-const allParties = [...parties, ...andhraParties, ...tamilNaduParties]
+const allOffices = [
+  ...offices,
+  ...andhraOffices,
+  ...tamilNaduOffices,
+  ...telanganaOffices,
+]
+const allPeople = [
+  ...people,
+  ...andhraPeople,
+  ...tamilNaduPeople,
+  ...telanganaPeople,
+]
+const allParties = [
+  ...parties,
+  ...andhraParties,
+  ...tamilNaduParties,
+  ...telanganaParties,
+]
 const allLeaderTerms = [
   ...leaderTerms,
   ...andhraLeaderTerms,
   ...tamilNaduLeaderTerms,
+  ...telanganaLeaderTerms,
 ]
 const allLeaderScores = [
   ...leaderScores,
   ...andhraLeaderScores,
   ...tamilNaduLeaderScores,
+  ...telanganaLeaderScores,
 ]
 const allSources = [
   ...sources,
@@ -163,6 +202,7 @@ const allSources = [
   ...infrastructureCapacitySources,
   ...andhraSources,
   ...tamilNaduSources,
+  ...telanganaSources,
   ...crimeSafetySources,
 ]
 const allPolicies = [
@@ -172,6 +212,7 @@ const allPolicies = [
   ...semiconductorPolicies,
   ...andhraPolicies,
   ...tamilNaduPolicies,
+  ...telanganaPolicies,
 ]
 const allPolicyScores = [
   ...policyScores,
@@ -180,6 +221,7 @@ const allPolicyScores = [
   ...semiconductorPolicyScores,
   ...andhraPolicyScores,
   ...tamilNaduPolicyScores,
+  ...telanganaPolicyScores,
 ]
 const allEvents = [
   ...events,
@@ -188,6 +230,7 @@ const allEvents = [
   ...semiconductorEvents,
   ...andhraEvents,
   ...tamilNaduEvents,
+  ...telanganaEvents,
   ...crimeSafetyEvents,
 ]
 const allEventAssessments = [
@@ -197,6 +240,7 @@ const allEventAssessments = [
   ...semiconductorEventAssessments,
   ...andhraEventAssessments,
   ...tamilNaduEventAssessments,
+  ...telanganaEventAssessments,
   ...crimeSafetyEventAssessments,
 ]
 const allClaims = [
@@ -207,6 +251,7 @@ const allClaims = [
   ...infrastructureCapacityClaims,
   ...andhraClaims,
   ...tamilNaduClaims,
+  ...telanganaClaims,
   ...crimeSafetyClaims,
 ]
 const allIndicatorDefinitions = [
@@ -214,23 +259,32 @@ const allIndicatorDefinitions = [
   ...developmentIndicatorDefinitions,
   ...andhraIndicatorDefinitions,
   ...tamilNaduIndicatorDefinitions,
+  ...telanganaIndicatorDefinitions,
   ...crimeSafetyIndicatorDefinitions,
 ]
-const allBudgets = [...budgets, ...andhraBudgets, ...tamilNaduBudgets]
+const allBudgets = [
+  ...budgets,
+  ...andhraBudgets,
+  ...tamilNaduBudgets,
+  ...telanganaBudgets,
+]
 const allBudgetScores = [
   ...budgetScores,
   ...andhraBudgetScores,
   ...tamilNaduBudgetScores,
+  ...telanganaBudgetScores,
 ]
 const allBudgetAllocations = [
   ...budgetAllocations,
   ...andhraBudgetAllocations,
   ...tamilNaduBudgetAllocations,
+  ...telanganaBudgetAllocations,
 ]
 const allBudgetPoints = [
   ...budgetPoints,
   ...andhraBudgetPoints,
   ...tamilNaduBudgetPoints,
+  ...telanganaBudgetPoints,
 ]
 const allCuratedAnswers = [
   ...curatedAnswers,
@@ -238,6 +292,7 @@ const allCuratedAnswers = [
   ...infrastructureCapacityAnswers,
   ...andhraCuratedAnswers,
   ...tamilNaduCuratedAnswers,
+  ...telanganaCuratedAnswers,
   ...crimeSafetyCuratedAnswers,
 ]
 const allSpecialistTopics = [
@@ -382,6 +437,13 @@ function insertRows(
       political_status_checked: '2026-07-26',
       indicator_as_of_date: '2026-07-26',
       timeline_starts: '1969-01-14',
+    },
+    telangana: {
+      knowledge_cutoff: '2026-08-04',
+      editorial_reviewed_through: '2026-08-04',
+      political_status_checked: '2026-08-04',
+      indicator_as_of_date: '2026-08-04',
+      timeline_starts: '2014-06-02',
     },
   }
   for (const [jurisdictionId, values] of Object.entries(stateMetadata)) {
@@ -1072,6 +1134,7 @@ function insertRows(
     ...developmentIndicatorObservations,
     ...andhraIndicatorObservations,
     ...tamilNaduIndicatorObservations,
+    ...telanganaIndicatorObservations,
     ...crimeSafetyIndicatorObservations,
   ]) {
     observationInsert.run(
@@ -1403,6 +1466,25 @@ function insertRows(
     'published',
     metadata.generated_at,
     'Published Tamil Nadu as an independent state jurisdiction from an 18-source core review with a hard January 14, 1969 naming boundary, complete CM chronology, nine formula-rated substantial terms, fifteen reviewed policies, thirteen accountability events, three reviewed budgets, state progress and public-safety series, three reviewed answers, and an explicitly unscored May 10, 2026 Vijay government. No future August 2026 budget is treated as completed evidence.',
+  )
+  db.prepare(
+    `INSERT INTO ingestion_batches
+      (id, source_roster_version, query_scope, run_at, agent_model,
+       candidates_found, rejected_records, reviewer, review_status,
+       published_at, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  ).run(
+    'telangana-post-formation-2026-08-04',
+    sourceRosterVersion,
+    'Post-formation Telangana from June 2, 2014 through August 4, 2026: CM terms, ratings, indicators, budgets, policies, events, public safety, and claims',
+    metadata.generated_at,
+    'Codex with Telangana primary-source, fiscal, policy, and methodology review sub-agents',
+    24,
+    0,
+    'India Mechanics Telangana editorial review',
+    'published',
+    metadata.generated_at,
+    'Published Telangana as an independent state jurisdiction with a hard June 2, 2014 boundary, three CM terms, state-only observations, reviewed policy and budget records, accountability events, and sourced answers. August 5, 2026 discoveries remain outside this August 4 cutoff, and undivided-Andhra observations are not assigned to Telangana CM terms.',
   )
   db.prepare(
     `INSERT INTO ingestion_batches

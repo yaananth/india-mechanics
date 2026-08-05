@@ -102,6 +102,21 @@ describe('shareable navigation URLs', () => {
       '/?jurisdiction=tamil-nadu&view=leaders&term=tn-vijay-2026&layer=editorial',
     )
     expect(parseNavigation(tamilNaduHref)).toEqual(tamilNaduState)
+
+    const telanganaState: NavigationState = {
+      ...defaultNavigation,
+      jurisdictionId: 'telangana',
+      view: 'leaders',
+      termId: 'ts-revanth-2023',
+    }
+    const telanganaHref = navigationHref(
+      telanganaState,
+      'https://example.test/',
+    )
+    expect(telanganaHref).toBe(
+      '/?jurisdiction=telangana&view=leaders&term=ts-revanth-2023&layer=editorial',
+    )
+    expect(parseNavigation(telanganaHref)).toEqual(telanganaState)
   })
 
   it('infers a view when a share URL omits the view parameter', () => {

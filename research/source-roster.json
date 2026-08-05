@@ -1,6 +1,6 @@
 {
-  "version": "source-roster-v0.14",
-  "updatedAt": "2026-08-04",
+  "version": "source-roster-v0.15",
+  "updatedAt": "2026-08-05",
   "rule": "Web search discovers candidates. Only reviewed source items enter the published database.",
   "sources": [
     {
@@ -119,6 +119,29 @@
         "lokbhavan.tn.gov.in"
       ],
       "roles": ["state-policy", "state-budget", "current-office", "legislature"],
+      "ratingCeiling": 5
+    },
+    {
+      "id": "telangana-government",
+      "name": "Government of Telangana",
+      "domains": [
+        "telangana.gov.in",
+        "finance.telangana.gov.in",
+        "des.telangana.gov.in",
+        "legislature.telangana.gov.in",
+        "governor.telangana.gov.in",
+        "missionbhagiratha.telangana.gov.in",
+        "police.telangana.gov.in",
+        "hyderabadpolice.gov.in"
+      ],
+      "roles": [
+        "state-policy",
+        "state-budget",
+        "state-statistics",
+        "current-office",
+        "legislature",
+        "public-safety"
+      ],
       "ratingCeiling": 5
     },
     {
