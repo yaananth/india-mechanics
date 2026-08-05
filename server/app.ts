@@ -7,9 +7,15 @@ import {
   leaderScorecardCategories,
   leaderScorecardVersion,
 } from './leader-scorecards.ts'
+import {
+  buildCompactLeaderDocument,
+  renderLeaderHtml,
+  renderLeaderMarkdown,
+} from './llm-documents.ts'
 import { specialistScore } from './specialist-ratings.ts'
 
 const DEFAULT_JURISDICTION = 'india'
+const CANONICAL_ORIGIN = 'https://india-mechanics.artfiesco.chatgpt.site'
 
 function metadataMap(db: DatabaseSync) {
   return Object.fromEntries(
@@ -41,6 +47,69 @@ function metadataForJurisdiction(db: DatabaseSync, jurisdictionId: string) {
 
 function progressYear(db: DatabaseSync) {
   return Number(metadataMap(db).recommended_progress_year ?? 2024)
+}
+
+function jurisdictionForTerm(
+  db: DatabaseSync,
+  termId: string,
+  requestedJurisdiction?: string,
+) {
+  if (requestedJurisdiction) return requestedJurisdiction
+  return (
+    db
+      .prepare(
+        `SELECT office.jurisdiction_id
+         FROM leader_terms term
+         JOIN offices office ON office.id = term.office_id
+         WHERE term.id = ?`,
+      )
+      .get(termId) as { jurisdiction_id?: string } | undefined
+  )?.jurisdiction_id
+}
+
+function leaderDocumentInput(
+  db: DatabaseSync,
+  jurisdictionId: string,
+  term: Record<string, unknown>,
+) {
+  const jurisdiction = db
+    .prepare(
+      `SELECT id, name, level
+       FROM jurisdictions
+       WHERE id = ?`,
+    )
+    .get(jurisdictionId) as
+    | { id: string; name: string; level: string }
+    | undefined
+  const metadata = metadataForJurisdiction(db, jurisdictionId)
+  const canonicalUrl = new URL('/', CANONICAL_ORIGIN)
+  if (jurisdictionId !== DEFAULT_JURISDICTION) {
+    canonicalUrl.searchParams.set('jurisdiction', jurisdictionId)
+  }
+  canonicalUrl.searchParams.set('view', 'leaders')
+  canonicalUrl.searchParams.set('term', String(term.id))
+  const compactApiUrl = new URL(
+    `/api/llm/leaders/${encodeURIComponent(String(term.id))}`,
+    CANONICAL_ORIGIN,
+  )
+
+  return {
+    ...term,
+    jurisdiction: jurisdiction ?? {
+      id: jurisdictionId,
+      name: jurisdictionId,
+      level: 'unknown',
+    },
+    publication: {
+      canonicalUrl: canonicalUrl.toString(),
+      compactApiUrl: compactApiUrl.toString(),
+      methodologyUrl: `${CANONICAL_ORIGIN}/api/methodology`,
+      llmsGuideUrl: `${CANONICAL_ORIGIN}/llms.txt`,
+      knowledgeCutoff: metadata.knowledge_cutoff,
+      editorialReviewedThrough: metadata.editorial_reviewed_through,
+      methodologyVersion: metadata.methodology_version,
+    },
+  }
 }
 
 type SourceRow = {
@@ -1920,6 +1989,53 @@ export function createApp(db: DatabaseSync) {
     response.json(term)
   })
 
+  app.get('/api/llm/leaders/:termId', (request, response) => {
+    const requestedJurisdiction =
+      typeof request.query.jurisdiction === 'string'
+        ? request.query.jurisdiction
+        : undefined
+    const jurisdictionId = jurisdictionForTerm(
+      db,
+      request.params.termId,
+      requestedJurisdiction,
+    )
+    if (!jurisdictionId) {
+      response.status(404).json({ error: 'Leader term not found' })
+      return
+    }
+    const term = getLeaderTerms(db, jurisdictionId).find(
+      (candidate) => candidate.id === request.params.termId,
+    )
+    if (!term) {
+      response.status(404).json({ error: 'Leader term not found' })
+      return
+    }
+    const document = buildCompactLeaderDocument(
+      leaderDocumentInput(db, jurisdictionId, term),
+    )
+    const markdownUrl = `${document.publication.compactApiUrl}?format=markdown`
+    response.setHeader(
+      'Link',
+      [
+        `<${document.publication.canonicalUrl}>; rel="canonical"`,
+        `<${document.publication.compactApiUrl}>; rel="alternate"; type="application/json"`,
+        `<${markdownUrl}>; rel="alternate"; type="text/markdown"`,
+      ].join(', '),
+    )
+    response.setHeader('Cache-Control', 'public, max-age=60')
+
+    const format = String(request.query.format ?? 'json').toLowerCase()
+    if (format === 'markdown' || format === 'md') {
+      response.type('text/markdown').send(renderLeaderMarkdown(document))
+      return
+    }
+    if (format === 'html') {
+      response.type('html').send(renderLeaderHtml(document))
+      return
+    }
+    response.json(document)
+  })
+
   app.get('/api/policies', (request, response) => {
     const jurisdictionId = String(
       request.query.jurisdiction ?? DEFAULT_JURISDICTION,
@@ -2711,6 +2827,7 @@ export function createApp(db: DatabaseSync) {
         '/api/meta': { get: { summary: 'Dataset metadata and row counts' } },
         '/api/overview': { get: { summary: 'Progress, current term, and featured answer' } },
         '/api/leaders': { get: { summary: 'Leader terms, component scores, claims, and sources' } },
+        '/api/llm/leaders/{termId}': { get: { summary: 'Compact leader scorecard for LLM and crawler retrieval' } },
         '/api/policies': { get: { summary: 'Policies, bills, evaluations, claims, and sources' } },
         '/api/budgets': { get: { summary: 'Union budgets, allocations, evaluations, and sources' } },
         '/api/bills': { get: { summary: 'Paginated official government-bill register' } },

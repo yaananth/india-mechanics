@@ -225,6 +225,32 @@ the parliamentary register.
 - Prefer RBI/MoSPI/state DES, Census, NFHS, ECI, CAG, court, commission, and
   state-portal records for state data.
 
+## LLM and crawler delivery
+
+- A public human deep link must return useful initial HTML without requiring
+  JavaScript. Do not describe an empty SPA shell as LLM-ready.
+- Keep `/llms.txt`, `/robots.txt`, `/sitemap.xml`, and `/api/openapi.json`
+  reachable on the canonical origin. Use absolute canonical URLs in discovery
+  documents.
+- One-term leader retrieval uses `/api/llm/leaders/<term-id>`. Keep it bounded,
+  source-backed, and materially smaller than the full leader record.
+- The compact leader document must include jurisdiction, office term, party,
+  six-category scorecard, nested specialist summaries, claims, sources,
+  reliability limitations, omission counts, confidence, assessment date,
+  knowledge cutoff, methodology version, and the editorial/causality
+  disclaimer.
+- The human leader URL
+  `/?jurisdiction=<id>&view=leaders&term=<term-id>` must expose the same bounded
+  evidence in semantic initial HTML, plus canonical and alternate links.
+- Return a real `404` with `noindex` for invalid leader terms. Do not publish
+  soft-404 SPA shells.
+- Do not use crawler-specific user-agent cloaking. Humans and bots receive the
+  same initial HTML; React may replace the fallback after loading.
+- Discovery files at stable, non-fingerprinted paths must not use a one-year
+  immutable cache policy.
+- A release is not crawler-ready until plain non-JavaScript fetches verify the
+  leader deep link, compact JSON and Markdown, robots, sitemap, and cutoff.
+
 ## Verification
 
 - `npm test`

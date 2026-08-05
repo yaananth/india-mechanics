@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://india-mechanics.artfiesco.chatgpt.site/sitemap.xml

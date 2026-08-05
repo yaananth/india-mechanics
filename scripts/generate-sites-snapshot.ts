@@ -4,6 +4,7 @@ import request from 'supertest'
 import { createApp } from '../server/app.ts'
 import { ensureDatabase } from '../server/seed.ts'
 
+const canonicalOrigin = 'https://india-mechanics.artfiesco.chatgpt.site'
 const databasePath = ensureDatabase()
 const db = new DatabaseSync(databasePath, { readOnly: true })
 const app = createApp(db)
@@ -98,6 +99,72 @@ async function buildJurisdictionSnapshot(jurisdictionId: string) {
   }
 }
 
+function sitemapLocation(
+  jurisdictionId: string,
+  view?: string,
+  item?: { key: string; id: string },
+) {
+  const url = new URL('/', canonicalOrigin)
+  if (jurisdictionId !== 'india') {
+    url.searchParams.set('jurisdiction', jurisdictionId)
+  }
+  if (view) url.searchParams.set('view', view)
+  if (item) url.searchParams.set(item.key, item.id)
+  return url.toString()
+}
+
+function sitemapXml(
+  jurisdictionEntries: Array<[string, Awaited<ReturnType<typeof buildJurisdictionSnapshot>>]>,
+) {
+  const locations = new Set<string>([`${canonicalOrigin}/`])
+  for (const [jurisdictionId, data] of jurisdictionEntries) {
+    locations.add(sitemapLocation(jurisdictionId))
+    for (const leader of data.leaders) {
+      locations.add(
+        sitemapLocation(jurisdictionId, 'leaders', {
+          key: 'term',
+          id: String(leader.id),
+        }),
+      )
+    }
+    for (const policy of data.policies) {
+      locations.add(
+        sitemapLocation(jurisdictionId, 'policies', {
+          key: 'policy',
+          id: String(policy.id),
+        }),
+      )
+    }
+    for (const budget of data.budgets) {
+      locations.add(
+        sitemapLocation(jurisdictionId, 'budgets', {
+          key: 'budget',
+          id: String(budget.id),
+        }),
+      )
+    }
+    for (const indicator of data.indicators) {
+      locations.add(
+        sitemapLocation(jurisdictionId, 'indicators', {
+          key: 'indicator',
+          id: String(indicator.id),
+        }),
+      )
+    }
+  }
+
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...Array.from(locations).map(
+      (location) =>
+        `  <url><loc>${location.replaceAll('&', '&amp;')}</loc></url>`,
+    ),
+    '</urlset>',
+    '',
+  ].join('\n')
+}
+
 try {
   const [jurisdictions, methodology, meta, openapi] = await Promise.all([
     getJson<Array<{ id: string; status: string }>>('/api/jurisdictions'),
@@ -129,6 +196,25 @@ try {
   await writeFile(
     'dist/api-snapshot.json',
     `${JSON.stringify(snapshot)}\n`,
+    'utf8',
+  )
+  await writeFile(
+    'dist/robots.txt',
+    [
+      'User-agent: *',
+      'Allow: /',
+      `Sitemap: ${canonicalOrigin}/sitemap.xml`,
+      '',
+    ].join('\n'),
+    'utf8',
+  )
+  await writeFile(
+    'dist/sitemap.xml',
+    sitemapXml(
+      jurisdictionEntries as Array<
+        [string, Awaited<ReturnType<typeof buildJurisdictionSnapshot>>]
+      >,
+    ),
     'utf8',
   )
   await copyFile('.openai/hosting.json', 'dist/.openai/hosting.json')

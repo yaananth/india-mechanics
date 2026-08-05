@@ -2,8 +2,23 @@ import {
   assets as embeddedAssets,
   snapshot as embeddedSnapshot,
 } from 'virtual:sites-assets'
+import {
+  buildCompactLeaderDocument,
+  renderLeaderHtml,
+  renderLeaderMarkdown,
+  type LeaderDocument,
+} from '../server/llm-documents.ts'
 
 type JsonRecord = Record<string, unknown>
+const canonicalOrigin = 'https://india-mechanics.artfiesco.chatgpt.site'
+const fallbackStart = '<!-- INDIA_MECHANICS_STATIC_FALLBACK_START -->'
+const fallbackEnd = '<!-- INDIA_MECHANICS_STATIC_FALLBACK_END -->'
+const mutableDiscoveryAssets = new Set([
+  '/index.html',
+  '/llms.txt',
+  '/robots.txt',
+  '/sitemap.xml',
+])
 
 type JurisdictionSnapshot = {
   exportMeta: JsonRecord
@@ -46,8 +61,227 @@ function json(data: unknown, status = 200) {
   })
 }
 
+function textResponse(
+  body: string,
+  contentType: string,
+  status = 200,
+  headers: Record<string, string> = {},
+) {
+  return new Response(body, {
+    status,
+    headers: {
+      'content-type': contentType,
+      'cache-control': 'public, max-age=60',
+      'x-content-type-options': 'nosniff',
+      'access-control-allow-origin': '*',
+      ...headers,
+    },
+  })
+}
+
 function text(value: unknown) {
   return String(value ?? '')
+}
+
+function record(value: unknown): JsonRecord {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? (value as JsonRecord)
+    : {}
+}
+
+function escapeHtml(value: unknown) {
+  return text(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;')
+}
+
+function metaDescription(value: string) {
+  const suffix = ' Source-backed editorial scorecard.'
+  const maximum = 300 - suffix.length
+  if (value.length <= maximum) return `${value}${suffix}`
+  const candidate = value.slice(0, maximum - 1)
+  const boundary = candidate.lastIndexOf(' ')
+  return `${candidate.slice(0, Math.max(0, boundary)).trimEnd()}…${suffix}`
+}
+
+function leaderDocument(
+  snapshot: SitesSnapshot,
+  termId: string,
+  requestedJurisdiction?: string | null,
+): LeaderDocument | null {
+  const jurisdictionEntries: Array<
+    [string, JurisdictionSnapshot | undefined]
+  > = requestedJurisdiction
+    ? [[requestedJurisdiction, snapshot.jurisdictionData[requestedJurisdiction]]]
+    : Object.entries(snapshot.jurisdictionData)
+  for (const [jurisdictionId, jurisdiction] of jurisdictionEntries) {
+    if (!jurisdiction) continue
+    const leader = jurisdiction.leaders.find(
+      (candidate) => text(candidate.id) === termId,
+    )
+    if (!leader) continue
+    const jurisdictionRecord =
+      snapshot.jurisdictions.find(
+        (candidate) => text(candidate.id) === jurisdictionId,
+      ) ?? record(jurisdiction.exportMeta.jurisdiction)
+    const globalMetadata = record(snapshot.meta.metadata)
+    const jurisdictionMetadata = record(
+      record(snapshot.meta.jurisdictionMetadata)[jurisdictionId],
+    )
+    const metadata = { ...globalMetadata, ...jurisdictionMetadata }
+    const canonicalUrl = new URL('/', canonicalOrigin)
+    if (jurisdictionId !== 'india') {
+      canonicalUrl.searchParams.set('jurisdiction', jurisdictionId)
+    }
+    canonicalUrl.searchParams.set('view', 'leaders')
+    canonicalUrl.searchParams.set('term', termId)
+    const compactApiUrl = new URL(
+      `/api/llm/leaders/${encodeURIComponent(termId)}`,
+      canonicalOrigin,
+    )
+
+    return buildCompactLeaderDocument({
+      ...leader,
+      jurisdiction: jurisdictionRecord,
+      publication: {
+        canonicalUrl: canonicalUrl.toString(),
+        compactApiUrl: compactApiUrl.toString(),
+        methodologyUrl: `${canonicalOrigin}/api/methodology`,
+        llmsGuideUrl: `${canonicalOrigin}/llms.txt`,
+        knowledgeCutoff: metadata.knowledge_cutoff,
+        editorialReviewedThrough: metadata.editorial_reviewed_through,
+        methodologyVersion: metadata.methodology_version,
+      },
+    })
+  }
+  return null
+}
+
+function leaderLinkHeader(document: LeaderDocument) {
+  return [
+    `<${document.publication.canonicalUrl}>; rel="canonical"`,
+    `<${document.publication.compactApiUrl}>; rel="alternate"; type="application/json"`,
+    `<${document.publication.compactApiUrl}?format=markdown>; rel="alternate"; type="text/markdown"`,
+  ].join(', ')
+}
+
+function leaderJsonLd(document: LeaderDocument) {
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    name: `${document.identity.leaderName} — ${document.identity.officeName}`,
+    url: document.publication.canonicalUrl,
+    dateModified: document.assessment.asOfDate,
+    temporalCoverage: `${document.term.startDate}/${document.term.endDate ?? '..'}`,
+    description: document.assessment.summary,
+    mainEntity: {
+      '@type': 'Person',
+      name: document.identity.leaderName,
+      description: [
+        document.identity.officeName,
+        document.identity.party?.name,
+        document.term.mandateLabel,
+      ]
+        .filter(Boolean)
+        .join(' · '),
+    },
+    isBasedOn: document.sources
+      .map((source) => source.url)
+      .filter(Boolean)
+      .slice(0, 20),
+  }).replaceAll('<', '\\u003c')
+}
+
+function decorateLeaderIndex(indexHtml: string, document: LeaderDocument) {
+  const title = `${document.identity.leaderName} ${document.term.startDate.slice(0, 4)}–${document.term.endDate?.slice(0, 4) ?? 'present'} scorecard | India Mechanics`
+  const description = metaDescription(document.assessment.summary)
+  const headMetadata = [
+    `<link rel="canonical" href="${escapeHtml(document.publication.canonicalUrl)}" />`,
+    `<link rel="alternate" type="application/json" href="${escapeHtml(document.publication.compactApiUrl)}" />`,
+    `<link rel="alternate" type="text/markdown" href="${escapeHtml(document.publication.compactApiUrl)}?format=markdown" />`,
+    `<meta property="og:title" content="${escapeHtml(title)}" />`,
+    `<meta property="og:description" content="${escapeHtml(description)}" />`,
+    `<meta property="og:url" content="${escapeHtml(document.publication.canonicalUrl)}" />`,
+    `<script type="application/ld+json">${leaderJsonLd(document)}</script>`,
+    `<style>[data-document-type="leader-term-scorecard"]{max-width:960px;margin:0 auto;padding:32px 22px;font:16px/1.55 system-ui,sans-serif;color:#171914}[data-document-type="leader-term-scorecard"] h1,[data-document-type="leader-term-scorecard"] h2,[data-document-type="leader-term-scorecard"] h3{line-height:1.2}[data-document-type="leader-term-scorecard"] section{margin-top:28px}[data-document-type="leader-term-scorecard"] li{margin:12px 0}[data-document-type="leader-term-scorecard"] dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px}[data-document-type="leader-term-scorecard"] dd{margin:0}</style>`,
+  ]
+    .filter(Boolean)
+    .join('')
+  const fallback = renderLeaderHtml(document)
+  const start = indexHtml.indexOf(fallbackStart)
+  const end = indexHtml.indexOf(fallbackEnd)
+  const withFallback =
+    start >= 0 && end > start
+      ? `${indexHtml.slice(0, start + fallbackStart.length)}${fallback}${indexHtml.slice(end)}`
+      : indexHtml
+  return withFallback
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
+    .replace(
+      /<meta\s+name="description"\s+content="[\s\S]*?"\s*\/>/,
+      `<meta name="description" content="${escapeHtml(description)}" />`,
+    )
+    .replace('</head>', `${headMetadata}</head>`)
+}
+
+function leaderDeepLinkResponse(
+  request: Request,
+  snapshot: SitesSnapshot,
+): Response | null {
+  const url = new URL(request.url)
+  if (
+    (request.method !== 'GET' && request.method !== 'HEAD') ||
+    url.pathname !== '/' ||
+    url.searchParams.get('view') !== 'leaders' ||
+    !url.searchParams.get('term')
+  ) {
+    return null
+  }
+  const document = leaderDocument(
+    snapshot,
+    url.searchParams.get('term') ?? '',
+    url.searchParams.get('jurisdiction'),
+  )
+  if (!document) {
+    return textResponse(
+      request.method === 'HEAD'
+        ? ''
+        : '<!doctype html><html><head><title>Leader term not found | India Mechanics</title><meta name="robots" content="noindex, follow" /></head><body><main><h1>Leader term not found</h1><p>Use <a href="/llms.txt">llms.txt</a> or <a href="/api/jurisdictions">the jurisdiction API</a> to find published terms.</p></main></body></html>',
+      'text/html; charset=utf-8',
+      404,
+      { 'x-robots-tag': 'noindex' },
+    )
+  }
+  const accept = request.headers.get('accept') ?? ''
+  const headers = { link: leaderLinkHeader(document) }
+  if (accept.includes('text/markdown')) {
+    return textResponse(
+      request.method === 'HEAD' ? '' : renderLeaderMarkdown(document),
+      'text/markdown; charset=utf-8',
+      200,
+      headers,
+    )
+  }
+  if (accept.includes('application/json') && !accept.includes('text/html')) {
+    const response = json(document)
+    response.headers.set('link', headers.link)
+    return request.method === 'HEAD'
+      ? new Response(null, {
+          status: response.status,
+          headers: response.headers,
+        })
+      : response
+  }
+  const index = embeddedAssets['/index.html']
+  const body = decorateLeaderIndex(text(index.body), document)
+  return textResponse(
+    request.method === 'HEAD' ? '' : body,
+    'text/html; charset=utf-8',
+    200,
+    headers,
+  )
 }
 
 function tokens(query: string) {
@@ -367,6 +601,36 @@ async function apiResponse(
   if (path === '/api/openapi.json') return json(snapshot.openapi)
   if (path === '/api/jurisdictions') return json(snapshot.jurisdictions)
   if (path === '/api/methodology') return json(snapshot.methodology)
+  if (path.startsWith('/api/llm/leaders/')) {
+    const termId = decodeURIComponent(path.slice('/api/llm/leaders/'.length))
+    const document = leaderDocument(
+      snapshot,
+      termId,
+      url.searchParams.get('jurisdiction'),
+    )
+    if (!document) return json({ error: 'Leader term not found' }, 404)
+    const format = (url.searchParams.get('format') ?? 'json').toLowerCase()
+    const headers = { link: leaderLinkHeader(document) }
+    if (format === 'markdown' || format === 'md') {
+      return textResponse(
+        renderLeaderMarkdown(document),
+        'text/markdown; charset=utf-8',
+        200,
+        headers,
+      )
+    }
+    if (format === 'html') {
+      return textResponse(
+        renderLeaderHtml(document),
+        'text/html; charset=utf-8',
+        200,
+        headers,
+      )
+    }
+    const response = json(document)
+    response.headers.set('link', headers.link)
+    return response
+  }
 
   const jurisdictionId = url.searchParams.get('jurisdiction') ?? 'india'
   const jurisdiction = snapshot.jurisdictionData[jurisdictionId]
@@ -476,6 +740,11 @@ const worker = {
       if (api) return api
 
       const url = new URL(request.url)
+      const deepLink = leaderDeepLinkResponse(
+        request,
+        embeddedSnapshot as SitesSnapshot,
+      )
+      if (deepLink) return deepLink
       const directPath = url.pathname === '/' ? '/index.html' : url.pathname
       const directAsset = embeddedAssets[directPath]
       if (directAsset) {
@@ -484,7 +753,7 @@ const worker = {
           headers: {
             'content-type': directAsset.contentType,
             'cache-control':
-              directPath === '/index.html'
+              mutableDiscoveryAssets.has(directPath)
                 ? 'public, max-age=60'
                 : 'public, max-age=31536000, immutable',
           },

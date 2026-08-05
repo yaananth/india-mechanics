@@ -66,6 +66,48 @@ researchers and agents. Move to PostgreSQL when concurrent writes, user accounts
 review queues, or a large state-level corpus require a service database. The
 relational model is intentionally portable.
 
+### LLM and crawler delivery contract
+
+The canonical public origin is
+`https://india-mechanics.artfiesco.chatgpt.site`. Machine and crawler surfaces
+must publish absolute URLs rooted at that origin rather than assuming that a
+consumer can resolve repository-relative or site-relative paths.
+
+The compact leader endpoint is:
+
+```text
+https://india-mechanics.artfiesco.chatgpt.site/api/llm/leaders/<term-id>
+```
+
+It is the bounded retrieval representation for one office term. Its contract
+includes term and jurisdiction identity, dates, the unified six-category
+scorecard, overall and confidence, category rationales, nested specialist deep
+dives, bounded source records, omission counts, assessment date, and relevant
+cutoff metadata.
+
+The human HTML fallback is:
+
+```text
+https://india-mechanics.artfiesco.chatgpt.site/?jurisdiction=<jurisdiction-id>&view=leaders&term=<term-id>
+```
+
+The initial response for that deep link must contain leader-specific crawlable
+metadata or content. Serving only the generic Vite root and requiring JavaScript
+to discover the selected leader is insufficient for search crawlers, link
+unfurlers, and retrieval systems that do not execute the client bundle.
+
+Production builds must generate `robots.txt` and `sitemap.xml` from the
+canonical origin and the same published jurisdiction/leader snapshot used by
+the hosted API. `robots.txt` allows the public research surface and APIs and
+advertises the absolute sitemap URL. `sitemap.xml` contains absolute canonical
+human deep links for every published jurisdiction and leader term. Generated
+discovery files must not enumerate unpublished, invalid, or stale term IDs.
+
+These are implementation and publication requirements, not evidence that a
+particular deployment is already current. A release is crawler-ready only after
+the compact endpoint, human HTML fallback, `robots.txt`, and `sitemap.xml` are
+verified at the canonical origin.
+
 ## 3. Repository map
 
 ```text
@@ -73,6 +115,7 @@ AGENTS.md                              agent research and verification contract
 architecture.md                        this document
 data/india-mechanics.sqlite            generated runtime DB, gitignored
 public/llms.txt                         agent discovery and interpretation rules
+robots.txt and sitemap.xml              generated production discovery outputs
 scripts/fetch-indicators.ts             machine-data refresh
 scripts/fetch-bill-register.ts           official government-bill register refresh
 scripts/extract-bill-documents.ts         official-PDF purpose extraction and cache
@@ -1162,6 +1205,7 @@ The API is intentionally agent-friendly and read-only.
 | `/api/jurisdictions` | published country/state choices and validity dates |
 | `/api/overview` | progress snapshot, current term, questions, recent events |
 | `/api/leaders` | terms, component scores, claims, sources |
+| `/api/llm/leaders/:termId` | compact, source-backed context for one PM/CM term |
 | `/api/policies` | policies, bills, component scores, claims, sources |
 | `/api/events` | filterable timeline |
 | `/api/indicators` | definitions and latest observations |
@@ -1173,9 +1217,16 @@ The API is intentionally agent-friendly and read-only.
 | `/api/export` | complete jurisdiction research bundle |
 | `/api/openapi.json` | machine-readable API overview |
 
-Except for global methodology and metadata, read endpoints accept a
-`jurisdiction` query parameter. `public/llms.txt` directs agents to the cutoff
-and methodology endpoints.
+Except for global methodology, metadata, and the term-ID-resolved compact leader
+route, read endpoints accept a `jurisdiction` query parameter. `public/llms.txt`
+uses absolute canonical URLs and directs agents to the cutoff and methodology
+endpoints before substantive retrieval.
+
+The API is not the only crawler surface. A leader deep link at
+`/?jurisdiction=<id>&view=leaders&term=<term-id>` is the human-readable fallback
+and must expose term-specific HTML without depending exclusively on client-side
+JavaScript. Production generation of `robots.txt` and `sitemap.xml` is part of
+the same contract.
 
 ## 15. UI architecture
 
@@ -1283,7 +1334,11 @@ The current automated suite checks:
 - reviewed-answer balance;
 - semiconductor history, planned-versus-operating capacity, design-only
   Semicon 2.0 treatment, and rating-replication stability;
-- search and export APIs.
+- search and export APIs;
+- compact leader retrieval, including score/source caveats and cutoff metadata;
+- absolute canonical URLs in `llms.txt`, `robots.txt`, and `sitemap.xml`;
+- sitemap coverage for every published leader term and no unpublished term IDs;
+- crawlable leader-specific initial HTML for canonical human deep links.
 
 Browser E2E must cover:
 
@@ -1301,6 +1356,7 @@ Browser E2E must cover:
 - source filters and external links;
 - methodology modal;
 - agent export and API contract links;
+- compact leader endpoint and canonical deep-link fallback;
 - no clipping, overlap, or blank chart canvas.
 
 ## 18. Known gaps

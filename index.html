@@ -8,11 +8,37 @@
       name="description"
       content="India Mechanics is a source-backed research atlas of India's progress, governments, events, indicators, and evidence from 1945 to the present."
     />
+    <meta name="robots" content="index, follow" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM guide" />
+    <link
+      rel="alternate"
+      type="application/json"
+      href="/api/openapi.json"
+      title="Read API"
+    />
     <meta name="theme-color" content="#171914" />
     <title>India Mechanics — Evidence from 1945 to the present</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- INDIA_MECHANICS_STATIC_FALLBACK_START -->
+      <main>
+        <article>
+          <h1>India Mechanics</h1>
+          <p>
+            A source-backed research atlas of India’s governments, policies,
+            budgets, events, indicators, and evidence from 1945 to the present.
+          </p>
+          <p>
+            The interactive application loads with JavaScript. Research tools
+            can use the <a href="/llms.txt">LLM guide</a>,
+            <a href="/api/openapi.json">read API</a>, or
+            <a href="/api/export?jurisdiction=india">complete India export</a>.
+          </p>
+        </article>
+      </main>
+      <!-- INDIA_MECHANICS_STATIC_FALLBACK_END -->
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

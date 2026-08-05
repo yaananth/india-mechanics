@@ -86,6 +86,59 @@ governance-first weighted profiles, along with their replication audits, are
 retained as **legacy sensitivity and research-history outputs**. They no longer
 determine the headline leader score.
 
+## LLM and crawler access
+
+The canonical machine-readable discovery-file contract is:
+
+```text
+https://india-mechanics.artfiesco.chatgpt.site/llms.txt
+```
+
+LLMs should read the current cutoff and methodology first:
+
+```text
+https://india-mechanics.artfiesco.chatgpt.site/api/meta
+https://india-mechanics.artfiesco.chatgpt.site/api/methodology
+```
+
+For one leader term, the compact retrieval route contract is:
+
+```text
+https://india-mechanics.artfiesco.chatgpt.site/api/llm/leaders/<term-id>
+```
+
+It must return the term identity and jurisdiction, dates, unified six-category
+scorecard, overall and confidence, category rationales, nested specialist deep
+dives, bounded source records, omission counts, assessment date, and relevant
+cutoff metadata. Consumers must still preserve the published caveats: ratings
+are editorial term estimates, specialist scores are not added to the overall,
+and observed change during a term does not prove leader causation.
+
+The corresponding human deep-link contract is:
+
+```text
+https://india-mechanics.artfiesco.chatgpt.site/?jurisdiction=india&view=leaders&term=<term-id>
+```
+
+That URL is the HTML fallback for people, search engines, link unfurlers, and
+retrieval systems. The initial response must expose leader-specific crawlable
+metadata or content. A JavaScript-only application shell is insufficient because
+many crawlers do not execute the client bundle.
+
+Production builds are also expected to generate:
+
+```text
+https://india-mechanics.artfiesco.chatgpt.site/robots.txt
+https://india-mechanics.artfiesco.chatgpt.site/sitemap.xml
+```
+
+`robots.txt` must allow the public research surface and advertise the absolute
+sitemap URL. `sitemap.xml` must use absolute canonical URLs generated from the
+published jurisdiction and leader-term snapshot. The repository treats these
+routes, the compact endpoint, and the HTML fallback as a publication contract;
+a deployment should not be described as crawler-ready until all four are
+verified on the canonical origin.
+
 ## Technology
 
 - React, TypeScript, Vite, and Recharts

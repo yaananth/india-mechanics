@@ -11,6 +11,7 @@ const contentTypes: Record<string, string> = {
   '.js': 'text/javascript; charset=utf-8',
   '.svg': 'image/svg+xml',
   '.txt': 'text/plain; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
 }
 
 function sitesAssets(): Plugin {
@@ -26,6 +27,8 @@ function sitesAssets(): Plugin {
       const files = [
         'index.html',
         'llms.txt',
+        'robots.txt',
+        'sitemap.xml',
         'favicon.svg',
         ...(await readdir('dist/assets')).map((file) => `assets/${file}`),
       ]

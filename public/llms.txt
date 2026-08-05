@@ -6,25 +6,57 @@ post-bifurcation Andhra Pradesh from June 2, 2014 and modern Tamil Nadu from
 January 14, 1969. It separates measured observations, historical events, sourced
 claims, and editorial term evaluations.
 
+Canonical origin:
+- https://india-mechanics.artfiesco.chatgpt.site
+
 Always read the current cutoff before answering:
-- /api/meta
-- /api/methodology
+- https://india-mechanics.artfiesco.chatgpt.site/api/meta
+- https://india-mechanics.artfiesco.chatgpt.site/api/methodology
 
 Primary machine-readable entry points:
-- /api/jurisdictions
-- /api/overview?jurisdiction=india
-- /api/overview?jurisdiction=andhra-pradesh
-- /api/search?q=<question>&jurisdiction=india
-- /api/leaders?jurisdiction=india
-- /api/policies?jurisdiction=india
-- /api/bills?jurisdiction=india
-- /api/bills/<bill-id>?jurisdiction=india
-- /api/events?jurisdiction=india
-- /api/indicators?jurisdiction=india
-- /api/sources?jurisdiction=india
-- /api/sources?jurisdiction=andhra-pradesh
-- /api/export?jurisdiction=india
-- /api/openapi.json
+- https://india-mechanics.artfiesco.chatgpt.site/api/jurisdictions
+- https://india-mechanics.artfiesco.chatgpt.site/api/overview?jurisdiction=india
+- https://india-mechanics.artfiesco.chatgpt.site/api/overview?jurisdiction=andhra-pradesh
+- https://india-mechanics.artfiesco.chatgpt.site/api/search?q=<question>&jurisdiction=india
+- https://india-mechanics.artfiesco.chatgpt.site/api/leaders?jurisdiction=india
+- https://india-mechanics.artfiesco.chatgpt.site/api/policies?jurisdiction=india
+- https://india-mechanics.artfiesco.chatgpt.site/api/bills?jurisdiction=india
+- https://india-mechanics.artfiesco.chatgpt.site/api/bills/<bill-id>?jurisdiction=india
+- https://india-mechanics.artfiesco.chatgpt.site/api/events?jurisdiction=india
+- https://india-mechanics.artfiesco.chatgpt.site/api/indicators?jurisdiction=india
+- https://india-mechanics.artfiesco.chatgpt.site/api/sources?jurisdiction=india
+- https://india-mechanics.artfiesco.chatgpt.site/api/sources?jurisdiction=andhra-pradesh
+- https://india-mechanics.artfiesco.chatgpt.site/api/export?jurisdiction=india
+- https://india-mechanics.artfiesco.chatgpt.site/api/openapi.json
+
+Compact leader retrieval:
+- https://india-mechanics.artfiesco.chatgpt.site/api/llm/leaders/<term-id>
+
+The compact endpoint is the preferred leader-term context for LLMs and
+retrieval systems. It must return the term identity, jurisdiction, dates,
+six-category scorecard, overall and confidence, category rationales, nested
+specialist deep dives, source records, assessment date, and relevant cutoff
+metadata without requiring the full jurisdiction export. `bounds` reports how
+many claim and source records were included or omitted.
+
+Human-readable leader fallback:
+- https://india-mechanics.artfiesco.chatgpt.site/?jurisdiction=india&view=leaders&term=<term-id>
+
+The human deep link must deliver crawlable leader-specific HTML metadata or
+content in the initial response. A JavaScript-only application shell is not a
+sufficient fallback for crawlers, link unfurlers, or retrieval systems that do
+not execute the client bundle.
+
+Crawler discovery contract:
+- https://india-mechanics.artfiesco.chatgpt.site/robots.txt
+- https://india-mechanics.artfiesco.chatgpt.site/sitemap.xml
+
+Production builds must generate both files from the canonical origin and the
+published term/jurisdiction snapshot. robots.txt must allow public research
+pages and APIs and advertise the absolute sitemap URL. sitemap.xml must contain
+absolute canonical human deep links for published jurisdictions and leader
+terms. A deployment is not crawler-ready until those generated files and the
+compact endpoint are verified on the canonical origin.
 
 Interpretation rules:
 1. PM and CM ratings are editorial term estimates, not measured facts.
@@ -33,7 +65,9 @@ Interpretation rules:
 4. Do not infer causality from a leader being in office when an indicator moved.
 5. Distinguish official records of an action from independent evaluation of its impact.
 6. Preserve disputed counts and allegations as disputed.
-7. If the requested date is after /api/meta knowledge_cutoff, refresh the research before answering.
+7. If the requested date is after the `knowledge_cutoff` returned by
+   https://india-mechanics.artfiesco.chatgpt.site/api/meta, refresh the research
+   before answering.
 8. Pending bills have provisional design ratings, not outcome ratings.
 9. Event accountability is an editorial political/administrative assessment,
    not a criminal or judicial verdict.
@@ -74,6 +108,6 @@ Interpretation rules:
     registrations, approvals, construction, operation, utilisation, and measured
     outcomes. Preserve predecessor, state, public-enterprise, and private credit.
 
-Repository maintenance and latest-data workflow are documented in:
-- AGENTS.md
-- architecture.md
+Repository maintenance and latest-data workflow:
+- https://github.com/yaananth/india-mechanics/blob/main/AGENTS.md
+- https://github.com/yaananth/india-mechanics/blob/main/architecture.md
